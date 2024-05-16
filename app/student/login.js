@@ -1,27 +1,26 @@
-'use client'
-import { useState } from 'react';
-import {useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth'
-import {auth} from '@/app/firebase/config'
-import { useRouter } from 'next/navigation';
-import Link from 'next/link'
-
+"use client";
+import { useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSignIn = async () => {
     try {
-        const res = await signInWithEmailAndPassword(email, password);
-        console.log({res});
-        sessionStorage.setItem('user', true)
-        setEmail('');
-        setPassword('');
-        router.push('/')
-    }catch(e){
-        console.error(e)
+      const res = await signInWithEmailAndPassword(email, password);
+      console.log({ res });
+      sessionStorage.setItem("user", true);
+      setEmail("");
+      setPassword("");
+      router.push("/");
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -51,13 +50,13 @@ return (
   </button>
   <div className="text-white mt-2">
           <span>Don't have an account?</span> 
-          <Link href="\student\register">
+          <Link href="app\student\register">
             <span className="text-blue-500"> Register now</span>
           </Link>
-  </div>
-  </div>
-  </div>
-    );
-}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Login;
