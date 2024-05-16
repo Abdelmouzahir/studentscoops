@@ -1,5 +1,5 @@
 'use client'
-// pages/home.js
+
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/app/firebase/config'; 
