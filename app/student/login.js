@@ -51,7 +51,7 @@ return (
   </button>
   <div className="text-white mt-2">
           <span>Don't have an account?</span> 
-          <Link href="app\student\register">
+          <Link href="\student\register">
             <span className="text-blue-500"> Register now</span>
           </Link>
   </div>
