@@ -1,3 +1,28 @@
+'use client'
+import { useState } from 'react';
+import {useCreateUserWithEmailAndPassword} from 'react-firebase-hooks/auth'
+import {auth} from '@/app/firebase/config'
+
+
+const Register = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
+
+  const handleSignUp = async () => {
+    try {
+        const res = await createUserWithEmailAndPassword(email, password)
+        console.log({res})
+        sessionStorage.setItem('user', true)
+        setEmail('');
+        setPassword('')
+
+    } catch(e){
+        console.error(e)
+    }
+  };
+
+
 return (
   <div className="min-h-screen flex items-center justify-center bg-gray-900">
   <div className="bg-gray-800 p-10 rounded-lg shadow-xl w-96">
@@ -24,4 +49,7 @@ return (
   </button>
   </div>
   </div>
-    );
+);
+}
+
+export default Register;
