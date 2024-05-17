@@ -66,7 +66,8 @@ return (
             onChange={(e) => setEmail(e.target.value)} 
             className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
           />
-    {emailError && <div className="text-red-500 text-sm mb-4">{emailError}</div>}
+          {/*messages shows if there is an error */}
+           {emailError && <div className="text-red-500 text-sm mb-4">{emailError}</div>}
   <input 
             type="password" 
             placeholder="Password" 
@@ -74,6 +75,7 @@ return (
             onChange={(e) => setPassword(e.target.value)} 
             className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
           />
+          {/*messages shows if there is an error */}
           {passerror && <div className="text-red-500 text-sm mb-4">{passerror}</div>}
   <button 
             onClick={handleSignUp}
