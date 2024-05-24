@@ -1,16 +1,34 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passError, setPassError] = useState('');
+  const [confirmPassError, setConfirmPassError] = useState('');
+  const [isPasswordMatch, setIsPasswordMatch] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (confirmPassword) {
+      if (confirmPassword === password) {
+        setIsPasswordMatch(true);
+        setConfirmPassError('');
+      } else {
+        setIsPasswordMatch(false);
+        setConfirmPassError('Passwords do not match');
+      }
+    } else {
+      setIsPasswordMatch(false);
+      setConfirmPassError('');
+    }
+  }, [confirmPassword, password]);
 
   const handleSignUp = async () => {
     setEmailError('');
@@ -28,6 +46,12 @@ const Register = () => {
       setPassError('Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters.');
       return;
     }
+    
+    // Check if passwords match
+    if (!isPasswordMatch) {
+      setConfirmPassError('Passwords do not match');
+      return;
+    }
 
     try {
       // Create user with email and password
@@ -36,10 +60,10 @@ const Register = () => {
       sessionStorage.setItem('user', true);
       setEmail('');
       setPassword('');
-      router.push("/student/homepage");
-
+      setConfirmPassword('');
+      router.push("/student/information");
     } catch (e) {
-      //check if the user is already exist in the database 
+      // Check if the user already exists in the database
       console.error("Error registering:", e.message);
       if (e.code === "auth/email-already-in-use") {
         setEmailError('This email is already registered.');
@@ -47,7 +71,6 @@ const Register = () => {
         setError('Failed to create account. Please try again.');
       }
     }
-  
   };
 
   return (
@@ -67,9 +90,19 @@ const Register = () => {
           placeholder="Password" 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
+          className="w-full p-3 mb-2 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+        />
+        <p className='text-white mb-1 text-sm'>Min 8 characters, including uppercase, lowercase, number, and special character</p>
+        {passError && <div className="text-red-500 text-sm mb-4">{passError}</div>}
+        <input 
+          type="password" 
+          placeholder="Confirm Password" 
+          value={confirmPassword} 
+          onChange={(e) => setConfirmPassword(e.target.value)} 
           className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
         />
-        {passError && <div className="text-red-500 text-sm mb-4">{passError}</div>}
+        {confirmPassError && <div className="text-red-500 text-sm mb-4">{confirmPassError}</div>}
+        {isPasswordMatch && confirmPassword && <div className="text-green-500 text-sm mb-4">Password match!</div>}
         <button 
           onClick={handleSignUp}
           className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"

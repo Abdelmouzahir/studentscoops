@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { auth } from '@/app/firebase/config';
-//import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { sendPasswordResetEmail } from "firebase/auth";
 import Link from 'next/link';
 
@@ -10,7 +10,7 @@ const ForgotPassword = () => {
   const [emailError, setEmailError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
-  //const router = useRouter();
+  const router = useRouter();
 
   const handlePasswordReset = async () => {
     setEmailError('');
@@ -27,6 +27,7 @@ const ForgotPassword = () => {
       await sendPasswordResetEmail(auth, email);
       setSuccessMessage('Password reset email sent successfully.');
       setEmail('');
+      router.push("/resetsent");
     } catch (e) {
       console.error("Error sending password reset email:", e.message);
       if (e.code === "auth/user-not-found") {
@@ -50,7 +51,7 @@ const ForgotPassword = () => {
         />
         {emailError && <div className="text-red-500 text-sm mb-4">{emailError}</div>}
         {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
-        {successMessage && <div className="text-green-500 text-sm mb-4">{successMessage}</div>}
+        {/*successMessage && <div className="text-green-500 text-sm mb-4">{successMessage}</div>*/}
         <button 
           onClick={handlePasswordReset}
           className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"
