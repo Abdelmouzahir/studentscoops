@@ -3,17 +3,28 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const PersonalInfo = () => {
-  const [name, setName] = useState('');
+  const [fname, setfName] = useState('');
+  const [lname, setlName] = useState('');
   const [address, setAddress] = useState('');
+  const [unitnum, setUnitnum] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [postalcoderr, setpostalcoderr] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
 
   const handleSubmit = () => {
     setError('');
+    setpostalcoderr('');
 
-    if (!name || !address || !phoneNumber) {
+    if (!fname || !lname || !address || !postalCode || !phoneNumber) {
       setError('All fields are required.');
+      return;
+    }
+     
+     // Check if postal code is canadian 
+    if(!postalCode.match(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/)) {
+      setpostalcoderr('Postal code not Valid!');
       return;
     }
 
@@ -24,8 +35,11 @@ const PersonalInfo = () => {
 
     // Save the personal info to a database or state management solution
     // For demonstration, we will just log the data
-    console.log('Name:', name);
+    console.log(' First Name:', fname);
+    console.log(' Last Name:', lname);
     console.log('Address:', address);
+    console.log('Unit Number:', unitnum);
+    console.log('Postal Code:', postalCode);
     console.log('Phone Number:', phoneNumber);
 
     // Redirect to another page if needed
@@ -38,9 +52,16 @@ const PersonalInfo = () => {
         <h1 className="text-white text-2xl mb-5">Personal Information</h1>
         <input 
           type="text" 
-          placeholder="Name" 
-          value={name} 
-          onChange={(e) => setName(e.target.value)} 
+          placeholder=" First Name" 
+          value={fname} 
+          onChange={(e) => setfName(e.target.value)} 
+          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+        />
+          <input 
+          type="text" 
+          placeholder="Last Name" 
+          value={lname} 
+          onChange={(e) => setlName(e.target.value)} 
           className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
         />
         <input 
@@ -50,6 +71,21 @@ const PersonalInfo = () => {
           onChange={(e) => setAddress(e.target.value)} 
           className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
         />
+        <input 
+          type="text" 
+          placeholder="Unit Number" 
+          value={unitnum} 
+          onChange={(e) => setUnitnum(e.target.value)} 
+          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+        />
+        <input 
+          type="text" 
+          placeholder="Postal Code" 
+          value={postalCode} 
+          onChange={(e) => setPostalCode(e.target.value)} 
+          className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+        />
+        {postalcoderr && <div className="text-red-500 text-sm mb-4">{postalcoderr}</div>}
         <input 
           type="text" 
           placeholder="Phone Number" 
