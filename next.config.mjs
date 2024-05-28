@@ -1,4 +1,17 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
 
-export default nextConfig;
+const nextConfig = {
+    //... other configurations
+    images: {
+
+      domains: ['images.pexels.com', 'cdn.example.com', 'i.pinimg.com'],
+    },
+  };
+  // Write all the Domain names from where you are getting all the images
+  export default nextConfig;
+
+      domains: ['images.pexels.com', 'splash.com', 'pintrest.com','i.pinimg.com'],
+    },
+  };
+  // This is remove the security provided by the next js and will be able to use any pictures there in internet
+  export default nextConfig;
