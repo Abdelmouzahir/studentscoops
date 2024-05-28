@@ -1,17 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-    //... other configurations
-    images: {
+  // Other configurations can be added here
+  images: {
+      domains: ['images.pexels.com', 'cdn.example.com', 'i.pinimg.com', 'splash.com', 'pintrest.com'],
+  },
+};
 
-      domains: ['images.pexels.com', 'cdn.example.com', 'i.pinimg.com'],
-    },
-  };
-  // Write all the Domain names from where you are getting all the images
-  export default nextConfig;
+export default nextConfig;
 
-      domains: ['images.pexels.com', 'splash.com', 'pintrest.com','i.pinimg.com'],
-    },
-  };
-  // This is remove the security provided by the next js and will be able to use any pictures there in internet
-  export default nextConfig;
+// Note: Modifying the list of allowed image domains enables the use of images from those sources.
+// Be cautious when allowing domains to ensure security and performance are not compromised.
