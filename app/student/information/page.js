@@ -1,8 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { auth } from '@/app/firebase/config';
+import { onAuthStateChanged } from 'firebase/auth';
+import { addUserInformation, addOtherUserInformation } from '@/services/addInformation';
 
 const PersonalInfo = () => {
+  const [user, setUser] = useState(null);
   const [fname, setfName] = useState('');
   const [lname, setlName] = useState('');
   const [address, setAddress] = useState('');
@@ -13,7 +17,22 @@ const PersonalInfo = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        console.log("User ID:", currentUser.uid); // Log the user ID
+      } else {
+        // Redirect to login if not authenticated
+        router.push("/student/homepage");
+      }
+    });
+    console.log("User:", auth.uid)
+    return () => unsubscribe();
+  }, [router]);
+
   const handleSubmit = () => {
+    const userInformation = { name: fname, lastName: lname, address: address, unitNum: unitnum, postalCode: postalCode, phoneNumber: phoneNumber };
     setError('');
     setpostalcoderr('');
 
@@ -21,9 +40,9 @@ const PersonalInfo = () => {
       setError('All fields are required.');
       return;
     }
-     
-     // Check if postal code is canadian 
-    if(!postalCode.match(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/)) {
+
+    // Check if postal code is Canadian 
+    if (!postalCode.match(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/)) {
       setpostalcoderr('Postal code not Valid!');
       return;
     }
@@ -35,15 +54,14 @@ const PersonalInfo = () => {
 
     // Save the personal info to a database or state management solution
     // For demonstration, we will just log the data
-    console.log(' First Name:', fname);
-    console.log(' Last Name:', lname);
+    console.log('First Name:', fname);
+    console.log('Last Name:', lname);
     console.log('Address:', address);
     console.log('Unit Number:', unitnum);
     console.log('Postal Code:', postalCode);
     console.log('Phone Number:', phoneNumber);
-
-    // Redirect to another page if needed
-    router.push("/student/homepage");
+    addUserInformation(user.uid, userInformation);
+    addOtherUserInformation(user.uid, userInformation);
   };
 
   return (
@@ -52,12 +70,12 @@ const PersonalInfo = () => {
         <h1 className="text-white text-2xl mb-5">Personal Information</h1>
         <input 
           type="text" 
-          placeholder=" First Name" 
+          placeholder="First Name" 
           value={fname} 
           onChange={(e) => setfName(e.target.value)} 
           className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
         />
-          <input 
+        <input 
           type="text" 
           placeholder="Last Name" 
           value={lname} 
