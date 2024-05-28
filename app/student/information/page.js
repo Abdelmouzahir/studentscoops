@@ -1,12 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/app/firebase/config';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useUserAuth } from '@/services/utils';
 import { addUserInformation, addOtherUserInformation } from '@/services/addInformation';
 
 const PersonalInfo = () => {
-  const [user, setUser] = useState(null);
+  const { user } = useUserAuth();
   const [fname, setfName] = useState('');
   const [lname, setlName] = useState('');
   const [address, setAddress] = useState('');
@@ -18,18 +17,14 @@ const PersonalInfo = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        console.log("User ID:", currentUser.uid); // Log the user ID
-      } else {
-        // Redirect to login if not authenticated
-        router.push("/student/homepage");
-      }
-    });
-    console.log("User:", auth.uid)
-    return () => unsubscribe();
-  }, [router]);
+    if (user !== null) {
+      console.log("User ID in page:", user); // Log the user ID
+    } if (user === false){
+      console.log("User not authenticated");
+      // Redirect to login if not authenticated
+      router.push('/student');
+    }
+  }, [user,router]);
 
   const handleSubmit = () => {
     const userInformation = { name: fname, lastName: lname, address: address, unitNum: unitnum, postalCode: postalCode, phoneNumber: phoneNumber };
@@ -60,8 +55,9 @@ const PersonalInfo = () => {
     console.log('Unit Number:', unitnum);
     console.log('Postal Code:', postalCode);
     console.log('Phone Number:', phoneNumber);
-    addUserInformation(user.uid, userInformation);
-    addOtherUserInformation(user.uid, userInformation);
+    addUserInformation(user, userInformation);
+    addOtherUserInformation(user, userInformation);
+    router.push("/student/homepage");
   };
 
   return (

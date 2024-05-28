@@ -11,17 +11,20 @@ const Login = () => {
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
 
-  const handleSignIn = async () => {
-    try {
-      const res = await signInWithEmailAndPassword(email, password);
-      console.log({ res });
-      sessionStorage.setItem("user", true);
-      setEmail("");
-      setPassword("");
-      router.push("/");
-    } catch (e) {
-      console.error(e);
-    }
+  const handleSignIn = () => {
+    signInWithEmailAndPassword( email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("User ID:", user.uid);
+        sessionStorage.setItem("user", true);
+        setEmail("");
+        setPassword("");
+        console.log("User logged in successfully");
+        router.push("/student/homepage");
+      })
+      .catch((err) => {
+        console.error("error message",err.message);
+      });
   };
 
   return (
