@@ -6,32 +6,32 @@ import { auth } from '@/app/firebase/config';
 import { signOut } from 'firebase/auth';
 import { collection, doc, getDocs } from 'firebase/firestore';
 import { db } from '@/app/firebase/config';
-import Link from "next/link"
-import Image from 'next/image';
-import { Button } from "../../ui/button"
-import Home from '../page';
+import { getUserInformation } from '@/services/addInformation';
+import { useUserAuth } from '@/services/utils';
 
-export default function Page() {
 const Home = () => {
-
+  const { user } = useUserAuth();
   const [students, setStudents] = useState([]);
   const router = useRouter();
 
-  const getStudent = async () => {
-    try{
-    const querySnapshot = await getDocs(collection(db, 'student'));
-    const students = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-    setStudents(students);
-    }catch(err){
-      console.error('Error getting student: ', err);
-    }
-  }
-
   useEffect(() => {
-    getStudent();
-  
-  }, [])
-
+  if(user !== null){
+    const information = getUserInformation(user);
+    setStudents(information);
+    information.then((data) => {
+      setStudents(data);
+      console.log("Data: ", data);
+    });
+    
+    console.log("User ID in page:", user); // Log the user ID
+    console.log("User Information: ", information)
+  }
+  if(user === false){
+    console.log("User not authenticated");
+    router.push('/student');
+  }
+  }, [user])
+  console.log("students data",students);
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -57,8 +57,8 @@ return (
         {students.length > 0 ? (
           students.map(student => (
             <div key={student.id} className="mb-4 p-4 bg-gray-700 rounded text-white">
-              <h2 className="text-xl font-bold">{student.fname}</h2>
-              <h2 className="text-xl font-bold">{student.lname}</h2>
+              <h2 className="text-xl font-bold">{student.name}</h2>
+              <h2 className="text-xl font-bold">{student.lastName}</h2>
               <p>Address: {student.address}</p>
               <p>Phone Number: {student.phoneNumber}</p>
             </div>
@@ -78,5 +78,4 @@ return (
 );
 };
 
-}
-
+export default Home;
