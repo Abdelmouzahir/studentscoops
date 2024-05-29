@@ -6,7 +6,7 @@ import { auth } from '@/app/firebase/config';
 import { signOut } from 'firebase/auth';
 import { collection, doc, getDocs } from 'firebase/firestore';
 import { db } from '@/app/firebase/config';
-import { getUserInformation } from '@/services/utils';
+import { getUserInformation } from '@/services/addInformation';
 import { useUserAuth } from '@/services/utils';
 
 const Home = () => {
