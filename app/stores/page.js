@@ -54,7 +54,7 @@ export default function RestrauntPage() {
                 Get the App
               </Link>
               <Link
-                className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 border-[#6c5ce7] bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-[#6c5ce7] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:border-[#6c5ce7] dark:bg-[#1e1e1e] dark:hover:bg-[#2b2b2b] dark:hover:text-gray-50 dark:focus-visible:ring-[#6c5ce7] dark:border-gray-800"
+                className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-[#6c5ce7] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:border-[#6c5ce7] dark:bg-[#1e1e1e] dark:hover:bg-[#2b2b2b] dark:hover:text-gray-50 dark:focus-visible:ring-[#6c5ce7]"
                 href="#">
                 Learn More
               </Link>
@@ -320,4 +320,4 @@ export default function RestrauntPage() {
       </div>
     </section>
   </>);
-}
+};
