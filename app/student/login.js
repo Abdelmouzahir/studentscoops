@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
+  
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(email, password)
@@ -25,6 +26,9 @@ const Login = () => {
       })
       .catch((err) => {
         console.error("error message", err.message);
+
+        console.log("User not logged in")
+
       });
   };
 
@@ -33,40 +37,48 @@ const Login = () => {
       className="min-h-screen flex items-center justify-center bg-cover"
       style={{ backgroundImage: "linear-gradient(115deg, #dfc42f, #faf7df)" }}
     >
-      {/* style=>{{backgroundImage:"url(/assets/images/AdobeStock_286178925_Preview.jpeg)"}} */}
-      <div
-        className="bg-cover rounded-lg shadow-xl bg-black/70"
-        style={{
-          backgroundImage:
-            "url(/assets/images/AdobeStock_286178925_Preview.jpeg)",
-        }}
-      >
-        <div className="p-32 text-center bg-black/40">
-          <h1 className="text-green-100 font-extrabold text-7xl mb-5">Login</h1>
+
+      <div className="max-w-screen-xl w-10/12 lg:w-8/12 grid grid-row-2 sm:grid-cols-2 py-40">
+        <div className="w-full h-full col-span-1 relative bg-cover bg-center bg-no-repeat"
+        style={{backgroundImage:"url(/assets/images/AdobeStock_286178925_Preview.jpeg)"}}>
+          <div style={{height:"25vh"}}/>
+        </div>
+        <div className="col-span-1 grid grid-cols-1 gap-10 bg-white px-12 py-16 text-center w-full">
+          <h1 className="text-black text-3xl mx-auto mb-4 ">Login</h1>
+
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className=" w-full p-4 mb-4 bg-black/70 rounded outline-none text-white"
+
+            className="border text-black border-gray-400 py-1 px-2 w-full rounded-md"
+
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-4 bg-gray-700 rounded outline-none text-white placeholder-gray-500"
+
+            className="border text-black border-gray-400 py-1 px-2 w-full rounded-md"
           />
           <button
             onClick={handleSignIn}
-            className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"
+            className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md"
           >
             Login
           </button>
-          <div className="text-white mt-2">
-            <span>Don't have an account?</span>
+          <div className="text-white mt-2 sm:text-xl">
+            <span className="text-black">Don't have an account?</span>
             <Link href="..\student\register">
-              <span className="text-blue-500"> Register now</span>
+              <span className="text-yellow-500 font-semibold">
+                {" "}
+                Register now
+              </span>
+
+            
+
             </Link>
           </div>
         </div>
