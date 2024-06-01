@@ -127,7 +127,7 @@ const Register = () => {
             style={{ backgroundImage: 'url(/assets/images/phone.png)' }}
           >
           </div>
-          <div className="w-full lg:w-1/2 py-16 px-12">
+          <div className="w-full lg:w-1/2 py-16 px-12 text-black">
             <h2 className="text-3xl mb-4 text-black">Register</h2>
             <p className="mb-4">
               Create your account. It’s free and only takes a minute
