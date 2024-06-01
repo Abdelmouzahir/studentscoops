@@ -12,7 +12,6 @@ const Login = () => {
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
   const [errorText, setErrorText] = useState("");
-  
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(email, password)
@@ -25,7 +24,9 @@ const Login = () => {
         setErrorText("");
       })
       .catch((err) => {
-        setErrorText("Invalid email or password. Please try again.");
+        console.error("error message", err.message);
+
+        console.log("User not logged in");
       });
   };
 
@@ -35,12 +36,18 @@ const Login = () => {
       style={{ backgroundImage: "linear-gradient(115deg, #dfc42f, #faf7df)" }}
     >
       <div className="max-w-screen-xl w-10/12 lg:w-8/12 grid grid-row-2 sm:grid-cols-2 py-40">
-        <div className="w-full h-full col-span-1 relative bg-cover bg-center bg-no-repeat"
-        style={{backgroundImage:"url(/assets/images/AdobeStock_286178925_Preview.jpeg)"}}>
-          <div style={{height:"25vh"}}/>
+        <div
+          className="w-full h-full col-span-1 relative bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage:
+              "url(/assets/images/AdobeStock_286178925_Preview.jpeg)",
+          }}
+        >
+          <div style={{ height: "25vh" }} />
         </div>
         <div className="col-span-1 grid grid-cols-1 gap-10 bg-white px-12 py-16 text-center w-full">
           <h1 className="text-black text-3xl mx-auto mb-4 ">Login</h1>
+
           <input
             type="email"
             placeholder="Email"
