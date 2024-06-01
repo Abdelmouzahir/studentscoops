@@ -11,22 +11,21 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
+  const [errorText, setErrorText] = useState("");
   
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log("User ID:", user.uid);
         sessionStorage.setItem("user", true);
         setEmail("");
         setPassword("");
-        console.log("User logged in successfully");
         router.push("/student/homepage");
+        setErrorText("");
       })
       .catch((err) => {
-        console.error("error message", err.message);
-        console.log("User not logged in")
+        setErrorText("Invalid email or password. Please try again.");
       });
   };
 
@@ -58,15 +57,15 @@ const Login = () => {
           />
           <button
             onClick={handleSignIn}
-            className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md"
+            className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md hover:bg-yellow-600 hover:text-black"
           >
             Login
           </button>
+          <p className="text-red-500">{errorText}</p>
           <div className="text-white mt-2 sm:text-xl">
             <span className="text-black">Don't have an account?</span>
             <Link href="..\student\register">
-              <span className="text-yellow-500 font-semibold">
-                {" "}
+              <span className="text-yellow-500 font-semibold hover:font-bold ml-4">
                 Register now
               </span>
             </Link>
