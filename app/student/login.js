@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
+
   const [errorText, setErrorText] = useState("");
 
   const handleSignIn = () => {
