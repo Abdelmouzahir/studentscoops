@@ -26,7 +26,9 @@ const Login = () => {
       })
       .catch((err) => {
         console.error("error message", err.message);
+
         console.log("User not logged in")
+
       });
   };
 
@@ -35,6 +37,7 @@ const Login = () => {
       className="min-h-screen flex items-center justify-center bg-cover"
       style={{ backgroundImage: "linear-gradient(115deg, #dfc42f, #faf7df)" }}
     >
+
       <div className="max-w-screen-xl w-10/12 lg:w-8/12 grid grid-row-2 sm:grid-cols-2 py-40">
         <div className="w-full h-full col-span-1 relative bg-cover bg-center bg-no-repeat"
         style={{backgroundImage:"url(/assets/images/AdobeStock_286178925_Preview.jpeg)"}}>
@@ -42,18 +45,22 @@ const Login = () => {
         </div>
         <div className="col-span-1 grid grid-cols-1 gap-10 bg-white px-12 py-16 text-center w-full">
           <h1 className="text-black text-3xl mx-auto mb-4 ">Login</h1>
+
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+
             className="border text-black border-gray-400 py-1 px-2 w-full rounded-md"
+
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+
             className="border text-black border-gray-400 py-1 px-2 w-full rounded-md"
           />
           <button
@@ -69,6 +76,9 @@ const Login = () => {
                 {" "}
                 Register now
               </span>
+
+            
+
             </Link>
           </div>
         </div>
