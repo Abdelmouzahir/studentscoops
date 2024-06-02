@@ -15,7 +15,7 @@ const Login = () => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = (email) => {
     signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -28,7 +28,6 @@ const Login = () => {
       .catch((err) => {
         setLoginError("Invalid email or password");
         console.log(err);
-        console.log("Error signing in");
       });
   };
 
