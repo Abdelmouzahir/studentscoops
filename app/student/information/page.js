@@ -15,6 +15,7 @@ const PersonalInfo = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [error, setError] = useState('');
   const [showFullMessage, setShowFullMessage] = useState(false);
+  const [acceptConditions, setAcceptConditions] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const PersonalInfo = () => {
 
     <div className="min-h-screen py-40" style={{ backgroundImage: 'linear-gradient(115deg, #dfc42f, #faf7df)' }}>
       <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">
+        <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden text-black">
           <div
             className="w-full lg:w-1/2 flex flex-col items-center justify-center p-12 bg-no-repeat bg-cover bg-center"
             style={{ backgroundImage: 'url(/assets/images/food.png)' }}
@@ -145,17 +146,22 @@ const PersonalInfo = () => {
               </div>
               {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
               <div className="mt-5">
-                <input type="checkbox" className="border border-gray-400 rounded-md" />
+                <input type="checkbox" className="cursor-pointer border border-gray-400 rounded-md" onClick={()=>{setAcceptConditions(!acceptConditions)}}/>
                 <span className='ml-2 text-black'>
                   I accept the <a href="#" className="text-yellow-500 font-semibold">Terms of Use</a> & <a href="#" className="text-yellow-500 font-semibold">Privacy Policy</a>
                 </span>
-                <button 
+                {acceptConditions ? <button 
                   type="button"
                   onClick={handleSubmit}
                   className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md"
                 >
                   Submit
-                </button>
+                </button>:<button 
+                  type="button"
+                  className="w-full bg-yellow-200 py-3 text-center text-white mt-3 rounded-md"
+                >
+                  Submit
+                </button>}
               </div>
             </form>
           </div>
