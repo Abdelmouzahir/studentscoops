@@ -15,7 +15,7 @@ const Login = () => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  const handleSignIn = (email) => {
+  const handleSignIn = () => {
     signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
