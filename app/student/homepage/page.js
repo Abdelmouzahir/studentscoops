@@ -28,7 +28,7 @@ const Home = () => {
   }
   if(user === false){
     console.log("User not authenticated");
-    router.push('/student');
+    router.push('/');
   }
   }, [user])
   console.log("students data",students);
