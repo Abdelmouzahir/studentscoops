@@ -24,7 +24,7 @@ const sign_in = () => {
         sessionStorage.setItem("user", true);
         setEmail("");
         setPassword("");
-        router.push("/student/homepage");
+        router.push("/student");
         setLoginError("");
       })
       .catch((err) => {
