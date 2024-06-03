@@ -115,7 +115,7 @@ const sign_in = () => {
                 <span className="flex text-black">
                   <p>Don't have an account?</p>
                   <Link
-                    href="/student/register"
+                    href="/auth/register"
                     className="text-yellow-500 font-semibold ml-2"
                   >
                     Register

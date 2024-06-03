@@ -24,7 +24,7 @@ const PersonalInfo = () => {
     } if (user === false){
       console.log("User not authenticated");
       // Redirect to login if not authenticated
-      router.push('/student');
+      router.push('/auth/sign-in');
     }
   }, [user,router]);
 

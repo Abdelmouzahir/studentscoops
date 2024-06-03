@@ -86,7 +86,7 @@ const Register = () => {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      router.push("/student/information");
+      router.push("/auth/register/enter_information");
     } catch (e) {
       // Check if the user already exists in the database
       console.error("Error registering:", e.message);
