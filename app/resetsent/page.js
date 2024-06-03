@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -12,21 +12,42 @@ const AfterResetPassword = () => {
     router.push("/student");
   }
 
- 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-10 rounded-lg shadow-xl w-96">
-        <h1 className="text-white text-2xl mb-5">Thank you! an email was sent to your email address.</h1>
-        <h1 className="text-white text-2xl mb-5">Please check your email for future instruction</h1>
-        <button 
-          onClick={handleClick}
-          className="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500"
-        >
-          Back to Login page
-        </button>
+
+return (
+  <div
+    className="min-h-screen py-40"
+    style={{ backgroundImage: "linear-gradient(115deg, #dfc42f, #faf7df)" }}
+  >
+    <Fragment>
+      <div className="container mx-auto">
+        <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">
+          <div
+            className="w-full lg:w-1/2 flex flex-col items-center justify-center p-12 bg-no-repeat bg-cover bg-center"
+            style={{ backgroundImage: "url(/assets/images/emailsent.jpg)" }}
+          ></div>
+          <div className="w-full lg:w-1/2 py-16 px-12 text-black">
+            <h2 className="text-3xl mb-4 text-black">Thank you!</h2>
+            <p className="mb-4">An email was sent 📩 to your email address! Please check and reset your password.</p>
+            <div>
+               <img src="/assets/images/email.jpg" alt="My Image" />
+            </div>
+
+            <div>
+            </div>
+            <div className="mt-4">
+              <button
+                onClick={handleClick}
+                className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md"
+              >
+                Back To Login
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    </Fragment>
+  </div>
+);
 };
 
 export default AfterResetPassword;
