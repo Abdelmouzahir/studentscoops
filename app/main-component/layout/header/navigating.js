@@ -15,7 +15,7 @@ import {
 export default function Navigating() {
   return (
     <NavigationMenu >
-      <NavigationMenuList className="text-primary gap-6 bg-white">
+      <NavigationMenuList className="text-black gap-6 bg-white">
         <NavigationMenuItem>
           <NavigationMenuTrigger>
             PAGE1

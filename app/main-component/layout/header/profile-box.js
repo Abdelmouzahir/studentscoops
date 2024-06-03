@@ -10,8 +10,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 export default function ProfileBox() {
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push("../student");
+    }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,9 +30,7 @@ export default function ProfileBox() {
       <DropdownMenuContent className="mr-4">
         <DropdownMenuLabel>Profile</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>My Account</DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleClick} >Login</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
