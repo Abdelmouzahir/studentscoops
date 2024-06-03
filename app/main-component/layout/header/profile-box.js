@@ -16,14 +16,14 @@ export default function ProfileBox() {
     const router = useRouter();
 
     const handleClick = () => {
-        router.push("../student");
+        router.push("../auth/sign-in");
     }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+          <AvatarImage src="https://github.com/shadcn.png" alt="picture" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

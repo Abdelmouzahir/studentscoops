@@ -7,7 +7,7 @@ export default function Section1() {
     const router = useRouter();
 
     const handleClick = () => {
-        router.push("../student/register");
+        router.push("../auth/register");
       }
 
     return (
