@@ -5,6 +5,14 @@ import { useRouter } from 'next/navigation';
 import { sendPasswordResetEmail } from "firebase/auth";
 import Link from 'next/link';
 
+const AfterResetPassword = () => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push("/student");
+  }
+
+
 return (
   <div
     className="min-h-screen py-40"
@@ -40,6 +48,6 @@ return (
     </Fragment>
   </div>
 );
-
+};
 
 export default AfterResetPassword;
