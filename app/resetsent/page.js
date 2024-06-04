@@ -29,7 +29,7 @@ return (
             <h2 className="text-3xl mb-4 text-black">Thank you!</h2>
             <p className="mb-4">An email was sent 📩 to your email address! Please check and reset your password.</p>
             <div>
-               <img src="/assets/images/email.jpg" alt="My Image" />
+               <img src="/assets/images/email.jpg" alt="Email Sent" />
             </div>
 
             <div>
