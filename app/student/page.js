@@ -103,14 +103,14 @@ return (
       </div>
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
     
-      <Link>  <RestrauntCard
+      <RestrauntCard
       name="Tim Hortons - 3660 Westwinds Dr Ne"
       category= "Baked Goods"
      pickupInfo= "Pick up today 9:00 - 15:00"
       rating= "4.2"
       distance= "925 m"
       price= "$4.99"
-      /></Link>
+      />
      <RestrauntCard
      name= "Subway - 123 Main St"
      category= "Sandwiches"
