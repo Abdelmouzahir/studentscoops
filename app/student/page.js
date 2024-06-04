@@ -15,11 +15,12 @@ import { Button } from '../ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 import RestrauntCard from './RestrauntCard';
-import {RestaurantsData} from './RestrauntData';
+// import {RestaurantsData} from './RestrauntData';
+import RestrauntItems from "./RestrauntItems/page"
 
 
 const Home = () => {
- console.log(RestaurantsData)
+//  console.log(RestaurantsData)
   const { user } = useUserAuth();
   const [students, setStudents] = useState([]);
   const router = useRouter();
@@ -102,15 +103,16 @@ return (
         </div>
       </div>
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
-    
-      <RestrauntCard
+    <Link href='/student/RestrauntItems'>
+       <RestrauntCard
       name="Tim Hortons - 3660 Westwinds Dr Ne"
       category= "Baked Goods"
      pickupInfo= "Pick up today 9:00 - 15:00"
       rating= "4.2"
       distance= "925 m"
       price= "$4.99"
-      />
+      /> </Link>
+      <Link href='/student/RestrauntItems'>
      <RestrauntCard
      name= "Subway - 123 Main St"
      category= "Sandwiches"
@@ -118,7 +120,8 @@ return (
      rating= "4.5"
      distance= "1.2 km"
      price= "$7.99"
-     /> 
+     /> </Link>
+     <Link href='/student/RestrauntItems'>
      <RestrauntCard
     name= "Pizza Hut - 456 Elm St"
     category= "Pizza"
@@ -126,7 +129,8 @@ return (
     rating= "4.0"
     distance= "2.1 km"
     price= "$12.99"
-     />
+     /></Link>
+     <Link href='/student/RestrauntItems'>
      <RestrauntCard
     name= "Subway - 123 Main St"
     category= "Sandwiches"
@@ -134,7 +138,8 @@ return (
     rating= "4.5"
     distance= "1.2 km"
     price= "$7.99"
-     />
+     /></Link>
+     <Link href='/student/RestrauntItems'>
      <RestrauntCard
      name= "Pizza Hut - 456 Elm St"
      category= "Pizza"
@@ -142,7 +147,8 @@ return (
      rating= "4.0"
      distance= "2.1 km"
      price= "$12.99"
-     />
+     /></Link>
+     <Link href='/student/RestrauntItems'>
      <RestrauntCard
      name="Tim Hortons - 3660 Westwinds Dr Ne"
      category= "Baked Goods"
@@ -150,7 +156,7 @@ return (
      rating= "4.2"
      distance= "925 m"
      price= "$4.99"
-     />
+     /></Link>
       
         
       </div>
@@ -271,6 +277,7 @@ return (
       </div>
     </div>
   </section>
+ 
 </>
 );
 };
