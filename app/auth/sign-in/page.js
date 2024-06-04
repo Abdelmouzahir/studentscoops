@@ -8,7 +8,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/Components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 
-const Login = () => {
+const sign_in = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -24,7 +24,7 @@ const Login = () => {
         sessionStorage.setItem("user", true);
         setEmail("");
         setPassword("");
-        router.push("/student/homepage");
+        router.push("/student");
         setLoginError("");
       })
       .catch((err) => {
@@ -115,7 +115,7 @@ const Login = () => {
                 <span className="flex text-black">
                   <p>Don't have an account?</p>
                   <Link
-                    href="/student/register"
+                    href="/auth/register"
                     className="text-yellow-500 font-semibold ml-2"
                   >
                     Register
@@ -167,4 +167,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default sign_in;

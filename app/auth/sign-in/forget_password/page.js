@@ -27,7 +27,7 @@ const ForgotPassword = () => {
       await sendPasswordResetEmail(auth, email);
       setSuccessMessage('Password reset email sent successfully.');
       setEmail('');
-      router.push("/resetsent");
+      router.push("/auth/sign-in/forget_password");
     } catch (e) {
       console.error("Error sending password reset email:", e.message);
       if (e.code === "auth/user-not-found") {
@@ -60,7 +60,7 @@ const ForgotPassword = () => {
         </button>
         <div className="text-white mt-2">
           <span>Remembered your password?</span>
-          <Link href="/student">
+          <Link href="/sign-in">
             <span className="text-blue-500"> Login now</span>
           </Link>
         </div>
