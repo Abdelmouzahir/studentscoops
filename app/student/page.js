@@ -103,7 +103,7 @@ return (
         </div>
       </div>
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
-    <Link href='/student/RestrauntItems'>
+    <Link href='/student/Restrauntitems'>
        <RestrauntCard
       name="Tim Hortons - 3660 Westwinds Dr Ne"
       category= "Baked Goods"
@@ -112,7 +112,7 @@ return (
       distance= "925 m"
       price= "$4.99"
       /> </Link>
-      <Link href='/student/RestrauntItems'>
+      <Link href='/student/Restrauntitems'>
      <RestrauntCard
      name= "Subway - 123 Main St"
      category= "Sandwiches"
@@ -121,7 +121,7 @@ return (
      distance= "1.2 km"
      price= "$7.99"
      /> </Link>
-     <Link href='/student/RestrauntItems'>
+     <Link href='/student/Restrauntitems'>
      <RestrauntCard
     name= "Pizza Hut - 456 Elm St"
     category= "Pizza"
@@ -130,7 +130,7 @@ return (
     distance= "2.1 km"
     price= "$12.99"
      /></Link>
-     <Link href='/student/RestrauntItems'>
+     <Link href='/student/Restrauntitems'>
      <RestrauntCard
     name= "Subway - 123 Main St"
     category= "Sandwiches"
@@ -139,7 +139,7 @@ return (
     distance= "1.2 km"
     price= "$7.99"
      /></Link>
-     <Link href='/student/RestrauntItems'>
+     <Link href='/student/Restrauntitems'>
      <RestrauntCard
      name= "Pizza Hut - 456 Elm St"
      category= "Pizza"
@@ -148,7 +148,7 @@ return (
      distance= "2.1 km"
      price= "$12.99"
      /></Link>
-     <Link href='/student/RestrauntItems'>
+     <Link href='/student/Restrauntitems'>
      <RestrauntCard
      name="Tim Hortons - 3660 Westwinds Dr Ne"
      category= "Baked Goods"
