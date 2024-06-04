@@ -10,13 +10,11 @@ import { getUserInformation } from '@/services/addInformation';
 import { useUserAuth } from '@/services/utils';
 // 
 import Link from "next/link";
-import { Card, CardContent } from "../ui/card";
-import { Button } from '../ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
+import { Card, CardContent } from "../../Components/ui/card";
+import { Button } from '../../Components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from "../../Components/ui/avatar";
+import RestrauntCard from '../main-component/layout/restrauntcard/RestrauntCard';
 
-import RestrauntCard from './RestrauntCard';
-// import {RestaurantsData} from './RestrauntData';
-import RestrauntItems from "./RestrauntItems/page"
 
 
 const Home = () => {
@@ -103,7 +101,7 @@ return (
         </div>
       </div>
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
-    <Link href='/student/Restrauntitems'>
+    <Link href='/restraunt/Restrauntitems'>
        <RestrauntCard
       name="Tim Hortons - 3660 Westwinds Dr Ne"
       category= "Baked Goods"
@@ -112,7 +110,7 @@ return (
       distance= "925 m"
       price= "$4.99"
       /> </Link>
-      <Link href='/student/Restrauntitems'>
+      <Link href='/restraunt/Restrauntitems'>
      <RestrauntCard
      name= "Subway - 123 Main St"
      category= "Sandwiches"
@@ -121,7 +119,7 @@ return (
      distance= "1.2 km"
      price= "$7.99"
      /> </Link>
-     <Link href='/student/Restrauntitems'>
+     <Link href='/restraunt/Restrauntitems'>
      <RestrauntCard
     name= "Pizza Hut - 456 Elm St"
     category= "Pizza"
@@ -130,7 +128,7 @@ return (
     distance= "2.1 km"
     price= "$12.99"
      /></Link>
-     <Link href='/student/Restrauntitems'>
+     <Link href='/restraunt/Restrauntitems'>
      <RestrauntCard
     name= "Subway - 123 Main St"
     category= "Sandwiches"
@@ -139,7 +137,7 @@ return (
     distance= "1.2 km"
     price= "$7.99"
      /></Link>
-     <Link href='/student/Restrauntitems'>
+     <Link href='/restraunt/Restrauntitems'>
      <RestrauntCard
      name= "Pizza Hut - 456 Elm St"
      category= "Pizza"
@@ -148,7 +146,7 @@ return (
      distance= "2.1 km"
      price= "$12.99"
      /></Link>
-     <Link href='/student/Restrauntitems'>
+     <Link href='/restraunt/Restrauntitems'>
      <RestrauntCard
      name="Tim Hortons - 3660 Westwinds Dr Ne"
      category= "Baked Goods"
@@ -171,7 +169,7 @@ return (
           </div>
           <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">What Our Users Say</h2>
           <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-            Hear from our satisfied students about how our app has helped them discover delicious and affordable
+            Hear from our satisfied students about how our  has helped them discover delicious and affordable
             meals near their campus.
           </p>
         </div>

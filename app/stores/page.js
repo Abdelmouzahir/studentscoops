@@ -19,9 +19,9 @@ To read more about using these font, please visit the Next.js documentation:
 **/
 'use client'
 import Link from "next/link"
-import { Button } from "@/app/ui/button"
-import { CardContent, Card } from "@/app/ui/card";
-import { AvatarImage, AvatarFallback, Avatar } from "@/app/ui/avatar"
+import { Button } from "../../Components/ui/button"
+import { CardContent, Card } from "../../Components/ui/card";
+import { AvatarImage, AvatarFallback, Avatar } from "../../Components/ui/avatar"
 
 export default function RestrauntPage() {
   return (<>
