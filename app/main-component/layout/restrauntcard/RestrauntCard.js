@@ -3,10 +3,10 @@
  * @see https://v0.dev/t/6wYdaKRKqDB
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { Card } from "../ui/card"
-import { Badge } from "../ui/badge"
-import { Button } from "../ui/button"
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar"
+import { Card } from "../../../../Components/ui/card"
+import { Badge } from "../../../../Components/ui/badge"
+import { Button } from "../../../../Components/ui/button"
+import { Avatar, AvatarImage, AvatarFallback } from "../../../../Components/ui/avatar"
 
 export default function RestrauntCard({name,category,pickupInfo,rating,distance,price}) {
   return (
