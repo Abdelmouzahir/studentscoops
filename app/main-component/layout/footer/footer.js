@@ -8,7 +8,7 @@ const Footer = () => {
           gap-[3rem] items-start pb-[2rem] border-b-2 border-white border-opacity-10'>
         {/* footer section 1*/}
         <div>
-          <h1 className='text-[24px] text-white mb-[1rem] font-bold uppercase'> GoJob </h1>
+          <h1 className='text-[24px] text-white mb-[1rem] font-bold uppercase'> StudentScoops </h1>
           <p className=' text-[14px] text-white text-opacity-70' >
             The world first and largest specialized talent solutions website
             connects opportunities at great companies with highly skilled job seekers
