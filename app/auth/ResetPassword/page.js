@@ -6,6 +6,7 @@ import { confirmPasswordReset } from "firebase/auth";
 import zxcvbn from 'zxcvbn';
 import { FaCheckCircle } from 'react-icons/fa'; 
 import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const ResetPassword = () => {
   // Backend part 
@@ -23,6 +24,9 @@ const ResetPassword = () => {
   const [lowercaseMet, setLowercaseMet] = useState(false);
   const [numberMet, setNumberMet] = useState(false);
   const [specialCharMet, setSpecialCharMet] = useState(false);
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -122,14 +126,17 @@ const ResetPassword = () => {
             <p className="mb-4">
               Please reset your password🔑
             </p>
-            <div className="mt-5">
+            <div className="mt-5 relative">
               <input 
-                type="password" 
+                type={isPasswordVisible ? "text" : "password"} 
                 placeholder="New Password" 
                 value={newPassword} 
                 onChange={(e) => setNewPassword(e.target.value)} 
                 className="border border-gray-400 py-1 px-2 w-full rounded-md"
               />
+              <div className="absolute right-2 top-2 cursor-pointer" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                {isPasswordVisible ? <AiFillEyeInvisible /> : <AiFillEye />}
+              </div>
             </div>
             {getPasswordStrengthBar(passwordScore)}
             <div className="mt-2">
@@ -140,14 +147,17 @@ const ResetPassword = () => {
               {renderCondition(specialCharMet, "Special character")}
             </div>
             {passError && <div className="text-red-500 text-sm mb-4">{passError}</div>}
-            <div className="mt-5">
+            <div className="mt-5 relative">
               <input 
-                type="password" 
+                type={isConfirmPasswordVisible ? "text" : "password"} 
                 placeholder="Confirm New Password" 
                 value={confirmPassword} 
                 onChange={(e) => setConfirmPassword(e.target.value)} 
                 className="border border-gray-400 py-1 px-2 w-full rounded-md"
               />
+              <div className="absolute right-2 top-2 cursor-pointer" onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}>
+                {isConfirmPasswordVisible ? <AiFillEyeInvisible /> : <AiFillEye />}
+              </div>
             </div>
             {confirmPassError && <div className="text-red-500 text-sm mb-4 flex"> <AiFillCloseCircle className="text-red-500 mt-1 mr-2" /> {confirmPassError}</div>}
             {isPasswordMatch && confirmPassword && <div className="text-green-500 text-sm mb-4 flex"> <FaCheckCircle className="text-green-500 mt-1 mr-2" /> Passwords match!</div>}

@@ -144,7 +144,7 @@ const PersonalInfo = () => {
                   type="text" 
                   placeholder="Phone Number" 
                   value={phoneNumber} 
-                  maxLength={12}
+                  maxLength={14}
                   onChange={handlePhoneNumberChange} 
                   className="border border-gray-400 py-1 px-2 w-full rounded-md"
                 />
@@ -163,7 +163,7 @@ const PersonalInfo = () => {
                   Submit
                 </button>:<button 
                   type="button"
-                  className="w-full bg-yellow-200 py-3 text-center text-white mt-3 rounded-md cursor-default"
+                  className="w-full bg-yellow-400 py-3 text-center text-white mt-3 rounded-md cursor-default"
                 >
                   Submit
                 </button>}

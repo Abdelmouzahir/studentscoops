@@ -7,6 +7,7 @@ import zxcvbn from 'zxcvbn';
 import { FaCheckCircle } from 'react-icons/fa'; 
 import { AiFillCloseCircle } from "react-icons/ai";
 import { BiSolidCommentError } from "react-icons/bi";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -19,11 +20,15 @@ const Register = () => {
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
   const [passwordScore, setPasswordScore] = useState(0);
 
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+
   const [minLengthMet, setMinLengthMet] = useState(false);
   const [uppercaseMet, setUppercaseMet] = useState(false);
   const [lowercaseMet, setLowercaseMet] = useState(false);
   const [numberMet, setNumberMet] = useState(false);
   const [specialCharMet, setSpecialCharMet] = useState(false);
+
 
   const router = useRouter();
 
@@ -142,14 +147,17 @@ const Register = () => {
               />
             </div>
             {emailError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{emailError}</div>}
-            <div className="mt-5">
+            <div className="mt-5 relative">
               <input 
-                type="password" 
+                type={isPasswordVisible ? "text" : "password"} 
                 placeholder="Password" 
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
                 className="border border-gray-400 py-1 px-2 w-full rounded-md"
               />
+              <div className="absolute right-2 top-2 cursor-pointer" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                {isPasswordVisible ? <AiFillEyeInvisible /> : <AiFillEye />}
+              </div>
             </div>
             {getPasswordStrengthBar(passwordScore)}
             <div className="mt-2">
@@ -160,14 +168,17 @@ const Register = () => {
               {renderCondition(specialCharMet, "Special character")}
             </div>
             {passError && <div className="text-red-500 text-sm mb-4">{passError}</div>}
-            <div className="mt-5">
+            <div className="mt-5 relative">
               <input 
-                type="password" 
+                type={isConfirmPasswordVisible ? "text" : "password"} 
                 placeholder="Confirm Password" 
                 value={confirmPassword} 
                 onChange={(e) => setConfirmPassword(e.target.value)} 
                 className="border border-gray-400 py-1 px-2 w-full rounded-md"
               />
+             <div className="absolute right-2 top-2 cursor-pointer" onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}>
+                {isConfirmPasswordVisible ? <AiFillEyeInvisible /> : <AiFillEye />}
+              </div> 
             </div>
             {confirmPassError && <div className="text-red-500 text-sm mb-4 flex"> <AiFillCloseCircle className="text-red-500 mt-1 mr-2" /> {confirmPassError}</div>}
             {isPasswordMatch && confirmPassword && <div className="text-green-500 text-sm mb-4 flex"> <FaCheckCircle className="text-green-500 mt-1 mr-2" /> Passwords match!</div>}
