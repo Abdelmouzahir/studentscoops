@@ -167,7 +167,7 @@ const PersonalInfo = () => {
                   Submit
                 </button>:<button 
                   type="button"
-                  className="w-full bg-yellow-200 py-3 text-center text-white mt-3 rounded-md"
+                  className="w-full bg-yellow-200 py-3 text-center text-white mt-3 rounded-md cursor-default"
                 >
                   Submit
                 </button>}
