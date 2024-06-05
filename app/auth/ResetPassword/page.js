@@ -4,6 +4,10 @@ import { auth } from '@/app/firebase/config';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { confirmPasswordReset } from "firebase/auth";
 import zxcvbn from 'zxcvbn';
+//toast alert
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//icons
 import { FaCheckCircle } from 'react-icons/fa'; 
 import { AiFillCloseCircle } from "react-icons/ai";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
@@ -84,10 +88,26 @@ const ResetPassword = () => {
     try {
       await confirmPasswordReset(auth, oobCode, newPassword);
       setError('');
-      alert('Password has been reset successfully!');
-      router.push('/login');
+      toast.success('Password has been reset successfully🎉!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      router.push('/auth/sign-in');
     } catch (error) {
-      setError('Failed to reset password. Please try again.');
+      toast.error('Failed to reset password. Please try again 😥.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
@@ -173,6 +193,7 @@ const ResetPassword = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
