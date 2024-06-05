@@ -19,21 +19,21 @@ export default function RestaurantItems() {
           name: "Bruschetta",
           description: "Toasted bread topped with tomatoes, garlic, and basil",
           price: 7.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/55/02/f2/5502f20d18006dec855f986e5344951c.jpg",
         },
         {
           id: "2",
           name: "Calamari Fritti",
           description: "Crispy fried calamari with lemon and marinara sauce",
           price: 10.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/40/b0/d6/40b0d6f85533fd94da7c4febbd5ff4d7.jpg",
         },
         {
           id: "3",
           name: "Meatballs",
           description: "House-made meatballs in a rich tomato sauce",
           price: 8.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/fb/72/9a/fb729a2cda70abf872480db60eead4d8.jpg",
         },
       ],
     },
@@ -45,21 +45,21 @@ export default function RestaurantItems() {
           name: "Chicken Parmesan",
           description: "Breaded chicken breast topped with mozzarella and marinara",
           price: 18.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/e5/a6/7e/e5a67ebddade4ecfcaefdba789f27209.jpg",
         },
         {
           id: "5",
           name: "Fettuccine Alfredo",
           description: "Fettuccine pasta in a creamy Parmesan sauce",
           price: 16.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/13/21/7a/13217abce651e33dc2c72a22554de8c9.jpg",
         },
         {
           id: "6",
           name: "Grilled Salmon",
           description: "Fresh salmon fillet grilled and served with lemon dill sauce",
           price: 22.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/60/d2/4c/60d24c272f386b44a8c23a706f7d52d3.jpg",
         },
       ],
     },
@@ -71,21 +71,21 @@ export default function RestaurantItems() {
           name: "Tiramisu",
           description: "Classic Italian dessert with ladyfingers, mascarpone, and espresso",
           price: 8.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/f5/01/11/f501114356e36d6c7453ddfa7d07f840.jpg",
         },
         {
           id: "8",
           name: "Cannoli",
           description: "Crispy fried pastry shells filled with sweetened ricotta",
           price: 6.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/2b/46/91/2b469184ae73f53ddd84f81fc8e5eb21.jpg",
         },
         {
           id: "9",
           name: "Gelato",
           description: "Homemade Italian-style ice cream in various flavors",
           price: 5.99,
-          image: "/placeholder.svg?height=150&width=150",
+          image: "https://i.pinimg.com/564x/d4/bd/17/d4bd172915c4b7b03fd7cbed6094b8ed.jpg",
         },
       ],
     },
@@ -199,7 +199,7 @@ export default function RestaurantItems() {
                 {section.items.map((item, itemIndex) => (
                   <div key={itemIndex} className="bg-white rounded-lg shadow-md overflow-hidden">
                     <img
-                      src="/placeholder.svg"
+                      src={item.image}
                       alt={item.name}
                       width={300}
                       height={200}
