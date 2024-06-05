@@ -53,11 +53,6 @@ const PersonalInfo = () => {
       return;
     }
 
-    if (!/^\d{10}$/.test(phoneNumber)) {
-      setError('Invalid phone number. Please enter a 10-digit phone number.');
-      return;
-    }
-
     // Save the personal info to a database or state management solution
     // For demonstration, we will just log the data
     console.log('First Name:', fname);
@@ -68,7 +63,7 @@ const PersonalInfo = () => {
     console.log('Phone Number:', phoneNumber);
     addUserInformation(user, userInformation);
     addOtherUserInformation(user, userInformation);
-    router.push("/student/homepage");
+    // router.push("/student/homepage");
   };
 
   return (
@@ -149,6 +144,7 @@ const PersonalInfo = () => {
                   type="text" 
                   placeholder="Phone Number" 
                   value={phoneNumber} 
+                  maxLength={12}
                   onChange={handlePhoneNumberChange} 
                   className="border border-gray-400 py-1 px-2 w-full rounded-md"
                 />

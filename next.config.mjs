@@ -3,7 +3,7 @@
 const nextConfig = {
   // Other configurations can be added here
   images: {
-      domains: ['images.pexels.com', 'cdn.example.com', 'i.pinimg.com', 'splash.com', 'pintrest.com'],
+      domains: ['images.pexels.com', 'cdn.example.com', 'i.pinimg.com', 'splash.com', 'pintrest.com','firebasestorage.googleapis.com'],
   },
 };
 
