@@ -1,15 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Button } from '@/Components/ui/button';
 import { useRouter } from 'next/navigation';
 
 export default function ProfileBox() {
@@ -20,18 +12,6 @@ export default function ProfileBox() {
     }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="picture" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="mr-4">
-        <DropdownMenuLabel>Profile</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleClick} >Login</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Button className="bg-white text-primary"  onClick={handleClick} >Login</Button>
   );
 }
