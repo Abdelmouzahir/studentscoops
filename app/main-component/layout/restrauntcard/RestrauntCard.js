@@ -43,12 +43,12 @@ export default function RestrauntCard({name,category,pickupInfo,rating,distance,
         <div className="text-xs text-gray-500 mb-4">{pickupInfo}</div>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1">
-            <StarIcon className="w-4 h-4 text-green-500" />
-            <span className="text-sm font-medium text-green-500">{rating}</span>
+            <StarIcon className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">{rating}</span>
             <span className="text-xs text-gray-500 mx-2">|</span>
             <span className="text-xs text-gray-500">{distance}</span>
           </div>
-          <div className="text-lg font-bold text-green-600">{price}</div>
+          <div className="text-lg font-bold text-primary">{price}</div>
         </div>
       </div>
     </Card>
