@@ -66,7 +66,7 @@ export default function Header_stud({ handleSignOut }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full ">
-              <img src="/placeholder.svg" width={32} height={32} alt="Avatar" className="rounded-full" />
+              <img src="https://i.pinimg.com/564x/d9/7b/bb/d97bbb08017ac2309307f0822e63d082.jpg" width={32} height={32} alt="Avatar" className="rounded-full" />
               <span className="sr-only">User Menu</span>
             </Button>
           </DropdownMenuTrigger>
