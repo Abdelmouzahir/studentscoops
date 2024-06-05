@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserAuth } from '@/services/utils';
-import { addUserInformation, addOtherUserInformation } from '@/services/addInformation';
+import { addUserInformation, addOtherUserInformation } from '@/services/PostRequest/postRequest';
+import { formatPhoneNumber, formatPostalCode } from "@/Constant/formated";
 
 const PersonalInfo = () => {
   const { user } = useUserAuth();
@@ -27,6 +28,14 @@ const PersonalInfo = () => {
       router.push('/auth/sign-in');
     }
   }, [user,router]);
+
+  const handlePostalCodeChange = (e) => {
+    setPostalCode(formatPostalCode(e.target.value));
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    setPhoneNumber(formatPhoneNumber(e.target.value));
+  };
 
   const handleSubmit = () => {
     const userInformation = { name: fname, lastName: lname, address: address, unitNum: unitnum, postalCode: postalCode, phoneNumber: phoneNumber };
@@ -130,7 +139,7 @@ const PersonalInfo = () => {
                   type="text" 
                   placeholder="Postal Code" 
                   value={postalCode} 
-                  onChange={(e) => setPostalCode(e.target.value)} 
+                  onChange={handlePostalCodeChange} 
                   className="border border-gray-400 py-1 px-2 w-full rounded-md"
                 />
               </div>
@@ -140,7 +149,7 @@ const PersonalInfo = () => {
                   type="text" 
                   placeholder="Phone Number" 
                   value={phoneNumber} 
-                  onChange={(e) => setPhoneNumber(e.target.value)} 
+                  onChange={handlePhoneNumberChange} 
                   className="border border-gray-400 py-1 px-2 w-full rounded-md"
                 />
               </div>
