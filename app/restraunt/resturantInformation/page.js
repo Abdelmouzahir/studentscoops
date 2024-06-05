@@ -75,7 +75,7 @@ const Page = () => {
             style={{ backgroundImage: "url(/assets/images/restaurant.jpeg)" }}
           ></div>
           <div className="w-full lg:w-1/2 py-16 px-12 text-black">
-            <h2 className="text-3xl mb-4 text-black">Register a Restaurant</h2>
+            <h2 className="text-3xl mb-4 text-black">About your Restaurant</h2>
             <p className="mb-4">Please enter the restaurant details below.</p>
             <form
               className="mt-5 grid grid-cols-2 gap-4"
