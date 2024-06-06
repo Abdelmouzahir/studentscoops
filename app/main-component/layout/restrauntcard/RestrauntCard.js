@@ -8,11 +8,11 @@ import { Badge } from "../../../../Components/ui/badge"
 import { Button } from "../../../../Components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "../../../../Components/ui/avatar"
 
-export default function RestrauntCard({name,category,pickupInfo,rating,distance,price}) {
+export default function RestrauntCard({name,logo,restrauntImage,category,pickupInfo,rating,distance,price}) {
   return (
     <Card className="max-w-md rounded-lg shadow-md overflow-hidden">
       <div className="relative">
-        <img src="/placeholder.svg" alt="RestImage" width={300} height={150} className="w-full h-36 object-cover" />
+        <img src={restrauntImage} alt="RestImage" width={300} height={150} className="w-full h-36 object-cover" />
         <div className="absolute top-2 left-2">
           <Badge variant="secondary" className="text-xs">
             Sold out
@@ -32,7 +32,7 @@ export default function RestrauntCard({name,category,pickupInfo,rating,distance,
       <div className="p-4 bg-white">
         <div className="flex items-center mb-2">
           <Avatar className="border">
-            <img src="/placeholder.svg" alt="RestLogo" />
+            <img src={logo} alt="RestLogo" />
             <AvatarFallback>TH</AvatarFallback>
           </Avatar>
           <div className="ml-2">

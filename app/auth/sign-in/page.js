@@ -48,7 +48,7 @@ const sign_in = () => {
       .then(() => {
         // Email sent.
         setShowModal(false);
-        router.push("/resetsent");
+        router.push("sign-in/afterResetPassword");
       })
       .catch((err) => {
         console.log(err);

@@ -1,5 +1,5 @@
 import { db, storage } from "@/app/firebase/config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, where, query , getDocs } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export async function addUserInformation(userId, userInformation) {
@@ -25,7 +25,7 @@ export async function addOtherUserInformation(userId, userInformation) {
   }
 }
 export async function addRestaurantInformation(
-  userId,
+  user,
   name,
   location,
   mobileNumber,
@@ -57,8 +57,9 @@ export async function addRestaurantInformation(
 
       try {
         await addDoc(
-          collection(db, "restaurants", userId, "restaurant-information"),
+          collection(db, "restaurants"),
           {
+            userId: user,
             name,
             location,
             mobileNumber,
@@ -74,13 +75,7 @@ export async function addRestaurantInformation(
     }
   );
 }
-export async function addRestaurantMenu(
-  userId,
-  name,
-  price,
-  description,
-  image
-) {
+export async function addRestaurantMenu(user, name, price, description, image) {
   const storageRef = ref(storage, `menu/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
   uploadTask.on(
@@ -105,17 +100,31 @@ export async function addRestaurantMenu(
       const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
       try {
-        await addDoc(
-          collection(db, "restaurants", userId, "menu"),
-          {
-            name,
-            price,
-            description,
-            imageUrl: downloadURL,
-            createdAt: new Date(),
-          }
-        );
-        console.log("Document successfully written!");
+        // Query to find the restaurant document with the matching userId
+        const q = query(collection(db, "restaurants"), where("userId", "==", user));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // Assuming there's only one restaurant per user
+          const restaurantDoc = querySnapshot.docs[0];
+
+          // Add menu to the sub-collection within the found restaurant document
+          console.log("Restaurant found with ID: ", restaurantDoc.id);
+          await addDoc(
+            collection(db, "restaurants", restaurantDoc.id, "menu"),
+            {
+              userId: user,
+              name,
+              price,
+              description,
+              imageUrl: downloadURL,
+              createdAt: new Date(),
+            }
+          );
+          console.log("Menu item successfully added!");
+        } else {
+          console.error("No restaurant found with the given userId");
+        }
       } catch (error) {
         console.error("Error writing document: ", error);
       }
