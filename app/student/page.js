@@ -11,7 +11,7 @@ import Link from "next/link";
 import { Card } from "../../Components/ui/card";
 import { Button } from '../../Components/ui/button';
 import RestrauntCard from '../main-component/layout/restrauntcard/RestrauntCard';
-import Header_stud from '../main-component/layout/header/header_stud/page';
+import Header_stud from '../main-component/layout/header_stud/page';
 
 // Sample data
 const sampleData = [

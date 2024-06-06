@@ -48,4 +48,5 @@ const RestaurantsData = [
       "price": "$12.99"
     }
   ]
+
   export default RestaurantsData;
