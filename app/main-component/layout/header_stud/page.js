@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/oBE3lqN4y2J
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -66,7 +61,7 @@ export default function Header_stud({ handleSignOut }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full ">
-              <img src="/placeholder.svg" width={32} height={32} alt="Avatar" className="rounded-full" />
+              <img src="https://i.pinimg.com/564x/d9/7b/bb/d97bbb08017ac2309307f0822e63d082.jpg" width={32} height={32} alt="Avatar" className="rounded-full" />
               <span className="sr-only">User Menu</span>
             </Button>
           </DropdownMenuTrigger>

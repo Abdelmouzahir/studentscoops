@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/app/firebase/config'; 
+import { auth } from '@/app/firebase/config';
 import { signOut } from 'firebase/auth';
 import { getUserInformation } from '@/services/GetRequest/getRequest';
 import { useUserAuth } from '@/services/utils';
@@ -11,15 +11,25 @@ import Link from "next/link";
 import { Card } from "../../Components/ui/card";
 import { Button } from '../../Components/ui/button';
 import RestrauntCard from '../main-component/layout/restrauntcard/RestrauntCard';
-import Header_stud from '../main-component/layout/header/header_stud/page';
+import Header_stud from '../main-component/layout/header_stud/page';
 
 // Sample data
 const sampleData = [
-  { id: 1, name: "Tim Hortons - 3660 Westwinds Dr Ne", category: "Baked Goods", pickupInfo: "Pick up today 9:00 - 15:00", rating: "4.2", distance: "925 m", price: "$4.99" },
-  { id: 2, name: "Subway - 123 Main St", category: "Sandwiches", pickupInfo: "Pick up today 10:00 - 15:00", rating: "4.5", distance: "1.2 km", price: "$7.99" },
-  { id: 3, name: "Pizza Hut - 456 Elm St", category: "Pizza", pickupInfo: "Pick up today 17:00 - 22:00", rating: "4.0", distance: "2.1 km", price: "$12.99" }
-  
-];
+  { id: 1, name: "Tim Hortons - 3660 Westwinds Dr Ne", logo: "https://i.pinimg.com/originals/f7/cf/0e/f7cf0e2a841e1d9133d35c011229619e.jpg", restrauntImage:"https://i.pinimg.com/564x/54/be/c8/54bec83b77017bf5b318acd6ff251d33.jpg",category: "Baked Goods", pickupInfo: "Pick up today 9:00 - 15:00", rating: "4.2", distance: "925 m", price: "$4.99" },
+
+  { id: 2, name: "Subway - 123 Main St", logo: "https://i.pinimg.com/564x/06/e9/2f/06e92f528f9f99d3fa5be897ebb5b0fd.jpg", restrauntImage:"https://i.pinimg.com/564x/33/f0/3a/33f03a27cb78a582b61ab5c87805e856.jpg",category: "Sandwiches", pickupInfo: "Pick up today 10:00 - 15:00", rating: "4.5", distance: "1.2 km", price: "$7.99" },
+
+  { id: 3, name: "Pizza Hut - 456 Elm St",logo: "https://i.pinimg.com/564x/28/d5/23/28d5235efe7816441207e305faca672b.jpg", restrauntImage:"https://i.pinimg.com/564x/39/50/f6/3950f69eaa2efbedaae0094bf2f87044.jpg", category: "Pizza", pickupInfo: "Pick up today 17:00 - 22:00", rating: "4.0", distance: "2.1 km", price: "$12.99" },
+
+  { id: 4, name: "Starbucks - 123 Coffee Ave", logo: "https://i.pinimg.com/564x/53/df/e6/53dfe6a48797869e9742fcd631ee3d06.jpg", restrauntImage:"https://i.pinimg.com/564x/56/65/78/566578f2c85771873e558ef24ed168dd.jpg",category: "Coffee", pickupInfo: "Pick up today 8:00 - 18:00", rating: "4.7", distance: "800 m", price: "$3.99" },
+
+  { id: 5, name: "McDonald's - 456 Burger St", logo: "https://i.pinimg.com/564x/94/c2/66/94c26621509463595f5c5deaab7b7af7.jpg", restrauntImage:"https://i.pinimg.com/564x/83/88/94/838894b2622ad53cfbcff9b6fd8a2bb0.jpg",category: "Fast Food", pickupInfo: "Pick up today 10:00 - 22:00", rating: "4.3", distance: "1.5 km", price: "$5.99" },
+
+  { id: 6, "name": "KFC - 789 Fried Chicken Ln",logo: "https://i.pinimg.com/564x/3a/63/13/3a63135dd9749486af01c7acdb321c5e.jpg", restrauntImage:"https://i.pinimg.com/564x/c2/dc/a3/c2dca3dccfd063ab48cc0e0be0ee8454.jpg", category: "Fried Chicken", pickupInfo: "Pick up today 11:00 - 21:00", rating: "4.6", distance: "2.3 km", price: "$8.99" }
+]
+
+
+
 
 const Home = () => {
   const { user } = useUserAuth();
@@ -47,6 +57,7 @@ const Home = () => {
 
   console.log("students data", students);
 
+  // handle sign out of the page 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -57,6 +68,7 @@ const Home = () => {
     }
   };
 
+  // handle the search function of the page 
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -113,6 +125,8 @@ const Home = () => {
                 <Link href='/restraunt/Restrauntitems' key={item.id}>
                   <RestrauntCard
                     name={item.name}
+                    logo={item.logo}
+                    restrauntImage={item.restrauntImage}
                     category={item.category}
                     pickupInfo={item.pickupInfo}
                     rating={item.rating}
@@ -141,7 +155,7 @@ const Home = () => {
               <Card className="w-full max-w-3xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <img
-                    src="/placeholder.svg"
+                    src="https://i.pinimg.com/564x/9b/4f/87/9b4f877a9336c4a4cfc2291ffd8d557e.jpg"
                     width="550"
                     height="310"
                     alt="Deal of the Day"
