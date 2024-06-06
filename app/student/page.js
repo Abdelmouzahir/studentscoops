@@ -57,6 +57,7 @@ const Home = () => {
 
   console.log("students data", students);
 
+  // handle sign out of the page 
   const handleSignOut = async () => {
     try {
       await signOut(auth);
@@ -67,6 +68,7 @@ const Home = () => {
     }
   };
 
+  // handle the search function of the page 
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
