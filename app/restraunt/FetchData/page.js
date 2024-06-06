@@ -10,6 +10,7 @@ import Image from "next/image";
 function page() {
   const [restaurantData, setRestaurantData] = useState([]);
   const [menuData, setMenuData] = useState([]);
+  
   const fetchMenu = async (restaurants) => {
     for (const restaurant of restaurants) {
       await getMenu(restaurant.id);
