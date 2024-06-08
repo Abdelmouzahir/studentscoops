@@ -90,23 +90,24 @@ const Register = () => {
     try {
       // Create user with email and password
       await createUserWithEmailAndPassword(auth, email, password);
-      await sendEmailVerification(auth.currentUser);
+     // await sendEmailVerification(auth.currentUser);
       console.log("User registered successfully");
       sessionStorage.setItem('user', true);
-      toast.success('registration Completed 🎉! please check your email to verify your account 🔍', {
-        position: "top-center",
-        autoClose: 8000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        style: { 
-        padding: '20px',    // Add padding
-        minWidth: '500px',  // Set a minimum width
-        minHeight: '100px'  // Set a minimum height
-      },
-      });
+    // toast.success('registration Completed 🎉! please check your email to verify your account 🔍', {
+    //   position: "top-center",
+    //    autoClose: 8000,
+    //    hideProgressBar: false,
+    //    closeOnClick: true,
+    //    pauseOnHover: true,
+    //    draggable: true,
+    //    progress: undefined,
+    //    style: { 
+    //    padding: '20px',    // Add padding
+    //    minWidth: '500px',  // Set a minimum width
+    //    minHeight: '100px'  // Set a minimum height
+    //  },
+    //  });
+      router.push('/auth/register/enter_information');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -212,7 +213,6 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
