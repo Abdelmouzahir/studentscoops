@@ -37,6 +37,7 @@ const ResetPassword = () => {
   const oobCode = searchParams.get('oobCode');
 
   useEffect(() => {
+    console.log(oobCode);
     if (confirmPassword) {
       if (confirmPassword === newPassword) {
         setIsPasswordMatch(true);
