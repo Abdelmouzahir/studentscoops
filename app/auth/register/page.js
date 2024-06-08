@@ -2,8 +2,12 @@
 import { useState, useEffect } from 'react';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import zxcvbn from 'zxcvbn';
+//toast alert
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+//icons
 import { FaCheckCircle } from 'react-icons/fa'; 
 import { AiFillCloseCircle } from "react-icons/ai";
 import { BiSolidCommentError } from "react-icons/bi";
@@ -86,12 +90,27 @@ const Register = () => {
     try {
       // Create user with email and password
       await createUserWithEmailAndPassword(auth, email, password);
+     // await sendEmailVerification(auth.currentUser);
       console.log("User registered successfully");
       sessionStorage.setItem('user', true);
+    // toast.success('registration Completed 🎉! please check your email to verify your account 🔍', {
+    //   position: "top-center",
+    //    autoClose: 8000,
+    //    hideProgressBar: false,
+    //    closeOnClick: true,
+    //    pauseOnHover: true,
+    //    draggable: true,
+    //    progress: undefined,
+    //    style: { 
+    //    padding: '20px',    // Add padding
+    //    minWidth: '500px',  // Set a minimum width
+    //    minHeight: '100px'  // Set a minimum height
+    //  },
+    //  });
+      router.push('/auth/register/enter_information');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
-      router.push("/auth/register/enter_information");
     } catch (e) {
       // Check if the user already exists in the database
       console.error("Error registering:", e.message);
@@ -140,7 +159,7 @@ const Register = () => {
             <div className="mt-5">    
               <input 
                 type="email" 
-                placeholder="Email" 
+                placeholder="Email: xxx@edu.sait.ca " 
                 value={email} 
                 onChange={(e) => setEmail(e.target.value)} 
                 className="border border-gray-400 py-1 px-2 w-full rounded-md"
