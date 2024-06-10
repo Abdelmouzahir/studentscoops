@@ -1,0 +1,52 @@
+[
+    {
+        
+        "email": "xx@edu.sait.ca",
+        "status": "Inactive"
+    },
+    {
+        
+        "email": "yy@edu.sait.ca",
+        "status": "Inactive"
+    },
+    {
+        
+        "email": "zz@edu.sait.ca",
+        "status": "Inactive"
+    },
+    {
+        
+        "email": "aa@edu.sait.ca",
+        "status": "Active"
+    },
+    {
+        
+        "email": "bb@edu.sait.ca",
+        "status": "Active"
+    },
+    {
+        
+        "email": "cc@edu.sait.ca",
+        "status": "Active"
+    },
+    {
+        
+        "email": "dd@edu.sait.ca",
+        "status": "Active"
+    },
+    {
+        
+        "email": "ee@edu.sait.ca",
+        "status": "Inactive"
+    },
+    {
+        
+        "email": "ff@edu.sait.ca",
+        "status": "Inactive"
+    },
+    {
+        
+        "email": "gg@edu.sait.ca",
+        "status": "Active"
+    }
+]

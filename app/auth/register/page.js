@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import studentInfo from "@/app/auth/register/studentinfo.json"
 import zxcvbn from 'zxcvbn';
 //toast alert
 import { ToastContainer, toast } from 'react-toastify';
@@ -32,7 +33,10 @@ const Register = () => {
   const [lowercaseMet, setLowercaseMet] = useState(false);
   const [numberMet, setNumberMet] = useState(false);
   const [specialCharMet, setSpecialCharMet] = useState(false);
-
+  
+  //create a list to import the data from studentinfo.json
+  const studentinfolist = [...studentInfo];
+ // console.log(studentinfolist);
 
   const router = useRouter();
 
@@ -74,6 +78,16 @@ const Register = () => {
       setEmailError('Please use a SAIT student email');
       return;
     }
+    //check if email exist in the studentinfo.json and status is active
+    const studentEmail = studentinfolist.find((student) => student.email === email);
+    const studentEmailStatus = studentEmail && studentEmail.status === 'Active'; 
+
+    if (!studentEmail || !studentEmailStatus) {
+     setEmailError('This email is not registered in the SAIT system or is inactive');
+     return; 
+    }
+
+
 
     // Check if password has uppercase, lowercase, number, and special character
     if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
