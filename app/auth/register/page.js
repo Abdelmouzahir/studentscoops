@@ -80,10 +80,13 @@ const Register = () => {
     }
     //check if email exist in the studentinfo.json and status is active
     const studentEmail = studentinfolist.find((student) => student.email === email);
-    if (!studentEmail || studentEmail.status !== 'active') {
-      setEmailError('This email is not registered in SAIT system or Inactive');
-      return; 
+    const studentEmailStatus = studentEmail && studentEmail.status === 'Active'; 
+
+    if (!studentEmail || !studentEmailStatus) {
+     setEmailError('This email is not registered in the SAIT system or inactive');
+     return; 
     }
+
 
 
     // Check if password has uppercase, lowercase, number, and special character

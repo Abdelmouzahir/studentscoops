@@ -9,7 +9,7 @@ const AfterResetPassword = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/student");
+    router.push("/auth/sign-in");
   }
 
 
