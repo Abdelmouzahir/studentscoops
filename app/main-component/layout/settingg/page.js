@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 
-export default function Component() {
+export default function Settings() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-orange-500 text-black py-4 px-6 flex items-center justify-between">
