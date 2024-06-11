@@ -95,6 +95,10 @@ const Register = () => {
         return;
       }
     }
+    if(databaseEmailwithStatus.length==0){
+      setEmailError("Please refresh the page. If the issue persists, there may be a problem connecting to the database. For further assistance, please use the 'Contact Us' option.")
+      return;
+    }
     if (
       !password.match(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
