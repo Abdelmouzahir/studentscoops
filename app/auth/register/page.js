@@ -13,6 +13,8 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { AiFillCloseCircle } from "react-icons/ai";
 import { BiSolidCommentError } from "react-icons/bi";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import addStudentEmailStatus from '@/services/PostRequest/postRequest';
+import { studentEmailwithStatus } from '@/Components/studentEmailwithStatus';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -24,6 +26,7 @@ const Register = () => {
   const [confirmPassError, setConfirmPassError] = useState('');
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
   const [passwordScore, setPasswordScore] = useState(0);
+  const [databaseEmailwithStatus, setDatabaseEmailwithStatus] = useState(studentEmailwithStatus);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
@@ -54,6 +57,21 @@ const Register = () => {
       setConfirmPassError('');
     }
   }, [confirmPassword, password]);
+
+  let hasExecuted = false;
+
+useEffect(() => {
+  if (!hasExecuted) {
+    hasExecuted = true;
+    const addEmailAndData = async () => {
+      for (const item of databaseEmailwithStatus) {
+        await addStudentEmailStatus({ email: item.email, active: item.active });
+        console.log('data going to add ', item);
+      }
+    };
+    addEmailAndData();
+  }
+}, [studentEmailwithStatus]);
 
   useEffect(() => {
     // Check password strength
