@@ -1,7 +1,16 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa6'
+import Link from "next/link"
 
 const Footer = () => {
+
+  
+    const [year, setYear] = useState(new Date().getFullYear());
+  
+    useEffect(() => {
+      setYear(new Date().getFullYear());
+    }, []);
+
   return (
     <div className='pt-[5rem] pb-[3rem] bg-primary'>
       <div className='w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 
@@ -35,7 +44,12 @@ const Footer = () => {
         {/* 2nd part of footer*/}
         <div>
           <h1 className=' text-[22px] w-fit text-white font-semibold mb-[1.5rem]' >About US</h1>
-          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >SAIT Club</p>
+          <Link href="https://www.enactussait.org/" legacyBehavior>
+            <a target='_blank' rel="noopener noreferrer">
+            <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Enactus</p>
+            </a>
+            </Link>
+          
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Privacy</p>
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Policy</p>
           
@@ -43,7 +57,11 @@ const Footer = () => {
         {/* 3nd part of footer*/}
         <div>
           <h1 className=' text-[22px] w-fit text-white font-semibold mb-[1.5rem]' >Quick Links</h1>
+          <Link href="https://www.sait.ca/" legacyBehavior>
+            <a target='_blank' rel="noopener noreferrer">
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >SAIT Website</p>
+          </a>
+          </Link>
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >How to</p>
           
         </div>
@@ -56,7 +74,7 @@ const Footer = () => {
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Student Scoops</p>
         </div>
       </div>
-      <h1 className=' mt-[2rem] text-[14px] w-[80%] mx-auto text-white opacity-80'>COPYRIGHT BY STUDENT SCOOPS © 2024</h1>
+      <h1 className=' mt-[2rem] text-[14px] w-[80%] mx-auto text-white opacity-80'>COPYRIGHT BY STUDENT SCOOPS <span id="year">{year}</span></h1>
     </div>
   )
 }
