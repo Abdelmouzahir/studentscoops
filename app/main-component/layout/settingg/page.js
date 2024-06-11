@@ -7,16 +7,16 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 
-export default function Component() {
+export default function Settings() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-orange-500 text-black py-4 px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img src="/placeholder.svg" width={32} height={32} alt="UberEats Logo" />
+          <img src="https://i.pinimg.com/564x/d8/58/13/d858135093a5977fe2f32b6ef73890a0.jpg" width={32} height={32} alt="UberEats Logo" />
           <h1 className="text-xl font-bold">Settings</h1>
         </div>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <img src="/placeholder.svg" width={32} height={32} className="rounded-full" alt="Avatar" />
+          <img src="https://i.pinimg.com/564x/d9/7b/bb/d97bbb08017ac2309307f0822e63d082.jpg" width={32} height={32} className="rounded-full" alt="Avatar" />
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </header>
