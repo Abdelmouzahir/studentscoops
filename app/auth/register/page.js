@@ -83,7 +83,7 @@ const Register = () => {
     const studentEmailStatus = studentEmail && studentEmail.status === 'Active'; 
 
     if (!studentEmail || !studentEmailStatus) {
-     setEmailError('This email is not registered in the SAIT system or is inactive');
+     setEmailError('This email is not registered in the SAIT system or inactive');
      return; 
     }
 
