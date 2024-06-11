@@ -12,7 +12,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { AiFillCloseCircle } from "react-icons/ai";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-const ResetPassword = () => {
+export const PasswordReset = () => {
   // Backend part 
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -198,5 +198,3 @@ const ResetPassword = () => {
     </div>
   );
 };
-
-export default ResetPassword;
