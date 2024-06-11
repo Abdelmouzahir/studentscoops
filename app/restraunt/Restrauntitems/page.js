@@ -187,7 +187,7 @@ export default function RestaurantItems() {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                        {/* Link changes to be made */}
-                     <Link href='/main-component/layout/settingg'><Button className="w-full bg-primary">Checkout</Button></Link> 
+                     <Link href='/student/Payment'><Button className="w-full bg-primary">Checkout</Button></Link> 
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
