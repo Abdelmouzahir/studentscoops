@@ -73,3 +73,19 @@ export async function getMenuInformationByUser(docId, user) {
     return [];
   }
 }
+export async function getStudentEmailWithStatus(){
+  try{
+    const q = query(
+      collection(db,'student_email'),
+      where('active',"==",true),
+    );
+    const querySnapshot = await getDocs(q);
+    const userItems = querySnapshot.docs.map((doc)=>
+      doc.data().studentEmail
+    );
+    return userItems;
+  } catch (err){
+    console.log('error while getting student email information ',err);
+    return [];
+  }
+};
