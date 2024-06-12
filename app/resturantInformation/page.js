@@ -61,7 +61,7 @@ const Page = () => {
       unformattedPostalCode,
       image[0]
     );
-    router.push("/restraunt/dashbord_resta/inventory");
+    router.push("/restraunt/inventory");
     console.log(
       name,
       address,
