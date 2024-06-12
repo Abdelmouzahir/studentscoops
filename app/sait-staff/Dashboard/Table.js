@@ -1,7 +1,9 @@
 import React from 'react';
-import EditButton from '@/components/ui/EditButton';
+import { LuPencil } from "react-icons/lu";
+import { LuTrash } from "react-icons/lu";
+import { PiStudentBold } from "react-icons/pi";
 
-const Table = ({ employees, handleEdit, handleDelete }) => {
+const Table = ({ employees, handleEdit, handleDelete, setIsAdding }) => {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -10,10 +12,16 @@ const Table = ({ employees, handleEdit, handleDelete }) => {
 
   return (
     <div className="container mx-auto mt-8 p-4 bg-gray-100 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-700">Employee Management Software</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-700">Student Management</h1>
       <div className="flex justify-between mb-6">
-        <button className="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700">Add Employee</button>
-        <button className="bg-gray-600 text-white px-6 py-2 rounded shadow hover:bg-gray-700">Logout</button>
+        <button
+          onClick={() => setIsAdding(true)}
+          className="inline-flex items-center justify-center rounded-md bg-blue-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-blue-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+        >
+          <PiStudentBold className="mr-2 h-4 w-4" />
+          Add Employee
+        </button>
+        
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
@@ -40,17 +48,19 @@ const Table = ({ employees, handleEdit, handleDelete }) => {
                   <td className="py-4 px-6 text-center">{employee.date}</td>
                   <td className="py-4 px-6 text-center">
                     <div className="flex justify-center space-x-2">
-                      <EditButton
+                      <button
                         onClick={() => handleEdit(employee.id)}
-                        className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600"
+                        className="inline-flex items-center justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                       >
                         Edit
-                      </EditButton>
+                        <LuPencil className="ml-2 h-4 w-4" />
+                      </button>
                       <button
                         onClick={() => handleDelete(employee.id)}
-                        className="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600"
+                        className="inline-flex items-center justify-center rounded-md bg-red-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-red-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-red-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                       >
                         Delete
+                        <LuTrash className="ml-2 h-4 w-4" />
                       </button>
                     </div>
                   </td>

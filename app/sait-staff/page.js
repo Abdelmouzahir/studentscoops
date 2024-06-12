@@ -50,18 +50,10 @@ export default function Component() {
             </Button>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <LuSearch className="h-5 w-5" />
-              <span className="sr-only">Search</span>
-            </Button>
-            <Button variant="ghost" size="icon">
-              <LuMails className="h-5 w-5" />
-              <span className="sr-only">Notifications</span>
-            </Button>
-            <Button variant="ghost" size="icon">
-              <img src="/placeholder.svg" width="32" height="32" className="rounded-full" alt="Avatar" />
-              <span className="sr-only">User menu</span>
-            </Button>
+              <button className="inline-flex items-center justify-center rounded-md bg-orange-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-blue-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300">
+              <LuMails className=" mr-2 h-5 w-5" />
+              Logout
+              </button>
           </div>
         </header>
         <div>

@@ -58,14 +58,12 @@ const Dashboard = ({ setIsAuthenticated }) => {
     <div className="container">
       {!isAdding && !isEditing && (
         <>
-          <Header
-            setIsAdding={setIsAdding}
-            setIsAuthenticated={setIsAuthenticated}
-          />
+          
           <Table
             employees={employees}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
+            setIsAdding={setIsAdding}
           />
         </>
       )}
