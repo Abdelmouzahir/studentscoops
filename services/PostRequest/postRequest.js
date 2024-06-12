@@ -30,7 +30,8 @@ export async function addRestaurantInformation(
   location,
   mobileNumber,
   postalCode,
-  image
+  image,
+  logo
 ) {
   const storageRef = ref(storage, `restaurants/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
@@ -64,6 +65,7 @@ export async function addRestaurantInformation(
           postalCode,
           imageUrl: downloadURL,
           createdAt: new Date(),
+          logo
         });
         console.log("Document successfully written!");
       } catch (error) {
