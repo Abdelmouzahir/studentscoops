@@ -11,7 +11,7 @@ const Table = ({ employees, handleEdit, handleDelete, setIsAdding }) => {
   });
 
   return (
-    <div className="container mx-auto mt-8 p-4 bg-gray-100 rounded-lg shadow-lg">
+    <div className="container mx-auto mt-8 p-4 rounded-lg ">
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-700">Student Management</h1>
       <div className="flex justify-between mb-6">
         <button
