@@ -5,9 +5,10 @@
  */
 "use client"
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { useState, useEffect } from "react";
+import Link from 'next/link';
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 export default function RestaurantItems() {
   const menu = [
@@ -185,7 +186,8 @@ export default function RestaurantItems() {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                      <Button className="w-full bg-primary">Checkout</Button>
+                       {/* Link changes to be made */}
+                     <Link href='/student/Payment'><Button className="w-full bg-primary">Checkout</Button></Link> 
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

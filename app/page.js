@@ -3,8 +3,8 @@ import Header from "./main-component/layout/header/header";
 import Footer from "./main-component/layout/footer/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Card, CardContent } from "/Components/ui/card";
-import { Avatar, AvatarFallback } from "@/Components/ui/avatar";
+import { Card, CardContent } from "/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export default function Home() {
   return (

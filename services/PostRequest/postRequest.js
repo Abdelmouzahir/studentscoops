@@ -1,5 +1,5 @@
 import { db, storage } from "@/app/firebase/config";
-import { collection, addDoc, where, query , getDocs } from "firebase/firestore";
+import { collection, addDoc, where, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export async function addUserInformation(userId, userInformation) {
@@ -30,7 +30,8 @@ export async function addRestaurantInformation(
   location,
   mobileNumber,
   postalCode,
-  image
+  image,
+  logo
 ) {
   const storageRef = ref(storage, `restaurants/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
@@ -56,18 +57,16 @@ export async function addRestaurantInformation(
       const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
       try {
-        await addDoc(
-          collection(db, "restaurants"),
-          {
-            userId: user,
-            name,
-            location,
-            mobileNumber,
-            postalCode,
-            imageUrl: downloadURL,
-            createdAt: new Date(),
-          }
-        );
+        await addDoc(collection(db, "restaurants"), {
+          userId: user,
+          name,
+          location,
+          mobileNumber,
+          postalCode,
+          imageUrl: downloadURL,
+          createdAt: new Date(),
+          logo
+        });
         console.log("Document successfully written!");
       } catch (error) {
         console.error("Error writing document: ", error);
@@ -101,7 +100,10 @@ export async function addRestaurantMenu(user, name, price, description, image) {
 
       try {
         // Query to find the restaurant document with the matching userId
-        const q = query(collection(db, "restaurants"), where("userId", "==", user));
+        const q = query(
+          collection(db, "restaurants"),
+          where("userId", "==", user)
+        );
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -130,4 +132,40 @@ export async function addRestaurantMenu(user, name, price, description, image) {
       }
     }
   );
+}
+export let integer = 0;
+export default async function addStudentEmailStatus(prop) {
+  let { email, active } = prop;
+  let data = { studentEmail: email, active: active };
+  try {
+    const q = query(collection(db, "student_email"));
+    const querySnapshot = await getDocs(q);
+    const userItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    const studentEmail = userItems.map((item) => {
+      return item.studentEmail;
+    });
+    console.log('total number of items added in database: ', userItems.length, ' and number of emails enters is: ', studentEmail.length)
+    console.log("")
+
+    if (!studentEmail.includes(email)) {
+      const docRef = await addDoc(collection(db, "student_email"), data);
+      console.log(
+        "Document for adding email and status has been done with id: ",
+        docRef.id
+      );
+      console.log(`${email} with ${active} has been added to database`);
+      integer += 1;
+      console.log('data increment by: ', integer)
+      return; // <--- Add this line to exit the function
+    } else {
+      console.log(`${email} has been register before`);
+    }
+  } catch (error) {
+    console.log(
+      "Error while adding data in firebase for email and emailActive",
+      error
+    );
+  }
 }

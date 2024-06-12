@@ -6,7 +6,7 @@ export default function Header_stud({ handleSignOut }) {
   return (
     <header className="flex items-center justify-between h-16 px-4 md:px-6 bg-white shadow-sm dark:bg-gray-950">
       <div className="flex items-center gap-4">
-        <Link href="#" className="flex items-center gap-2 text-2xl font-bold text-primary" prefetch={false}>
+        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary" prefetch={false}>
           <span >STUDENT SCOOPS</span>
         </Link>
       </div>
@@ -69,13 +69,13 @@ export default function Header_stud({ handleSignOut }) {
             <DropdownMenuLabel>Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href="#" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/student/Payment/PaymentOptions" className="flex items-center gap-2" prefetch={false}>
                 <CreditCardIcon className="w-4 h-4" />
                 Payment
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="#" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/main-component/layout/settingg" className="flex items-center gap-2" prefetch={false}>
                 <SettingsIcon className="w-4 h-4" />
                 Settings
               </Link>
