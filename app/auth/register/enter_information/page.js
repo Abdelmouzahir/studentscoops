@@ -63,7 +63,7 @@ const PersonalInfo = () => {
     console.log('Phone Number:', phoneNumber);
     addUserInformation(user, userInformation);
     addOtherUserInformation(user, userInformation);
-    // router.push("/student/homepage");
+    router.push("/student");
   };
 
   return (
