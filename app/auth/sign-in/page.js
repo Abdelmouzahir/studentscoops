@@ -59,7 +59,13 @@ const sign_in = () => {
   return (
     <div
       className="min-h-screen py-40"
-      style={{ backgroundImage: "linear-gradient(115deg, #dfc42f, #faf7df)" }}
+      style={{ 
+        backgroundImage: "url(/assets/images/loginCover.jpg)",
+        backgroundSize: "cover", // Adjusts the size of the background image
+        backgroundPosition: "center", // Centers the background image
+        backgroundRepeat: "no-repeat", // Prevents the background image from repeating
+
+          }}
     >
       <Fragment>
         <div className="container mx-auto">

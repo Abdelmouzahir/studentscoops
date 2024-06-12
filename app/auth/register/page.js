@@ -192,7 +192,12 @@ const Register = () => {
   return (
     <div
       className="min-h-screen py-40"
-      style={{ backgroundImage: "linear-gradient(115deg, #dfc42f, #faf7df)" }}
+      style={{ 
+        backgroundImage: "url(/assets/images/registerCover.jpg)",
+        backgroundSize: "cover", // Adjusts the size of the background image
+        backgroundPosition: "center", // Centers the background image
+        backgroundRepeat: "no-repeat", // Prevents the background image from repeating
+          }}
     >
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">
