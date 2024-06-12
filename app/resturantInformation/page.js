@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserAuth } from "@/services/utils";
 import { useRouter } from "next/navigation";
 import { addRestaurantInformation } from "@/services/PostRequest/postRequest";
 import { formatPhoneNumber, formatPostalCode } from "@/Constant/formated";
+import { getRestaurantLogos } from "@/services/GetRequest/getRequest";
+import Image from "next/image";
 
 const Page = () => {
   const { user } = useUserAuth();
@@ -15,11 +17,23 @@ const Page = () => {
   const [error, setError] = useState("");
   const [imageerr, setImageerr] = useState("");
   const [image, setImage] = useState([]);
+  const [logo, setlogo] = useState(null);
+  const [logoSelected, setLogoSelected] = useState("");
+
   const router = useRouter();
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(formatPostalCode(e.target.value));
   };
+
+  useEffect(() => {
+    async function getLogos() {
+      const data = await getRestaurantLogos();
+      setlogo(data);
+      console.log("restuarant logos: ", data);
+    }
+    getLogos();
+  }, []);
 
   const handlePhoneNumberChange = (e) => {
     setPhoneNumber(formatPhoneNumber(e.target.value));
@@ -59,7 +73,8 @@ const Page = () => {
       address,
       unformattedPhoneNumber,
       unformattedPostalCode,
-      image[0]
+      image[0],
+      logoSelected
     );
     router.push("/restraunt/dashbord_resta/inventory");
     console.log(
@@ -143,6 +158,36 @@ const Page = () => {
                   {imageerr}
                 </div>
               )}
+              <p className="col-span-full">Select logo for restaurant</p>
+              {logo == null ? (
+                <div>Loading</div>
+              ) : (
+                <div
+                  className="col-span-full w-full grid grid-cols-8 gap-3"
+                  required
+                >
+                  {logo.map((url, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setLogoSelected(url)}
+                      className={`p-1 cursor-pointer ${
+                        logoSelected === url
+                          ? "border-2 border-blue-500"
+                          : "hover:border hover:border-gray-300"
+                      }`}
+                    >
+                      <Image
+                        src={url}
+                        alt={`Restaurant Logo ${index + 1}`}
+                        width={200}
+                        height={200}
+                        layout="responsive"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <button
                 type="submit"
                 className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md col-span-full"

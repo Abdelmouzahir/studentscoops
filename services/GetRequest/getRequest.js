@@ -1,9 +1,10 @@
-import { db } from "@/app/firebase/config";
+import { db ,storage} from "@/app/firebase/config";
 import {
   collection,
   getDocs,
   query,where
 } from "firebase/firestore";
+import { getDownloadURL, ref, listAll } from "firebase/storage";
 
 export async function getUserInformation(userId){
   try{
@@ -88,4 +89,11 @@ export async function getStudentEmailWithStatus(){
     console.log('error while getting student email information ',err);
     return [];
   }
+};
+export async function getRestaurantLogos(){
+  const storageRef = ref(storage,'restaurant_logo/');
+  const result = await listAll(storageRef);
+  const urlPromises = result.items.map((imageRef)=> getDownloadURL(imageRef));
+  const urls = await Promise.all(urlPromises);
+  return urls;
 };
