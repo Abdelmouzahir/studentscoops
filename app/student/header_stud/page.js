@@ -81,7 +81,7 @@ export default function Header_stud({ handleSignOut }) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/settingg" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/student/setting" className="flex items-center gap-2" prefetch={false}>
                 <SettingsIcon className="w-4 h-4" />
                 Settings
               </Link>
