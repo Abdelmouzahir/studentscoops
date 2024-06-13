@@ -19,10 +19,10 @@ import {
 export default function Component() {
   return (
     <div className="container mx-auto max-w-3xl py-8">
-      <h1 className="text-3xl font-bold mb-8">Restaurant Settings</h1>
+      <h1 className="text-3xl font-bold mb-8 text-primary ">Restaurant Settings</h1>
       <Card className="mb-8">
         <CardHeader>
-          <CardTitle>Restaurant Details</CardTitle>
+          <CardTitle >Restaurant Details</CardTitle>
           <CardDescription>Update your restaurant name and location.</CardDescription>
         </CardHeader>
         <CardContent>

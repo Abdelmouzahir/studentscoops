@@ -106,16 +106,19 @@ export default function SettingsRestaurant() {
         Header: 'Price',
         accessor: 'price',
         Cell: ({ cell: { value } }) => `$${value}`,
+        className: "hidden md:table-cell",
       },
       {
         Header: 'Total Sales',
         accessor: 'totalSales',
         Cell: () => '0',
+        className: "hidden md:table-cell",
       },
       {
         Header: 'Created at',
         accessor: 'createdAt',
         Cell: ({ cell: { value } }) => formatDate(value),
+        className: "hidden md:table-cell",
       },
       {
         Header: 'Actions',
@@ -161,14 +164,14 @@ export default function SettingsRestaurant() {
     <div>
       {menuData.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-screen ">
-          <h3 className="text-2xl font-bold tracking-tight">
+          <h3 className="text-2xl font-bold tracking-tight text-primary">
             You have no products
           </h3>
           <p className="text-sm text-gray-500">
             You can start selling as soon as you add a product.
           </p>
           <Link href="/restraunt/AddMenu " className='mt-4'>
-            <Button>Add Product</Button>
+            <Button className="bg-primary">Add Product</Button>
           </Link>
         </div>
       ) : (
@@ -190,7 +193,12 @@ export default function SettingsRestaurant() {
                   {headerGroups.map(headerGroup => (
                     <TableRow {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map(column => (
-                        <TableHead {...column.getHeaderProps()}>{column.render('Header')}</TableHead>
+                        <TableHead
+                          {...column.getHeaderProps()}
+                          className={column.className}
+                        >
+                          {column.render('Header')}
+                        </TableHead>
                       ))}
                     </TableRow>
                   ))}
@@ -201,7 +209,12 @@ export default function SettingsRestaurant() {
                     return (
                       <TableRow {...row.getRowProps()}>
                         {row.cells.map(cell => (
-                          <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+                          <TableCell
+                            {...cell.getCellProps()}
+                            className={cell.column.className}
+                          >
+                            {cell.render('Cell')}
+                          </TableCell>
                         ))}
                       </TableRow>
                     );

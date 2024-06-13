@@ -23,7 +23,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-export default function Header() {
+export default function Header({ handleSignOut }) {
   const router = useRouter();
 
   // onclick function for the settings of restaurant
@@ -35,7 +35,7 @@ export default function Header() {
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+          <Button variant="outline" size="icon" className="shrink-0 md:hidden text-primary">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
@@ -44,44 +44,36 @@ export default function Header() {
           <nav className="grid gap-2 text-lg font-medium">
             <Link
               href="#"
-              className="flex items-center gap-2 text-lg font-semibold"
+              className="flex items-center gap-2 text-lg font-semibold text-primary"
             >
-              <Package2 className="h-6 w-6" />
-              <span className="sr-only">Acme Inc</span>
+            STUDENT SCOOPS
             </Link>
             <Link
               href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-primary"
             >
-              <Home className="h-5 w-5" />
-              Dashboard
+              <Home className="h-5 w-5 text-primary" />
+              Inventory
             </Link>
             <Link
               href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground hover:text-primary"
             >
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className="h-5 w-5 text-primary" />
               Orders
             </Link>
             <Link
               href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground hover:text-primary"
             >
-              <Package className="h-5 w-5" />
+              <Package className="h-5 w-5 text-primary" />
               Products
             </Link>
             <Link
               href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground hover:text-primary"
             >
-              <Users className="h-5 w-5" />
-              Customers
-            </Link>
-            <Link
-              href="#"
-              className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-            >
-              <LineChart className="h-5 w-5" />
+              <LineChart className="h-5 w-5 text-primary" />
               Analytics
             </Link>
           </nav>
@@ -89,8 +81,8 @@ export default function Header() {
       </Sheet>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon" className="rounded-full ml-auto">
-            <CircleUser className="h-5 w-5" />
+          <Button variant="secondary" size="icon" className="rounded-full ml-auto hover:text-primary">
+            <CircleUser className="h-5 w-5 text-primary" />
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </DropdownMenuTrigger>
@@ -100,7 +92,7 @@ export default function Header() {
           <DropdownMenuItem onClick={handleonclick_setting} >Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSignOut}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
