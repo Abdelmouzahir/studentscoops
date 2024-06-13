@@ -2,16 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
-import Header from './Header';
+
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 
-import { employeesData } from '../data';
+import { studentsData } from '../data';
 
 const Dashboard = ({ setIsAuthenticated }) => {
-  const [employees, setEmployees] = useState(employeesData);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [students, setStudents] = useState(studentsData);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -20,9 +20,9 @@ const Dashboard = ({ setIsAuthenticated }) => {
   }, []);
 
   const handleEdit = id => {
-    const [employee] = employees.filter(employee => employee.id === id);
+    const [student] = students.filter(student => student.id === id);
 
-    setSelectedEmployee(employee);
+    setSelectedStudent(student);
     setIsEditing(true);
   };
 
@@ -36,20 +36,20 @@ const Dashboard = ({ setIsAuthenticated }) => {
       cancelButtonText: 'No, cancel!',
     }).then(result => {
       if (result.value) {
-        const [employee] = employees.filter(employee => employee.id === id);
+        const [student] = students.filter(student => student.id === id);
 
         // TODO delete document
 
         Swal.fire({
           icon: 'success',
           title: 'Deleted!',
-          text: `${employee.firstName} ${employee.lastName}'s data has been deleted.`,
+          text: `${student.firstName} ${student.lastName}'s data has been deleted.`,
           showConfirmButton: false,
           timer: 1500,
         });
 
-        const employeesCopy = employees.filter(employee => employee.id !== id);
-        setEmployees(employeesCopy);
+        const studentsCopy = students.filter(student => student.id !== id);
+        setStudents(studentsCopy);
       }
     });
   };
@@ -60,7 +60,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
         <>
           
           <Table
-            employees={employees}
+            students={students}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             setIsAdding={setIsAdding}
@@ -69,16 +69,16 @@ const Dashboard = ({ setIsAuthenticated }) => {
       )}
       {isAdding && (
         <Add
-          employees={employees}
-          setEmployees={setEmployees}
+          students={students}
+          setStudents={setStudents}
           setIsAdding={setIsAdding}
         />
       )}
       {isEditing && (
         <Edit
-          employees={employees}
-          selectedEmployee={selectedEmployee}
-          setEmployees={setEmployees}
+          students={students}
+          selectedStudent={selectedStudent}
+          setStudents={setStudents}
           setIsEditing={setIsEditing}
         />
       )}

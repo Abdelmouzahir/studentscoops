@@ -3,14 +3,17 @@
  */
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import Passwordreset from "./passwordreset/page"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
 
 export default function Settings() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-orange-500 text-black py-4 px-6 flex items-center justify-between">
+      <header className="bg-primary text-black py-4 px-6 flex items-center justify-between">
+
+        {/* Here i have to change the color of the  */}
         <div className="flex items-center gap-2">
           <img src="https://i.pinimg.com/564x/d8/58/13/d858135093a5977fe2f32b6ef73890a0.jpg" width={32} height={32} alt="UberEats Logo" />
           <h1 className="text-xl font-bold">Settings</h1>
@@ -20,36 +23,10 @@ export default function Settings() {
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </header>
+
       <main className="flex-1 bg-gray-100 dark:bg-gray-800 p-6 md:p-10">
         <div className="max-w-4xl mx-auto grid gap-8">
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Account</h2>
-            <Card>
-              <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>Update your name, email, and phone number.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" defaultValue="John Doe" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" defaultValue="john@example.com" />
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input id="phone" defaultValue="+1 (555) 555-5555" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Save Changes</Button>
-              </CardFooter>
-            </Card>
-          </section>
+          <Passwordreset />
           <section>
             <h2 className="text-2xl font-bold mb-4">Notifications</h2>
             <Card>
@@ -160,6 +137,41 @@ export default function Settings() {
                 </div>
               </CardContent>
             </Card>
+
+
+
+
+
+
+            <section className="w-full mx-0 py-12 md:py-16">
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-bold">Delete Your Account</h2>
+                  <div className="bg-white mx-auto py-5 px-10 w-2000 ">
+                    <p className=" bg-white text-gray-500 dark:text-gray-400 ">
+                      Deleting your account is a permanent action. All your data, including your profile, projects, and any other
+                      information associated with your account, will be permanently removed. This action cannot be undone.
+                    </p>
+
+                    <form className="space-y-4">
+                      <div className="space-y-2 pt-10">
+                        <Label htmlFor="username">Type your username to confirm</Label>
+                        <Input id="username" placeholder="Enter your username" />
+                      </div>
+                      <Button variant="destructive" className="w-full">
+                        Delete Account
+                      </Button>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+
+
+
+
           </section>
         </div>
       </main>
@@ -312,3 +324,4 @@ function ShieldIcon(props) {
     </svg>
   )
 }
+

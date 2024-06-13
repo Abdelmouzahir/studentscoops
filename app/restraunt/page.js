@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react"
-import DataTableDemo from "./dashbord_resta/inventory/page";
+import DataTableDemo from "./inventory/page";
 
 export  default function home() {
   return (

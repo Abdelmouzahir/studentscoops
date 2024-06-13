@@ -47,13 +47,13 @@ const Page = () => {
     <div className="container px-4 md:px-6 max-w-2xl mx-auto">
       <div className="grid gap-6">
         <div className="grid gap-2">
-          <h1 className="text-3xl font-bold tracking-tight">Add Menu Item</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-primary">Add Menu Item</h1>
           <p className="text-gray-500 dark:text-gray-400">Fill out the form below to add a new item to your menu.</p>
         </div>
         <Card onSubmit={handleSubmit} >
           <CardContent className="grid gap-6 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name" >Name</Label>
               <Input id="name" placeholder="Enter item name"  required value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="grid gap-2">
@@ -77,7 +77,7 @@ const Page = () => {
               )}
           </CardContent>
           <CardFooter>
-            <Button  onClick={handleSubmit} className="ml-auto">Add Item</Button>
+            <Button  onClick={handleSubmit} className="ml-auto bg-primary">Add Item</Button>
           </CardFooter>
         </Card>
       </div>

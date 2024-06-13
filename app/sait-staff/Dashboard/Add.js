@@ -1,18 +1,19 @@
 'use client'
 import React, { useState } from 'react';
+import { formatPhoneNumber} from "@/Constant/formated"
 import Swal from 'sweetalert2';
 
-const Add = ({ employees, setEmployees, setIsAdding }) => {
+const Add = ({ students, setStudents, setIsAdding }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [salary, setSalary] = useState('');
-  const [date, setDate] = useState('');
+  const [phone, setPhone] = useState('');
+  
 
   const handleAdd = e => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !salary || !date) {
+    if (!firstName || !lastName || !email || !phone ) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -21,15 +22,15 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
       });
     }
 
-    const newEmployee = {
+    const newStudent = {
       firstName,
       lastName,
       email,
-      salary,
-      date,
+      phone,
+     
     };
 
-    setEmployees([...employees, newEmployee]);
+    setStudents([...students, newStudent]);
     setIsAdding(false);
 
     Swal.fire({
@@ -44,7 +45,7 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
       <form onSubmit={handleAdd} className="space-y-6">
-        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Add Employee</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Add Student</h1>
         <div>
           <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
           <input
@@ -79,24 +80,14 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
           />
         </div>
         <div>
-          <label htmlFor="salary" className="block text-sm font-medium text-gray-700">Salary ($)</label>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
           <input
-            id="salary"
-            type="number"
-            name="salary"
-            value={salary}
-            onChange={e => setSalary(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
-          <input
-            id="date"
-            type="date"
-            name="date"
-            value={date}
-            onChange={e => setDate(e.target.value)}
+            id="phone"
+            type="text"
+            maxLength={14}
+            name="phone"
+            value={phone}
+            onChange={e => setPhone(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>

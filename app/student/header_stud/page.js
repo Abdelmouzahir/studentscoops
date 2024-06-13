@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 
 export default function Header_stud({ handleSignOut }) {
   return (
-    <header className="flex items-center justify-between h-16 px-4 md:px-6 bg-white shadow-sm dark:bg-gray-950">
+    <header className="flex items-center justify-between h-16 px-4 md:px-6 bg-primary shadow-sm dark:bg-gray-950">
       <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary" prefetch={false}>
+        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-white" prefetch={false}>
           <span >STUDENT SCOOPS</span>
         </Link>
       </div>
@@ -69,21 +69,27 @@ export default function Header_stud({ handleSignOut }) {
             <DropdownMenuLabel>Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href="/student/Payment/PaymentOptions" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/main-component/layout/myprofile" className="flex items-center gap-2" prefetch={false}>
+                <ProfileIcon className="w-4 h-4" />
+                My Profile
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/Payment/PaymentOptions" className="flex items-center gap-2" prefetch={false}>
                 <CreditCardIcon className="w-4 h-4" />
                 Payment
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/main-component/layout/settingg" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/student/setting" className="flex items-center gap-2" prefetch={false}>
                 <SettingsIcon className="w-4 h-4" />
                 Settings
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="#" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/resturantInformation" className="flex items-center gap-2" prefetch={false}>
                 <ListIcon className="w-4 h-4" />
-                Order History
+                Restaurant
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -183,6 +189,25 @@ function ShoppingCartIcon(props) {
       <circle cx="8" cy="21" r="1" />
       <circle cx="19" cy="21" r="1" />
       <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+    </svg>
+  )
+}
+function ProfileIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
     </svg>
   )
 }
