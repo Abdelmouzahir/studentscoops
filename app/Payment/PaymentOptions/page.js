@@ -4,7 +4,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import Link from "next/link"
-import Header_stud from "@/app/main-component/layout/header_stud/page"
+import Header_stud from "@/app/student/header_stud/page"
 export default function PaymentOptions() {
   return (
     <>
