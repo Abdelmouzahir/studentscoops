@@ -7,7 +7,7 @@ import {
   addOtherUserInformation,
 } from "@/services/PostRequest/postRequest";
 import { formatPhoneNumber, formatPostalCode } from "@/Constant/formated";
-import Modal from "@/components/Modal";
+import Modal from "/components/Modal";
 import { TermsOfUse, PrivacyPolicy } from "../../companyPolicies";
 
 const PersonalInfo = () => {
