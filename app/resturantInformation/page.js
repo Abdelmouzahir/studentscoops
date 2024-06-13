@@ -76,7 +76,7 @@ const Page = () => {
       image[0],
       logoSelected
     );
-    router.push("/restraunt/dashbord_resta/inventory");
+    router.push("/restraunt/inventory");
     console.log(
       name,
       address,

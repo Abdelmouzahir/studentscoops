@@ -122,7 +122,7 @@ const Home = () => {
             </div>
             <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
               {filteredData.map((item) => (
-                <Link href='/restraunt/Restrauntitems' key={item.id}>
+                <Link href='/Restrauntitems' key={item.id}>
                   <RestrauntCard
                     name={item.name}
                     logo={item.logo}

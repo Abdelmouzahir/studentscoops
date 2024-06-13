@@ -1,4 +1,6 @@
+"use client"
 import React from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   CircleUser,
@@ -22,6 +24,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
+  const router = useRouter();
+
+  // onclick function for the settings of restaurant
+  function handleonclick_setting(){
+    router.push("/restraunt/setting")
+  };
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
@@ -88,7 +97,7 @@ export default function Header() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleonclick_setting} >Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Logout</DropdownMenuItem>
