@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { formatPhoneNumber} from "@/Constant/formated"
 import Swal from 'sweetalert2';
 
-const Add = ({ employees, setEmployees, setIsAdding }) => {
+const Add = ({ students, setStudents, setIsAdding }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +22,7 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
       });
     }
 
-    const newEmployee = {
+    const newStudent = {
       firstName,
       lastName,
       email,
@@ -30,7 +30,7 @@ const Add = ({ employees, setEmployees, setIsAdding }) => {
      
     };
 
-    setEmployees([...employees, newEmployee]);
+    setStudents([...students, newStudent]);
     setIsAdding(false);
 
     Swal.fire({
