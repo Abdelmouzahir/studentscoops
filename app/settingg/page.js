@@ -3,14 +3,15 @@
  */
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+
 import { Checkbox } from "@/components/ui/checkbox"
 
 export default function Settings() {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="bg-orange-500 text-black py-4 px-6 flex items-center justify-between">
+
+        {/* Here i have to change the color of the setting page  */}
         <div className="flex items-center gap-2">
           <img src="https://i.pinimg.com/564x/d8/58/13/d858135093a5977fe2f32b6ef73890a0.jpg" width={32} height={32} alt="UberEats Logo" />
           <h1 className="text-xl font-bold">Settings</h1>
@@ -20,36 +21,10 @@ export default function Settings() {
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </header>
+    
       <main className="flex-1 bg-gray-100 dark:bg-gray-800 p-6 md:p-10">
         <div className="max-w-4xl mx-auto grid gap-8">
-          <section>
-            <h2 className="text-2xl font-bold mb-4">Account</h2>
-            <Card>
-              <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>Update your name, email, and phone number.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" defaultValue="John Doe" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" defaultValue="john@example.com" />
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input id="phone" defaultValue="+1 (555) 555-5555" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Save Changes</Button>
-              </CardFooter>
-            </Card>
-          </section>
+          
           <section>
             <h2 className="text-2xl font-bold mb-4">Notifications</h2>
             <Card>

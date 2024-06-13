@@ -4,10 +4,11 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import Link from "next/link"
-
+import Header_stud from "@/app/main-component/layout/header_stud/page"
 export default function PaymentOptions() {
   return (
     <>
+    <Header_stud />
     <section className="w-full py-12 md:py-20">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
