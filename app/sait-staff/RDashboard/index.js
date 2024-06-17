@@ -7,6 +7,9 @@ import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { db } from '@/app/firebase/config'
+
 import { studentsData } from '../data';
 
 const Dashboard = ({ setIsAuthenticated }) => {
@@ -15,8 +18,14 @@ const Dashboard = ({ setIsAuthenticated }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  const getStudents = async () => {
+    const querySnapshot = await getDocs(collection(db, "student"));
+    const students = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+    setStudents(students)
+  }
+
   useEffect(() => {
-    // TODO: create getEmployees function and call it here
+    getStudents();
   }, []);
 
   const handleEdit = id => {
@@ -38,7 +47,8 @@ const Dashboard = ({ setIsAuthenticated }) => {
       if (result.value) {
         const [student] = students.filter(student => student.id === id);
 
-        // TODO delete document
+        // delete document
+        deleteDoc(doc(db, "employees", id))
 
         Swal.fire({
           icon: 'success',
@@ -72,6 +82,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
           students={students}
           setStudents={setStudents}
           setIsAdding={setIsAdding}
+          getStudents={getStudents}
         />
       )}
       {isEditing && (
@@ -80,6 +91,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
           selectedStudent={selectedStudent}
           setStudents={setStudents}
           setIsEditing={setIsEditing}
+          getStudents={getStudents}
         />
       )}
     </div>
