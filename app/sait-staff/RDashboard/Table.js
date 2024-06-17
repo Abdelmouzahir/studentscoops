@@ -32,8 +32,7 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
           <thead className="bg-primary text-white">
             <tr>
               
-              <th className="py-4 px-6">First Name</th>
-              <th className="py-4 px-6">Last Name</th>
+              <th className="py-4 px-6">Restaurant Name</th>
               <th className="py-4 px-6">Email</th>
               <th className="py-4 px-6">Phone Number</th>
               
@@ -46,7 +45,6 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
                 <tr key={student.id} className="hover:bg-gray-100">
                   
                   <td className="py-4 px-6 text-center">{student.firstName}</td>
-                  <td className="py-4 px-6 text-center">{student.lastName}</td>
                   <td className="py-4 px-6 text-center">{student.email}</td>
                   <td className="py-4 px-6 text-center">{formatPhoneNumber(student.phone)}</td>
                  
@@ -72,7 +70,7 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
               ))
             ) : (
               <tr>
-                <td colSpan={7} className="py-4 px-6 text-center text-gray-500">No students</td>
+                <td colSpan={7} className="py-4 px-6 text-center text-gray-500">No Restaurant</td>
               </tr>
             )}
           </tbody>
