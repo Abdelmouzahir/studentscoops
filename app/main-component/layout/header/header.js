@@ -5,6 +5,10 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
+import { IoRestaurant } from "react-icons/io5";
+import { RiAdminFill } from "react-icons/ri";
+import { PiStudentFill } from "react-icons/pi";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function Header() {
   const router = useRouter();
@@ -20,28 +24,29 @@ export default function Header() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="default"
-          className="rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-200 bg-white text-black dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+          className="rounded-md px-12 py-2 text-md font-medium transition-colors hover:bg-gray-200 bg-white text-black dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
         >
           Login
+          <IoIosArrowDown className=" ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40 rounded-md bg-white p-2 shadow-lg dark:bg-gray-800 mr-4 ">
+      <DropdownMenuContent className="w-40 rounded-md bg-white p-2 shadow-lg dark:bg-gray-800  ">
         <DropdownMenuItem>
           <Link href="/auth/sign-in" className="flex items-center gap-2 hover:text-primary " prefetch={false} >
-            <UserIcon className="h-4 w-4" />
+            <PiStudentFill className="h-4 w-4" />
             Student
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Link href="/restraunt" className="flex items-center gap-2 hover:text-primary" prefetch={false}>
-            <MenuIcon className="h-4 w-4" />
+            <IoRestaurant className="h-4 w-4" />
             Restaurant
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href="/auth/register" className="flex items-center gap-2 hover:text-primary" prefetch={false}>
-            <PlusIcon className="h-4 w-4" />
-            New User
+          <Link href="/sait-staff" className="flex items-center gap-2 hover:text-primary" prefetch={false}>
+            <RiAdminFill className="h-4 w-4" />
+            Sait Admin
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -72,43 +77,3 @@ function MenuIcon(props) {
 }
 
 
-function PlusIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
-  )
-}
-
-
-function UserIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  )
-}
