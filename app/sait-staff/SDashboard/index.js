@@ -10,10 +10,10 @@ import Edit from './Edit';
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from '@/app/firebase/config'
 
-import { studentsData } from '../data';
+//import { studentsData } from '../data';
 
 const Dashboard = ({ setIsAuthenticated }) => {
-  const [students, setStudents] = useState(studentsData);
+  const [students, setStudents] = useState();
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);

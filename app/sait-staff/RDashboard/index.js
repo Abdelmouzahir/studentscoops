@@ -10,28 +10,29 @@ import Edit from './Edit';
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from '@/app/firebase/config'
 
-import { studentsData } from '../data';
+//import { studentsData } from '../data';
 
 const Dashboard = ({ setIsAuthenticated }) => {
-  const [students, setStudents] = useState(studentsData);
-  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [restaurants, setRestaurants] = useState();
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const getStudents = async () => {
-    const querySnapshot = await getDocs(collection(db, "student"));
-    const students = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
-    setStudents(students)
+  const getRestaurants = async () => {
+    const querySnapshot = await getDocs(collection(db, "restaurants"));
+    const restaurants = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+    setRestaurants(restaurants)
   }
+  console.log(restaurants);
 
   useEffect(() => {
-    getStudents();
+    getRestaurants();
   }, []);
 
   const handleEdit = id => {
-    const [student] = students.filter(student => student.id === id);
+    const [restaurant] = restaurants.filter(restaurant => restaurant.id === id);
 
-    setSelectedStudent(student);
+    setSelectedRestaurant(restaurant);
     setIsEditing(true);
   };
 
@@ -45,21 +46,21 @@ const Dashboard = ({ setIsAuthenticated }) => {
       cancelButtonText: 'No, cancel!',
     }).then(result => {
       if (result.value) {
-        const [student] = students.filter(student => student.id === id);
+        const [restaurant] = restaurants.filter(restaurant => restaurant.id === id);
 
         // delete document
-        deleteDoc(doc(db, "employees", id))
+        deleteDoc(doc(db, "restaurants", id))
 
         Swal.fire({
           icon: 'success',
           title: 'Deleted!',
-          text: `${student.firstName} ${student.lastName}'s data has been deleted.`,
+          text: `${restaurant.name}'s data has been deleted.`,
           showConfirmButton: false,
           timer: 1500,
         });
 
-        const studentsCopy = students.filter(student => student.id !== id);
-        setStudents(studentsCopy);
+        const restaurantsCopy = restaurants.filter(restaurant => restaurant.id !== id);
+        setRestaurants(restaurantsCopy);
       }
     });
   };
@@ -70,7 +71,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
         <>
           
           <Table
-            students={students}
+            restaurants={restaurants}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             setIsAdding={setIsAdding}
@@ -79,19 +80,19 @@ const Dashboard = ({ setIsAuthenticated }) => {
       )}
       {isAdding && (
         <Add
-          students={students}
-          setStudents={setStudents}
+          restaurants={restaurants}
+          setRestaurants={setRestaurants}
           setIsAdding={setIsAdding}
-          getStudents={getStudents}
+          getRestaurants={getRestaurants}
         />
       )}
       {isEditing && (
         <Edit
-          students={students}
-          selectedStudent={selectedStudent}
-          setStudents={setStudents}
+          restaurants={restaurants}
+          selectedRestaurant={selectedRestaurant}
+          setRestaurants={setRestaurants}
           setIsEditing={setIsEditing}
-          getStudents={getStudents}
+          getRestaurants={getRestaurants}
         />
       )}
     </div>
