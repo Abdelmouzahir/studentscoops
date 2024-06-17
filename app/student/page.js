@@ -87,7 +87,7 @@ const Home = () => {
       <main>
         <header><Header_stud handleSignOut={handleSignOut} /></header>
 
-        <section className='flex-1 flex items-center justify-center py-8 md:py-10 lg:py-12'>
+        <section className='flex-1 flex items-center justify-center py-4 md:py-10 lg:py-12'>
           <div className="relative w-full max-w-md ">
             <input
               type="search"
@@ -106,7 +106,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="w-full py-12 md:py-24 lg:py-20 bg-white dark:bg-[#1e1e1e]">
+        <section className="w-full py-5 md:py-24 lg:py-2 bg-white dark:bg-[#1e1e1e]">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">

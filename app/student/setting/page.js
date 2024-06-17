@@ -7,22 +7,12 @@ import Passwordreset from "./passwordreset/page"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-
+import Header_stud from "../header_stud/page"
 export default function Settings() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-primary text-black py-4 px-6 flex items-center justify-between">
 
-        {/* Here i have to change the color of the  */}
-        <div className="flex items-center gap-2">
-          <img src="https://i.pinimg.com/564x/d8/58/13/d858135093a5977fe2f32b6ef73890a0.jpg" width={32} height={32} alt="UberEats Logo" />
-          <h1 className="text-xl font-bold">Settings</h1>
-        </div>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <img src="https://i.pinimg.com/564x/d9/7b/bb/d97bbb08017ac2309307f0822e63d082.jpg" width={32} height={32} className="rounded-full" alt="Avatar" />
-          <span className="sr-only">Toggle user menu</span>
-        </Button>
-      </header>
+      <Header_stud />
 
       <main className="flex-1 bg-gray-100 dark:bg-gray-800 p-6 md:p-10">
         <div className="max-w-4xl mx-auto grid gap-8">
@@ -49,7 +39,7 @@ export default function Settings() {
                   <AtSignIcon className="mt-px h-5 w-5" />
                   <div className="space-y-1">
                     <p className="text-sm font-medium leading-none">Available</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Only mentions and comments.</p>
+                    <p className="text-sm text-gray-500 ">Only mentions and comments.</p>
                   </div>
                   <div className="ml-auto">
                     <Checkbox id="available" defaultChecked />
