@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
-import { studentsData } from '../data';
+//import { studentsData } from '../data';
 import { getAllStudentsInformation } from '@/services/GetRequest/getRequest';
 import { auth } from '@/app/firebase/config';
 

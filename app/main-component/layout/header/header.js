@@ -44,7 +44,7 @@ export default function Header() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href="/sait-staff" className="flex items-center gap-2 hover:text-primary" prefetch={false}>
+          <Link href="/sait-staff/login" className="flex items-center gap-2 hover:text-primary" prefetch={false}>
             <RiAdminFill className="h-4 w-4" />
             Sait Admin
           </Link>
