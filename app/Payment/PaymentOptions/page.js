@@ -12,7 +12,7 @@ import Link from "next/link"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Button } from '@/Components/ui/button'
+import { Button } from '@/components/ui/button'
 import Header_stud from "@/app/student/header_stud/page"
 export default function PaymentOptions() {
 
