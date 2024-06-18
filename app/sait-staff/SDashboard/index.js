@@ -1,30 +1,27 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-
-
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
-
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
-import { db } from '@/app/firebase/config'
-
 import { studentsData } from '../data';
+import { getAllStudentsInformation } from '@/services/GetRequest/getRequest';
+import { auth } from '@/app/firebase/config';
 
 const Dashboard = ({ setIsAuthenticated }) => {
-  const [students, setStudents] = useState(studentsData);
+  const [students, setStudents] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
+  const [search, setSearch] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const getStudents = async () => {
-    const querySnapshot = await getDocs(collection(db, "student"));
-    const students = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
-    setStudents(students)
-  }
-
   useEffect(() => {
+    async function getStudents() {
+      const data = await getAllStudentsInformation();
+      console.log('Student data:', data);
+      setStudents(data);
+      console.log("user auth: ",auth)
+    }
     getStudents();
   }, []);
 
@@ -74,6 +71,8 @@ const Dashboard = ({ setIsAuthenticated }) => {
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             setIsAdding={setIsAdding}
+            search={search}
+            setSearch={setSearch}
           />
         </>
       )}

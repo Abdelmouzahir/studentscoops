@@ -6,10 +6,10 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
 
-export async function getUserInformation(userId){
+export async function getStudentInformation(userId){
   try{
     const q = query(
-      collection(db, "student",userId, "user-information"),
+      collection(db, "students"),where('id','==',userId),
     );
     const querySnapshot = await getDocs(q);
 const userItems = querySnapshot.docs.map((doc) => {
@@ -21,6 +21,21 @@ return userItems;
     return[];
   }
 };
+
+export async function getAllStudentsInformation() {
+  try {
+    const q = query(collection(db, "students"));
+    const querySnapshot = await getDocs(q);
+    const studentItems = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return studentItems;
+  } catch (error) {
+    console.error("Error while fetching all students information:", error);
+    return [];
+  }
+}
 
 export async function getRestaurantInformation(){
   try{
