@@ -45,7 +45,14 @@ const Table = ({
         </button>
 
         <button
-          onClick={() => {setSearch(!search); if(search==true){setEmail("");setName("");setPhone("")}}}
+          onClick={() => {
+            setSearch(!search);
+            if (search == true) {
+              setEmail("");
+              setName("");
+              setPhone("");
+            }
+          }}
           className={
             search
               ? "inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
@@ -53,7 +60,7 @@ const Table = ({
           }
         >
           <PiStudentBold className="mr-2 h-4 w-4" />
-          {search? "Done" : "Search"}
+          {search ? "Done" : "Search"}
         </button>
       </div>
       <div
@@ -68,7 +75,7 @@ const Table = ({
           <input
             className="rounded ml-2 p-1 border-black border-2"
             value={name}
-            onChange={(e) => setName((e.target.value).toLowerCase())}
+            onChange={(e) => setName(e.target.value.toLowerCase())}
           />
         </div>
         <div>
@@ -76,7 +83,7 @@ const Table = ({
           <input
             className="rounded ml-2 p-1 border-black border-2"
             value={email}
-            onChange={(e) => setEmail((e.target.value).toLowerCase())}
+            onChange={(e) => setEmail(e.target.value.toLowerCase())}
           />
         </div>
         <div>
@@ -104,11 +111,29 @@ const Table = ({
             {students && students.length > 0 ? (
               students.map((student, index) => (
                 <tr key={student.id} className="hover:bg-gray-100">
-                  {(email || phone || name).length>0 ? (
+                  {(email || phone || name).length > 0 ? (
                     <>
-                      {((student.email.toLowerCase().includes(email) && phone == "" && name == "") || (student.email.toLowerCase().includes(email) && student.phoneNumber.toLowerCase().includes(phone) && name == "") || (student.email.toLowerCase().includes(email) && phone == "" && student.name.toLowerCase().includes(name)) || (student.phoneNumber.toLowerCase().includes(phone) && email == "" && student.name.toLowerCase().includes(name)) ||
-                      (student.phoneNumber.toLowerCase().includes(phone) && email == "" && name == "") ||
-                      (student.name.toLowerCase().includes(name) && email == "" && phone == "") || (student.email.toLowerCase().includes(email) && student.phoneNumber.toLowerCase().includes(phone) && student.name.toLowerCase().includes(name))) && (
+                      {((student.email.toLowerCase().includes(email) &&
+                        phone == "" &&
+                        name == "") ||
+                        (student.email.toLowerCase().includes(email) &&
+                          student.phoneNumber.toLowerCase().includes(phone) &&
+                          name == "") ||
+                        (student.email.toLowerCase().includes(email) &&
+                          phone == "" &&
+                          student.name.toLowerCase().includes(name)) ||
+                        (student.phoneNumber.toLowerCase().includes(phone) &&
+                          email == "" &&
+                          student.name.toLowerCase().includes(name)) ||
+                        (student.phoneNumber.toLowerCase().includes(phone) &&
+                          email == "" &&
+                          name == "") ||
+                        (student.name.toLowerCase().includes(name) &&
+                          email == "" &&
+                          phone == "") ||
+                        (student.email.toLowerCase().includes(email) &&
+                          student.phoneNumber.toLowerCase().includes(phone) &&
+                          student.name.toLowerCase().includes(name))) && (
                         <>
                           <td className="py-4 px-6 text-center">
                             {student.name[0].toUpperCase() +
@@ -143,8 +168,7 @@ const Table = ({
                             </div>
                           </td>
                         </>
-                      )
-                      }
+                      )}
                     </>
                   ) : (
                     <>

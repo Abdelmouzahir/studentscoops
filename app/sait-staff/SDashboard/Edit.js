@@ -1,97 +1,122 @@
-'use client'
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from "react";
 import { formatPhoneNumber } from "@/Constant/formated";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 import { doc, setDoc } from "firebase/firestore";
-import { db } from '@/app/firebase/config';
+import { db } from "@/app/firebase/config";
+import { updateStudent } from "@/services/PostRequest/postRequest";
 
-const Edit = ({ selectedStudent, setIsEditing, getStudents }) => {
+const Edit = ({ selectedStudent, setIsEditing }) => {
   const id = selectedStudent.id;
 
   const [name, setName] = useState(selectedStudent.name);
   const [lastName, setLastName] = useState(selectedStudent.lastName);
   const [email, setEmail] = useState(selectedStudent.email);
   const [phoneNumber, setPhoneNumber] = useState(selectedStudent.phoneNumber);
+  const updateData = [];
 
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     if (!name || !lastName || !email || !phoneNumber) {
       return Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'All fields are required.',
+        icon: "error",
+        title: "Error!",
+        text: "All fields are required.",
         showConfirmButton: true,
       });
     }
-
-    const updatedStudent = { name, lastName, email, phoneNumber };
-
+    if (name !== "") updateData.push({ name: name });
+    if (email !== "") updateData.push({ email: email });
+    if (phone !== "") updateData.push({ phoneNumber: phoneNumber });
+    if (lastName !== "") updateData.push({ lastName: lastName });
     try {
-      await setDoc(doc(db, "students", id), updatedStudent);
-      setIsEditing(false);
-      getStudents();
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Updated!',
-        text: `${name} ${lastName}'s data has been updated.`,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      updateData
+        .map(async (item) => {
+          await updateStudent(id, item);
+          setIsEditing(false);
+          Swal.fire({
+            icon: "success",
+            title: "Updated!",
+            text: `${name} ${lastName}'s data has been updated.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        });
     } catch (error) {
-      console.error("Error updating student: ", error);
+      console.log("error while updating data: ", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'An error occurred while updating the student.',
+        icon: "error",
+        title: "Error!",
+        text: "An error occurred while updating the student.",
         showConfirmButton: true,
       });
     }
   };
-
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
       <form onSubmit={handleUpdate} className="space-y-6">
-        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Edit Student</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">
+          Edit Student
+        </h1>
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            First Name
+          </label>
           <input
             id="firstName"
             type="text"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Last Name
+          </label>
           <input
             id="lastName"
             type="text"
             value={lastName}
-            onChange={e => setLastName(e.target.value)}
+            onChange={(e) => setLastName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Email
+          </label>
           <input
             id="email"
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Phone Number
+          </label>
           <input
             id="phone"
             type="text"
             value={phoneNumber}
-            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
+            onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
