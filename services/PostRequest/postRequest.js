@@ -2,22 +2,12 @@ import { db, storage } from "@/app/firebase/config";
 import { collection, addDoc, where, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-export async function addUserInformation(userId, userInformation) {
+export async function addStudentInformation(userId, userInformation,email) {
+  const studentInformation = { id: userId,email:email, ...userInformation };
   try {
     const docRef = await addDoc(
-      collection(db, "student", userId, "user-information"),
-      userInformation
-    );
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-}
-export async function addOtherUserInformation(userId, userInformation) {
-  try {
-    const docRef = await addDoc(
-      collection(db, "student", userId, "user-other-information"),
-      userInformation
+      collection(db, "students"),
+      studentInformation
     );
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {

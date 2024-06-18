@@ -3,15 +3,16 @@ import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/services/utils";
 import {
-  addUserInformation,
-  addOtherUserInformation,
+  addStudentInformation,
 } from "@/services/PostRequest/postRequest";
 import { formatPhoneNumber, formatPostalCode } from "@/Constant/formated";
 import Modal from "/components/Modal";
 import { TermsOfUse, PrivacyPolicy } from "../../companyPolicies";
+import { auth } from "@/app/firebase/config";
 
 const PersonalInfo = () => {
   const { user } = useUserAuth();
+  const [email,setEmail] = useState("");
   const [fname, setfName] = useState("");
   const [lname, setlName] = useState("");
   const [address, setAddress] = useState("");
@@ -47,13 +48,17 @@ const PersonalInfo = () => {
   };
 
   const handleSubmit = () => {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      setEmail(currentUser.email);
+    }
     const userInformation = {
       name: fname,
       lastName: lname,
       address: address,
       unitNum: unitnum,
       postalCode: postalCode,
-      phoneNumber: phoneNumber,
+      phoneNumber: phoneNumber
     };
     setError("");
     setpostalcoderr("");
@@ -77,8 +82,10 @@ const PersonalInfo = () => {
     console.log("Unit Number:", unitnum);
     console.log("Postal Code:", postalCode);
     console.log("Phone Number:", phoneNumber);
-    addUserInformation(user, userInformation);
-    addOtherUserInformation(user, userInformation);
+    if(email == ""){
+      return;
+    }
+    addStudentInformation(user, userInformation,email);
     router.push("/student");
   };
   const showTermsOfUse = () => {

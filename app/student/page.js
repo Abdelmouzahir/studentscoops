@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/app/firebase/config';
 import { signOut } from 'firebase/auth';
-import { getUserInformation } from '@/services/GetRequest/getRequest';
+import { getStudentInformation } from '@/services/GetRequest/getRequest';
 import { useUserAuth } from '@/services/utils';
 
 import Link from "next/link";
@@ -40,7 +40,7 @@ const Home = () => {
 
   useEffect(() => {
     if (user !== null) {
-      const information = getUserInformation(user);
+      const information = getStudentInformation(user);
       setStudents(information);
       information.then((data) => {
         setStudents(data);
