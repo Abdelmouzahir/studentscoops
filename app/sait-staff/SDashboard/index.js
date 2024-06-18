@@ -83,14 +83,12 @@ const Dashboard = ({ setIsAuthenticated }) => {
           students={students}
           setStudents={setStudents}
           setIsAdding={setIsAdding}
-          getStudents={getStudents}
         />
       )}
       {isEditing && (
         <Edit
           selectedStudent={selectedStudent}
           setIsEditing={setIsEditing}
-          getStudents={getStudents}
         />
       )}
     </div>
