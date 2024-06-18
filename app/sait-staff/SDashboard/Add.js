@@ -1,19 +1,20 @@
 'use client'
 import React, { useState } from 'react';
-import { formatPhoneNumber} from "@/Constant/formated"
+import { formatPhoneNumber } from "@/Constant/formated";
 import Swal from 'sweetalert2';
+import { collection, addDoc } from "firebase/firestore";
+import { db } from '@/app/firebase/config';
 
-const Add = ({ students, setStudents, setIsAdding }) => {
-  const [firstName, setFirstName] = useState('');
+const Add = ({ students, setStudents, setIsAdding, getStudents }) => {
+  const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  
+  const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handleAdd = e => {
+  const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !phone ) {
+    if (!name || !lastName || !email || !phoneNumber) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -22,24 +23,30 @@ const Add = ({ students, setStudents, setIsAdding }) => {
       });
     }
 
-    const newStudent = {
-      firstName,
-      lastName,
-      email,
-      phone,
-     
-    };
+    const newStudent = { name, lastName, email, phoneNumber };
 
-    setStudents([...students, newStudent]);
-    setIsAdding(false);
+    try {
+      await addDoc(collection(db, "students"), newStudent);
+      setStudents([...students, newStudent]);
+      setIsAdding(false);
+      getStudents();
 
-    Swal.fire({
-      icon: 'success',
-      title: 'Added!',
-      text: `${firstName} ${lastName}'s data has been added.`,
-      showConfirmButton: false,
-      timer: 1500,
-    });
+      Swal.fire({
+        icon: 'success',
+        title: 'Added!',
+        text: `${name} ${lastName}'s data has been added.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error("Error adding student: ", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An error occurred while adding the student.',
+        showConfirmButton: true,
+      });
+    }
   };
 
   return (
@@ -51,9 +58,8 @@ const Add = ({ students, setStudents, setIsAdding }) => {
           <input
             id="firstName"
             type="text"
-            name="firstName"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
@@ -62,7 +68,6 @@ const Add = ({ students, setStudents, setIsAdding }) => {
           <input
             id="lastName"
             type="text"
-            name="lastName"
             value={lastName}
             onChange={e => setLastName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -73,7 +78,6 @@ const Add = ({ students, setStudents, setIsAdding }) => {
           <input
             id="email"
             type="email"
-            name="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -85,9 +89,8 @@ const Add = ({ students, setStudents, setIsAdding }) => {
             id="phone"
             type="text"
             maxLength={14}
-            name="phone"
-            value={phone}
-            onChange={e => setPhone(formatPhoneNumber(e.target.value))}
+            value={phoneNumber}
+            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>

@@ -45,10 +45,10 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
               students.map((student, index) => (
                 <tr key={student.id} className="hover:bg-gray-100">
                   
-                  <td className="py-4 px-6 text-center">{student.firstName}</td>
+                  <td className="py-4 px-6 text-center">{student.name}</td>
                   <td className="py-4 px-6 text-center">{student.lastName}</td>
                   <td className="py-4 px-6 text-center">{student.email}</td>
-                  <td className="py-4 px-6 text-center">{formatPhoneNumber(student.phone)}</td>
+                  <td className="py-4 px-6 text-center">{formatPhoneNumber(student.phoneNumber)}</td>
                  
                   <td className="py-4 px-6 text-center">
                     <div className="flex justify-center space-x-2">
