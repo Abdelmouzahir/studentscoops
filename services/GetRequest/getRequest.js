@@ -1,26 +1,26 @@
-import { db ,storage} from "@/app/firebase/config";
+import { db, storage } from "@/app/firebase/config";
 import {
   collection,
   getDocs,
-  query,where
+  query,
+  where,
+  onSnapshot,
 } from "firebase/firestore";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
 
-export async function getStudentInformation(userId){
-  try{
-    const q = query(
-      collection(db, "students"),where('id','==',userId),
-    );
-    const querySnapshot = await getDocs(q);
-const userItems = querySnapshot.docs.map((doc) => {
-  return { id: doc.id, ...doc.data() };
-});
-return userItems;
-  } catch (error){
-    console.error('Error getting user information: ', error);
-    return[];
+export async function getStudentInformation(userId) {
+  try {
+    const colRef = collection(db, "students");
+    const unsubscribe = onSnapshot(colRef, (snapshot) => {
+      snapshot.forEach((doc) => {
+      });
+    });
+    return unsubscribe();
+  } catch (error) {
+    console.error("Error getting user information: ", error);
+    return [];
   }
-};
+}
 
 export async function getAllStudentsInformation() {
   try {
@@ -37,55 +37,47 @@ export async function getAllStudentsInformation() {
   }
 }
 
-export async function getRestaurantInformation(){
-  try{
-    const q = query(
-      collection(db, "restaurants"),
-    );
+export async function getRestaurantInformation() {
+  try {
+    const q = query(collection(db, "restaurants"));
     const querySnapshot = await getDocs(q);
-const userItems = querySnapshot.docs.map((doc) => {
-  return { id: doc.id, ...doc.data() };
-});
-return userItems;
-  } catch (error){
-    console.error('Error getting user information: ', error);
-    return[];
+    const userItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return userItems;
+  } catch (error) {
+    console.error("Error getting user information: ", error);
+    return [];
   }
-};
+}
 
-export async function getRestaurantInformationByUser(user){
-  try{
-    const q = query(
-      collection(db, "restaurants"),
-      where("userId", "==", user)
-      
-    );
+export async function getRestaurantInformationByUser(user) {
+  try {
+    const q = query(collection(db, "restaurants"), where("userId", "==", user));
     const querySnapshot = await getDocs(q);
-const userItems = querySnapshot.docs.map((doc) => {
-  return { id: doc.id, ...doc.data() };
-});
-return userItems;
-  } catch (error){
-    console.error('Error getting user information: ', error);
-    return[];
+    const userItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return userItems;
+  } catch (error) {
+    console.error("Error getting user information: ", error);
+    return [];
   }
-};
+}
 
-export async function getMenuInformation(docId){
-  try{
-    const q = query(
-      collection(db, "restaurants",docId, "menu"),
-    );
+export async function getMenuInformation(docId) {
+  try {
+    const q = query(collection(db, "restaurants", docId, "menu"));
     const querySnapshot = await getDocs(q);
-const userItems = querySnapshot.docs.map((doc) => {
-  return { id: doc.id, ...doc.data() };
-});
-return userItems;
-  } catch (error){
-    console.error('Error getting user information: ', error);
-    return[];
+    const userItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return userItems;
+  } catch (error) {
+    console.error("Error getting user information: ", error);
+    return [];
   }
-};
+}
 
 export async function getMenuInformationByUser(docId, user) {
   try {
@@ -105,30 +97,28 @@ export async function getMenuInformationByUser(docId, user) {
 
     return userItems;
   } catch (error) {
-    console.error('Error getting user information: ', error);
+    console.error("Error getting user information: ", error);
     return [];
   }
 }
-export async function getStudentEmailWithStatus(){
-  try{
+export async function getStudentEmailWithStatus() {
+  try {
     const q = query(
-      collection(db,'student_email'),
-      where('active',"==",true),
+      collection(db, "student_email"),
+      where("active", "==", true)
     );
     const querySnapshot = await getDocs(q);
-    const userItems = querySnapshot.docs.map((doc)=>
-      doc.data().studentEmail
-    );
+    const userItems = querySnapshot.docs.map((doc) => doc.data().studentEmail);
     return userItems;
-  } catch (err){
-    console.log('error while getting student email information ',err);
+  } catch (err) {
+    console.log("error while getting student email information ", err);
     return [];
   }
-};
-export async function getRestaurantLogos(){
-  const storageRef = ref(storage,'restaurant_logo/');
+}
+export async function getRestaurantLogos() {
+  const storageRef = ref(storage, "restaurant_logo/");
   const result = await listAll(storageRef);
-  const urlPromises = result.items.map((imageRef)=> getDownloadURL(imageRef));
+  const urlPromises = result.items.map((imageRef) => getDownloadURL(imageRef));
   const urls = await Promise.all(urlPromises);
   return urls;
-};
+}

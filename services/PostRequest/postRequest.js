@@ -1,14 +1,24 @@
 import { db, storage } from "@/app/firebase/config";
-import { collection, addDoc, where, query, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  where,
+  query,
+  getDocs,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-export async function addStudentInformation(userId, userInformation,email) {
-  const studentInformation = { id: userId,email:email, ...userInformation };
+export async function addStudentInformation(userId, userInformation, email) {
+  const studentInformation = {
+    studentId: userId,
+    email: email,
+    ...userInformation,
+  };
   try {
-    const docRef = await addDoc(
-      collection(db, "students"),
-      studentInformation
-    );
+    const docRef = await addDoc(collection(db, "students"), studentInformation);
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -55,7 +65,7 @@ export async function addRestaurantInformation(
           postalCode,
           imageUrl: downloadURL,
           createdAt: new Date(),
-          logo
+          logo,
         });
         console.log("Document successfully written!");
       } catch (error) {
@@ -136,8 +146,13 @@ export default async function addStudentEmailStatus(prop) {
     const studentEmail = userItems.map((item) => {
       return item.studentEmail;
     });
-    console.log('total number of items added in database: ', userItems.length, ' and number of emails enters is: ', studentEmail.length)
-    console.log("")
+    console.log(
+      "total number of items added in database: ",
+      userItems.length,
+      " and number of emails enters is: ",
+      studentEmail.length
+    );
+    console.log("");
 
     if (!studentEmail.includes(email)) {
       const docRef = await addDoc(collection(db, "student_email"), data);
@@ -147,7 +162,7 @@ export default async function addStudentEmailStatus(prop) {
       );
       console.log(`${email} with ${active} has been added to database`);
       integer += 1;
-      console.log('data increment by: ', integer)
+      console.log("data increment by: ", integer);
       return; // <--- Add this line to exit the function
     } else {
       console.log(`${email} has been register before`);
@@ -157,5 +172,25 @@ export default async function addStudentEmailStatus(prop) {
       "Error while adding data in firebase for email and emailActive",
       error
     );
+  }
+}
+
+export async function deleteStudentData(id) {
+  try {
+    await deleteDoc(doc(db, "students", id));
+    console.log(`Document with ID ${id} deleted successfully`);
+  } catch (error) {
+    console.error("Error deleting document: ", error);
+  }
+}
+
+export async function updateStudent(id,prop) {
+  try {
+    const docRef = doc(db, "students", id);
+    await updateDoc(docRef, 
+      prop
+    );
+  } catch (error) {
+    console.error("Error updating document: ", error);
   }
 }
