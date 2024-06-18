@@ -3,13 +3,31 @@
  * @see https://v0.dev/t/Slv9lfwnT5L
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
+"use client"
+import React, { useState } from 'react'
+
+
 import Link from "next/link"
+// import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Button } from '@/Components/ui/button'
 import Header_stud from "@/app/student/header_stud/page"
 export default function PaymentOptions() {
+
+  const [cardInfo, setCardinfo] = useState(false)
+
+
+  const toggleCardInfo = () => {
+    setCardinfo(!cardInfo)
+  }
+
   return (
+
     <>
-    <Header_stud />
-    <section className="w-full py-12 md:py-20">
+      <Header_stud />
+      <section className="w-full py-12 md:py-20">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
             <h2 className="text-2xl font-bold mb-6">Payment Options</h2>
@@ -25,12 +43,51 @@ export default function PaymentOptions() {
                   </div>
                 </div>
                 <Link
+                  onClick={toggleCardInfo}
                   href="#"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                   prefetch={false}
+
                 >
+
                   Pay with Card
                 </Link>
+                {cardInfo && <Dialog defaultOpen>
+                  <DialogTrigger asChild>
+                    
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Payment</DialogTitle>
+                      <DialogDescription>Enter your payment details</DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="cardNumber">Card Number</Label>
+                        <Input id="cardNumber" placeholder="0000 0000 0000 0000" type="text" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="expirationDate">Expiration Date</Label>
+                          <Input id="expirationDate" placeholder="MM/YY" type="text" />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="cvv">CVV</Label>
+                          <Input id="cvv" placeholder="123" type="text" />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="cardholderName">Cardholder Name</Label>
+                        <Input id="cardholderName" placeholder="John Doe" type="text" />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button type="submit" className="w-full">
+                        Save Details
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>}
               </div>
               <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800">
                 <div className="flex items-center gap-4">

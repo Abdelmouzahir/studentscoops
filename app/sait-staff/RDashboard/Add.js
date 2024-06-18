@@ -3,17 +3,19 @@ import React, { useState } from 'react';
 import { formatPhoneNumber} from "@/Constant/formated"
 import Swal from 'sweetalert2';
 
-const Add = ({ students, setStudents, setIsAdding }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from '@/app/firebase/config'
+
+const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
   
 
-  const handleAdd = e => {
+  const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !phone ) {
+    if (!name || !email || !mobileNumber ) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -22,21 +24,31 @@ const Add = ({ students, setStudents, setIsAdding }) => {
       });
     }
 
-    const newStudent = {
-      firstName,
-      lastName,
+    const newRestaurant = {
+      name,
       email,
-      phone,
+      mobileNumber,
      
     };
 
-    setStudents([...students, newStudent]);
+    restaurants.push(newRestaurant);
+
+    try {
+      await addDoc(collection(db, "restaurants"), {
+        ...newRestaurant
+      });
+    } catch (error) {
+      console.log(error)
+    }
+
+    setRestaurants(restaurants);
     setIsAdding(false);
+    getRestaurants()
 
     Swal.fire({
       icon: 'success',
       title: 'Added!',
-      text: `${firstName} ${lastName}'s data has been added.`,
+      text: `${name}'s data has been added.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -45,26 +57,15 @@ const Add = ({ students, setStudents, setIsAdding }) => {
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
       <form onSubmit={handleAdd} className="space-y-6">
-        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Add Student</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Add Restaurant</h1>
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">Restaurant Name</label>
           <input
             id="firstName"
             type="text"
             name="firstName"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
-        <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
-          <input
-            id="lastName"
-            type="text"
-            name="lastName"
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
@@ -86,8 +87,8 @@ const Add = ({ students, setStudents, setIsAdding }) => {
             type="text"
             maxLength={14}
             name="phone"
-            value={phone}
-            onChange={e => setPhone(formatPhoneNumber(e.target.value))}
+            value={mobileNumber}
+            onChange={e => setMobileNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>

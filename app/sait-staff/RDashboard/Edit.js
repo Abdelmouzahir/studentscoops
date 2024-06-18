@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { formatPhoneNumber} from "@/Constant/formated"
 import Swal from 'sweetalert2';
 
-const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
-  const id = selectedStudent.id;
+import {  doc, setDoc } from "firebase/firestore";
+import { db } from '@/app/firebase/config'
 
-  const [firstName, setFirstName] = useState(selectedStudent.firstName);
-  const [lastName, setLastName] = useState(selectedStudent.lastName);
-  const [email, setEmail] = useState(selectedStudent.email);
-  const [phone, setPhone] = useState(selectedStudent.phone);
+const Edit = ({ restaurants, selectedRestaurant, setRestaurants, setIsEditing, getRestaurants }) => {
+  const id = selectedRestaurant.id;
+
+  const [name, setName] = useState(selectedRestaurant.name);
+  const [email, setEmail] = useState(selectedRestaurant.email);
+  const [mobileNumber, setMobileNumber] = useState(selectedRestaurant.mobileNumber);
   
 
-  const handleUpdate = e => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !phone ) {
+    if (!name ||  !email || !mobileNumber ) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -23,25 +25,26 @@ const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
       });
     }
 
-    const student = {
+    const restaurant = {
       id,
-      firstName,
-      lastName,
+      name,
       email,
-      phone,
+      mobileNumber,
     
     };
 
-    // TODO: Update document
 
-    const updatedStudents = students.map(std => std.id === id ? student : std);
-    setStudents(updatedStudents);
+    await setDoc(doc(db, "restaurants", id), {
+      ...restaurant
+    });
+    setRestaurants(restaurants);
     setIsEditing(false);
+    getRestaurants();
 
     Swal.fire({
       icon: 'success',
       title: 'Updated!',
-      text: `${student.firstName} ${student.lastName}'s data has been updated.`,
+      text: `${restaurant.name}'s data has been updated.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -50,29 +53,19 @@ const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
       <form onSubmit={handleUpdate} className="space-y-6">
-        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Edit Student</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Edit Restaurant</h1>
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">Restaurant Name</label>
           <input
             id="firstName"
             type="text"
             name="firstName"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
-        <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
-          <input
-            id="lastName"
-            type="text"
-            name="lastName"
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          />
-        </div>
+        
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
           <input
@@ -90,8 +83,8 @@ const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
             id="phone"
             type="text"
             name="phone"
-            value={phone}
-            onChange={e => setPhone(formatPhoneNumber(e.target.value))}
+            value={mobileNumber}
+            onChange={e => setMobileNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>

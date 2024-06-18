@@ -1,9 +1,9 @@
 import React from 'react';
 import { LuPencil } from "react-icons/lu";
 import { LuTrash } from "react-icons/lu";
-import { PiStudentBold } from "react-icons/pi";
+import { IoStorefront } from "react-icons/io5";
 
-const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
+const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding }) => {
 
   function formatPhoneNumber(phoneNumberString) {
     const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
@@ -22,7 +22,7 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
           onClick={() => setIsAdding(true)}
           className="inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
         >
-          <PiStudentBold className="mr-2 h-4 w-4" />
+          <IoStorefront className="mr-2 h-5 w-5" />
           Add Restaurant
         </button>
         
@@ -40,25 +40,25 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {students && students.length > 0 ? (
-              students.map((student, index) => (
-                <tr key={student.id} className="hover:bg-gray-100">
+            {restaurants && restaurants.length > 0 ? (
+              restaurants.map((restaurant, index) => (
+                <tr key={restaurant.id} className="hover:bg-gray-100">
                   
-                  <td className="py-4 px-6 text-center">{student.firstName}</td>
-                  <td className="py-4 px-6 text-center">{student.email}</td>
-                  <td className="py-4 px-6 text-center">{formatPhoneNumber(student.phone)}</td>
+                  <td className="py-4 px-6 text-center">{restaurant.name}</td>
+                  <td className="py-4 px-6 text-center">{restaurant.email}</td>
+                  <td className="py-4 px-6 text-center">{formatPhoneNumber(restaurant.mobileNumber)}</td>
                  
                   <td className="py-4 px-6 text-center">
                     <div className="flex justify-center space-x-2">
                       <button
-                        onClick={() => handleEdit(student.id)}
+                        onClick={() => handleEdit(restaurant.id)}
                         className="inline-flex items-center justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                       >
                         Edit
                         <LuPencil className="ml-2 h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => handleDelete(student.id)}
+                        onClick={() => handleDelete(restaurant.id)}
                         className="inline-flex items-center justify-center rounded-md bg-red-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-red-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-red-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                       >
                         Delete

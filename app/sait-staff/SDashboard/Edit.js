@@ -1,20 +1,23 @@
+'use client'
 import React, { useState } from 'react';
-import { formatPhoneNumber} from "@/Constant/formated"
+import { formatPhoneNumber } from "@/Constant/formated";
 import Swal from 'sweetalert2';
 
-const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
+import { doc, setDoc } from "firebase/firestore";
+import { db } from '@/app/firebase/config';
+
+const Edit = ({ selectedStudent, setIsEditing, getStudents }) => {
   const id = selectedStudent.id;
 
-  const [firstName, setFirstName] = useState(selectedStudent.firstName);
+  const [name, setName] = useState(selectedStudent.name);
   const [lastName, setLastName] = useState(selectedStudent.lastName);
   const [email, setEmail] = useState(selectedStudent.email);
-  const [phone, setPhone] = useState(selectedStudent.phone);
-  
+  const [phoneNumber, setPhoneNumber] = useState(selectedStudent.phoneNumber);
 
-  const handleUpdate = e => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !phone ) {
+    if (!name || !lastName || !email || !phoneNumber) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -23,28 +26,29 @@ const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
       });
     }
 
-    const student = {
-      id,
-      firstName,
-      lastName,
-      email,
-      phone,
-    
-    };
+    const updatedStudent = { name, lastName, email, phoneNumber };
 
-    // TODO: Update document
+    try {
+      await setDoc(doc(db, "students", id), updatedStudent);
+      setIsEditing(false);
+      getStudents();
 
-    const updatedStudents = students.map(std => std.id === id ? student : std);
-    setStudents(updatedStudents);
-    setIsEditing(false);
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Updated!',
-      text: `${student.firstName} ${student.lastName}'s data has been updated.`,
-      showConfirmButton: false,
-      timer: 1500,
-    });
+      Swal.fire({
+        icon: 'success',
+        title: 'Updated!',
+        text: `${name} ${lastName}'s data has been updated.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error("Error updating student: ", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An error occurred while updating the student.',
+        showConfirmButton: true,
+      });
+    }
   };
 
   return (
@@ -56,9 +60,8 @@ const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
           <input
             id="firstName"
             type="text"
-            name="firstName"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
+            value={name}
+            onChange={e => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
@@ -67,7 +70,6 @@ const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
           <input
             id="lastName"
             type="text"
-            name="lastName"
             value={lastName}
             onChange={e => setLastName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -78,24 +80,21 @@ const Edit = ({ students, selectedStudent, setStudents, setIsEditing }) => {
           <input
             id="email"
             type="email"
-            name="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="salary" className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
           <input
             id="phone"
             type="text"
-            name="phone"
-            value={phone}
-            onChange={e => setPhone(formatPhoneNumber(e.target.value))}
+            value={phoneNumber}
+            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
-        
         <div className="flex justify-end space-x-3">
           <button
             type="submit"
