@@ -152,7 +152,7 @@ const Home = () => {
                   discounted price.
                 </p>
               </div>
-              <Card className="w-full max-w-3xl">
+              <Card className="w-full max-w-3xl p-2 shadow-md">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <img
                     src="https://i.pinimg.com/564x/9b/4f/87/9b4f877a9336c4a4cfc2291ffd8d557e.jpg"
