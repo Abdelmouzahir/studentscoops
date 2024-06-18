@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button"
 export default function Passwordreset() {
   const [showSection, setShowSection] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
+
   return (
     // Changes to be made here 
     <div className="mx-full max-w-md space-y-6 py-12">
@@ -55,15 +57,15 @@ export default function Passwordreset() {
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm New Password</Label>
             <div className="relative">
-              <Input id="confirmPassword" type={showPassword ? "text" : "password"} required />
+              <Input id="confirmPassword" type={showPasswordConfirm ? "text" : "password"} required />
               <Button
                 variant="ghost"
                 size="icon"
                 className="absolute top-1/2 right-3 -translate-y-1/2"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
               >
                 <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
+                <span className="sr-only">{showPasswordConfirm ? "Hide password" : "Show password"}</span>
               </Button>
             </div>
           </div>
