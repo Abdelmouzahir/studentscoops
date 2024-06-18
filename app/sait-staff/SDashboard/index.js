@@ -6,24 +6,24 @@ import Add from './Add';
 import Edit from './Edit';
 //import { studentsData } from '../data';
 import { getAllStudentsInformation } from '@/services/GetRequest/getRequest';
-import { auth } from '@/app/firebase/config';
+import {deleteStudentData} from '@/services/PostRequest/postRequest';
 
 const Dashboard = ({ setIsAuthenticated }) => {
   const [students, setStudents] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [search, setSearch] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(null);
   
   useEffect(() => {
     async function getStudents() {
       const data = await getAllStudentsInformation();
-      console.log('Student data:', data);
       setStudents(data);
-      console.log("user auth: ",auth)
     }
     getStudents();
   }, []);
+
+  useEffect(()=>{if(isEditing==false)window.location.reload()},[isEditing])
 
   const handleEdit = id => {
     const student = students.find(student => student.id === id);
@@ -42,8 +42,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteDoc(doc(db, "students", id));
-          setStudents(students.filter(student => student.id !== id));
+          await deleteStudentData(id).then(()=>window.location.reload());
           Swal.fire({
             icon: 'success',
             title: 'Deleted!',
@@ -83,14 +82,12 @@ const Dashboard = ({ setIsAuthenticated }) => {
           students={students}
           setStudents={setStudents}
           setIsAdding={setIsAdding}
-          getStudents={getStudents}
         />
       )}
       {isEditing && (
         <Edit
           selectedStudent={selectedStudent}
           setIsEditing={setIsEditing}
-          getStudents={getStudents}
         />
       )}
     </div>

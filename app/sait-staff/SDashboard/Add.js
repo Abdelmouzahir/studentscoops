@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { collection, addDoc } from "firebase/firestore";
 import { db } from '@/app/firebase/config';
 
-const Add = ({ students, setStudents, setIsAdding, getStudents }) => {
+const Add = ({ students, setStudents, setIsAdding}) => {
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -29,7 +29,6 @@ const Add = ({ students, setStudents, setIsAdding, getStudents }) => {
       await addDoc(collection(db, "students"), newStudent);
       setStudents([...students, newStudent]);
       setIsAdding(false);
-      getStudents();
 
       Swal.fire({
         icon: 'success',
