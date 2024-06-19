@@ -1,18 +1,18 @@
 import React from 'react';
 import { LuPencil, LuTrash } from 'react-icons/lu';
-import { IoMdPersonAdd } from "react-icons/io";
+import { IoMdPersonAdd } from 'react-icons/io';
 
 const Table = ({ admin, handleEdit, handleDelete, setIsAdding }) => {
   return (
     <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
-        <h1 className='mb-8 text-4xl font-bold text-center tracking-tight text-orange-800 sm:text-5xl lg:text-4xl'> SAIT Admin </h1>
+       
         <div className="flex justify-between items-center mb-3">
           <button
             onClick={() => setIsAdding(true)}
             className="inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
           >
-           <IoMdPersonAdd className='mr-2 h-4 w-4' />
+            <IoMdPersonAdd className="mr-2 h-4 w-4" />
             Add Admin
           </button>
         </div>
@@ -47,9 +47,7 @@ const Table = ({ admin, handleEdit, handleDelete, setIsAdding }) => {
                           <img className="w-full h-full rounded-full" src={user.imageUrl} alt="" />
                         </div>
                         <div className="ml-3">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            {user.name}
-                          </p>
+                          <p className="text-gray-900 whitespace-no-wrap">{user.name}</p>
                         </div>
                       </div>
                     </td>
@@ -65,7 +63,7 @@ const Table = ({ admin, handleEdit, handleDelete, setIsAdding }) => {
                         <span className="relative">{user.status}</span>
                       </span>
                     </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <button
                         onClick={() => handleEdit(user.id)}
                         className="inline-flex items-center mr-2 justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"

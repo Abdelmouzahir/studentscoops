@@ -3,9 +3,10 @@ import Overview from './overview';
 import Table from './table';
 import { useState } from 'react';
 
-
 export default function Dash() {
-  //random data
+  const [isAdding, setIsAdding] = useState(false);
+
+  // Random data
   const [admin, setAdmin] = useState([
     {
       id: 1,
@@ -29,7 +30,6 @@ export default function Dash() {
     },
     // Add more data as needed
   ]);
-  const [isAdding, setIsAdding] = useState(false);
 
   const handleEdit = (id) => {
     // Handle edit logic
@@ -43,16 +43,19 @@ export default function Dash() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-2">
-      
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <Overview />
-        <Table
-          admin={admin}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-          setIsAdding={setIsAdding}
-         />
+    <div className="min-h-screen flex flex-col items-center justify-start py-2">
+      <main className="flex flex-col items-start w-full px-20 py-4 ">
+        <div className="self-start ml-5">
+          <Overview />
+        </div>
+        <div className="flex flex-col items-center w-full mt-8">
+          <Table
+            admin={admin}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            setIsAdding={setIsAdding}
+          />
+        </div>
       </main>
     </div>
   );
