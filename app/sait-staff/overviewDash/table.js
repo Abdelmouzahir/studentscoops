@@ -63,7 +63,7 @@ const Table = ({ admin, handleEdit, handleDelete, setIsAdding }) => {
                         <span className="relative">{user.status}</span>
                       </span>
                     </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <td className="px-5 py-5 border-b text-center border-gray-200 bg-white text-sm">
                       <button
                         onClick={() => handleEdit(user.id)}
                         className="inline-flex items-center mr-2 justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
