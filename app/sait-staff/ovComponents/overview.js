@@ -24,7 +24,7 @@ const Overview = () => {
         text="in The last 7 days"
       />
       <Card 
-        title="App use" 
+        title="Transactions rate" 
         value="256%" 
         icon={<FaChartLine   className='w-10 h-10'/>} 
         change="Overflow" 
