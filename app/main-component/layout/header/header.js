@@ -38,7 +38,7 @@ export default function Header() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
-          <Link href="/restraunt" className="flex items-center gap-2 hover:text-primary" prefetch={false}>
+          <Link href="/auth/loginRestaurant" className="flex items-center gap-2 hover:text-primary" prefetch={false}>
             <IoRestaurant className="h-4 w-4" />
             Restaurant
           </Link>

@@ -25,7 +25,7 @@ const sign_in = () => {
         sessionStorage.setItem("user", true);
         setEmail("");
         setPassword("");
-        router.push("/sait-staff");
+        router.push("/restraunt");
         setLoginError("");
       })
       .catch((err) => {
