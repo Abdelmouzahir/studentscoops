@@ -130,9 +130,12 @@ export default function RestaurantItems() {
   return (
     <div>
       <div className="flex flex-col md:flex-row w-full h-full">
-        <div className="flex-1 p-6 md:p-12 overflow-y-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold">Ristorante Italiano</h1>
+        <div className=" flex-1 p-6 md:p-12 overflow-y-auto">
+          <div className="  flex items-center justify-between mb-6">
+            
+            <Link href="/student"> <Button >Back</Button> </Link>
+            <h1 className="text-4xl font-bold">Ristorante Italiano</h1>
+           
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <StarIcon className="w-5 h-5 fill-primary" />
@@ -143,10 +146,8 @@ export default function RestaurantItems() {
                 <MapPinIcon className="w-5 h-5" />
                 <span className="text-gray-500">1.2 mi</span>
               </div>
-              <div className="flex items-center space-x-1">
-                <DollarSignIcon className="w-5 h-5" />
-                <span className="text-gray-500">$$</span>
-              </div>
+              
+
               <div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -172,7 +173,7 @@ export default function RestaurantItems() {
                           <Button variant="ghost" size="icon" onClick={() => removeFromCart(index)}>
                             <span className="sr-only">Remove</span>
                             <TrashIcon className="w-4 h-4" />
-                           
+
                           </Button>
                         </div>
                       </DropdownMenuItem>
@@ -186,8 +187,8 @@ export default function RestaurantItems() {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                       {/* Link changes to be made */}
-                     <Link href='/Payment'><Button className="w-full bg-primary">Checkout</Button></Link> 
+                      {/* Link changes to be made */}
+                      <Link href='/Payment'><Button className="w-full bg-primary">Checkout</Button></Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -246,7 +247,7 @@ function TrashIcon(props) {
   );
 }
 // Finding similar prop function for the trashicon
-    function DollarSignIcon(props) {
+function DollarSignIcon(props) {
   return (
     <svg
       {...props}
@@ -263,11 +264,11 @@ function TrashIcon(props) {
       <line x1="12" x2="12" y1="2" y2="22" />
       <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
     </svg>
-    )
+  )
 }
 
 
-    function MapPinIcon(props) {
+function MapPinIcon(props) {
   return (
     <svg
       {...props}
@@ -284,10 +285,10 @@ function TrashIcon(props) {
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
       <circle cx="12" cy="10" r="3" />
     </svg>
-    )
+  )
 }
 
-    function ShoppingCartIcon(props) {
+function ShoppingCartIcon(props) {
   return (
     <svg
       {...props}
@@ -305,9 +306,9 @@ function TrashIcon(props) {
       <circle cx="19" cy="21" r="1" />
       <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
     </svg>
-    )
+  )
 }
-    function StarIcon(props) {
+function StarIcon(props) {
   return (
     <svg
       {...props}
@@ -323,5 +324,5 @@ function TrashIcon(props) {
     >
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
     </svg>
-    )
+  )
 }
