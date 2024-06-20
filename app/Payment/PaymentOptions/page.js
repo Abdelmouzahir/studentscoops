@@ -113,8 +113,8 @@ export default function PaymentOptions() {
                     <DollarSignIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
                   </div>
                   <div>
-                    <p className="font-medium">Cash on Delivery</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Pay with cash when your order arrives</p>
+                    <p className="font-medium">Pay on Pickup</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Pay with cash when arrive here at store</p>
                   </div>
                 </div>
                 <Link
@@ -122,7 +122,7 @@ export default function PaymentOptions() {
                   className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                   prefetch={false}
                 >
-                  Pay on Delivery
+                  Pay on Pickup
                 </Link>
               </div>
             </div>
