@@ -37,13 +37,14 @@ const sign_in = () => {
   const handleForgotPassword = (event) => {
     event.preventDefault();
 
-    // Check the email domain first
-    if (!email.endsWith('@sait.ca')) {
-      setEmailError('Please use a SAIT Staff email');
-      return;
-    } else {
-      setEmailError(''); // Clear any previous error
-    }
+  // Check the email domain format
+  if (!email.includes('@') || !email.includes('.')) {
+     setEmailError('Please enter a valid email address');
+    return;
+  } else {
+    setEmailError(''); // Clear any previous error
+  }
+
 
     sendPasswordResetEmail(auth, email)
       .then(() => {
