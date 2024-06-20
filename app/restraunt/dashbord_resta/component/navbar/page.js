@@ -21,11 +21,11 @@ export  default function Navbar(){
       <div className="flex-1 text-black" >
         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
           <Link
-            href="/restraunt/inventory"
+            href="/restraunt/home"
             className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
           >
             <Home className="h-4 w-4 text-primary" />
-            Invetory
+            Home
           </Link>
           <Link
             href="/restraunt/AddMenu"
@@ -36,11 +36,11 @@ export  default function Navbar(){
             
           </Link>
           <Link
-            href="#"
+            href="/restraunt/order"
             className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 transition-all hover:text-primary"
           >
             <Package className="h-4 w-4 text-primary" />
-            Products{" "}
+            Orders
           </Link>
           <Link
             href="#"

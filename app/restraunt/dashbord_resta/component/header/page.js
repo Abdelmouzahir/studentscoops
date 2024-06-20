@@ -8,9 +8,7 @@ import {
   LineChart,
   Menu,
   Package,
-  Package2,
   ShoppingCart,
-  Users,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -53,7 +51,7 @@ export default function Header({ handleSignOut }) {
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-primary"
             >
               <Home className="h-5 w-5 text-primary" />
-              Inventory
+              Home
             </Link>
             <Link
               href="#"
