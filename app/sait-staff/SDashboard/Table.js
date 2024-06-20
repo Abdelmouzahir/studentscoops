@@ -4,6 +4,8 @@ import React from "react";
 import { LuPencil } from "react-icons/lu";
 import { LuTrash } from "react-icons/lu";
 import { PiStudentBold } from "react-icons/pi";
+import { FaSearch } from "react-icons/fa";
+import { MdOutlineDoneOutline } from "react-icons/md";
 
 const Table = ({
   students,
@@ -59,8 +61,7 @@ const Table = ({
               : "ml-10 inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
           }
         >
-          <PiStudentBold className="mr-2 h-4 w-4" />
-          {search ? "Done" : "Search"}
+          {search ? <><MdOutlineDoneOutline className="mr-2 h-4 w-4"/>Done</> : <><FaSearch className="mr-2 h-4 w-4" />Search</>}
         </button>
       </div>
       <div
