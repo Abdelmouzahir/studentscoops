@@ -88,9 +88,9 @@ export default function Header_stud({ handleSignOut }) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/resturantInformation" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/student/orderHistory" className="flex items-center gap-2" prefetch={false}>
                 <ListIcon className="w-4 h-4" />
-                Restaurant
+                Order History
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
