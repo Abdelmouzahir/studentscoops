@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useTable, useGlobalFilter } from 'react-table';
+import Image from 'next/image';
 import { MoreHorizontal } from "lucide-react";
 import { useUserAuth } from '@/services/utils';
 import { getRestaurantInformation, getMenuInformationByUser } from '@/services/GetRequest/getRequest';
@@ -35,7 +36,96 @@ import Link from 'next/link';
 export default function SettingsRestaurant() {
   const { user } = useUserAuth();
   const [restaurantData, setRestaurantData] = useState([]);
-  const [menuData, setMenuData] = useState([]);
+  const [menuData, setMenuData] = useState([{
+    id: 1,
+    imageUrl: '/images/food.png',
+    name: 'Classic Burger',
+    status: 'Available',
+    price: 8.99,
+    totalSales: 25,
+    createdAt: { seconds: 1645426800 }, // Replace with actual timestamp
+  },
+  {
+    id: 2,
+    imageUrl: '/images/menu/item2.jpg',
+    name: 'Vegetarian Pizza',
+    status: 'Available',
+    price: 12.49,
+    totalSales: 15,
+    createdAt: { seconds: 1645333200 }, // Replace with actual timestamp
+  },
+  {
+    id: 3,
+    imageUrl: '/images/menu/item3.jpg',
+    name: 'Pasta Alfredo',
+    status: 'Sold Out',
+    price: 10.99,
+    totalSales: 30,
+    createdAt: { seconds: 1645239600 }, // Replace with actual timestamp
+  },
+  {
+    id: 4,
+    imageUrl: '/images/menu/item4.jpg',
+    name: 'Grilled Salmon',
+    status: 'Available',
+    price: 15.99,
+    totalSales: 20,
+    createdAt: { seconds: 1645146000 }, // Replace with actual timestamp
+  },
+  {
+    id: 5,
+    imageUrl: '/images/menu/item5.jpg',
+    name: 'Caesar Salad',
+    status: 'Available',
+    price: 7.99,
+    totalSales: 40,
+    createdAt: { seconds: 1645052400 }, // Replace with actual timestamp
+  },
+  {
+    id: 6,
+    imageUrl: '/images/menu/item6.jpg',
+    name: 'Chocolate Cake',
+    status: 'Available',
+    price: 5.99,
+    totalSales: 10,
+    createdAt: { seconds: 1644958800 }, // Replace with actual timestamp
+  },
+  {
+    id: 7,
+    imageUrl: '/images/menu/item7.jpg',
+    name: 'Fruit Smoothie',
+    status: 'Available',
+    price: 4.49,
+    totalSales: 50,
+    createdAt: { seconds: 1644865200 }, // Replace with actual timestamp
+  },
+  {
+    id: 8,
+    imageUrl: '/images/menu/item8.jpg',
+    name: 'Chicken Sandwich',
+    status: 'Available',
+    price: 9.99,
+    totalSales: 18,
+    createdAt: { seconds: 1644771600 }, // Replace with actual timestamp
+  },
+  {
+    id: 9,
+    imageUrl: '/images/menu/item9.jpg',
+    name: 'Margarita Cocktail',
+    status: 'Available',
+    price: 6.99,
+    totalSales: 12,
+    createdAt: { seconds: 1644678000 }, // Replace with actual timestamp
+  },
+  {
+    id: 10,
+    imageUrl: '/images/menu/item10.jpg',
+    name: 'BBQ Ribs',
+    status: 'Available',
+    price: 13.99,
+    totalSales: 22,
+    createdAt: { seconds: 1644584400 }, // Replace with actual timestamp
+  },]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [globalFilter, setGlobalFilter] = useState('');
 
@@ -73,10 +163,10 @@ export default function SettingsRestaurant() {
     }
   }, [restaurantData]);
 
-  const formatDate = (timestamp) => {
+  /*const formatDate = (timestamp) => {
     const date = new Date(timestamp.seconds * 1000);
     return date.toLocaleString();
-  };
+  };*/
 
   const columns = React.useMemo(
     () => [
@@ -117,7 +207,7 @@ export default function SettingsRestaurant() {
       {
         Header: 'Created at',
         accessor: 'createdAt',
-        Cell: ({ cell: { value } }) => formatDate(value),
+        Cell: ({ cell: { value } }) => new Date(value.seconds * 1000).toLocaleString(),
         className: "hidden md:table-cell",
       },
       {
