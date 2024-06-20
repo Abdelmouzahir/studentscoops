@@ -3,6 +3,7 @@ import Link from "next/link";
 import SDashboard from './SDashboard';
 import RDashboard from './RDashboard';
 import Dash from "./overviewDash";
+
 import { Button } from "@/components/ui/button";
 import { AiOutlineTeam, AiOutlineShop, AiOutlineSetting, AiOutlineHome } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
@@ -51,6 +52,7 @@ export default function Page() {
           {activeTab === 'student' && <SDashboard />}
           {activeTab === 'restaurant' && <RDashboard />}
           {activeTab === 'home' && <Dash />}
+          
         </div>
       </div>
     </div>
