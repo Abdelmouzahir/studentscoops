@@ -8,7 +8,9 @@ import {
   LineChart,
   Menu,
   Package,
+  Package2,
   ShoppingCart,
+  Users,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -28,6 +30,10 @@ export default function Header({ handleSignOut }) {
   function handleonclick_setting(){
     router.push("/restraunt/setting")
   };
+
+  function handle_support(){
+    router.push("/restraunt/support")
+  }
 
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
@@ -51,7 +57,7 @@ export default function Header({ handleSignOut }) {
               className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-primary"
             >
               <Home className="h-5 w-5 text-primary" />
-              Home
+              Inventory
             </Link>
             <Link
               href="#"
@@ -88,7 +94,7 @@ export default function Header({ handleSignOut }) {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleonclick_setting} >Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem onClick={handle_support}>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
