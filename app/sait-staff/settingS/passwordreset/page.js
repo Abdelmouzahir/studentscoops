@@ -21,10 +21,7 @@ export default function Passwordreset() {
     // Changes to be made here 
     <div className="mx-full max-w-md space-y-6 py-12">
       <div className="text-left space-y-2 px-1">
-        <h1 className="text-3xl font-bold ">Reset Password</h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          Enter your email and a new password to reset your account password.
-        </p>
+        <h1 className="text-3xl font-bold ">Change Your Password</h1>
       </div>
       <Card className="w-[200%]">
         <CardContent className=" space-y-4 pt-5 ">
@@ -61,7 +58,7 @@ export default function Passwordreset() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute top-1/2 right-3 -translate-y-1/2"
+                className="absolute top-1/2 right-3 -translate-y-1/2 "
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
               >
                 <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
@@ -71,7 +68,7 @@ export default function Passwordreset() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full bg-green-600">
             Reset Password
           </Button>
         </CardFooter>
