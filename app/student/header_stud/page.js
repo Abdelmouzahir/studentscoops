@@ -6,7 +6,7 @@ export default function Header_stud({ handleSignOut }) {
   return (
     <header className="flex items-center justify-between h-16 px-4 md:px-6 bg-primary shadow-sm dark:bg-gray-950">
       <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-white" prefetch={false}>
+        <Link href="/student" className="flex items-center gap-2 text-2xl font-bold text-white" prefetch={false}>
           <span >STUDENT SCOOPS</span>
         </Link>
       </div>
