@@ -15,16 +15,58 @@ import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import Header_stud from "@/app/student/header_stud/page"
 export default function PaymentOptions() {
-
-  const [cardInfo, setCardinfo] = useState(false)
-
+  const [cardInfo, setCardInfo] = useState(false);
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardNumberError, setCardNumberError] = useState('');
+  const [expirationDate, setExpirationDate] = useState('');
+  const [cvv, setCVV] = useState('');
+  const [cvvError, setCVVError] = useState('');
 
   const toggleCardInfo = () => {
-    setCardinfo(!cardInfo)
-  }
+    setCardInfo(!cardInfo);
+  };
+
+  const formatCardNumber = (value) => {
+    const cleaned = value.replace(/\D/g, ''); // Remove non-digit characters
+    const match = cleaned.match(/.{1,4}/g); // Split into chunks of 4 digits
+    return match ? match.join(' ') : '';
+  };
+
+  const handleCardNumberChange = (e) => {
+    const value = e.target.value;
+    const formattedValue = formatCardNumber(value);
+    if (formattedValue.replace(/\s/g, '').length <= 16) {
+      setCardNumber(formattedValue);
+      setCardNumberError('');
+    } else {
+      setCardNumberError('Card number must be 16 digits');
+    }
+  };
+
+  const handleExpirationDateChange = (e) => {
+    const value = e.target.value;
+    // Example format: MM/YY
+    const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
+    if (regex.test(value)) {
+      setExpirationDate(value);
+    } else {
+      setExpirationDate('');
+    }
+  };
+
+  const handleCVVChange = (e) => {
+    const value = e.target.value;
+    // CVV should be 3 or 4 digits
+    const regex = /^[0-9]{3,4}$/;
+    if (regex.test(value)) {
+      setCVV(value);
+      setCVVError('');
+    } else {
+      setCVVError('CVV must be 3 or 4 digits');
+    }
+  };
 
   return (
-
     <>
       <Header_stud />
       <section className="w-full py-12 md:py-20">
@@ -42,52 +84,83 @@ export default function PaymentOptions() {
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Visa, Mastercard, American Express</p>
                   </div>
                 </div>
-                <Link
+                <a
                   onClick={toggleCardInfo}
                   href="#"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                   prefetch={false}
-
                 >
-
                   Pay with Card
-                </Link>
-                {cardInfo && <Dialog defaultOpen>
-                  <DialogTrigger asChild>
-                    
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Payment</DialogTitle>
-                      <DialogDescription>Enter your payment details</DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="cardNumber">Card Number</Label>
-                        <Input id="cardNumber" placeholder="0000 0000 0000 0000" type="text" />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
+                </a>
+                {cardInfo && (
+                  <Dialog defaultOpen>
+                    <DialogTrigger asChild>
+                      {/* Trigger element */}
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Payment</DialogTitle>
+                        <DialogDescription>Enter your payment details</DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
                         <div className="space-y-2">
-                          <Label htmlFor="expirationDate">Expiration Date</Label>
-                          <Input id="expirationDate" placeholder="MM/YY" type="text" />
+                          <Label htmlFor="cardNumber">Card Number</Label>
+                          <Input
+                            id="cardNumber"
+                            placeholder="0000 0000 0000 0000"
+                            type="text"
+                            value={cardNumber}
+                            onChange={handleCardNumberChange}
+                            pattern="\d*"
+                            required
+                          />
+                          {cardNumberError && (
+                            <p className="text-red-500 text-sm">{cardNumberError}</p>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="expirationDate">Expiration Date</Label>
+                            <Input
+                              id="expirationDate"
+                              placeholder="MM/YY"
+                              type="text"
+                              value={expirationDate}
+                              onChange={handleExpirationDateChange}
+                              maxLength="5"
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="cvv">CVV</Label>
+                            <Input
+                              id="cvv"
+                              placeholder="123"
+                              type="text"
+                              value={cvv}
+                              onChange={handleCVVChange}
+                              pattern="\d*"
+                              maxLength="4"
+                              required
+                            />
+                            {cvvError && (
+                              <p className="text-red-500 text-sm">{cvvError}</p>
+                            )}
+                          </div>
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="cvv">CVV</Label>
-                          <Input id="cvv" placeholder="123" type="text" />
+                          <Label htmlFor="cardholderName">Cardholder Name</Label>
+                          <Input id="cardholderName" placeholder="John Doe" type="text" />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="cardholderName">Cardholder Name</Label>
-                        <Input id="cardholderName" placeholder="John Doe" type="text" />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button type="submit" className="w-full">
-                        Save Details
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>}
+                      <DialogFooter>
+                        <Button type="submit" className="w-full">
+                          Save Details
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                )}
               </div>
               <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800">
                 <div className="flex items-center gap-4">
@@ -99,13 +172,13 @@ export default function PaymentOptions() {
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Fast, secure, and easy checkout</p>
                   </div>
                 </div>
-                <Link
+                <a
                   href="#"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                   prefetch={false}
                 >
                   Pay with PayPal
-                </Link>
+                </a>
               </div>
               <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800">
                 <div className="flex items-center gap-4">
@@ -113,26 +186,25 @@ export default function PaymentOptions() {
                     <DollarSignIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
                   </div>
                   <div>
-                    <p className="font-medium">Cash on Delivery</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Pay with cash when your order arrives</p>
+                    <p className="font-medium">Pay on Pickup</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Pay with cash when you arrive at the store</p>
                   </div>
                 </div>
-                <Link
+                <a
                   href="#"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                   prefetch={false}
                 >
-                  Pay on Delivery
-                </Link>
+                  Pay on Pickup
+                </a>
               </div>
             </div>
           </div>
         </div>
       </section>
     </>
-  )
+  );
 }
-
 function DollarSignIcon(props) {
   return (
     <svg

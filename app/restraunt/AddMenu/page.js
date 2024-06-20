@@ -38,7 +38,7 @@ const Page = () => {
       "image name",
       image[0].name,
     );
-    router.push("/restraunt/dashbord_resta/inventory")
+    router.push("/restraunt/Home")
   };
 
   return (

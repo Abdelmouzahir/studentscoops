@@ -74,6 +74,7 @@ export async function addRestaurantInformation(
     }
   );
 }
+
 export async function addRestaurantMenu(user, name, price, description, image) {
   const storageRef = ref(storage, `menu/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);

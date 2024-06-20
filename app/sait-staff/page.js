@@ -2,9 +2,12 @@
 import Link from "next/link";
 import SDashboard from './SDashboard';
 import RDashboard from './RDashboard';
+import Dash from "./overviewDash";
+import Settings from "./settingS";
 import { Button } from "@/components/ui/button";
 import { AiOutlineTeam, AiOutlineShop, AiOutlineSetting, AiOutlineHome } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
+//import navbar
 import SaitStaffNav from "@/components/SaitStaffNav";
 import { CgProfile } from "react-icons/cg";
 import { useState } from 'react';
@@ -48,6 +51,8 @@ export default function Page() {
           {/* select the tab based on the click */}
           {activeTab === 'student' && <SDashboard />}
           {activeTab === 'restaurant' && <RDashboard />}
+          {activeTab === 'home' && <Dash />}
+          {activeTab === 'setting' && <Settings />}
         </div>
       </div>
     </div>

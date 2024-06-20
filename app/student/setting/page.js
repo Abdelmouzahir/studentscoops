@@ -1,6 +1,8 @@
 /**
  * v0 by Vercel.
  */
+"use client"
+import React , {useState} from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import Passwordreset from "./passwordreset/page"
@@ -8,7 +10,15 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import Header_stud from "../header_stud/page"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 export default function Settings() {
+
+  const [deleteAccount, setDeleteAccount] = useState(false)
+
+
+  const toggleDeleteAccount = () => {
+    setDeleteAccount(!deleteAccount)
+  }
   return (
     <div className="flex flex-col min-h-screen">
 
@@ -120,9 +130,10 @@ export default function Settings() {
                     </p>
                   </div>
                   <div className="ml-auto">
-                    <Button variant="ghost" size="icon">
+                    <Button  variant="ghost" size="icon">
                       <MailIcon className="h-5 w-5" />
                     </Button>
+                   
                   </div>
                 </div>
               </CardContent>
@@ -148,9 +159,28 @@ export default function Settings() {
                         <Label htmlFor="username">Type your username to confirm</Label>
                         <Input id="username" placeholder="Enter your username" />
                       </div>
-                      <Button variant="destructive" className="w-full">
+                      <Button onClick={toggleDeleteAccount} variant="destructive" className="w-full">
                         Delete Account
                       </Button>
+                      {deleteAccount && <Dialog defaultOpen>
+                  <DialogTrigger asChild>
+                    
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Delete Account Confirmation</DialogTitle>
+                      <DialogDescription>Are you sure you want to delete your Account</DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button type="submit" className="w-full">
+                        Yes 
+                      </Button>
+                      <Button type="submit" className="w-full">
+                        No 
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>}
                     </form>
                   </div>
                 </div>

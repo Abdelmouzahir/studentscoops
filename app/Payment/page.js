@@ -3,28 +3,26 @@
  * @see https://v0.dev/t/G4TCFFaWzHA
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
+"use client"
+import React, {useState} from 'react'
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+
 import Header_stud from "../student/header_stud/page"
+
 export default function Payment() {
+  const [paymentDone, setPaymentDone] = useState(false)
+  const confirmedPayement = ()=>{
+    setPaymentDone(!paymentDone)
+  }
   return (<>
     <Header_stud />
     <div className="flex flex-col min-h-screen">
       <main className="flex-1 py-12 md:py-20">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
-            <div className="flex flex-col items-center justify-center gap-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20">
-                <CheckIcon className="h-8 w-8 text-green-500 dark:text-green-400" />
-              </div>
-              <div className="space-y-2 text-center">
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Payment Successful</h1>
-                <p className="text-gray-500 dark:text-gray-400">Thank you for your purchase!</p>
-              </div>
-              <div className="text-4xl font-bold">$149.99</div>
-            </div>
-          </div>
-          <div className="mt-8 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
-            <h2 className="text-2xl font-bold">Order Summary</h2>
+          <div className="mt-2 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
+            <h2 className="text-4xl font-bold">Order Summary</h2>
             <div className="mt-6 divide-y divide-gray-200 dark:divide-gray-800">
               <div className="flex items-center justify-between py-4">
                 <div className="flex items-center">
@@ -56,19 +54,39 @@ export default function Payment() {
           </div>
           <div className="mt-8 flex justify-center">
             <Link
-              href="#"
+              href="/Restrauntitems"
               className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
               prefetch={false}
             >
-              View Order History
+             Return to Home
             </Link>
             <Link
-              href="/Restrauntitems"
+            onClick={confirmedPayement}
+              href="#"
               className="ml-4 inline-flex h-10 items-center justify-center rounded-md border border-gray-200 bg-white px-6 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
               prefetch={false}
             >
-              Return to Home
+              Pay and Checkout
             </Link>
+            {paymentDone && <Dialog defaultOpen>
+                  <DialogTrigger asChild>
+                    
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[600px]">
+                  <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950 mt-6 ">
+            <div className="flex flex-col items-center justify-center gap-6 p-5">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20">
+                <CheckIcon className="h-8 w-8 text-green-500 dark:text-green-400" />
+              </div>
+              <div className="space-y-2 text-center">
+                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Payment Successful</h1>
+                <p className="text-gray-500 dark:text-gray-400">Thank you for your purchase!</p>
+              </div>
+              <div className="text-4xl font-bold">$149.99</div>
+            </div>
+          </div>
+                  </DialogContent>
+                </Dialog>}
           </div>
         </div>
       </main>

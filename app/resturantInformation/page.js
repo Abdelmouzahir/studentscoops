@@ -90,7 +90,12 @@ const Page = () => {
   return (
     <div
       className="min-h-screen py-40"
-      style={{ backgroundImage: "linear-gradient(115deg, #dfc42f, #faf7df)" }}
+      style={{
+         backgroundImage: "url(/assets/images/salade.jpg)",
+         backgroundSize: "cover",
+         backgroundPosition: "center",
+         backgroundRepeat: "no-repeat"
+         }}
     >
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">

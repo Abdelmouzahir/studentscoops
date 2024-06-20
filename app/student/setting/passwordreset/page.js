@@ -13,71 +13,104 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 export default function Passwordreset() {
-  const [showSection, setShowSection] = useState(true)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
+  const [showSection, setShowSection] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match');
+    } else {
+      setErrorMessage('');
+      // Proceed with form submission
+    }
+  };
 
   return (
-    // Changes to be made here 
     <div className="mx-full max-w-md space-y-6 py-12">
-      <div className="text-left space-y-2 px-1">
-        <h1 className="text-3xl font-bold ">Reset Password</h1>
+    <div className="text-left space-y-2 px-1">
+      <h1 className="text-3xl font-bold ">Reset Password</h1>
         <p className="text-gray-500 dark:text-gray-400">
           Enter your email and a new password to reset your account password.
         </p>
       </div>
       <Card className="w-[200%]">
-        <CardContent className=" space-y-4 pt-5 ">
-          <div className="w-full flex items-center justify-between space-x-4 ">
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4 pt-5">
+            <div className="w-full flex items-center justify-between space-x-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+              </div>
+              <Switch
+                id="toggle-email"
+                checked={showSection}
+                onCheckedChange={() => setShowSection(!showSection)}
+              />
+            </div>
+            {showSection && (
+              <div className="space-y-2">
+                <Input id="email" type="email" placeholder="m@example.com" required />
+              </div>
+            )}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="password">New Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-1/2 right-3 -translate-y-1/2"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+                </Button>
+              </div>
             </div>
-            <Switch id="toggle-email" checked={showSection} onCheckedChange={() => setShowSection(!showSection)} />
-          </div>
-          {showSection && (
             <div className="space-y-2">
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Label htmlFor="confirmPassword">Confirm New Password</Label>
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showPasswordConfirm ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-1/2 right-3 -translate-y-1/2"
+                  onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                >
+                  <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <span className="sr-only">{showPasswordConfirm ? 'Hide password' : 'Show password'}</span>
+                </Button>
+              </div>
             </div>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="password">New Password</Label>
-            <div className="relative">
-              <Input id="password" type={showPassword ? "text" : "password"} required />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-1/2 right-3 -translate-y-1/2"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
-              </Button>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm New Password</Label>
-            <div className="relative">
-              <Input id="confirmPassword" type={showPasswordConfirm ? "text" : "password"} required />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-1/2 right-3 -translate-y-1/2"
-                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
-              >
-                <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <span className="sr-only">{showPasswordConfirm ? "Hide password" : "Show password"}</span>
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full">
-            Reset Password
-          </Button>
-        </CardFooter>
+            {errorMessage && (
+              <p className="text-red-500 text-sm">{errorMessage}</p>
+            )}
+          </CardContent>
+          <CardFooter>
+            <Button type="submit" className="w-full">
+              Reset Password
+            </Button>
+          </CardFooter>
+        </form>
       </Card>
     </div>
-  )
+  );
 }
 
 function EyeOffIcon(props) {
