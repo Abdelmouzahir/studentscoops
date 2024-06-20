@@ -7,6 +7,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 
+
 const Layout = ({ children }) => {
   const router = useRouter();
   const { user } = useUserAuth();

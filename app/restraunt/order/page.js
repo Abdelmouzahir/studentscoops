@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -43,35 +42,28 @@ export default function Order() {
   const [searchQuery, setSearchQuery] = useState("")
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false)
   const [orderToCancel, setOrderToCancel] = useState(null)
-  
   const handleOrderReady = (orderId) => {
     setOrders((prevOrders) =>
       prevOrders.map((order) => (order.id === orderId ? { ...order, status: "Waiting for Pickup" } : order)),
     )
   }
-  
   const handlePickupComplete = (orderId) => {
     setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId))
   }
-  
   const handleCancelOrder = (orderId) => {
     setOrderToCancel(orderId)
     setShowCancelConfirmation(true)
   }
-  
   const handleConfirmCancelOrder = () => {
     setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderToCancel))
     setShowCancelConfirmation(false)
     setOrderToCancel(null)
   }
-  
   const handleCancelConfirmationClose = () => {
     setShowCancelConfirmation(false)
     setOrderToCancel(null)
   }
-  
   const filteredOrders = orders.filter((order) => order.id.toString().includes(searchQuery))
-  
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Incoming Orders</h1>
@@ -83,7 +75,7 @@ export default function Order() {
         className="mb-4"
       />
       {filteredOrders.length === 0 ? (
-        <p>No orders found.</p>
+        <p className="text-center font-bold">No orders found.</p>
       ) : (
         <ul className="grid gap-4">
           {filteredOrders.map((order) => (
@@ -133,9 +125,9 @@ export default function Order() {
                   )}
                 </span>
               </div>
-              <div className="mt-4 md:mt-0 md:w-1/3 md:text-right">
+              <div className="mt-4 md:mt-0 md:w-1/3 md:text-right flex justify-end">
                 {order.status === "Preparing" ? (
-                  <div className="flex gap-2 md:ml-auto justify-end">
+                  <div className="flex gap-2">
                     <Button variant="outline" onClick={() => handleOrderReady(order.id)}>
                       Ready
                     </Button>
@@ -192,6 +184,7 @@ function CheckIcon(props) {
   )
 }
 
+
 function LoaderPinwheelIcon(props) {
   return (
     <svg
@@ -213,6 +206,7 @@ function LoaderPinwheelIcon(props) {
     </svg>
   )
 }
+
 
 function PauseIcon(props) {
   return (
