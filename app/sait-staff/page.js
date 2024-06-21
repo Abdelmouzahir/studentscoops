@@ -5,13 +5,14 @@ import RDashboard from './RDashboard';
 import Dash from "./overviewDash";
 import Settings from "./settingS";
 import { Button } from "@/components/ui/button";
-import { AiOutlineTeam, AiOutlineShop, AiOutlineSetting, AiOutlineHome } from "react-icons/ai";
+import { AiOutlineTeam, AiOutlineShop, AiOutlineSetting, AiOutlineHome,AiOutlineUser } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
 //import navbar
 import SaitStaffNav from "@/components/SaitStaffNav";
 import { CgProfile } from "react-icons/cg";
 import { useState } from 'react';
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -39,10 +40,14 @@ export default function Page() {
       <SaitStaffNav isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} onTabClick={handleTabClick} />
       <div className={`flex-1 flex flex-col mx-auto transition-all duration-300 ease-in-out ${isCollapsed ? 'ml-20' : 'ml-64'}`}>
         <div className="flex justify-between items-center px-4 py-3 mt-2 mr-5">
-          <h1 className="text-lg text-black font-bold inline-flex ml-5">
-            <CgProfile className="mr-2 h-5 w-5 mt-1" /> Hi! Name
-          </h1>
-          <button onClick={handeLogoutClick} className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:bg-[#6c5ce7] dark:text-gray-50 dark:hover:bg-[#6c5ce7]/90 dark:focus-visible:ring-[#6c5ce7]">
+
+           <div className="inline-flex items-center ml-5 rounded-full">
+             <div className=" bg-slate-200 relative h-12 w-12 border rounded-full overflow-hidden hover:bg-[#F29F3D]">
+              <AiOutlineUser className="w-9 h-9 ml-1.5 mt-1 text-gray-600 " />
+             </div>    
+             <h1 className="text-lg text-gray-600 font-bold mt-2 ml-2 ">  Hi! {"User"}</h1>
+          </div>
+          <button onClick={handeLogoutClick} className="inline-flex h-10 items-center justify-center rounded-md bg-gray-600 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-[#F29F3D] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:bg-[#6c5ce7] dark:text-gray-50 dark:hover:bg-[#6c5ce7]/90 dark:focus-visible:ring-[#6c5ce7]">
             <LuLogOut className="mr-2 h-5 w-5" />
             Logout
           </button>
