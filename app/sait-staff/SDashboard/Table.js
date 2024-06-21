@@ -98,7 +98,7 @@ const Table = ({
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
-          <thead className="bg-primary text-white">
+          <thead className="bg-gray-100 text-gray-600">
             <tr>
               <th className="py-4 px-6">First Name</th>
               <th className="py-4 px-6">Last Name</th>

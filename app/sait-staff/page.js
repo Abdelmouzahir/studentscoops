@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState('student'); // Set default active tab
+  const [activeTab, setActiveTab] = useState('home'); // Set default active tab
   const router = useRouter();
 
   // function to select the tab
@@ -31,7 +31,7 @@ export default function Page() {
   return (
     <div className="flex min-h-screen mx-auto"
       style={{
-        backgroundImage: "url(/assets/images/salade.jpg)",
+        backgroundImage: "linear-gradient(115deg, #F7F5EB, #F9F5F6)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat"
@@ -39,7 +39,7 @@ export default function Page() {
       <SaitStaffNav isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} onTabClick={handleTabClick} />
       <div className={`flex-1 flex flex-col mx-auto transition-all duration-300 ease-in-out ${isCollapsed ? 'ml-20' : 'ml-64'}`}>
         <div className="flex justify-between items-center px-4 py-3 mt-2 mr-5">
-          <h1 className="text-lg text-white font-bold inline-flex ml-5">
+          <h1 className="text-lg text-black font-bold inline-flex ml-5">
             <CgProfile className="mr-2 h-5 w-5 mt-1" /> Hi! Name
           </h1>
           <button onClick={handeLogoutClick} className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:bg-[#6c5ce7] dark:text-gray-50 dark:hover:bg-[#6c5ce7]/90 dark:focus-visible:ring-[#6c5ce7]">
