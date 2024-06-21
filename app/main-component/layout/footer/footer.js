@@ -13,8 +13,8 @@ const Footer = () => {
 
   return (
     <div className='pt-[5rem] pb-[3rem] bg-primary'>
-      <div className='w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 
-          gap-[3rem] items-start pb-[2rem] border-b-2 border-white border-opacity-10'>
+      <div className='w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+          gap-[2rem] items-start pb-[2rem] border-b-2 border-white border-opacity-10'>
         {/* footer section 1*/}
         <div>
           <h1 className='text-[24px] text-white mb-[1rem] font-bold uppercase'> STUDENT SCOOPS </h1>
@@ -49,10 +49,8 @@ const Footer = () => {
             <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Enactus</p>
             </a>
             </Link>
-          
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Privacy</p>
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Policy</p>
-          
         </div>
         {/* 3nd part of footer*/}
         <div>
