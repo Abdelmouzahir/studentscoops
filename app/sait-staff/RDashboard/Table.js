@@ -2,17 +2,9 @@ import React from 'react';
 import { LuPencil } from "react-icons/lu";
 import { LuTrash } from "react-icons/lu";
 import { IoStorefront } from "react-icons/io5";
+import { formatPhoneNumber } from '@/Constant/formated';
 
 const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding }) => {
-
-  function formatPhoneNumber(phoneNumberString) {
-    const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-    if (match) {
-      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
-    }
-    return phoneNumberString;
-  }
 
   return (
     <div className="container mx-auto mt-8 p-4 rounded-lg ">
