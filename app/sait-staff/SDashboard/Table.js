@@ -98,7 +98,7 @@ const Table = ({
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
-          <thead className="bg-primary text-white">
+          <thead className="bg-gray-100 text-gray-600">
             <tr>
               <th className="py-4 px-6">First Name</th>
               <th className="py-4 px-6">Last Name</th>
@@ -153,14 +153,14 @@ const Table = ({
                           <td className="py-4 px-6 text-center">
                             <div className="flex justify-center space-x-2">
                               <button
-                                onClick={() => handleEdit(student.id)}
+                                onClick={ handleEdit(student.id)}
                                 className="inline-flex items-center justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                               >
                                 Edit
                                 <LuPencil className="ml-2 h-4 w-4" />
                               </button>
                               <button
-                                onClick={() => handleDelete(student.id)}
+                                onClick={ handleDelete(student.id)}
                                 className="inline-flex items-center justify-center rounded-md bg-red-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-red-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-red-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                               >
                                 Delete
