@@ -3,13 +3,16 @@ import React, { useState } from 'react';
 import { formatPhoneNumber } from "@/Constant/formated";
 import Swal from 'sweetalert2';
 import { collection, addDoc } from "firebase/firestore";
-import { db } from '@/app/firebase/config';
+import { db, auth } from '@/app/firebase/config';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-const Add = ({ students, setStudents, setIsAdding}) => {
+const Add = ({ students, setStudents, setIsAdding }) => {
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+
+  const genericPassword = "Student!123";
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -23,11 +26,29 @@ const Add = ({ students, setStudents, setIsAdding}) => {
       });
     }
 
-    const newStudent = { name, lastName, email, phoneNumber };
+    if (!email.endsWith('@edu.sait.ca')) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'The email should have @edu.sait.ca.',
+        showConfirmButton: true,
+      });
+    }
 
     try {
-      await addDoc(collection(db, "students"), newStudent);
-      setStudents([...students, newStudent]);
+      // Create user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, genericPassword);
+      const user = userCredential.user;
+
+      // Add student to Firestore
+      const newStudent = { name, lastName, email, phoneNumber, uid: user.uid };
+
+      await addDoc(collection(db, "students"), {
+        ...newStudent
+      });
+
+      // Update local state
+      setStudents(prevStudents => [...prevStudents, newStudent]);
       setIsAdding(false);
 
       Swal.fire({
@@ -42,7 +63,7 @@ const Add = ({ students, setStudents, setIsAdding}) => {
       Swal.fire({
         icon: 'error',
         title: 'Error!',
-        text: 'An error occurred while adding the student.',
+        text: error.message,
         showConfirmButton: true,
       });
     }

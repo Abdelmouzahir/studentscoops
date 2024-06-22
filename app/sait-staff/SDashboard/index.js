@@ -7,6 +7,8 @@ import Edit from './Edit';
 //import { studentsData } from '../data';
 import { getAllStudentsInformation } from '@/services/GetRequest/getRequest';
 import {deleteStudentData} from '@/services/PostRequest/postRequest';
+import { useRouter } from "next/navigation";
+
 
 const Dashboard = ({ setIsAuthenticated }) => {
   const [students, setStudents] = useState(null);
@@ -29,6 +31,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
     const student = students.find(student => student.id === id);
     setSelectedStudent(student);
     setIsEditing(true);
+
   };
 
   const handleDelete = id => {

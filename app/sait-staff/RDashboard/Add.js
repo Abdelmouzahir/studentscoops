@@ -1,21 +1,23 @@
 'use client'
 import React, { useState } from 'react';
-import { formatPhoneNumber} from "@/Constant/formated"
+import { formatPhoneNumber } from "@/Constant/formated"
 import Swal from 'sweetalert2';
 
 import { collection, addDoc } from "firebase/firestore"; 
-import { db } from '@/app/firebase/config'
+import { db, auth } from '@/app/firebase/config'
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   
+  const genericPassword = "Rest!123";
 
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !mobileNumber ) {
+    if (!name || !email || !mobileNumber) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -24,34 +26,45 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
       });
     }
 
-    const newRestaurant = {
-      name,
-      email,
-      mobileNumber,
-     
-    };
-
-    restaurants.push(newRestaurant);
-
     try {
+      // Create user in Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, genericPassword);
+      const user = userCredential.user;
+
+      // Add restaurant to Firestore
+      const newRestaurant = {
+        name,
+        email,
+        mobileNumber,
+        uid: user.uid, // link with user ID
+      };
+
       await addDoc(collection(db, "restaurants"), {
         ...newRestaurant
       });
+
+      // Update local state
+      restaurants.push(newRestaurant);
+      setRestaurants(restaurants);
+      setIsAdding(false);
+      getRestaurants();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Added!',
+        text: `${name}'s data has been added.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
-      console.log(error)
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: error.message,
+        showConfirmButton: true,
+      });
     }
-
-    setRestaurants(restaurants);
-    setIsAdding(false);
-    getRestaurants()
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Added!',
-      text: `${name}'s data has been added.`,
-      showConfirmButton: false,
-      timer: 1500,
-    });
   };
 
   return (
@@ -59,11 +72,11 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
       <form onSubmit={handleAdd} className="space-y-6">
         <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Add Restaurant</h1>
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">Restaurant Name</label>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Restaurant Name</label>
           <input
-            id="firstName"
+            id="name"
             type="text"
-            name="firstName"
+            name="name"
             value={name}
             onChange={e => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"

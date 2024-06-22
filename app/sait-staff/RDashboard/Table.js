@@ -46,7 +46,7 @@ const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding }) => {
                   
                   <td className="py-4 px-6 text-center">{restaurant.name}</td>
                   <td className="py-4 px-6 text-center">{restaurant.email}</td>
-                  <td className="py-4 px-6 text-center">{formatPhoneNumber(restaurant.phoneNumber)}</td>
+                  <td className="py-4 px-6 text-center">{formatPhoneNumber(restaurant.mobileNumber)}</td>
                  
                   <td className="py-4 px-6 text-center">
                     <div className="flex justify-center space-x-2">
