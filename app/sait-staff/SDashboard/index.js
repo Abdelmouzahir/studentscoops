@@ -18,15 +18,16 @@ const Dashboard = ({ setIsAuthenticated }) => {
   const [search, setSearch] = useState(false);
   const [isEditing, setIsEditing] = useState(null);
   
-  useEffect(() => {
-    async function getStudents() {
+  async function getStudents() {
       const data = await getAllStudentsInformation();
       setStudents(data);
     }
+
+  useEffect(() => {
     getStudents();
   }, []);
 
-  useEffect(()=>{if(isEditing==false)window.location.reload()},[isEditing])
+  useEffect(()=>{if(isEditing==false)getStudents()},[isEditing])
 
   const handleEdit = id => {
     const student = students.find(student => student.id === id);

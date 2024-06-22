@@ -10,14 +10,14 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [PhoneNumber, setPhoneNumber] = useState('');
   
   const genericPassword = "Rest!123";
 
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !mobileNumber) {
+    if (!name || !email || !PhoneNumber) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -35,7 +35,7 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
       const newRestaurant = {
         name,
         email,
-        mobileNumber,
+        PhoneNumber,
         uid: user.uid, // link with user ID
       };
 
@@ -100,8 +100,8 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
             type="text"
             maxLength={14}
             name="phone"
-            value={mobileNumber}
-            onChange={e => setMobileNumber(formatPhoneNumber(e.target.value))}
+            value={PhoneNumber}
+            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
