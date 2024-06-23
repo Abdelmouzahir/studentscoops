@@ -10,14 +10,23 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const currentDate = new Date();
+
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth(); // Remember, month is zero-indexed
+  const year = currentDate.getFullYear();
+
+  const newDate = [day,month,year];
+  let firstWord = name.split(" ");
   
-  const genericPassword = "Rest!123";
+  const genericPassword = firstWord[0]+phoneNumber.slice(-3).concat('!');
 
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !mobileNumber) {
+    if (!name || !email || !phoneNumber) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -27,6 +36,7 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
     }
 
     try {
+      console.log('geneic password: ',genericPassword)
       // Create user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, genericPassword);
       const user = userCredential.user;
@@ -35,8 +45,9 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
       const newRestaurant = {
         name,
         email,
-        mobileNumber,
-        uid: user.uid, // link with user ID
+        phoneNumber,
+        uid: user.uid,
+        acountCreated: newDate // link with user ID
       };
 
       await addDoc(collection(db, "restaurants"), {
@@ -100,8 +111,8 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
             type="text"
             maxLength={14}
             name="phone"
-            value={mobileNumber}
-            onChange={e => setMobileNumber(formatPhoneNumber(e.target.value))}
+            value={phoneNumber}
+            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>

@@ -14,11 +14,12 @@ const Dashboard = ({ setIsAuthenticated }) => {
   const [search, setSearch] = useState(false);
   const [isEditing, setIsEditing] = useState(null);
   
-  useEffect(() => {
-    async function getStudents() {
+  async function getStudents() {
       const data = await getAllStudentsInformation();
       setStudents(data);
     }
+
+  useEffect(() => {
     getStudents();
   }, []);
 

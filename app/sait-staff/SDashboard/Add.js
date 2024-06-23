@@ -1,59 +1,78 @@
-'use client'
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 import { formatPhoneNumber } from "@/Constant/formated";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { collection, addDoc } from "firebase/firestore";
-import { db, auth } from '@/app/firebase/config';
+import { db, auth } from "@/app/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Add = ({ students, setStudents, setIsAdding }) => {
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const currentDate = new Date();
 
-  const genericPassword = "Student!123";
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth(); // Remember, month is zero-indexed
+  const year = currentDate.getFullYear();
+
+  const newDate = [day,month,year];
 
   const handleAdd = async (e) => {
     e.preventDefault();
 
     if (!name || !lastName || !email || !phoneNumber) {
       return Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'All fields are required.',
+        icon: "error",
+        title: "Error!",
+        text: "All fields are required.",
         showConfirmButton: true,
       });
     }
 
-    if (!email.endsWith('@edu.sait.ca')) {
+    if (!email.endsWith("@edu.sait.ca")) {
       return Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'The email should have @edu.sait.ca.',
+        icon: "error",
+        title: "Error!",
+        text: "The email should have @edu.sait.ca.",
         showConfirmButton: true,
       });
     }
+    let firstName = name.split(" ");
+    let genericPassword = firstName[0] + phoneNumber.slice(-3).concat("!");
+    console.log(genericPassword)
 
     try {
       // Create user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, email, genericPassword);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        genericPassword
+      );
       const user = userCredential.user;
 
       // Add student to Firestore
-      const newStudent = { name, lastName, email, phoneNumber, uid: user.uid };
+      const newStudent = {
+        name,
+        lastName,
+        email,
+        phoneNumber,
+        uid: user.uid,
+        acountCreated: newDate
+      };
 
       await addDoc(collection(db, "students"), {
-        ...newStudent
+        ...newStudent,
       });
 
       // Update local state
-      setStudents(prevStudents => [...prevStudents, newStudent]);
+      setStudents((prevStudents) => [...prevStudents, newStudent]);
       setIsAdding(false);
 
       Swal.fire({
-        icon: 'success',
-        title: 'Added!',
+        icon: "success",
+        title: "Added!",
         text: `${name} ${lastName}'s data has been added.`,
         showConfirmButton: false,
         timer: 1500,
@@ -61,8 +80,8 @@ const Add = ({ students, setStudents, setIsAdding }) => {
     } catch (error) {
       console.error("Error adding student: ", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error!',
+        icon: "error",
+        title: "Error!",
         text: error.message,
         showConfirmButton: true,
       });
@@ -72,45 +91,67 @@ const Add = ({ students, setStudents, setIsAdding }) => {
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
       <form onSubmit={handleAdd} className="space-y-6">
-        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Add Student</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">
+          Add Student
+        </h1>
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name</label>
+          <label
+            htmlFor="firstName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            First Name
+          </label>
           <input
             id="firstName"
             type="text"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
+          <label
+            htmlFor="lastName"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Last Name
+          </label>
           <input
             id="lastName"
             type="text"
             value={lastName}
-            onChange={e => setLastName(e.target.value)}
+            onChange={(e) => setLastName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Email
+          </label>
           <input
             id="email"
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Phone Number
+          </label>
           <input
             id="phone"
             type="text"
             maxLength={14}
             value={phoneNumber}
-            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
+            onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>

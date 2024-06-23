@@ -38,7 +38,7 @@ const Page = () => {
       "image name",
       image[0].name,
     );
-    router.push("/restraunt/Home")
+    // router.push("/restraunt/Home")
   };
 
   return (
