@@ -2,9 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { formatPhoneNumber } from "@/Constant/formated";
 import Swal from "sweetalert2";
-
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "@/app/firebase/config";
 import { updateStudent } from "@/services/PostRequest/postRequest";
 
 const Edit = ({ selectedStudent, setIsEditing }) => {
@@ -14,7 +11,6 @@ const Edit = ({ selectedStudent, setIsEditing }) => {
   const [lastName, setLastName] = useState(selectedStudent.lastName);
   const [email, setEmail] = useState(selectedStudent.email);
   const [phoneNumber, setPhoneNumber] = useState(selectedStudent.phoneNumber);
-  const updateData = [];
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -27,25 +23,26 @@ const Edit = ({ selectedStudent, setIsEditing }) => {
         showConfirmButton: true,
       });
     }
-    if (name !== "") updateData.push({ name: name });
-    if (email !== "") updateData.push({ email: email });
-    if (phone !== "") updateData.push({ phoneNumber: phoneNumber });
-    if (lastName !== "") updateData.push({ lastName: lastName });
+
+    const updateData = {
+      ...(name && { name }),
+      ...(lastName && { lastName }),
+      ...(email && { email }),
+      ...(phoneNumber && { phoneNumber })
+    };
+
     try {
-      updateData
-        .map(async (item) => {
-          await updateStudent(id, item);
-          setIsEditing(false);
-          Swal.fire({
-            icon: "success",
-            title: "Updated!",
-            text: `${name} ${lastName}'s data has been updated.`,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        });
+      await updateStudent(id, updateData);
+      setIsEditing(false);
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: `${name} ${lastName}'s data has been updated.`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
-      console.log("error while updating data: ", error);
+      console.log("Error while updating data: ", error);
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -54,6 +51,7 @@ const Edit = ({ selectedStudent, setIsEditing }) => {
       });
     }
   };
+
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
       <form onSubmit={handleUpdate} className="space-y-6">
