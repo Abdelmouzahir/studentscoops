@@ -101,33 +101,15 @@ export async function addRestaurantMenu(user, name, price, description, image) {
 
       try {
         // Query to find the restaurant document with the matching userId
-        const q = query(
-          collection(db, "restaurants"),
-          where("userId", "==", user)
-        );
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          // Assuming there's only one restaurant per user
-          const restaurantDoc = querySnapshot.docs[0];
-
-          // Add menu to the sub-collection within the found restaurant document
-          console.log("Restaurant found with ID: ", restaurantDoc.id);
-          await addDoc(
-            collection(db, "restaurants", restaurantDoc.id, "menu"),
-            {
-              userId: user,
-              name,
-              price,
-              description,
-              imageUrl: downloadURL,
-              createdAt: new Date(),
-            }
-          );
-          console.log("Menu item successfully added!");
-        } else {
-          console.error("No restaurant found with the given userId");
-        }
+        await addDoc(collection(db, "restaurant_menu"), {
+          userId: user,
+          name,
+          price,
+          description,
+          imageUrl: downloadURL,
+          createdAt: new Date(),
+        });
+        console.log("Menu item successfully added!");
       } catch (error) {
         console.error("Error writing document: ", error);
       }
@@ -185,12 +167,10 @@ export async function deleteStudentData(id) {
   }
 }
 
-export async function updateStudent(id,prop) {
+export async function updateStudent(id, prop) {
   try {
     const docRef = doc(db, "students", id);
-    await updateDoc(docRef, 
-      prop
-    );
+    await updateDoc(docRef, prop);
   } catch (error) {
     console.error("Error updating document: ", error);
   }
