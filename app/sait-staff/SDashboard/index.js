@@ -4,12 +4,8 @@ import Swal from 'sweetalert2';
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
-//import { studentsData } from '../data';
 import { getAllStudentsInformation } from '@/services/GetRequest/getRequest';
-import {deleteStudentData} from '@/services/PostRequest/postRequest';
-
-
-
+import { deleteStudentData } from '@/services/PostRequest/postRequest';
 
 const Dashboard = ({ setIsAuthenticated }) => {
   const [students, setStudents] = useState(null);
@@ -26,13 +22,20 @@ const Dashboard = ({ setIsAuthenticated }) => {
     getStudents();
   }, []);
 
-  useEffect(()=>{if(isEditing==false)window.location.reload()},[isEditing])
+  useEffect(() => {
+    if (isEditing === false) {
+      async function fetchUpdatedStudents() {
+        const data = await getAllStudentsInformation();
+        setStudents(data);
+      }
+      fetchUpdatedStudents();
+    }
+  }, [isEditing]);
 
   const handleEdit = id => {
     const student = students.find(student => student.id === id);
     setSelectedStudent(student);
     setIsEditing(true);
-
   };
 
   const handleDelete = id => {
@@ -46,7 +49,9 @@ const Dashboard = ({ setIsAuthenticated }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteStudentData(id).then(()=>window.location.reload());
+          await deleteStudentData(id);
+          const updatedStudents = students.filter(student => student.id !== id);
+          setStudents(updatedStudents);
           Swal.fire({
             icon: 'success',
             title: 'Deleted!',
