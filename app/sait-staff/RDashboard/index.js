@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { deleteRestaurantData } from '@/services/PostRequest/postRequest';
 
 
 import Table from './Table';
@@ -44,12 +45,12 @@ const Dashboard = ({ setIsAuthenticated }) => {
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, cancel!',
-    }).then(result => {
+    }).then(async(result) => {
       if (result.value) {
         const [restaurant] = restaurants.filter(restaurant => restaurant.id === id);
 
         // delete document
-        deleteDoc(doc(db, "restaurants", id))
+        await deleteRestaurantData(id)
 
         Swal.fire({
           icon: 'success',

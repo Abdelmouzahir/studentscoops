@@ -47,7 +47,8 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
         email,
         phoneNumber,
         uid: user.uid,
-        acountCreated: newDate // link with user ID
+        acountCreated: newDate, // link with user ID
+        active: true
       };
 
       await addDoc(collection(db, "restaurants"), {

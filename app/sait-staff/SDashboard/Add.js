@@ -59,7 +59,8 @@ const Add = ({ students, setStudents, setIsAdding }) => {
         email,
         phoneNumber,
         uid: user.uid,
-        acountCreated: newDate
+        acountCreated: newDate,
+        active: true
       };
 
       await addDoc(collection(db, "students"), {

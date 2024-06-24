@@ -8,6 +8,10 @@ import { AiOutlineShop, AiOutlineTeam } from "react-icons/ai";
 
 const Overview = () => {
   const [totalNumberStudent, setTotalNumberStudent] = useState(0);
+  const [studentActive, setStudentActive] = useState(0);
+  const [studentNotActive, setStudentNotActive] = useState(0);
+  const [restaurantActive, setRestaurantActive] = useState(0);
+  const [restaurantNotActive, setRestaurantNotActive] = useState(0);
   const [totalNumberRestaurant, setTotalNumberRestaurant] = useState(0);
   const [students, setStudents] = useState(0);
   const [restaurants, setRestaurants] = useState(0);
@@ -17,43 +21,71 @@ const Overview = () => {
 
   useEffect(() => {
     async function gettingStudentInformation() {
+      let studentCount = 0;
+      let studentactive = 0;
+      let studentnotactive = 0;
       await getAllStudentsInformation().then((data) => {
         setTotalNumberStudent(data.length)
         if (data) {
-            data.map((studentdata) => {
-              const date = studentdata.acountCreated[0];
-              const month = studentdata.acountCreated[1];
-              const year = studentdata.acountCreated[2];
-              const studentDate = new Date(year, month, date);
-              if (studentDate >= dateBefore7Days) {
-                setStudents(students+1);
-                return { studentdata };
-              }
-            })
+          data.forEach((studentdata) => {
+            const date = studentdata.acountCreated[0];
+            const month = studentdata.acountCreated[1];
+            const year = studentdata.acountCreated[2];
+            const studentDate = new Date(year, month, date);
+            console.log(studentDate >= dateBefore7Days)
+            if (studentDate >= dateBefore7Days) {
+              studentCount++
+            }
+            if(studentdata.active){
+              studentactive++
+            }
+            if(!studentdata.active){
+              studentnotactive++
+            }
+          })
         }
       });
+      setStudentActive(studentactive);
+      setStudentNotActive(studentnotactive);
+      setStudents(studentCount);
     }
     async function gettingRestaurantInformation() {
+      let restaurantCount = 0;
+      let restaurantactive = 0;
+      let restaurantnotactive = 0;
       await getRestaurantInformation().then((data) => {
         setTotalNumberRestaurant(data.length)
         if (data) {
-            data.map((studentdata) => {
-              const date = studentdata.acountCreated[0];
-              const month = studentdata.acountCreated[1];
-              const year = studentdata.acountCreated[2];
-              const studentDate = new Date(year, month, date);
-              if (studentDate >= dateBefore7Days) {
+            data.map((restaurantdata) => {
+              const date = restaurantdata.acountCreated[0];
+              const month = restaurantdata.acountCreated[1];
+              const year = restaurantdata.acountCreated[2];
+              const restaurantDate = new Date(year, month, date);
+              if (restaurantDate >= dateBefore7Days) {
                 setRestaurants(restaurants+1);
-                return { studentdata };
+                restaurantCount++
+              }
+              if(restaurantdata.active){
+                restaurantactive++
+              }
+              if(!restaurantdata.active){
+                restaurantnotactive++
               }
             })
         }
       });
+      setRestaurantActive(restaurantactive);
+      setRestaurantNotActive(restaurantnotactive);
+      setRestaurants(restaurantCount)
     }
     gettingStudentInformation();
     gettingRestaurantInformation();
     
+    
   }, []);
+  useEffect(()=>{
+    console.log(students)
+  },[students])
   return (
     <div className="flex justify-between flex-wrap">
       <Card
@@ -61,7 +93,7 @@ const Overview = () => {
         value={students}
         icon={<AiOutlineTeam className="w-10 h-10" />}
         change={((students/totalNumberStudent)*100)}
-        changeType="increase"
+        changeType={(studentActive-studentNotActive)>=0?"increase":"decrease"}
         text="in The last 7 days"
       />
       <Card
@@ -69,7 +101,7 @@ const Overview = () => {
         value={restaurants}
         icon={<AiOutlineShop className="w-10 h-10" />}
         change={(restaurants/totalNumberRestaurant)*100}
-        changeType="increase"
+        changeType={(restaurantActive-restaurantNotActive)>=0?"increase":"decrease"}
         text="in The last 7 days"
       />
       <Card

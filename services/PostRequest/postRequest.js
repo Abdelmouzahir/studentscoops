@@ -160,10 +160,22 @@ export default async function addStudentEmailStatus(prop) {
 
 export async function deleteStudentData(id) {
   try {
-    await deleteDoc(doc(db, "students", id));
-    console.log(`Document with ID ${id} deleted successfully`);
+    const docRef = doc(db, "students", id);
+    await updateDoc(docRef, {
+      active: false,
+    });
   } catch (error) {
-    console.error("Error deleting document: ", error);
+    console.error("Error updating document: ", error);
+  }
+}
+export async function deleteRestaurantData(id) {
+  try {
+    const docRef = doc(db, "restaurants", id);
+    await updateDoc(docRef, {
+      active: false,
+    });
+  } catch (error) {
+    console.error("Error updating document: ", error);
   }
 }
 
