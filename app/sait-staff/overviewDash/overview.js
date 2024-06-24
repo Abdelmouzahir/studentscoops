@@ -79,9 +79,7 @@ const Overview = () => {
       setRestaurants(restaurantCount)
     }
     gettingStudentInformation();
-    gettingRestaurantInformation();
-    
-    
+    gettingRestaurantInformation();    
   }, []);
   useEffect(()=>{
     console.log(students)
