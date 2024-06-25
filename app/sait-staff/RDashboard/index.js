@@ -1,26 +1,23 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { deleteRestaurantData } from '@/services/PostRequest/postRequest';
+import { getRestaurantInformation } from '@/services/GetRequest/getRequest';
 
 
 import Table from './Table';
 import Add from './Add';
 import Edit from './Edit';
 
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
-import { db } from '@/app/firebase/config'
-
-//import { studentsData } from '../data';
-
 const Dashboard = ({ setIsAuthenticated }) => {
   const [restaurants, setRestaurants] = useState();
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [search, setSearch] = useState(false);
 
   const getRestaurants = async () => {
-    const querySnapshot = await getDocs(collection(db, "restaurants"));
-    const restaurants = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+    const restaurants = await getRestaurantInformation();
     setRestaurants(restaurants)
   }
   console.log(restaurants);
@@ -44,12 +41,12 @@ const Dashboard = ({ setIsAuthenticated }) => {
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, cancel!',
-    }).then(result => {
+    }).then(async(result) => {
       if (result.value) {
         const [restaurant] = restaurants.filter(restaurant => restaurant.id === id);
 
         // delete document
-        deleteDoc(doc(db, "restaurants", id))
+        await deleteRestaurantData(id)
 
         Swal.fire({
           icon: 'success',
@@ -75,6 +72,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             setIsAdding={setIsAdding}
+            setSearch={setSearch}
           />
         </>
       )}
