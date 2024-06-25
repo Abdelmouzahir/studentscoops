@@ -4,8 +4,10 @@ import { LuPencil } from "react-icons/lu";
 import { LuTrash } from "react-icons/lu";
 import { IoStorefront } from "react-icons/io5";
 import { formatPhoneNumber } from '@/Constant/formated';
+import { FaSearch } from "react-icons/fa";
+import { MdOutlineDoneOutline } from "react-icons/md";
 
-const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding }) => {
+const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding, setSearch, search }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -13,17 +15,42 @@ const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding }) => {
   return (
     <div className="container mx-auto mt-8 p-4 rounded-lg ">
       <h1 className="mb-8 text-4xl font-bold text-center tracking-tight text-orange-800 sm:text-5xl lg:text-4xl">Restaurant Management</h1>
-      <div className="flex justify-between mb-6">
+      <div className="flex mb-6">
         <button
           onClick={() => setIsAdding(true)}
-          className="inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+          className={
+            search
+              ? "hidden"
+              : "inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+          }
         >
           <IoStorefront className="mr-2 h-5 w-5" />
           Add Restaurant
         </button>
+        <button
+          onClick={() => {
+            setSearch(!search);
+            if (search == true) {
+              setEmail("");
+              setName("");
+              setPhone("");
+            }
+          }}
+          className={
+            search
+              ? "inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+              : "ml-10 inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+          }
+        >
+          {search ? <><MdOutlineDoneOutline className="mr-2 h-4 w-4"/>Done</> : <><FaSearch className="mr-2 h-4 w-4" />Search</>}
+        </button>
         
       </div>
-      <div className="w-full grid grid-cols-3 gap-5 bg-white rounded mb-5 p-3">
+      <div className={
+          search
+            ? "w-full grid grid-cols-3 gap-5 bg-white rounded mb-5 p-3"
+            : "hidden"
+        }>
         <div>
           <label>First Name</label>
           <input

@@ -72,6 +72,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             setIsAdding={setIsAdding}
+            search={search}
             setSearch={setSearch}
           />
         </>
