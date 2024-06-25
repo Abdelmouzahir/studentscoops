@@ -22,9 +22,9 @@ const sign_in = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         sessionStorage.setItem("user", true);
+        router.push("/sait-staff");
         setEmail("");
         setPassword("");
-        router.push("/sait-staff");
         setLoginError("");
       })
       .catch((err) => {

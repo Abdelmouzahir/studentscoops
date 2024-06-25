@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "@/app/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { existingStudentData } from "@/services/PostRequest/postRequest";
 
 const Add = ({ students, setStudents, setIsAdding }) => {
   const [name, setName] = useState("");
@@ -17,7 +18,7 @@ const Add = ({ students, setStudents, setIsAdding }) => {
   const month = currentDate.getMonth(); // Remember, month is zero-indexed
   const year = currentDate.getFullYear();
 
-  const newDate = [day,month,year];
+  const newDate = [day, month, year];
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -41,8 +42,10 @@ const Add = ({ students, setStudents, setIsAdding }) => {
     }
     let firstName = name.split(" ");
     let genericPassword = firstName[0] + phoneNumber.slice(-3).concat("!");
-    console.log(genericPassword)
+    console.log(genericPassword);
 
+    // Add student to Firestore
+    
     try {
       // Create user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
@@ -51,16 +54,16 @@ const Add = ({ students, setStudents, setIsAdding }) => {
         genericPassword
       );
       const user = userCredential.user;
-
-      // Add student to Firestore
       const newStudent = {
-        name,
-        lastName,
-        email,
-        phoneNumber,
-        uid: user.uid,
-        acountCreated: newDate
-      };
+      name,
+      lastName,
+      email,
+      phoneNumber,
+      uid: user.uid,
+      acountCreated: newDate,
+      active: true,
+    };
+
 
       await addDoc(collection(db, "students"), {
         ...newStudent,
@@ -79,6 +82,31 @@ const Add = ({ students, setStudents, setIsAdding }) => {
       });
     } catch (error) {
       console.error("Error adding student: ", error);
+      // if statement for if user email is already exists, it just change the state of active to true in database and user can restart with same account.
+      if (
+        error == "FirebaseError: Firebase: Error (auth/email-already-in-use)."
+      ) {
+        const newStudent = {
+          name,
+          lastName,
+          email,
+          phoneNumber
+        };
+        console.log('email: ',email)
+        //function to change active state from false to true
+        await existingStudentData(email);
+        Swal.fire({
+          icon: "success",
+          title: "Added!",
+          text: `We located your previous account, and you can resume using it.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // Update local state
+        setStudents((prevStudents) => [...prevStudents, newStudent]);
+        setIsAdding(false);
+        return;
+      }
       Swal.fire({
         icon: "error",
         title: "Error!",

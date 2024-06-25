@@ -11,7 +11,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
   const [students, setStudents] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [search, setSearch] = useState(false);
   const [isEditing, setIsEditing] = useState(null);
   
   async function getStudents() {
@@ -82,8 +81,6 @@ const Dashboard = ({ setIsAuthenticated }) => {
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             setIsAdding={setIsAdding}
-            search={search}
-            setSearch={setSearch}
           />
         </>
       )}
