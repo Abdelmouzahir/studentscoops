@@ -4,8 +4,9 @@ import SDashboard from './SDashboard';
 import RDashboard from './RDashboard';
 import Dash from "./overviewDash";
 import Settings from "./settingS";
-import { AiOutlineTeam, AiOutlineShop, AiOutlineSetting, AiOutlineHome,AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 import { LuLogOut } from "react-icons/lu";
+import { useUserAuth } from "@/services/utils";
 //import navbar
 import SaitStaffNav from "@/components/SaitStaffNav";
 import { CgProfile } from "react-icons/cg";

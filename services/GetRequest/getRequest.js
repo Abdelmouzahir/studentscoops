@@ -10,10 +10,7 @@ import { getDownloadURL, ref, listAll } from "firebase/storage";
 
 export async function getStudentInformation(userId) {
   try {
-    const colRef = collection(
-      (db, "students", userId),
-      where("active", "==", true)
-    );
+    const colRef = collection((db, "students",userId),where("active","==",true));
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       snapshot.forEach((doc) => {});
     });
@@ -26,7 +23,8 @@ export async function getStudentInformation(userId) {
 
 export async function getAllStudentsInformation() {
   try {
-    const q = query(collection(db, "students"), where("active", "==", true));
+    
+    const q = query((collection(db, "students")),where("active",'==',true));
     const querySnapshot = await getDocs(q);
     const studentItems = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -41,7 +39,7 @@ export async function getAllStudentsInformation() {
 
 export async function getRestaurantInformation(email) {
   try {
-    const q = query(collection(db, "restaurants"), where("active", "==", true),where('email','==',email));
+    const q = query(collection(db, "restaurants"), where("active",'==',true));
     const querySnapshot = await getDocs(q);
     const userItems = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
