@@ -7,21 +7,27 @@ import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
-
+import { getRestaurantInformation } from "@/services/GetRequest/getRequest";
 
 const sign_in = () => {
+  const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
-  const [emailError, setEmailError] = useState('');
+  const [emailError, setEmailError] = useState("");
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  
+
   const handleSignIn = () => {
     signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then(() => {})
+      .then(async () => {
+        const login = await getRestaurantInformation(email);
+        if (login.length <= 0) {
+          setLoginError("You are not authorized to access this website.");
+          return;
+        }
         sessionStorage.setItem("user", true);
         setEmail("");
         setPassword("");
@@ -37,14 +43,13 @@ const sign_in = () => {
   const handleForgotPassword = (event) => {
     event.preventDefault();
 
-  // Check the email domain format
-  if (!email.includes('@') || !email.includes('.')) {
-     setEmailError('Please enter a valid email address');
-    return;
-  } else {
-    setEmailError(''); // Clear any previous error
-  }
-
+    // Check the email domain format
+    if (!email.includes("@") || !email.includes(".")) {
+      setEmailError("Please enter a valid email address");
+      return;
+    } else {
+      setEmailError(""); // Clear any previous error
+    }
 
     sendPasswordResetEmail(auth, email)
       .then(() => {
@@ -54,20 +59,19 @@ const sign_in = () => {
       })
       .catch((err) => {
         console.log(err);
-        setEmailError('Failed to send password reset email'); // Display a generic error message
+        setEmailError("Failed to send password reset email"); // Display a generic error message
       });
   };
 
   return (
     <div
       className="min-h-screen py-40"
-      style={{ 
+      style={{
         backgroundImage: "url(/assets/images/restCover.jpg)",
         backgroundSize: "cover", // Adjusts the size of the background image
         backgroundPosition: "center", // Centers the background image
         backgroundRepeat: "no-repeat", // Prevents the background image from repeating
-
-          }}
+      }}
     >
       <Fragment>
         <div className="container mx-auto">
@@ -98,7 +102,12 @@ const sign_in = () => {
                 />
               </div>
               <div>
-                {loginError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{loginError}</div>}
+                {loginError && (
+                  <div className="text-red-500 text-sm mb-4 flex">
+                    <BiSolidCommentError className="mt-1 mr-2" />
+                    {loginError}
+                  </div>
+                )}
               </div>
               <div className="mt-5">
                 <p
@@ -118,7 +127,6 @@ const sign_in = () => {
                   Sign In
                 </button>
               </div>
-
             </div>
           </div>
         </div>
@@ -145,7 +153,12 @@ const sign_in = () => {
                     required
                     className="border border-gray-400 py-1 px-2 w-full rounded-md"
                   />
-                  {emailError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{emailError}</div>}
+                  {emailError && (
+                    <div className="text-red-500 text-sm mb-4 flex">
+                      <BiSolidCommentError className="mt-1 mr-2" />
+                      {emailError}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <button
