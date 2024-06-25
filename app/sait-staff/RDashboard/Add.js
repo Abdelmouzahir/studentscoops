@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { collection, addDoc } from "firebase/firestore"; 
 import { db, auth } from '@/app/firebase/config'
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { existingRestaurantData } from '@/services/PostRequest/postRequest';
 
 const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const [name, setName] = useState('');
@@ -21,7 +22,10 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const newDate = [day,month,year];
   let firstWord = name.split(" ");
   
-  const genericPassword = firstWord[0]+phoneNumber.slice(-3).concat('!');
+  //generic password will be first name of student or restaurant + last three digits of mobile number + "!"
+// like student name :- Moiz Khan mobilenumber :- 1234567890, so the password will be Moiz890!
+// by this the password will bw different for every one and they can change it on forget password
+  const genericPassword = firstWord[0]+phoneNumber.slice(-3).concat('!'); 
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -70,6 +74,28 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
       });
     } catch (error) {
       console.error(error);
+      if (
+        error == "FirebaseError: Firebase: Error (auth/email-already-in-use)."
+      ) {
+        const newRestaurant = {
+          name,
+          email,
+          phoneNumber
+        };
+        //function to change active state from false to true
+        await existingRestaurantData(email);
+        Swal.fire({
+          icon: "success",
+          title: "Added!",
+          text: `We located your previous account, and you can resume using it.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // Update local state
+        restaurants.push(newRestaurant);
+        setIsAdding(false);
+        return;
+      }
       Swal.fire({
         icon: 'error',
         title: 'Error!',

@@ -187,3 +187,31 @@ export async function updateStudent(id, prop) {
     console.error("Error updating document: ", error);
   }
 }
+export async function existingStudentData(email) {
+  try {
+    const q = query(collection(db, "students"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (doc) => {
+      await updateDoc(doc.ref, {
+        active: true,
+      });
+    });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
+export async function existingRestaurantData(email) {
+  try {
+    const q = query(collection(db, "restaurants"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (doc) => {
+      await updateDoc(doc.ref, {
+        active: true,
+      });
+    });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
