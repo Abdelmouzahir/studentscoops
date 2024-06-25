@@ -10,7 +10,7 @@ import { getDownloadURL, ref, listAll } from "firebase/storage";
 
 export async function getStudentInformation(userId) {
   try {
-    const colRef = collection((db, "students"),where("active","==",true));
+    const colRef = collection((db, "students",userId),where("active","==",true));
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       snapshot.forEach((doc) => {
       });
