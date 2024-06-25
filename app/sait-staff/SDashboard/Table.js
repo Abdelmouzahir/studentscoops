@@ -7,7 +7,14 @@ import { PiStudentBold } from "react-icons/pi";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
 
-const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
+const Table = ({
+  students,
+  handleEdit,
+  handleDelete,
+  setIsAdding,
+  setSearch,
+  search,
+}) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -29,13 +36,41 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
       <div className="flex mb-6">
         <button
           onClick={() => setIsAdding(true)}
-          className="inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+          className={
+            search
+              ? "hidden"
+              : "inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+          }
         >
           <PiStudentBold className="mr-2 h-4 w-4" />
           Add Student
         </button>
+
+        <button
+          onClick={() => {
+            setSearch(!search);
+            if (search == true) {
+              setEmail("");
+              setName("");
+              setPhone("");
+            }
+          }}
+          className={
+            search
+              ? "inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+              : "ml-10 inline-flex items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+          }
+        >
+          {search ? <><MdOutlineDoneOutline className="mr-2 h-4 w-4"/>Done</> : <><FaSearch className="mr-2 h-4 w-4" />Search</>}
+        </button>
       </div>
-      <div className="w-full grid grid-cols-3 gap-5 bg-white rounded mb-5 p-3">
+      <div
+        className={
+          search
+            ? "w-full grid grid-cols-3 gap-5 bg-white rounded mb-5 p-3"
+            : "hidden"
+        }
+      >
         <div>
           <label>First Name</label>
           <input
@@ -118,18 +153,14 @@ const Table = ({ students, handleEdit, handleDelete, setIsAdding }) => {
                           <td className="py-4 px-6 text-center">
                             <div className="flex justify-center space-x-2">
                               <button
-                                onClick={() => {
-                                  handleEdit(student.id);
-                                }}
+                                onClick={ handleEdit(student.id)}
                                 className="inline-flex items-center justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                               >
                                 Edit
                                 <LuPencil className="ml-2 h-4 w-4" />
                               </button>
                               <button
-                                onClick={() => {
-                                  handleDelete(student.id);
-                                }}
+                                onClick={ handleDelete(student.id)}
                                 className="inline-flex items-center justify-center rounded-md bg-red-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-red-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-red-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
                               >
                                 Delete

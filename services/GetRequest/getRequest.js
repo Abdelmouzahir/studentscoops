@@ -12,8 +12,7 @@ export async function getStudentInformation(userId) {
   try {
     const colRef = collection((db, "students",userId),where("active","==",true));
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
-      snapshot.forEach((doc) => {
-      });
+      snapshot.forEach((doc) => {});
     });
     return unsubscribe();
   } catch (error) {
@@ -24,6 +23,7 @@ export async function getStudentInformation(userId) {
 
 export async function getAllStudentsInformation() {
   try {
+    
     const q = query((collection(db, "students")),where("active",'==',true));
     const querySnapshot = await getDocs(q);
     const studentItems = querySnapshot.docs.map((doc) => ({
@@ -37,7 +37,7 @@ export async function getAllStudentsInformation() {
   }
 }
 
-export async function getRestaurantInformation() {
+export async function getRestaurantInformation(email) {
   try {
     const q = query(collection(db, "restaurants"), where("active",'==',true));
     const querySnapshot = await getDocs(q);
