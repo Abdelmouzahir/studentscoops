@@ -36,8 +36,8 @@ export async function getAllStudentsInformation() {
     return [];
   }
 }
-
-export async function getRestaurantInformation(email) {
+//get restaurant data for sait staff
+export async function getRestaurantInformation() {
   try {
     const q = query(collection(db, "restaurants"), where("active",'==',true));
     const querySnapshot = await getDocs(q);
@@ -50,10 +50,10 @@ export async function getRestaurantInformation(email) {
     return [];
   }
 }
-
+// get restaurant data for user as restaurant
 export async function getRestaurantInformationByUser(user) {
   try {
-    const q = query(collection(db, "restaurants"), where("userId", "==", user));
+    const q = query(collection(db, "restaurants"), where("uid", "==", user));
     const querySnapshot = await getDocs(q);
     const userItems = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };

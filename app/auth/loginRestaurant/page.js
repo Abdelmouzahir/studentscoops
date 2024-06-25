@@ -5,12 +5,11 @@ import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
-import Modal from "@/components/Modal";
+import Modal from "@/Components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
-import { getRestaurantInformation } from "@/services/GetRequest/getRequest";
+import { getRestaurantInformationByUser } from "@/services/GetRequest/getRequest";
 
 const sign_in = () => {
-  const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -21,9 +20,12 @@ const sign_in = () => {
 
   const handleSignIn = () => {
     signInWithEmailAndPassword(email, password)
-      .then(() => {})
-      .then(async () => {
-        const login = await getRestaurantInformation(email);
+      .then((userCredential) => {if(userCredential){
+        const user = userCredential.user;
+        return user.uid
+      }})
+      .then(async (uid) => {
+        const login = await getRestaurantInformationByUser(uid);
         if (login.length <= 0) {
           setLoginError("You are not authorized to access this website.");
           return;
