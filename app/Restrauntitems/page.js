@@ -151,9 +151,12 @@ export default function RestaurantItems() {
               <div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="rounded-full">
+                    <Button variant="ghost" size="icon" className=" relative rounded-full">
+                     
                       <ShoppingCartIcon className="w-5 h-5" />
                       <span className="sr-only">Cart</span>
+                      <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
+                      1</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" sideOffset={12}>
@@ -200,7 +203,7 @@ export default function RestaurantItems() {
               <h2 className="text-2xl font-bold mb-4">{section.section}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {section.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div key={itemIndex} className="bg-white border border-yellow-700  rounded-lg shadow-lg overflow-hidden">
                     <img
                       src={item.image}
                       alt={item.name}
