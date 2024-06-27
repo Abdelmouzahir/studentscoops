@@ -43,11 +43,11 @@ export default function Component() {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Restaurant Name</Label>
-              <Input id="name" defaultValue={restaurantData.name} />
+              <Input id="name" defaultValue={"Sheraj Restaurant "} />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="location">Location</Label>
-              <Input id="location" defaultValue={restaurantData.address}/>
+              <Input id="location" defaultValue={"savan 342 street "}/>
             </div>
           </div>
         </CardContent>
