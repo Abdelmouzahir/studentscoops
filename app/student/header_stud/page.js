@@ -2,6 +2,14 @@ import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 
+
+// import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
+  
+
+// export default function Header_stud({ handleSignOut,cart, removeFromCart, getTotal }) {
+// Essential import and export 
+
+
 export default function Header_stud({ handleSignOut }) {
   return (
     <header className="flex items-center justify-between h-16 px-4 md:px-6 bg-primary shadow-sm dark:bg-gray-950">
@@ -24,34 +32,40 @@ export default function Header_stud({ handleSignOut }) {
             <DropdownMenuItem>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <img src="/placeholder.svg" width={40} height={40} alt="Product Image" className="rounded-md" />
+                  <img src="https://i.pinimg.com/564x/55/02/f2/5502f20d18006dec855f986e5344951c.jpg" width={40} height={40} alt="Product Image" className="rounded-md" />
                   <div>
-                    <div className="font-medium">Cheeseburger</div>
+                    <div className="font-medium">Bruschetta</div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">$9.99</div>
                   </div>
                 </div>
-                <div className="text-sm font-medium">x1</div>
+                <div className="text-sm font-medium">x3</div>
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <img src="/placeholder.svg" width={40} height={40} alt="Product Image" className="rounded-md" />
+                  <img src="https://i.pinimg.com/564x/40/b0/d6/40b0d6f85533fd94da7c4febbd5ff4d7.jpg" width={40} height={40} alt="Product Image" className="rounded-md" />
                   <div>
-                    <div className="font-medium">French Fries</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">$4.99</div>
+                    <div className="font-medium">Calamari Fritti</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">$10.99</div>
                   </div>
                 </div>
-                <div className="text-sm font-medium">x2</div>
+                <div className="text-sm font-medium">x3</div>
               </div>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <div className="flex items-center justify-between">
                 <div className="font-medium">Total</div>
-                <div className="text-sm font-medium">$19.97</div>
+                <div className="text-sm font-medium">$56.94</div>
               </div>
             </DropdownMenuItem>
+
+
+  {/* <CartDropdown cart={cart} removeFromCart={removeFromCart} getTotal={getTotal} /> */} 
+{/* // Was trying to do this but was not able to sync it with the main cart */}
+
+
             <DropdownMenuSeparator />
             <DropdownMenuItem>
             <Link

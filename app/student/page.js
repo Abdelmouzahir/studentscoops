@@ -120,10 +120,10 @@ const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12 ">
               {filteredData.map((item) => (
                 <Link href='/Restrauntitems' key={item.id}>
-                  <RestrauntCard
+                  <RestrauntCard 
                     name={item.name}
                     logo={item.logo}
                     restrauntImage={item.restrauntImage}
@@ -140,9 +140,9 @@ const Home = () => {
         </section>
 
         <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-[#1e1e1e]">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
+          <div className="container px-4 md:px-6 ">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center shadow-lg ">
+              <div className="space-y-2 border-yellow-700 ">
                 <div className="inline-block rounded-lg bg-[#f8f9fa] px-3 py-1 text-sm dark:bg-[#2b2b2b]">
                   Deal of the Day
                 </div>
