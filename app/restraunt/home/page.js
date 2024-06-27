@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useTable, useGlobalFilter } from 'react-table';
-import Image from 'next/image';
+import Swal from 'sweetalert2';
 import { MoreHorizontal } from "lucide-react";
 import { useUserAuth } from '@/services/utils';
 import { getRestaurantInformation, getMenuInformationByUser } from '@/services/GetRequest/getRequest';
@@ -38,7 +38,7 @@ export default function SettingsRestaurant() {
   const [restaurantData, setRestaurantData] = useState([]);
   const [menuData, setMenuData] = useState([{
     id: 1,
-    imageUrl: '/images/food.png',
+    imageUrl: "url(/assets/images/restCover.jpg)",
     name: 'Classic Burger',
     status: 'Available',
     price: 8.99,
@@ -170,6 +170,7 @@ export default function SettingsRestaurant() {
 
   const columns = React.useMemo(
     () => [
+      /*
       {
         Header: 'Image',
         accessor: 'imageUrl',
@@ -178,7 +179,21 @@ export default function SettingsRestaurant() {
             alt={`Product image - ${original.name}`}
             className="aspect-square rounded-md object-cover"
             height="64"
-            src={value}
+            src={"url(/assets/images/restCover.jpg)"}
+            width="64"
+          />
+        ),
+      },
+      */
+      {
+        Header: 'Image',
+        accessor: 'imageUrl',
+        Cell: ({ row: { original } }) => (
+          <img
+            alt={`Product image - ${original.name}`}
+            className="aspect-square rounded-md object-cover"
+            height="64"
+            src="/assets/images/food.png" // Correct path to the image
             width="64"
           />
         ),
