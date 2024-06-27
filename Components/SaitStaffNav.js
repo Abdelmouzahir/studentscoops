@@ -22,7 +22,7 @@ export const SaitStaffNav = ({ isCollapsed, setIsCollapsed, onTabClick }) => { /
   };
 
   return (
-    <nav className={`bg-gray-100 text-gray-600 h-full fixed p-6 ${isCollapsed ? 'w-21' : 'w-65'} transition-width duration-300 ease-in-out`}>
+    <nav className={`bg-primary text-black-600 h-full fixed p-6 ${isCollapsed ? 'w-21' : 'w-65'} transition-width duration-300 ease-in-out`}>
       <div className="mb-6 flex justify-between items-center">
         <Link href="#" className={`flex items-center gap-2 text-lg font-semibold ${isCollapsed ? 'hidden' : 'block'}`} prefetch={false}>
           <span>Student Scoops</span>
