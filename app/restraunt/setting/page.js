@@ -6,8 +6,14 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { AlertDialog , AlertDialogContent , AlertDialogHeader , AlertDialogTitle , AlertDialogDescription , AlertDialogFooter , AlertDialogCancel ,AlertDialogAction , AlertDialogTrigger} from "@/components/ui/alert-dialog"
 import { Dialog, DialogContent, DialogFooter, DialogClose } from "@/components/ui/dialog"
-
+import { deleteRestaurantData } from "@/services/PostRequest/postRequest"
+import { getRestaurantInformationByUser } from "@/services/GetRequest/getRequest"
+import { useUserAuth } from '@/services/utils';
+import { useEffect } from "react"
 export default function Component() {
+  const { user } = useUserAuth();
+  const [restaurantData, setRestaurantData] = useState([]);
+  
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -16,6 +22,14 @@ export default function Component() {
     setShowPasswordResetModal(true)
   }
 
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getRestaurantInformationByUser(user);
+      console.log(data)
+      setRestaurantData(data);
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="container mx-auto ">
@@ -29,11 +43,11 @@ export default function Component() {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Restaurant Name</Label>
-              <Input id="name" defaultValue="Delicious Delights" />
+              <Input id="name" defaultValue={restaurantData.name} />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="location">Location</Label>
-              <Input id="location" defaultValue="123 Main St, Anytown USA" />
+              <Input id="location" defaultValue={restaurantData.address}/>
             </div>
           </div>
         </CardContent>
@@ -139,7 +153,7 @@ export default function Component() {
           </div>
           <DialogFooter>
             <div>
-              <Button type="button" onClick={() => (window.location.href = "/")}>
+              <Button type="button" onClick={""}>
                 OK
               </Button>
             </div>
