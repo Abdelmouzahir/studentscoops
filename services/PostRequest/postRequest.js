@@ -10,6 +10,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { deleteUser } from "firebase/auth";
 
 export async function addStudentInformation(userId, userInformation, email) {
   const studentInformation = {
@@ -106,10 +107,12 @@ export async function addRestaurantMenu(user, name, price, description, image) {
           name,
           price,
           description,
+          status: 'Available',
           imageUrl: downloadURL,
           createdAt: new Date(),
         });
         console.log("Menu item successfully added!");
+        window.location.reload();
       } catch (error) {
         console.error("Error writing document: ", error);
       }
@@ -178,7 +181,25 @@ export async function deleteRestaurantData(id) {
     console.error("Error updating document: ", error);
   }
 }
+export async function updateRestaurantData(id,name,address) {
+  try {
+    const docRef = doc(db, "restaurants", id);
+    await updateDoc(docRef, {
+      name:name,
+      address:address
+    });
+    console.log(`document has been updated where name: ${name}, id: ${id} and address is ${address}`)
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
 
+// to delete the restaurant data by user (not by sait staff)
+// export async function deleteRestaurantDataByUser(){
+//   try{
+//     const docRef = doc(db,rest)
+//   }
+// }
 export async function updateStudent(id, prop) {
   try {
     const docRef = doc(db, "students", id);
@@ -213,5 +234,20 @@ export async function existingRestaurantData(email) {
     });
   } catch (error) {
     console.error("Error updating document: ", error);
+  }
+}
+export async function deleteRestaurantUser(currentUser, id){
+  if (currentUser) {
+    console.log("currentUser: ", currentUser);
+    try {
+      console.log(id)
+      await deleteDoc(doc(db,"restaurants",id))
+      .then(async()=>{
+        await deleteUser(currentUser);
+        console.log("User delete successfully");
+      })
+    } catch (error) {
+      console.error("error while deleting user: ", error);
+    }
   }
 }
