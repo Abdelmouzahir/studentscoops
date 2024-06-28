@@ -12,6 +12,7 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
 
   const currentDate = new Date();
 
@@ -30,7 +31,7 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !phoneNumber) {
+    if (!name || !email || !phoneNumber || !address) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -50,6 +51,7 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
         name,
         email,
         phoneNumber,
+        address,
         uid: user.uid,
         acountCreated: newDate, // link with user ID
         active: true
@@ -140,6 +142,17 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
             name="phone"
             value={phoneNumber}
             onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+        <div>
+          <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+          <input
+            id="address"
+            type="text"
+            name="address"
+            value={address}
+            onChange={e => setAddress(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
