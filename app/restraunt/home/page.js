@@ -78,6 +78,7 @@ export default function SettingsRestaurant() {
 
   const columns = React.useMemo(
     () => [
+      /*
       {
         Header: "Image",
         accessor: "imageUrl",
@@ -86,7 +87,21 @@ export default function SettingsRestaurant() {
             alt={`Product image - ${original.name}`}
             className="aspect-square rounded-md object-cover"
             height="64"
-            src={value}
+            src={"url(/assets/images/restCover.jpg)"}
+            width="64"
+          />
+        ),
+      },
+      */
+      {
+        Header: 'Image',
+        accessor: 'imageUrl',
+        Cell: ({ row: { original } }) => (
+          <img
+            alt={`Product image - ${original.name}`}
+            className="aspect-square rounded-md object-cover"
+            height="64"
+            src="/assets/images/food.png" // Correct path to the image
             width="64"
           />
         ),

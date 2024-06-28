@@ -5,7 +5,17 @@ import { getAllStudentsInformation, getRestaurantInformation } from "@/services/
 
 import { FaUsers, FaChartLine } from "react-icons/fa";
 import { AiOutlineShop, AiOutlineTeam } from "react-icons/ai";
+import {useSpring, animated} from "react-spring";
 
+function NumberChange({n}){
+const {number} = useSpring({
+  from : {number :0},
+  number : n,
+  delay : 200,
+  config : {mass:1, tension:20, friction:10},
+})
+return <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>
+}
 const Overview = () => {
   const [totalNumberStudent, setTotalNumberStudent] = useState(0);
   const [studentActive, setStudentActive] = useState(0);
@@ -104,7 +114,7 @@ const Overview = () => {
       />
       <Card
         title="Transactions rate"
-        value="256%"
+        value={<NumberChange n = {256} />}
         icon={<FaChartLine className="w-10 h-10" />}
         change="Overflow"
         changeType="increase"

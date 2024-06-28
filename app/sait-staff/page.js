@@ -45,7 +45,7 @@ export default function Page() {
              <div className=" bg-slate-200 relative h-12 w-12 border rounded-full overflow-hidden hover:bg-[#F29F3D]">
               <AiOutlineUser className="w-9 h-9 ml-1.5 mt-1 text-gray-600 " />
              </div>    
-             <h1 className="text-lg text-gray-600 font-bold mt-2 ml-2 ">  Hi! {"User"}</h1>
+             <h1 className="text-lg text-black-600 font-bold mt-2 ml-2 ">  Hi! {"User"}</h1>
           </div>
           <button onClick={handeLogoutClick} className="inline-flex h-10 items-center justify-center rounded-md bg-gray-600 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-[#F29F3D] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:bg-[#6c5ce7] dark:text-gray-50 dark:hover:bg-[#6c5ce7]/90 dark:focus-visible:ring-[#6c5ce7]">
             <LuLogOut className="mr-2 h-5 w-5" />

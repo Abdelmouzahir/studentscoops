@@ -2,8 +2,8 @@
 import React, { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { AlertDialog , AlertDialogContent , AlertDialogHeader , AlertDialogTitle , AlertDialogDescription , AlertDialogFooter , AlertDialogCancel ,AlertDialogAction } from "@/components/ui/alert-dialog"
-
+import { AlertDialog , AlertDialogContent,AlertDialogTrigger , AlertDialogHeader , AlertDialogTitle , AlertDialogDescription , AlertDialogFooter , AlertDialogCancel ,AlertDialogAction } from "@/components/ui/alert-dialog"
+import { Spinner } from "@/components/ui/spinner"
 export default function Order() {
   const [orders, setOrders] = useState([
     {
@@ -39,6 +39,7 @@ export default function Order() {
       createdAt: new Date("2023-06-15T12:00:00Z"),
     },
   ])
+
   const [searchQuery, setSearchQuery] = useState("")
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false)
   const [orderToCancel, setOrderToCancel] = useState(null)
@@ -46,6 +47,12 @@ export default function Order() {
     setOrders((prevOrders) =>
       prevOrders.map((order) => (order.id === orderId ? { ...order, status: "Waiting for Pickup" } : order)),
     )
+    setIsDialogOpen(true)
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      setIsDialogOpen(false)
+    }, 4000) // Simulate a 2-second loading time
   }
   const handlePickupComplete = (orderId) => {
     setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId))
@@ -64,6 +71,12 @@ export default function Order() {
     setOrderToCancel(null)
   }
   const filteredOrders = orders.filter((order) => order.id.toString().includes(searchQuery))
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Incoming Orders</h1>
@@ -131,6 +144,31 @@ export default function Order() {
                     <Button variant="outline" onClick={() => handleOrderReady(order.id)}>
                       Ready
                     </Button>
+                    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <AlertDialogTrigger asChild>
+                          <div />
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>{isLoading ? 'Notifying Customer...' : 'Notification Complete'}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {isLoading ? (
+                                <div className="flex items-center">
+                                  <Spinner className="mr-4" />
+                                   <p className="ml-2">Please wait while we notify the customer.</p>
+                                </div>
+                              ) : (
+                                'The customer has been successfully notified.'
+                              )}
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          {!isLoading && (
+                            <AlertDialogFooter>
+                              <AlertDialogAction onClick={() => setIsDialogOpen(false)}>Close</AlertDialogAction>
+                            </AlertDialogFooter>
+                          )}
+                        </AlertDialogContent>
+                    </AlertDialog>
                     <Button variant="destructive" onClick={() => handleCancelOrder(order.id)}>
                       Cancel
                     </Button>

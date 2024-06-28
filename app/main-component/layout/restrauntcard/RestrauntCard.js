@@ -5,7 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "../../../../components/ui/a
 
 export default function RestrauntCard({name,logo,restrauntImage,category,pickupInfo,rating,distance,price}) {
   return (
-    <Card className="max-w-md rounded-lg shadow-md overflow-hidden">
+    <Card className="max-w-md rounded-lg shadow-lg overflow-hidden border border-yellow-700 ">
       <div className="relative">
         <img src={restrauntImage} alt="RestImage" width={300} height={150} className="w-full h-36 object-cover" />
         <div className="absolute top-2 left-2">
