@@ -36,7 +36,7 @@ const Page = () => {
       );
       return;
     }
-    await addRestaurantMenu(user, name, price, description, image[0]).then(() => {
+    await addRestaurantMenu(user, name, price, description, image[0],user).then(() => {
         router.push("/restraunt/home");
       }
     );

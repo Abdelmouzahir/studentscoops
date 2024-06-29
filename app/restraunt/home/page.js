@@ -39,17 +39,14 @@ import Link from "next/link";
 
 export default function SettingsRestaurant() {
   const { user } = useUserAuth();
-  const [restaurantData, setRestaurantData] = useState([]);
   const [menuData, setMenuData] = useState(null);
   const route = useRouter();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [globalFilter, setGlobalFilter] = useState("");
 
   useEffect(() => {
-    console.log("user: ", user);
     async function gettingRestaurantMenu() {
       const data = await getMenuInformation(user);
-      console.log("data: ", data);
       if (data.length <= 0) {
       }
       setMenuData(data);
@@ -145,13 +142,6 @@ export default function SettingsRestaurant() {
         },
         className: "hidden md:table-cell",
       },
-
-      // {
-      //   Header: "Total Sales",
-      //   accessor: "totalSales",
-      //   Cell: () => "0",
-      //   className: "hidden md:table-cell",
-      // },
       {
         Header: "Actions",
         accessor: "actions",

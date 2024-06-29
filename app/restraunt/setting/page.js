@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { auth } from "@/app/firebase/config";
-import { deleteUser } from "firebase/auth";
 import { useUserAuth } from "@/services/utils";
 import { useRouter } from "next/navigation";
 import { getRestaurantInformationByUser } from "@/services/GetRequest/getRequest";
@@ -33,9 +32,7 @@ import {
   Dialog,
   DialogContent,
   DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
-import { useActionData } from "react-router-dom";
 
 export default function Component() {
   const { user } = useUserAuth();
@@ -44,15 +41,9 @@ export default function Component() {
   const [address, setAddress] = useState("");
   const [id, setId] = useState('');
   const [email, setEmail] = useState('');
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPasswordResetModal, setShowPasswordResetModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const route = useRouter();
-  const handlePasswordReset = () => {
-    setShowPasswordResetModal(true);
-  };
   useEffect(() => {
     async function gettingUserInformation() {
       const data = await getRestaurantInformationByUser(user);
@@ -61,7 +52,6 @@ export default function Component() {
     if (user) {
       setCurrentUser(auth.currentUser);
       gettingUserInformation();
-      console.log(auth.currentUser);
     }
     if (user == false) {
       route.push("/");
@@ -71,7 +61,6 @@ export default function Component() {
   useEffect(() => {
     if (userData) {
       userData.map((information)=>{
-        console.log("information: ",typeof information.id)
         setName(information.name);
         setId(information.id);
         setAddress(information.address);
@@ -86,7 +75,7 @@ export default function Component() {
 
 
   async function deleteCurrentUser() {
-    await deleteRestaurantUser(currentUser,id).then(()=>alert("Your account has been deleted successfully!"))
+    await deleteRestaurantUser(currentUser,id,user);
   }
 
   async function passwordChange(){
