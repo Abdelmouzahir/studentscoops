@@ -65,7 +65,6 @@ export async function getRestaurantInformationByUser(user) {
     return false;
   }
 }
-// to get the restaurant menu for the user as restaurant owner or emloyee
 export async function getMenuInformation(userId) {
   try {
     const q = query(

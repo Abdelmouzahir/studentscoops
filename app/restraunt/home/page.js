@@ -142,6 +142,13 @@ export default function SettingsRestaurant() {
         },
         className: "hidden md:table-cell",
       },
+
+      // {
+      //   Header: "Total Sales",
+      //   accessor: "totalSales",
+      //   Cell: () => "0",
+      //   className: "hidden md:table-cell",
+      // },
       {
         Header: "Actions",
         accessor: "actions",
