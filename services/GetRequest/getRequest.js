@@ -65,7 +65,6 @@ export async function getRestaurantInformationByUser(user) {
     return false;
   }
 }
-
 export async function getMenuInformation(userId) {
   try {
     const q = query(
@@ -79,7 +78,6 @@ export async function getMenuInformation(userId) {
     });
     return userItems;
   } catch (error) {
-    console.error("Error getting user information: ", error);
     return [];
   }
 }

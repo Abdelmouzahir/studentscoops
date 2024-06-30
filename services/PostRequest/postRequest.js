@@ -9,7 +9,14 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  getStorage,
+  listAll,
+  deleteObject,
+} from "firebase/storage";
 import { deleteUser } from "firebase/auth";
 
 export async function addStudentInformation(userId, userInformation, email) {
@@ -76,8 +83,8 @@ export async function addRestaurantInformation(
   );
 }
 
-export async function addRestaurantMenu(user, name, price, description, image) {
-  const storageRef = ref(storage, `menu/${image.name}`);
+export async function addRestaurantMenu(user, name, price, description, image,userId) {
+  const storageRef = ref(storage, `menu/${userId}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
   uploadTask.on(
     "state_changed",
@@ -107,7 +114,7 @@ export async function addRestaurantMenu(user, name, price, description, image) {
           name,
           price,
           description,
-          status: 'Available',
+          status: "Available",
           imageUrl: downloadURL,
           createdAt: new Date(),
         });
@@ -181,14 +188,16 @@ export async function deleteRestaurantData(id) {
     console.error("Error updating document: ", error);
   }
 }
-export async function updateRestaurantData(id,name,address) {
+export async function updateRestaurantData(id, name, address) {
   try {
     const docRef = doc(db, "restaurants", id);
     await updateDoc(docRef, {
-      name:name,
-      address:address
+      name: name,
+      address: address,
     });
-    console.log(`document has been updated where name: ${name}, id: ${id} and address is ${address}`)
+    console.log(
+      `document has been updated where name: ${name}, id: ${id} and address is ${address}`
+    );
   } catch (error) {
     console.error("Error updating document: ", error);
   }
@@ -236,18 +245,65 @@ export async function existingRestaurantData(email) {
     console.error("Error updating document: ", error);
   }
 }
-export async function deleteRestaurantUser(currentUser, id){
+// to delete restarant data from database, storage and athentication
+export async function deleteRestaurantUser(currentUser, id, userId) {
+  const accountId = userId;
   if (currentUser) {
-    console.log("currentUser: ", currentUser);
     try {
-      console.log(id)
-      await deleteDoc(doc(db,"restaurants",id))
-      .then(async()=>{
+      // Step 1: Re-authenticate user if necessary
+      try {
         await deleteUser(currentUser);
-        console.log("User delete successfully");
-      })
+      } catch (error) {
+        if (error.code === 'auth/requires-recent-login') {
+          const credential = EmailAuthProvider.credential(
+            currentUser.email,
+            prompt("Please enter your password to re-authenticate.")
+          );
+          await reauthenticateWithCredential(currentUser, credential);
+          await deleteUser(currentUser);
+        } else {
+          throw error;
+        }
+      }
+
+      // Step 2: Delete user document from Firestore
+      await deleteDoc(doc(db, "restaurants", id));
+
+      // Step 3: Delete user's data from restaurant_menu database
+      const userCollectionRef = collection(db, "restaurant_menu");
+      const q = query(userCollectionRef, where("userId", "==", accountId));
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach(async (docSnapshot) => {
+        await deleteDoc(docSnapshot.ref);
+      });
+
+      // Step 4: Delete user's storage files
+      const storage = getStorage();
+      const folderRef = ref(storage, `menu/${accountId}`);
+
+      const deleteFolder = async (folderRef) => {
+        const res = await listAll(folderRef);
+        for (const itemRef of res.items) {
+          await deleteObject(itemRef);
+        }
+
+        for (const subfolderRef of res.prefixes) {
+          await deleteFolder(subfolderRef);
+        }
+      };
+
+      await deleteFolder(folderRef);
+      alert("Your account has been deleted successfully!");
+
     } catch (error) {
-      console.error("error while deleting user: ", error);
+      if (error.code === 'auth/requires-recent-login') {
+        alert("To delete your account, please log out first and then proceed with the account deletion.");
+      } else {
+        console.error('Error while deleting user:', error);
+      }
     }
+  } else {
+    console.log("No current user found");
   }
 }
