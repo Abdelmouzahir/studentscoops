@@ -40,6 +40,7 @@ const Page = () => {
         router.push("/restraunt/home");
       }
     );
+    router.push("/restraunt/home")
   };
 
   return (
