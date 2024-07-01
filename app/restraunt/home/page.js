@@ -1,10 +1,16 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import { useTable, useGlobalFilter } from 'react-table';
-import Swal from 'sweetalert2';
+"use client";
+import React, { useState, useEffect } from "react";
+import { useTable, useGlobalFilter } from "react-table";
+import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
-import { useUserAuth } from '@/services/utils';
-import { getRestaurantInformation, getMenuInformationByUser } from '@/services/GetRequest/getRequest';
+import { useUserAuth } from "@/services/utils";
+import { db } from "@/app/firebase/config";
+import { deleteDoc, doc } from "firebase/firestore";
+import {
+  getMenuInformation,
+  getRestaurantInformationByUser,
+} from "@/services/GetRequest/getRequest";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,203 +37,117 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function SettingsRestaurant() {
   const { user } = useUserAuth();
-  const [restaurantData, setRestaurantData] = useState([]);
-  const [menuData, setMenuData] = useState([{
-    id: 1,
-    imageUrl: "url(/assets/images/restCover.jpg)",
-    name: 'Classic Burger',
-    status: 'Available',
-    price: 8.99,
-    totalSales: 25,
-    createdAt: { seconds: 1645426800 }, // Replace with actual timestamp
-  },
-  {
-    id: 2,
-    imageUrl: '/images/menu/item2.jpg',
-    name: 'Vegetarian Pizza',
-    status: 'Available',
-    price: 12.49,
-    totalSales: 15,
-    createdAt: { seconds: 1645333200 }, // Replace with actual timestamp
-  },
-  {
-    id: 3,
-    imageUrl: '/images/menu/item3.jpg',
-    name: 'Pasta Alfredo',
-    status: 'Sold Out',
-    price: 10.99,
-    totalSales: 30,
-    createdAt: { seconds: 1645239600 }, // Replace with actual timestamp
-  },
-  {
-    id: 4,
-    imageUrl: '/images/menu/item4.jpg',
-    name: 'Grilled Salmon',
-    status: 'Available',
-    price: 15.99,
-    totalSales: 20,
-    createdAt: { seconds: 1645146000 }, // Replace with actual timestamp
-  },
-  {
-    id: 5,
-    imageUrl: '/images/menu/item5.jpg',
-    name: 'Caesar Salad',
-    status: 'Available',
-    price: 7.99,
-    totalSales: 40,
-    createdAt: { seconds: 1645052400 }, // Replace with actual timestamp
-  },
-  {
-    id: 6,
-    imageUrl: '/images/menu/item6.jpg',
-    name: 'Chocolate Cake',
-    status: 'Available',
-    price: 5.99,
-    totalSales: 10,
-    createdAt: { seconds: 1644958800 }, // Replace with actual timestamp
-  },
-  {
-    id: 7,
-    imageUrl: '/images/menu/item7.jpg',
-    name: 'Fruit Smoothie',
-    status: 'Available',
-    price: 4.49,
-    totalSales: 50,
-    createdAt: { seconds: 1644865200 }, // Replace with actual timestamp
-  },
-  {
-    id: 8,
-    imageUrl: '/images/menu/item8.jpg',
-    name: 'Chicken Sandwich',
-    status: 'Available',
-    price: 9.99,
-    totalSales: 18,
-    createdAt: { seconds: 1644771600 }, // Replace with actual timestamp
-  },
-  {
-    id: 9,
-    imageUrl: '/images/menu/item9.jpg',
-    name: 'Margarita Cocktail',
-    status: 'Available',
-    price: 6.99,
-    totalSales: 12,
-    createdAt: { seconds: 1644678000 }, // Replace with actual timestamp
-  },
-  {
-    id: 10,
-    imageUrl: '/images/menu/item10.jpg',
-    name: 'BBQ Ribs',
-    status: 'Available',
-    price: 13.99,
-    totalSales: 22,
-    createdAt: { seconds: 1644584400 }, // Replace with actual timestamp
-  },]);
+  const [menuData, setMenuData] = useState(null);
+  const route = useRouter();
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [globalFilter, setGlobalFilter] = useState("");
+
+  useEffect(() => {
+    async function gettingRestaurantMenu() {
+      const data = await getMenuInformation(user);
+      if (data.length <= 0) {
+      }
+      setMenuData(data);
+    }
+    async function userIsActive() {
+      const data = await getRestaurantInformationByUser(user);
+      if (!data.length == 0) {
+        gettingRestaurantMenu();
+      }
+    }
+    if (user) {
+      userIsActive();
+    }
+    if (user == false) {
+      route.push("/");
+    }
+  }, [user]);
 
   const handleProductEdit = (product) => {
     setSelectedProduct(product);
   };
 
-  const handleProductDelete = (productId) => {
-    setMenuData(menuData.filter((product) => product.id !== productId));
+  const handleProductDelete = async (productId) => {
+    await deleteDoc(doc(db, "restaurant_menu", productId)).then(() => {
+      setMenuData(menuData.filter((product) => product.id !== productId));
+    });
   };
-
-  const fetchMenu = async (restaurants) => {
-    for (const restaurant of restaurants) {
-      await getMenu(restaurant.id);
-      console.log("restaurant id: ", restaurant.id);
-    }
-  };
-
-  const getMenu = async (id) => {
-    const data = await getMenuInformationByUser(id, user);
-    setMenuData((prevData) => [...prevData, ...data]);
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      const data = await getRestaurantInformation();
-      setRestaurantData(data);
-    }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (restaurantData.length > 0) {
-      fetchMenu(restaurantData);
-    }
-  }, [restaurantData]);
-
-  /*const formatDate = (timestamp) => {
-    const date = new Date(timestamp.seconds * 1000);
-    return date.toLocaleString();
-  };*/
 
   const columns = React.useMemo(
     () => [
-      /*
       {
-        Header: 'Image',
-        accessor: 'imageUrl',
+        Header: "Image",
+        accessor: "imageUrl",
         Cell: ({ cell: { value }, row: { original } }) => (
-          <img
+          <Image
             alt={`Product image - ${original.name}`}
             className="aspect-square rounded-md object-cover"
             height="64"
-            src={"url(/assets/images/restCover.jpg)"}
+            src={original.imageUrl}
             width="64"
           />
         ),
       },
-      */
+
+      // {
+      //   Header: 'Image',
+      //   accessor: 'imageUrl',
+      //   Cell: ({ row: { original } }) => (
+      //     <img
+      //       alt={`Product image - ${original.name}`}
+      //       className="aspect-square rounded-md object-cover"
+      //       height="64"
+      //       src="/assets/images/food.png" // Correct path to the image
+      //       width="64"
+      //     />
+      //   ),
+      // },
       {
-        Header: 'Image',
-        accessor: 'imageUrl',
-        Cell: ({ row: { original } }) => (
-          <img
-            alt={`Product image - ${original.name}`}
-            className="aspect-square rounded-md object-cover"
-            height="64"
-            src="/assets/images/food.png" // Correct path to the image
-            width="64"
-          />
-        ),
+        Header: "Name",
+        accessor: "name",
       },
       {
-        Header: 'Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ cell: { value } }) => <Badge variant="outline">{value}</Badge>,
       },
       {
-        Header: 'Price',
-        accessor: 'price',
+        Header: "Price",
+        accessor: "price",
         Cell: ({ cell: { value } }) => `$${value}`,
         className: "hidden md:table-cell",
       },
       {
-        Header: 'Total Sales',
-        accessor: 'totalSales',
-        Cell: () => '0',
+        Header: "Date",
+        accessor: "createdAt",
+        Cell: ({ cell: { value } }) => {
+          const date = new Date(value.seconds * 1000); // Assuming the value is a Firestore timestamp
+          const day = date.getDate().toString().padStart(2, "0");
+          const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
+          const year = date.getFullYear();
+          const hours = date.getHours();
+          const minutes = date.getMinutes().toString().padStart(2, "0");
+          const seconds = date.getSeconds().toString().padStart(2, "0");
+          const ampm = hours >= 12 ? "PM" : "AM";
+          const formattedHours = (hours % 12 || 12).toString().padStart(2, "0"); // Convert 0 to 12 for 12-hour format
+
+          return (
+            <div>
+              {`${day}-${month}-${year}`}
+              <br />
+              {`${formattedHours}:${minutes}:${seconds} ${ampm}`}
+            </div>
+          );
+        },
         className: "hidden md:table-cell",
       },
       {
-        Header: 'Created at',
-        accessor: 'createdAt',
-        Cell: ({ cell: { value } }) => new Date(value.seconds * 1000).toLocaleString(),
-        className: "hidden md:table-cell",
-      },
-      {
-        Header: 'Actions',
-        accessor: 'actions',
+        Header: "Actions",
+        accessor: "actions",
         Cell: ({ row: { original } }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -238,8 +158,13 @@ export default function SettingsRestaurant() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => handleProductEdit(original)}>Edit</DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600" onClick={() => handleProductDelete(original.id)}>
+              <DropdownMenuItem onClick={() => handleProductEdit(original)}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-red-600"
+                onClick={() => handleProductDelete(original.id)}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -247,10 +172,10 @@ export default function SettingsRestaurant() {
         ),
       },
     ],
-    []
+    [menuData]
   );
 
-  const data = React.useMemo(() => menuData, [menuData]);
+  const data = React.useMemo(() => menuData || [], [menuData]);
 
   const {
     getTableProps,
@@ -267,7 +192,7 @@ export default function SettingsRestaurant() {
 
   return (
     <div>
-      {menuData.length === 0 ? (
+      {menuData === null ? (
         <div className="flex flex-col items-center justify-center h-screen ">
           <h3 className="text-2xl font-bold tracking-tight text-primary">
             You have no products
@@ -275,7 +200,7 @@ export default function SettingsRestaurant() {
           <p className="text-sm text-gray-500">
             You can start selling as soon as you add a product.
           </p>
-          <Link href="/restraunt/AddMenu " className='mt-4'>
+          <Link href="/restraunt/AddMenu" className="mt-4">
             <Button className="bg-primary">Add Product</Button>
           </Link>
         </div>
@@ -290,35 +215,37 @@ export default function SettingsRestaurant() {
           <Card>
             <CardHeader>
               <CardTitle>Products</CardTitle>
-              <CardDescription>Manage your products and view their sales performance.</CardDescription>
+              <CardDescription>
+                Manage your products and view their sales performance.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Table {...getTableProps()}>
                 <TableHeader>
-                  {headerGroups.map(headerGroup => (
+                  {headerGroups.map((headerGroup) => (
                     <TableRow {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map(column => (
+                      {headerGroup.headers.map((column) => (
                         <TableHead
                           {...column.getHeaderProps()}
                           className={column.className}
                         >
-                          {column.render('Header')}
+                          {column.render("Header")}
                         </TableHead>
                       ))}
                     </TableRow>
                   ))}
                 </TableHeader>
                 <TableBody {...getTableBodyProps()}>
-                  {rows.map(row => {
+                  {rows.map((row) => {
                     prepareRow(row);
                     return (
                       <TableRow {...row.getRowProps()}>
-                        {row.cells.map(cell => (
+                        {row.cells.map((cell) => (
                           <TableCell
                             {...cell.getCellProps()}
                             className={cell.column.className}
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </TableCell>
                         ))}
                       </TableRow>
@@ -329,7 +256,8 @@ export default function SettingsRestaurant() {
             </CardContent>
             <CardFooter>
               <div className="text-xs text-muted-foreground">
-                Showing <strong>1-{menuData.length}</strong> of <strong>{menuData.length}</strong> products
+                Showing <strong>1-{menuData.length}</strong> of{" "}
+                <strong>{menuData.length}</strong> products
               </div>
             </CardFooter>
           </Card>

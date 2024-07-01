@@ -5,6 +5,7 @@ import {
   query,
   where,
   onSnapshot,
+  orderBy,
 } from "firebase/firestore";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
 
@@ -53,7 +54,7 @@ export async function getRestaurantInformation() {
 // get restaurant data for user as restaurant
 export async function getRestaurantInformationByUser(user) {
   try {
-    const q = query(collection(db, "restaurants"), where("uid", "==", user));
+    const q = query(collection(db, "restaurants"), where("uid", "==", user),where('active',"==",true));
     const querySnapshot = await getDocs(q);
     const userItems = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
@@ -61,43 +62,22 @@ export async function getRestaurantInformationByUser(user) {
     return userItems;
   } catch (error) {
     console.error("Error getting user information: ", error);
-    return [];
+    return false;
   }
 }
-
-export async function getMenuInformation(docId) {
+export async function getMenuInformation(userId) {
   try {
-    const q = query(collection(db, "restaurants", docId, "menu"));
-    const querySnapshot = await getDocs(q);
-    const userItems = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
-    });
-    return userItems;
-  } catch (error) {
-    console.error("Error getting user information: ", error);
-    return [];
-  }
-}
-
-export async function getMenuInformationByUser(docId, user) {
-  try {
-    // Create a query against the collection with a where clause to filter by userId
     const q = query(
-      collection(db, "restaurants", docId, "menu"),
-      where("userId", "==", user)
+      collection(db, "restaurant_menu"),
+      where("userId", "==", userId),
+      orderBy("createdAt",'desc') // Add this line
     );
-
-    // Execute the query
     const querySnapshot = await getDocs(q);
-
-    // Map through the documents and return the data
     const userItems = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
+      return { id: doc.id,...doc.data() };
     });
-
     return userItems;
   } catch (error) {
-    console.error("Error getting user information: ", error);
     return [];
   }
 }

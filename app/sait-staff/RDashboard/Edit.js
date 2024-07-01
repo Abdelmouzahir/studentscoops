@@ -71,10 +71,9 @@ const Edit = ({ restaurants, selectedRestaurant, setRestaurants, setIsEditing, g
           <input
             id="email"
             type="email"
-            name="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            // onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm cursor-not-allowed bg-black/20"
           />
         </div>
         <div>
