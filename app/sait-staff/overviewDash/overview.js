@@ -5,7 +5,7 @@ import { getAllStudentsInformation, getRestaurantInformation } from "@/services/
 
 import { FaUsers, FaChartLine } from "react-icons/fa";
 import { AiOutlineShop, AiOutlineTeam } from "react-icons/ai";
-import {useSpring, animated} from "react-spring";
+import { useSpring, animated } from "react-spring";
 
 function NumberChange({n}){
 const {number} = useSpring({
