@@ -4,6 +4,8 @@ import { useTable, useGlobalFilter } from "react-table";
 import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
 import { useUserAuth } from "@/services/utils";
+import { db } from "@/app/firebase/config";
+import { deleteDoc, doc } from "firebase/firestore";
 import {
   getMenuInformation,
   getRestaurantInformationByUser,
@@ -69,13 +71,14 @@ export default function SettingsRestaurant() {
     setSelectedProduct(product);
   };
 
-  const handleProductDelete = (productId) => {
-    setMenuData(menuData.filter((product) => product.id !== productId));
+  const handleProductDelete = async (productId) => {
+    await deleteDoc(doc(db, "restaurant_menu", productId)).then(() => {
+      setMenuData(menuData.filter((product) => product.id !== productId));
+    });
   };
 
   const columns = React.useMemo(
     () => [
-      /*
       {
         Header: "Image",
         accessor: "imageUrl",
@@ -84,25 +87,25 @@ export default function SettingsRestaurant() {
             alt={`Product image - ${original.name}`}
             className="aspect-square rounded-md object-cover"
             height="64"
-            src={"url(/assets/images/restCover.jpg)"}
+            src={original.imageUrl}
             width="64"
           />
         ),
       },
-      */
-      {
-        Header: 'Image',
-        accessor: 'imageUrl',
-        Cell: ({ row: { original } }) => (
-          <img
-            alt={`Product image - ${original.name}`}
-            className="aspect-square rounded-md object-cover"
-            height="64"
-            src="/assets/images/food.png" // Correct path to the image
-            width="64"
-          />
-        ),
-      },
+
+      // {
+      //   Header: 'Image',
+      //   accessor: 'imageUrl',
+      //   Cell: ({ row: { original } }) => (
+      //     <img
+      //       alt={`Product image - ${original.name}`}
+      //       className="aspect-square rounded-md object-cover"
+      //       height="64"
+      //       src="/assets/images/food.png" // Correct path to the image
+      //       width="64"
+      //     />
+      //   ),
+      // },
       {
         Header: "Name",
         accessor: "name",
@@ -142,13 +145,6 @@ export default function SettingsRestaurant() {
         },
         className: "hidden md:table-cell",
       },
-
-      // {
-      //   Header: "Total Sales",
-      //   accessor: "totalSales",
-      //   Cell: () => "0",
-      //   className: "hidden md:table-cell",
-      // },
       {
         Header: "Actions",
         accessor: "actions",
