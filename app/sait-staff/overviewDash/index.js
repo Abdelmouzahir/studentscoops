@@ -2,9 +2,11 @@ import Head from 'next/head';
 import Overview from './overview';
 import Table from './table';
 import { useState } from 'react';
+import Add from './Add';
 
 export default function Dash() {
   const [isAdding, setIsAdding] = useState(false);
+
 
   // Random data
   const [admin, setAdmin] = useState([
@@ -49,12 +51,12 @@ export default function Dash() {
           <Overview />
         </div>
         <div className="flex flex-col items-center w-full mt-8">
-          <Table
+          {isAdding? <><Add admin={admin} setAdmins={setAdmin} setIsAdding={setIsAdding}/></>:<><Table
             admin={admin}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
             setIsAdding={setIsAdding}
-          />
+          /></>}
         </div>
       </main>
     </div>
