@@ -5,10 +5,10 @@ import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
-import Modal from "@/Components/Modal";
+import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 
-const sign_in = () => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -22,6 +22,7 @@ const sign_in = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         sessionStorage.setItem("user", true);
+        sessionStorage.setItem("displayName", user.displayName || "User");
         router.push("/sait-staff");
         setEmail("");
         setPassword("");
@@ -64,8 +65,7 @@ const sign_in = () => {
         backgroundSize: "cover", // Adjusts the size of the background image
         backgroundPosition: "center", // Centers the background image
         backgroundRepeat: "no-repeat", // Prevents the background image from repeating
-
-          }}
+      }}
     >
       <Fragment>
         <div className="container mx-auto">
@@ -116,7 +116,6 @@ const sign_in = () => {
                   Sign In
                 </button>
               </div>
-
             </div>
           </div>
         </div>
@@ -162,4 +161,4 @@ const sign_in = () => {
   );
 };
 
-export default sign_in;
+export default SignIn;
