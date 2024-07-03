@@ -22,7 +22,7 @@ const SignIn = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         sessionStorage.setItem("user", true);
-        sessionStorage.setItem("displayName", user.displayName || "User");
+        sessionStorage.setItem("displayName", user.displayName || "User"); // Set the display name to the user's display name or "User" if it's not set
         router.push("/sait-staff");
         setEmail("");
         setPassword("");
