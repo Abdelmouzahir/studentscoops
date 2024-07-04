@@ -26,6 +26,7 @@ const storage = getStorage(app);
 let analytics;
 const db = getFirestore(app);
 
+
 // Initialize Firebase Analytics only if supported and in the client-side environment
 if (typeof window !== "undefined") {
   isSupported().then((supported) => {
