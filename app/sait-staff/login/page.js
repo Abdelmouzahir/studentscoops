@@ -1,7 +1,8 @@
 "use client";
 import React, { Fragment, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
+import { auth, db } from "@/app/firebase/config";
+import { getDatabase, ref, get } from "firebase/database";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/components/Modal";
@@ -23,13 +24,20 @@ const SignIn = () => {
     signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+        fetchUserInfo(user.uid).then((userInfo) => {
         sessionStorage.setItem("user", true);
-        sessionStorage.setItem("displayName", user.displayName || "User");
+        sessionStorage.setItem("name", userInfo.name || "User");
+        sessionStorage.setItem("email", user.email || ""); // Store the user's email
+        sessionStorage.setItem("uid", user.uid || ""); // Store the user's UID
+        console.log(userInfo.name)
+        console.log(userCredential.user)
         router.push("/sait-staff");
         setEmail("");
         setPassword("");
         setLoginError("");
         setLoading(false);
+        }
+        );
       })
       .catch((err) => {
         setLoading(false);
@@ -37,6 +45,26 @@ const SignIn = () => {
         console.log(err);
       });
   };
+//fetch data inside database to get the name
+
+const fetchUserInfo = async (uid) => {
+  try {
+    const db = getDatabase(); // Get the Firebase Database instance
+    const userRef = ref(db, `saitStaff/${uid}/collection`); 
+    const snapshot = await get(userRef);
+
+    if (snapshot.exists()) {
+      return snapshot.val(); // Return user data from Firebase
+    } else {
+      console.log("No such document!");
+      return { name: "User" }; // Return default object or handle as needed
+    }
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    return { name: "User" }; // Return default object or handle as needed
+  }
+};
+
 
   const handleForgotPassword = (event) => {
     event.preventDefault();
