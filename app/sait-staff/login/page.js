@@ -36,11 +36,13 @@ const SignIn = () => {
         const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
         const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
+        console.log('name: ',employeeData);
 
         if (!employeeData.empty) {
           const saitStaffData = employeeData[0];
           const name = saitStaffData || "SAIT Staff"; // Use default name if 'name' is not available
           setSaitStaffName(name);
+          console.log("user name: ",name)
         } else {
           console.log("No SAIT Staff data found for current user");
           setSaitStaffName("SAIT Staff"); // Set default name
