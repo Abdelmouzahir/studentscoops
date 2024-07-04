@@ -6,7 +6,7 @@ import { updateProfile } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
-import Modal from "@/Components/Modal";
+import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import Loading from "@/app/loading";
 
@@ -26,8 +26,7 @@ const SignIn = () => {
     fetchSaitStaffName();
   }, []);
 
-  //hunar please can you look at here
-  //problem soleved
+  //problem solved
   const fetchSaitStaffName = async () => {
     try {
       const user = auth.currentUser;
