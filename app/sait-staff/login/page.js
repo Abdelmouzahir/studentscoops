@@ -6,7 +6,7 @@ import { updateProfile } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
-import Modal from "@/components/Modal";
+import Modal from "@/Components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import Loading from "@/app/loading";
 
@@ -26,32 +26,31 @@ const SignIn = () => {
     fetchSaitStaffName();
   }, []);
 
-  
-//hunar please can you look at here 
-const fetchSaitStaffName = async () => {
-  try {
-    const user = auth.currentUser;
-    if (user) {
-      const uid = user.uid;
-      const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
-      const querySnapshot = await getDocs(q);
-      
-      if (!querySnapshot.empty) {
-        const saitStaffData = querySnapshot.docs[0].data();
-        const name = saitStaffData.name || "SAIT Staff"; // Use default name if 'name' is not available
-        setSaitStaffName(name);
-        console.log(saitStaffData.name)
-      } else {
-        console.log("No SAIT Staff data found for current user");
-        setSaitStaffName("SAIT Staff"); // Set default name
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching SAIT Staff name:", error);
-    setSaitStaffName("SAIT Staff"); // Handle error, set default name
-  }
-};
+  //hunar please can you look at here
+  //problem soleved
+  const fetchSaitStaffName = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+        const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
+        const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
 
+        if (!employeeData.empty) {
+          const saitStaffData = employeeData[0];
+          const name = saitStaffData || "SAIT Staff"; // Use default name if 'name' is not available
+          setSaitStaffName(name);
+        } else {
+          console.log("No SAIT Staff data found for current user");
+          setSaitStaffName("SAIT Staff"); // Set default name
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching SAIT Staff name:", error);
+      setSaitStaffName("SAIT Staff"); // Handle error, set default name
+    }
+  };
 
   const handleSignIn = async () => {
     setLoading(true);
@@ -59,7 +58,7 @@ const fetchSaitStaffName = async () => {
       const userCredential = await signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
       console.log(user);
-      
+
       // Update display name with SAIT Staff name
       await updateProfile(user, { displayName: saitStaffName });
 
