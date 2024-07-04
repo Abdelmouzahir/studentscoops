@@ -26,8 +26,7 @@ const SignIn = () => {
     fetchSaitStaffName();
   }, []);
 
-  //hunar please can you look at here
-  //problem soleved
+  //problem solved
   const fetchSaitStaffName = async () => {
     try {
       const user = auth.currentUser;
