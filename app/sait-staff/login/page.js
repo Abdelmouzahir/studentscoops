@@ -1,13 +1,14 @@
 "use client";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/firebase/config";
-import { getDatabase, ref, get } from "firebase/database";
+import { updateProfile } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
-import Loading from "@/app/loading"; 
+import Loading from "@/app/loading";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -17,54 +18,67 @@ const SignIn = () => {
   const [emailError, setEmailError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [saitStaffName, setSaitStaffName] = useState("");
   const router = useRouter();
 
-  const handleSignIn = () => {
-    setLoading(true);
-    signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        fetchUserInfo(user.uid).then((userInfo) => {
-        sessionStorage.setItem("user", true);
-        sessionStorage.setItem("name", userInfo.name || "User");
-        sessionStorage.setItem("email", user.email || ""); // Store the user's email
-        sessionStorage.setItem("uid", user.uid || ""); // Store the user's UID
-        console.log(userInfo.name)
-        console.log(userCredential.user)
-        router.push("/sait-staff");
-        setEmail("");
-        setPassword("");
-        setLoginError("");
-        setLoading(false);
-        }
-        );
-      })
-      .catch((err) => {
-        setLoading(false);
-        setLoginError("Invalid email or password");
-        console.log(err);
-      });
-  };
-//fetch data inside database to get the name
+  useEffect(() => {
+    // Fetch saitStaff name when component mounts
+    fetchSaitStaffName();
+  }, []);
 
-const fetchUserInfo = async (uid) => {
+  
+
+const fetchSaitStaffName = async () => {
   try {
-    const db = getDatabase(); // Get the Firebase Database instance
-    const userRef = ref(db, `saitStaff/${uid}/collection`); 
-    const snapshot = await get(userRef);
-
-    if (snapshot.exists()) {
-      return snapshot.val(); // Return user data from Firebase
-    } else {
-      console.log("No such document!");
-      return { name: "User" }; // Return default object or handle as needed
+    const user = auth.currentUser;
+    if (user) {
+      const uid = user.uid;
+      const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const saitStaffData = querySnapshot.docs[0].data();
+        const name = saitStaffData.name || "SAIT Staff"; // Use default name if 'name' is not available
+        setSaitStaffName(name);
+        console.log(saitStaffData.name)
+      } else {
+        console.log("No SAIT Staff data found for current user");
+        setSaitStaffName("SAIT Staff"); // Set default name
+      }
     }
   } catch (error) {
-    console.error("Error fetching user info:", error);
-    return { name: "User" }; // Return default object or handle as needed
+    console.error("Error fetching SAIT Staff name:", error);
+    setSaitStaffName("SAIT Staff"); // Handle error, set default name
   }
 };
 
+
+  const handleSignIn = async () => {
+    setLoading(true);
+    try {
+      const userCredential = await signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      console.log(user);
+      
+      // Update display name with SAIT Staff name
+      await updateProfile(user, { displayName: saitStaffName });
+
+      sessionStorage.setItem("user", true);
+      sessionStorage.setItem("name", saitStaffName);
+      sessionStorage.setItem("email", user.email || ""); // Store the user's email
+      sessionStorage.setItem("uid", user.uid || ""); // Store the user's UID
+      console.log(saitStaffName);
+      setEmail("");
+      setPassword("");
+      setLoginError("");
+      setLoading(false);
+      router.push("/sait-staff"); // Redirect after successful sign-in
+    } catch (error) {
+      setLoading(false);
+      setLoginError("Invalid email or password");
+      console.error("Error signing in:", error);
+    }
+  };
 
   const handleForgotPassword = (event) => {
     event.preventDefault();
@@ -82,7 +96,7 @@ const fetchUserInfo = async (uid) => {
         router.push("/auth/sign-in/afterResetPassword");
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Error sending password reset email:", err);
         setEmailError("Failed to send password reset email");
       });
   };

@@ -20,8 +20,8 @@ const UserGreeting = () => {
   return (
     <div>
       <h1 className="text-lg text-black-600 font-bold mt-2 ml-2" >Welcome, {userName}!</h1>
-      <p>Email: {email}</p>
-      <p>UID: {uid}</p>
+     { /*<p>Email: {email}</p>*/}
+     { /*<p>UID: {uid}</p>*/}
     </div>
   );
 };
