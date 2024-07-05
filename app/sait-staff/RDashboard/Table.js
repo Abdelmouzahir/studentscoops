@@ -1,23 +1,34 @@
-'use client'
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 import { LuPencil } from "react-icons/lu";
 import { LuTrash } from "react-icons/lu";
 import { IoStorefront } from "react-icons/io5";
-import { formatPhoneNumber } from '@/Constant/formated';
+import { formatPhoneNumber } from "@/Constant/formated";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { FaFilter } from "react-icons/fa";
 
-const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding, setSearch, search }) => {
+const Table = ({
+  restaurants,
+  handleEdit,
+  handleDelete,
+  setIsAdding,
+  setSearch,
+  search,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("name");
 
-  const filteredRestaurants = 
+  const filteredRestaurants =
     restaurants && restaurants.length > 0
-      ? restaurants.filter(restaurant => {
+      ? restaurants.filter((restaurant) => {
           if (searchBy === "name") {
-            return restaurant.name.toLowerCase().includes(searchTerm.toLowerCase());
+            return restaurant.name
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase());
           } else if (searchBy === "email") {
-            return restaurant.email.toLowerCase().includes(searchTerm.toLowerCase());
+            return restaurant.email
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase());
           } else if (searchBy === "phone") {
             return restaurant.phoneNumber.includes(searchTerm);
           }
@@ -68,10 +79,15 @@ const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding, setSearch, 
           )}
         </button>
       </div>
-      <div className={search ? "w-full grid grid-cols-3 gap-5 bg-white rounded mb-5 p-3"
-            : "hidden"}>
+      <div
+        className={
+          search
+            ? "w-full grid grid-cols-3 gap-5 bg-white rounded mb-5 p-3"
+            : "hidden"
+        }
+      >
         <div>
-        <label>Search</label>
+          <label>Search</label>
           <input
             className="rounded ml-2 p-1 border-black border-2 w-full"
             value={searchTerm}
@@ -79,7 +95,7 @@ const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding, setSearch, 
           />
         </div>
         <div>
-        <label>Criteria</label>
+          <label>Criteria</label>
           <select
             className="w-full rounded ml-2 p-1 border-black border-2"
             value={searchBy}
@@ -106,7 +122,8 @@ const Table = ({ restaurants, handleEdit, handleDelete, setIsAdding, setSearch, 
               filteredRestaurants.map((restaurant) => (
                 <tr key={restaurant.id} className="hover:bg-gray-100">
                   <td className="py-4 px-6 text-center">
-                    {restaurant.name[0].toUpperCase() + restaurant.name.slice(1)}
+                    {restaurant.name[0].toUpperCase() +
+                      restaurant.name.slice(1)}
                   </td>
                   <td className="py-4 px-6 text-center">{restaurant.email}</td>
                   <td className="py-4 px-6 text-center">
