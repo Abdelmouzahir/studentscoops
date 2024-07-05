@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { LuPencil, LuTrash } from "react-icons/lu";
 import { IoMdPersonAdd } from "react-icons/io";
-import Modal from "@/Components/Modal";
+import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
 
@@ -180,7 +180,7 @@ const Table = ({
                     </span>
                   </span>
                 </td>
-                <td className="px-5 py-5 text-center border-gray-200 bg-white text-sm border-l">
+                <td className="px-5 py-5 text-center border-gray-200 bg-white text-sm  border-b">
                   <button
                     onClick={() => handleEdit(user)}
                     className="inline-flex items-center mr-2 justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
