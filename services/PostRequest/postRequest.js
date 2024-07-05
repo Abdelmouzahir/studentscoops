@@ -19,6 +19,9 @@ import {
 } from "firebase/storage";
 import { deleteUser } from "firebase/auth";
 
+// students
+
+// to add student information in database
 export async function addStudentInformation(userId, userInformation, email) {
   const studentInformation = {
     studentId: userId,
@@ -32,6 +35,9 @@ export async function addStudentInformation(userId, userInformation, email) {
     console.error("Error adding document: ", e);
   }
 }
+//restaurants
+
+// to add restaurant information in database
 export async function addRestaurantInformation(
   user,
   name,
@@ -83,6 +89,7 @@ export async function addRestaurantInformation(
   );
 }
 
+// to add restaurant menu in database
 export async function addRestaurantMenu(user, name, price, description, image,userId) {
   const storageRef = ref(storage, `menu/${userId}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
@@ -126,7 +133,7 @@ export async function addRestaurantMenu(user, name, price, description, image,us
     }
   );
 }
-export let integer = 0;
+
 export default async function addStudentEmailStatus(prop) {
   let { email, active } = prop;
   let data = { studentEmail: email, active: active };
@@ -217,6 +224,19 @@ export async function updateStudent(id, prop) {
     console.error("Error updating document: ", error);
   }
 }
+// to update status of sait staff employee
+export async function updateSaitEmployeeStatus(id , active){
+  try{
+    const docRef = doc(db,"saitStaff",id);
+    await updateDoc(docRef,{
+      active:!active
+    });
+  }catch(error){
+    console.error("Error updating document: ", error);
+  
+  }
+}
+
 export async function existingStudentData(email) {
   try {
     const q = query(collection(db, "students"), where("email", "==", email));

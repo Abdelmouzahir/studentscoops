@@ -14,14 +14,6 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
-
-  const currentDate = new Date();
-
-  const day = currentDate.getDate();
-  const month = currentDate.getMonth(); // Remember, month is zero-indexed
-  const year = currentDate.getFullYear();
-
-  const newDate = [day, month, year];
   let firstWord = name.split(" ");
 
   //generic password will be first name of student or restaurant + last three digits of mobile number + "!"
@@ -54,6 +46,7 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
         genericPassword
       );
       const user = userCredential.user;
+      const date = new Date();
 
       // Add restaurant to Firestore
       const newAdmin = {
@@ -63,7 +56,7 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
         phoneNumber,
         address,
         uid: user.uid,
-        acountCreated: newDate, // link with user ID
+        accountCreated: date, // link with user ID
         active: true,
       };
 
@@ -168,9 +161,9 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
             value={role}
           >
             <option value="">Select a role</option>
-            <option value="admin">Admin</option>
-            <option value="editor">Editor</option>
-            <option value="viewer">Viewer</option>
+            <option value="Admin">Admin</option>
+            <option value="Editor">Editor</option>
+            <option value="Viewer">Viewer</option>
           </select>
         </div>
         <div>
