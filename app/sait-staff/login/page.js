@@ -69,7 +69,6 @@ const SignIn = () => {
       setEmail("");
       setPassword("");
       setLoginError("");
-      // setLoading(false);
     } catch (error) {
       setLoading(false);
       setLoginError("Invalid email or password");

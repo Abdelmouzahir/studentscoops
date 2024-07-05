@@ -29,7 +29,7 @@ const sign_in = () => {
         setEmail("");
         setPassword("");
         setLoginError("");
-        setLoading(false);
+        //setLoading(false);
       })
       .catch((err) => {
         setLoading(false);

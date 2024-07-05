@@ -38,7 +38,7 @@ const sign_in = () => {
         setLoginError("");
         setEmail("");
         setPassword("");
-        setLoading(false);
+        //setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
