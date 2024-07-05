@@ -6,6 +6,7 @@ import { updateProfile } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { AiOutlineUser } from "react-icons/ai";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import Loading from "@/app/loading";
@@ -19,6 +20,7 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [saitStaffName, setSaitStaffName] = useState("");
+  const [saitStaffimg, setSaitStaffimg] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -36,10 +38,15 @@ const SignIn = () => {
         const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
         const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
+        const employeeImg = querySnapshot.docs.map((doc) => doc.data().imageUrl);
+      
 
         if (!employeeData.empty) {
           const saitStaffData = employeeData[0];
           const name = saitStaffData || "SAIT Staff"; // Use default name if 'name' is not available
+          const saitStaffimg = employeeImg[0];
+          const adminImg = saitStaffimg || <AiOutlineUser />;
+          setSaitStaffimg(adminImg);
           setSaitStaffName(name);
         } else {
           console.log("No SAIT Staff data found for current user");
@@ -59,12 +66,14 @@ const SignIn = () => {
       const user = userCredential.user;
 
       // Update display name with SAIT Staff name
-      await updateProfile(user, { displayName: saitStaffName });
+      await updateProfile(user, { displayName: saitStaffName , photoURL : saitStaffimg});
+      //console.log('img ',saitStaffimg)
 
       sessionStorage.setItem("user", true);
       sessionStorage.setItem("name", saitStaffName);
       sessionStorage.setItem("email", user.email || ""); // Store the user's email
       sessionStorage.setItem("uid", user.uid || ""); // Store the user's UID
+      sessionStorage.setItem("imageUrl", saitStaffimg|| ""); // Store the user's photo URL
       router.push("/sait-staff"); // Redirect after successful sign-in
       setEmail("");
       setPassword("");
