@@ -81,6 +81,37 @@ export async function getMenuInformation(userId) {
     return [];
   }
 }
+// get sait data for sait staff home page
+export async function getSaitData() {
+  try{
+    const q = query(collection(db, "saitStaff"));
+    const querySnapshot = await getDocs(q);
+    const saitItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return saitItems;
+  }
+  catch(error){
+    console.error("Error getting sait information: ", error);
+    return [];
+  }
+}
+
+export async function getSaitDataByUser(uid){
+  try{
+    const q = query(collection(db, "saitStaff"),where("uid","==",uid));
+    const querySnapshot = await getDocs(q);
+    const saitItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return saitItems;
+  }
+  catch(error){
+    console.error("Error getting sait information: ", error);
+    return [];
+  }
+}
+
 export async function getStudentEmailWithStatus() {
   try {
     const q = query(
