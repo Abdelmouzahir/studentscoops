@@ -32,15 +32,16 @@ const SignIn = () => {
       const user = auth.currentUser;
       if (user) {
         const uid = user.uid;
-        console.log('user ',uid)
         const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
         const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
+        console.log('name: ',employeeData);
 
         if (!employeeData.empty) {
           const saitStaffData = employeeData[0];
           const name = saitStaffData || "SAIT Staff"; // Use default name if 'name' is not available
           setSaitStaffName(name);
+          console.log("user name: ",name)
         } else {
           console.log("No SAIT Staff data found for current user");
           setSaitStaffName("SAIT Staff"); // Set default name
@@ -57,6 +58,7 @@ const SignIn = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
+      console.log(user);
 
       // Update display name with SAIT Staff name
       await updateProfile(user, { displayName: saitStaffName });
@@ -65,11 +67,12 @@ const SignIn = () => {
       sessionStorage.setItem("name", saitStaffName);
       sessionStorage.setItem("email", user.email || ""); // Store the user's email
       sessionStorage.setItem("uid", user.uid || ""); // Store the user's UID
-      router.push("/sait-staff"); // Redirect after successful sign-in
+      console.log(saitStaffName);
       setEmail("");
       setPassword("");
       setLoginError("");
-      // setLoading(false);
+      //setLoading(false);
+      router.push("/sait-staff"); // Redirect after successful sign-in
     } catch (error) {
       setLoading(false);
       setLoginError("Invalid email or password");
