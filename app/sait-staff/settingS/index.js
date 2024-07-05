@@ -1,20 +1,58 @@
 /**
  * v0 by Vercel.
  */
+"use client";
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import Passwordreset from "./passwordreset/page"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { getSaitDataByUser } from "@/services/GetRequest/getRequest"
+import { useUserAuth } from "@/services/utils"
+import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
+import { deleteSaitUser } from "@/services/PostRequest/postRequest";
+import { useRouter } from "next/navigation";
 
 
 export default function Settings() {
+  const route = useRouter();
+  const [userEmail, setUserEmail] = useState("");
+  const { user } = useUserAuth();
+  const auth = getAuth();
+  const [saitData, setSaitData] = useState(null);
+  async function getUserData(){
+    const data = await getSaitDataByUser(user);
+    setSaitData(data);
+  }
+  useEffect(() => {
+    if(user){
+      getUserData();
+      console.log(auth.currentUser)
+    }
+    if(user==false){
+     route.push("/");
+    }
+  },[user]);
+
+  const handleDeleteAccount = async (e) => {
+    e.preventDefault();
+    if(userEmail !== saitData[0].email){
+      alert("Email does not match");
+      return;
+    }
+    if(userEmail == saitData[0].email){
+      await deleteSaitUser(auth.currentUser,saitData[0].id).then(()=>{
+      alert("Account deleted successfully");
+    })};
+    
+  };
   return (
     <div className="flex min-h-screen mx-auto">
       <main className="flex-1  dark:bg-gray-800 p-6 md:p-10">
-        <div className="max-w-4xl mx-auto grid gap-8">
-            <Passwordreset />
+        {saitData ? (<div className="max-w-4xl mx-auto grid gap-8">
+            <Passwordreset auth={auth} email={saitData[0].email}/>
             <section className="w-full mx-0 py-12 md:py-16">
               <div className="space-y-6">
                 <div className="space-y-2">
@@ -26,10 +64,10 @@ export default function Settings() {
                     </p>
                     <form className="space-y-4">
                       <div className="space-y-2 pt-10">
-                        <Label htmlFor="username">Type your username to confirm</Label>
-                        <Input id="username" placeholder="Enter your username" />
+                        <Label htmlFor="username">Type your email to confirm</Label>
+                        <Input onChange={((e)=>{setUserEmail(e.target.value)})} id="username" placeholder="Enter your email" />
                       </div>
-                      <Button variant="destructive" className="w-full">
+                      <Button onClick={(e)=>handleDeleteAccount(e)} variant="destructive" className="w-full">
                         Delete Account
                       </Button>
                     </form>
@@ -38,7 +76,12 @@ export default function Settings() {
 
               </div>
             </section>
+        </div>):(
+        <div className="w-full text-center grid items-center h-screen">
+          <p className="text-3xl font-bold animate-pulse">Loading...</p>
         </div>
+      )}
+        
       </main>
     </div>
   )

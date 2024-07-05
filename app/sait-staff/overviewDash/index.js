@@ -21,13 +21,11 @@ export default function Dash() {
 
   async function fetchData() {
     const data = await getSaitData();
-    console.log(data);
     setAdmin(data);
   }
   async function fetchDataByUser() {
     const data = await getSaitDataByUser(user);
     setUserData(data);
-    console.log(data);
   }
 
   useEffect(() => {
@@ -35,7 +33,6 @@ export default function Dash() {
       fetchData();
       fetchDataByUser(user);
     }
-    console.log(user);
   }, [user]);
 
   useEffect(() => {
@@ -44,14 +41,12 @@ export default function Dash() {
   }, [admin]);
 
   const handleEditRequest = (user) => {
-    console.log(user);
     setEditEmployeData(user);
     setIsEditing(true);
   };
 
   const handleDelete = (id) => {
     // Handle delete logic
-    console.log(`Delete user with id: ${id}`);
     setAdmin(admin.filter((user) => user.id !== id));
   };
 

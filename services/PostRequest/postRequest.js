@@ -327,3 +327,39 @@ export async function deleteRestaurantUser(currentUser, id, userId) {
     console.log("No current user found");
   }
 }
+// to delete sait staff data from database and athentication
+export async function deleteSaitUser(currentUser, id) {
+  if (currentUser) {
+    try {
+      // Step 1: Re-authenticate user if necessary
+      try {
+        await deleteUser(currentUser);
+      } catch (error) {
+        if (error.code === 'auth/requires-recent-login') {
+          const credential = EmailAuthProvider.credential(
+            currentUser.email,
+            prompt("Please enter your password to re-authenticate.")
+          );
+          await reauthenticateWithCredential(currentUser, credential);
+          await deleteUser(currentUser);
+        } else {
+          throw error;
+        }
+      }
+
+      // Step 2: Delete user document from Firestore
+      await deleteDoc(doc(db, "saitStaff", id));
+
+      alert("Your account has been deleted successfully!");
+
+    } catch (error) {
+      if (error.code === 'auth/requires-recent-login') {
+        alert("To delete your account, please log out first and then proceed with the account deletion.");
+      } else {
+        console.error('Error while deleting user:', error);
+      }
+    }
+  } else {
+    console.log("No current user found");
+  }
+}
