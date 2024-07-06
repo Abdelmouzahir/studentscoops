@@ -2,11 +2,18 @@
 import Header from "./main-component/layout/header/header";
 import Footer from "./main-component/layout/footer/footer";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Modal from "@/components/Modal";
+import {motion} from "framer-motion";
 import { Card, CardContent } from "/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useState } from "react";
+import LearnMore from "@/components/LearnMore";
+
 
 export default function Home() {
+
+const [showModal, setShowModal] = useState(false);
+
   return (
     <main className="bg-white max-h-max ">
       <Header />
@@ -15,7 +22,10 @@ export default function Home() {
             <section className="w-full bg-[#f8f9fa] py-12 md:py-24 lg:py-32">
                 <div className="container px-4 md:px-6">
                     <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-                        <img
+                        <motion.img
+                        iwhileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+
                             alt="Hero"
                             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
                             height="550"
@@ -31,17 +41,31 @@ export default function Home() {
                                     delicious meals at affordable prices and build a sense of community.
                                 </p>
                             </div>
-                            <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                                <Link
+                            <div className="flex flex-col gap-4 min-[400px]:flex-row">
+                                <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
                                     className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:bg-[#6c5ce7] dark:text-gray-50 dark:hover:bg-[#6c5ce7]/90 dark:focus-visible:ring-[#6c5ce7]"
                                     href="/auth/register">
                                     Register
-                                </Link>
-                                <Link
+                                </motion.button>
+                                <motion.button
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={() => setShowModal(true)}
                                     className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:border-[#6c5ce7] dark:bg-[#1e1e1e] dark:hover:bg-[#2b2b2b] dark:hover:text-gray-50 dark:focus-visible:ring-[#6c5ce7]"
                                     href="#">
                                     Learn More
-                                </Link>
+                                </motion.button>
+                                <Modal
+                                isVisible={showModal}
+                                onClose={() => {
+                                setShowModal(false);
+                                }}
+                                >
+                                  <LearnMore setShow={setShowModal}/>
+                                </Modal>
+                                 
                             </div>
                         </div>
                     </div>
@@ -57,7 +81,7 @@ export default function Home() {
                         <p className="text-gray-500 dark:text-gray-400">
                             Save up to 50% on delicious leftover meals from local restaurants and cafes.
                         </p>
-                        <Button variant="link">Learn More</Button>
+                        <Button  onClick variant="link">Learn More</Button>
                     </div>
                     <div className="space-y-4 text-center">
                         <BuildingIcon className="mx-auto h-12 w-12 text-primary" />
