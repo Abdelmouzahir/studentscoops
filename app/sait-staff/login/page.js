@@ -2,7 +2,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/firebase/config";
-import { updateProfile } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
