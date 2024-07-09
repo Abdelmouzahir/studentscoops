@@ -21,6 +21,7 @@ export default function Settings() {
   const { user } = useUserAuth();
   const auth = getAuth();
   const [saitData, setSaitData] = useState(null);
+
   async function getUserData(){
     const data = await getSaitDataByUser(user);
     setSaitData(data);
@@ -51,7 +52,7 @@ export default function Settings() {
     <div className="flex min-h-screen mx-auto">
       <main className="flex-1  dark:bg-gray-800 p-6 md:p-10">
         {saitData ? (<div className="max-w-4xl mx-auto grid gap-8">
-            <UserProfile data={saitData}/>
+            <UserProfile data={saitData} getUserData={getUserData}/>
             <Passwordreset auth={auth} email={saitData[0].email}/>
             <section className="w-full mx-0 py-12 md:py-16">
               <div className="space-y-6">
