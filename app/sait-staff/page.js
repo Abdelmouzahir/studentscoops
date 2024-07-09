@@ -69,7 +69,7 @@ export default function Page() {
         setIsCollapsed={setIsCollapsed}
         onTabClick={handleTabClick}
       />
-      {userData ? (<div
+      {(userData || userData == undefined) ? (<div
         className={`flex-1 flex flex-col mx-auto transition-all duration-300 ease-in-out ${
           isCollapsed ? "ml-20" : "ml-64"
         }`}

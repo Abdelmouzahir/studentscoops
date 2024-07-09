@@ -126,7 +126,7 @@ const Table = ({
               </tr>
             </thead>
             <tbody>
-              {filteredEmployees.length > 0 ? (filteredEmployees.map((user) => (
+              {(filteredEmployees.length > 0 || filteredEmployees !==null) ? (filteredEmployees.map((user) => (
                 <tr key={user.id}>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <div className="flex items-center">

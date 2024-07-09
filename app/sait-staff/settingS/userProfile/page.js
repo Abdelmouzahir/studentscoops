@@ -18,11 +18,12 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/app/firebase/config";
 
 export default function UserProfile({ data, getUserData }) {
-  const [name, setName] = useState(data[0].name);
-  const [email, setEmail] = useState(data[0].email);
-  const [phoneNumber, setPhoneNumber] = useState(data[0].phoneNumber);
-  const [address, setAddress] = useState(data[0].address);
-  const [role, setRole] = useState(data[0].role);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [role, setRole] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const fileInpt = useRef(null);
 
   useEffect(() => {
@@ -32,8 +33,18 @@ export default function UserProfile({ data, getUserData }) {
       setPhoneNumber(data[0].phoneNumber);
       setAddress(data[0].address);
       setRole(data[0].role);
+      setImageUrl(data[0].imageUrl);
     }
   }, [data]);
+
+  useEffect(() => {
+    if(!data[0].imageUrl || data[0].imageUrl === null){
+      setImageUrl('/assets/images/UserDefaultSaitStaff.png');
+    }
+    else{
+      setImageUrl(data[0].imageUrl);
+    }
+  },[imageUrl]);
 
   const handleDivClick = () => {
     fileInpt.current.click();
@@ -125,7 +136,7 @@ export default function UserProfile({ data, getUserData }) {
       <div className="mx-auto grid items-center justify-center w-[200%]">
         <div
           className="mx-auto rounded-full bg-cover bg-center w-96 h-96 cursor-pointer"
-          style={{ backgroundImage: `url(${data[0].imageUrl})` }}
+          style={{ backgroundImage: `url(${imageUrl})` }}
         >
           <input
             type="file"
