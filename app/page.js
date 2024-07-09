@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/Components/ui/avatar";
 import { useState } from "react";
 import LearnMore from "@/components/LearnMore";
 import Reviews from "@/components/reviews";
+import ScrollTop from "@/components/ui/scrollTop";
 
 
 export default function Home() {
@@ -108,6 +109,7 @@ const [showModal, setShowModal] = useState(false);
               <Reviews />
             </section>
         </div>
+        <ScrollTop />
       <Footer />
     </main>
   );
