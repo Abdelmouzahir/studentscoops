@@ -5,7 +5,7 @@
  */
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { Card, CardContent, CardFooter } from "@/Components/ui/card";
 import { Label } from "@/Components/ui/label";
 import { Input } from "@/Components/ui/input";
@@ -25,12 +25,22 @@ export default function UserProfile({ data, getUserData }) {
   const [role, setRole] = useState(data[0].role);
   const fileInpt = useRef(null);
 
+  useEffect(() => {
+    if (data) {
+      setName(data[0].name);
+      setEmail(data[0].email);
+      setPhoneNumber(data[0].phoneNumber);
+      setAddress(data[0].address);
+      setRole(data[0].role);
+    }
+  }, [data]);
+
   const handleDivClick = () => {
     fileInpt.current.click();
   };
 
   async function uploadImage(image) {
-    const storageRef = ref(storage, `menu/${data[0].uid}/${image.name}`);
+    const storageRef = ref(storage, `Saitstaff/${data[0].uid}/${image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
     uploadTask.on(
       "state_changed",
@@ -55,10 +65,13 @@ export default function UserProfile({ data, getUserData }) {
 
         try {
           // Query to find the restaurant document with the matching userId
-          const docRef = doc(db,'saitStaff',data[0].id);
+          const docRef = doc(db, "saitStaff", data[0].id);
           await updateDoc(docRef, {
             imageUrl: downloadURL,
-          }).then(() => {alert("Image uploaded successfully");getUserData();});
+          }).then(() => {
+            alert("Image uploaded successfully");
+            getUserData();
+          });
         } catch (error) {
           console.error("Error writing document: ", error);
         }
@@ -84,7 +97,7 @@ export default function UserProfile({ data, getUserData }) {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext))) {
-        uploadImage(file);
+      uploadImage(file);
     } else {
       console.log("Invalid file format");
     }

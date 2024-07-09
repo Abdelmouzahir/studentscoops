@@ -15,26 +15,16 @@ import { useRouter } from "next/navigation";
 import UserProfile from "./userProfile/page";
 
 
-export default function Settings() {
+export default function Settings({data,getUserData}) {
   const route = useRouter();
   const [userEmail, setUserEmail] = useState("");
   const { user } = useUserAuth();
   const auth = getAuth();
-  const [saitData, setSaitData] = useState(null);
+  const [saitData, setSaitData] = useState(data);
 
-  async function getUserData(){
-    const data = await getSaitDataByUser(user);
+  useEffect(() => {if(data){
     setSaitData(data);
-  }
-  useEffect(() => {
-    if(user!==false && user){
-      getUserData();
-      console.log(auth.currentUser)
-    }
-    if(user==false){
-     route.push("/");
-    }
-  },[user]);
+  }}, [data]);
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();

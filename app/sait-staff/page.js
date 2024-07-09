@@ -9,14 +9,32 @@ import UserGreeting from "@/Components/UserGreeting";
 import SaitStaffNav from "@/Components/SaitStaffNav";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
+import { useUserAuth } from "@/services/utils";
 
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState("home"); // Set default active tab
-  const [user, setUser] = useState(null);
   const [hideUserGreeting, setHideUserGreeting] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const {user} = useUserAuth();
 
   const router = useRouter();
+
+  //getting user data
+  async function fetchSaitStaffUserInformation() {
+    const data = await getSaitDataByUser(user);
+    setUserData(data);
+    console.log("default: ",data);
+  }
+
+  useEffect(() => {
+    if (!user == false && user) {
+      fetchSaitStaffUserInformation();
+    }
+  },[user]);
+  useEffect(() => {console.log('user data changed')},[userData])
+
 
   // function to select the tab
   const handleTabClick = (tabName) => {
@@ -51,7 +69,7 @@ export default function Page() {
         setIsCollapsed={setIsCollapsed}
         onTabClick={handleTabClick}
       />
-      <div
+      {userData ? (<div
         className={`flex-1 flex flex-col mx-auto transition-all duration-300 ease-in-out ${
           isCollapsed ? "ml-20" : "ml-64"
         }`}
@@ -65,7 +83,7 @@ export default function Page() {
                   : "inline-flex items-center ml-5 rounded-full"
               }
             >
-              <UserGreeting setActiveTab={setActiveTab}/>
+              <UserGreeting setActiveTab={setActiveTab} data={userData}/>
             </div>
             <div className="col-start-3 grid w-full justify-items-end">
               <button
@@ -83,9 +101,13 @@ export default function Page() {
           {activeTab === "student" && <SDashboard />}
           {activeTab === "restaurant" && <RDashboard />}
           {activeTab === "home" && <Dash />}
-          {activeTab === "setting" && <Settings />}
+          {activeTab === "setting" && <Settings data={userData} getUserData={fetchSaitStaffUserInformation}/>}
         </div>
-      </div>
+      </div>):(
+        <div className="w-full text-center grid items-center h-screen">
+          <p className="text-3xl font-bold animate-pulse">Loading...</p>
+        </div>)}
+      
     </div>
   );
 }
