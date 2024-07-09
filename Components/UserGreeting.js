@@ -1,33 +1,43 @@
 import { useEffect, useState } from "react";
 import { AiOutlineUser } from "react-icons/ai";
+import { useUserAuth } from "@/services/utils";
+import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
 
-const UserGreeting = () => {
+const UserGreeting = ({setActiveTab}) => {
+  const { user } = useUserAuth();
+  const [userData, setUserData] = useState(null);
   const [userName, setUserName] = useState("User");
   const [email, setEmail] = useState("");
-  const [uid, setUid] = useState("");
   const [userImage, setUserImage] = useState("");
 
-  useEffect(() => {
-    // Ensure this runs only on the client-side
-    if (typeof window !== "undefined") {
-      const name = sessionStorage.getItem("name") || "User";
-      const userEmail = sessionStorage.getItem("email") || "";
-      const userUid = sessionStorage.getItem("uid") || "";
-      const userImage = sessionStorage.getItem("imageUrl") || "";
+  async function fetchSaitStaffUserInformation() {
+    const data = await getSaitDataByUser(user);
+    setUserData(data);
+    console.log(data);
+  }
 
-      setUserName(name);
-      setEmail(userEmail);
-      setUid(userUid);
-      setUserImage(userImage);
+  useEffect(() => {
+    if (!user==false && user){
+      fetchSaitStaffUserInformation();
     }
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    if(userData){
+      setUserName(userData[0].name);
+      setEmail(userData[0].email);
+      setUserImage(userData[0].imageUrl);
+    }
+  }, [userData]);
+
+  useEffect(() => {console.log(userImage)}, [userName, email, userImage]);
 
   return (
-    <div className="inline-flex items-center ml-5 rounded-full">
+    <div className="inline-flex items-center ml-5 rounded-full cursor-pointer" onClick={()=>{setActiveTab("setting")}}>
       <div className="bg-slate-200 relative h-12 w-12 border rounded-full overflow-hidden hover:bg-[#F29F3D]">
         <img
           className="w-full h-full rounded-full"
-          src={userImage}
+          src={userImage ? userImage : "/assets/images/UserDefaultSaitStaff.png"}
           alt="User Image"
         />
       </div>
