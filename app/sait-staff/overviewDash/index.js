@@ -10,8 +10,10 @@ import {
 } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 import { updateSaitEmployeeStatus } from "@/services/PostRequest/postRequest";
+import { getAuth } from "firebase/auth";
 
 export default function Dash() {
+  const auth = getAuth();
   const [userData, setUserData] = useState(null);
   const [editEmployeData, setEditEmployeData] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -32,6 +34,7 @@ export default function Dash() {
     if (user) {
       fetchData();
       fetchDataByUser(user);
+      console.log("user", auth.currentUser);
     }
   }, [user]);
 

@@ -1,33 +1,31 @@
 import { useEffect, useState } from "react";
-import { AiOutlineUser } from "react-icons/ai";
 
-const UserGreeting = () => {
-  const [userName, setUserName] = useState("User");
-  const [email, setEmail] = useState("");
-  const [uid, setUid] = useState("");
-  const [userImage, setUserImage] = useState("");
+const UserGreeting = ({ setActiveTab, data }) => {
+  const [userName, setUserName] = useState(data[0].name);
+  const [email, setEmail] = useState(data[0].email);
+  const [userImage, setUserImage] = useState(data[0].imageUrl);
 
   useEffect(() => {
-    // Ensure this runs only on the client-side
-    if (typeof window !== "undefined") {
-      const name = sessionStorage.getItem("name") || "User";
-      const userEmail = sessionStorage.getItem("email") || "";
-      const userUid = sessionStorage.getItem("uid") || "";
-      const userImage = sessionStorage.getItem("imageUrl") || "";
-
-      setUserName(name);
-      setEmail(userEmail);
-      setUid(userUid);
-      setUserImage(userImage);
+    if(data){
+      setUserName(data[0].name);
+      setEmail(data[0].email);
+      setUserImage(data[0].imageUrl);
     }
-  }, []);
+  }, [data]);
 
   return (
-    <div className="inline-flex items-center ml-5 rounded-full">
+    <div
+      className="inline-flex items-center ml-5 rounded-full cursor-pointer"
+      onClick={() => {
+        setActiveTab("setting");
+      }}
+    >
       <div className="bg-slate-200 relative h-12 w-12 border rounded-full overflow-hidden hover:bg-[#F29F3D]">
         <img
           className="w-full h-full rounded-full"
-          src={userImage}
+          src={
+            userImage ? userImage : "/assets/images/UserDefaultSaitStaff.png"
+          }
           alt="User Image"
         />
       </div>

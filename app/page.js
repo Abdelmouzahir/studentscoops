@@ -5,10 +5,10 @@ import { Button } from "@/Components/ui/button";
 import Modal from "@/Components/Modal";
 import {motion} from "framer-motion";
 import { Card, CardContent } from "/components/ui/card";
-import { Avatar, AvatarFallback } from "@/Components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
-import LearnMore from "@/Components/LearnMore";
-import { CartProvider } from "./Restrauntitems/cart-context/page";
+import LearnMore from "@/components/LearnMore";
+
 
 export default function Home() {
 

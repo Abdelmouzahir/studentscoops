@@ -2,6 +2,7 @@
  * v0 by Vercel.
  */
 "use client";
+<<<<<<< HEAD
 import { Button } from "@/Components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/Components/ui/card"
 import Passwordreset from "./passwordreset/page"
@@ -9,32 +10,30 @@ import { Checkbox } from "@/Components/ui/checkbox"
 import { Label } from "@/Components/ui/label"
 import { Input } from "@/Components/ui/input"
 import { getSaitDataByUser } from "@/services/GetRequest/getRequest"
+=======
+import { Button } from "@/components/ui/button"
+import Passwordreset from "./passwordreset/page"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+>>>>>>> ce6adb19aab3f1bc17ff43157f3fd8dcaa1badda
 import { useUserAuth } from "@/services/utils"
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { deleteSaitUser } from "@/services/PostRequest/postRequest";
 import { useRouter } from "next/navigation";
+import UserProfile from "./userProfile/page";
 
 
-export default function Settings() {
+export default function Settings({data,getUserData}) {
   const route = useRouter();
   const [userEmail, setUserEmail] = useState("");
   const { user } = useUserAuth();
   const auth = getAuth();
-  const [saitData, setSaitData] = useState(null);
-  async function getUserData(){
-    const data = await getSaitDataByUser(user);
+  const [saitData, setSaitData] = useState(data);
+
+  useEffect(() => {if(data){
     setSaitData(data);
-  }
-  useEffect(() => {
-    if(user){
-      getUserData();
-      console.log(auth.currentUser)
-    }
-    if(user==false){
-     route.push("/");
-    }
-  },[user]);
+  }}, [data]);
 
   const handleDeleteAccount = async (e) => {
     e.preventDefault();
@@ -52,6 +51,7 @@ export default function Settings() {
     <div className="flex min-h-screen mx-auto">
       <main className="flex-1  dark:bg-gray-800 p-6 md:p-10">
         {saitData ? (<div className="max-w-4xl mx-auto grid gap-8">
+            <UserProfile data={saitData} getUserData={getUserData}/>
             <Passwordreset auth={auth} email={saitData[0].email}/>
             <section className="w-full mx-0 py-12 md:py-16">
               <div className="space-y-6">

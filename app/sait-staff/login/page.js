@@ -2,7 +2,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/firebase/config";
-import { updateProfile } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -62,18 +61,7 @@ const SignIn = () => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-
-      // Update display name with SAIT Staff name
-      await updateProfile(user, { displayName: saitStaffName , photoURL : saitStaffimg});
-      //console.log('img ',saitStaffimg)
-
-      sessionStorage.setItem("user", true);
-      sessionStorage.setItem("name", saitStaffName);
-      sessionStorage.setItem("email", user.email || ""); // Store the user's email
-      sessionStorage.setItem("uid", user.uid || ""); // Store the user's UID
-      sessionStorage.setItem("imageUrl", saitStaffimg|| ""); // Store the user's photo URL
+      await signInWithEmailAndPassword(email, password);
       router.push("/sait-staff"); // Redirect after successful sign-in
       setEmail("");
       setPassword("");
