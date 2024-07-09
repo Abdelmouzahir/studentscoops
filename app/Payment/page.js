@@ -5,9 +5,9 @@
  */
 "use client"
 import React, {useState} from 'react'
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/Components/ui/dialog"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import Link from "next/link"
-import { Button } from "@/Components/ui/button"
+import { Button } from "@/components/ui/button"
 
 import Header_stud from "../student/header_stud/page"
 

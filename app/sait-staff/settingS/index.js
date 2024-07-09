@@ -3,12 +3,12 @@
  */
 "use client";
 <<<<<<< HEAD
-import { Button } from "@/Components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/Components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import Passwordreset from "./passwordreset/page"
-import { Checkbox } from "@/Components/ui/checkbox"
-import { Label } from "@/Components/ui/label"
-import { Input } from "@/Components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { getSaitDataByUser } from "@/services/GetRequest/getRequest"
 =======
 import { Button } from "@/components/ui/button"

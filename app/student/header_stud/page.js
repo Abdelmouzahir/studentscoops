@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/Components/ui/dropdown-menu"
-import { Button } from "@/Components/ui/button"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
 import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
 
 // import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"

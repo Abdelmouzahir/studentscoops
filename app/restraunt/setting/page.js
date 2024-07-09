@@ -13,10 +13,10 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/Components/ui/card";
-import { Label } from "@/Components/ui/label";
-import { Input } from "@/Components/ui/input";
-import { Button } from "@/Components/ui/button";
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -27,12 +27,12 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
   AlertDialogTrigger,
-} from "@/Components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
-} from "@/Components/ui/dialog";
+} from "@/components/ui/dialog";
 
 export default function Component() {
   const { user } = useUserAuth();

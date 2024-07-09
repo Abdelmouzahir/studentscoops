@@ -7,9 +7,9 @@ import { LuLogOut } from "react-icons/lu";
 <<<<<<< HEAD
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/app/firebase/config';
-import UserGreeting from '@/Components/UserGreeting';
+import UserGreeting from '@/components/UserGreeting';
 //import navbar
-import SaitStaffNav from "@/Components/SaitStaffNav";
+import SaitStaffNav from "@/components/SaitStaffNav";
 import { CgProfile } from "react-icons/cg";
 import { useState, useEffect } from 'react';
 =======

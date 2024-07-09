@@ -1,21 +1,21 @@
 "use client"
 import React, { useContext } from "react";
 import Link from 'next/link';
-import { Button } from "@/Components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/Components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
-import { CartContext } from "../cart-context/page";
+// import { CartContext } from "../cart-context/page";
 
-const CartDropdown = () => {
+const CartDropdown = ({ cart, addToCart, removeFromCart, getTotal }) => {
  // initial cart data
- const context = useContext(CartContext);
- console.log(context); // Check the value of context
+//  const context = useContext(CartContext);
+//  console.log(context); // Check the value of context
 
- if (!context) {
-   throw new Error('CartContext is not defined');
- }
+//  if (!context) {
+//    throw new Error('CartContext is not defined');
+//  }
 
- const { cart, addToCart, removeFromCart, getTotal } = context;
+//  const { cart, addToCart, removeFromCart, getTotal } = context;
 
   // const { cart, addToCart, removeFromCart, getTotal } = useContext(CartContext);
 
