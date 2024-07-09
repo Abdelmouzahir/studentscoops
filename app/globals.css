@@ -8,6 +8,10 @@
    
   }
 
+  .slick-prev:before, .slick-next:before {
+    color: orange;
+  }
+
   .slick-dots li.slick-active button:before {
     color:orange !important;
   }
