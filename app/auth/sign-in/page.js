@@ -7,6 +7,7 @@ import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
+import Loading from "@/app/loading"; 
 
 const sign_in = () => {
   const [email, setEmail] = useState("");
@@ -14,20 +15,32 @@ const sign_in = () => {
   const [loginError, setLoginError] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const [emailError, setEmailError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   
   const handleSignIn = () => {
+    // Check the email domain first
+    if (!email.endsWith('@edu.sait.ca')) {
+      setEmailError('Please use a SAIT student email');
+      return;
+    } else {
+      setEmailError(''); // Clear any previous error
+    }
+
+    setLoading(true);
     signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         sessionStorage.setItem("user", true);
+        router.push("/student");
         setEmail("");
         setPassword("");
-        router.push("/student");
         setLoginError("");
+        //setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         setLoginError("Invalid email or password");
         console.log(err);
       });
@@ -55,6 +68,10 @@ const sign_in = () => {
         setEmailError('Failed to send password reset email'); // Display a generic error message
       });
   };
+
+  if (loading) {
+    return <Loading />; // Render the Loading component when loading
+  }
 
   return (
     <div
@@ -97,6 +114,8 @@ const sign_in = () => {
               </div>
               <div>
                 {loginError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{loginError}</div>}
+                {emailError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{emailError}</div>}
+
               </div>
               <div className="mt-5">
                 <p

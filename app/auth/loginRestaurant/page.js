@@ -8,6 +8,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import { getRestaurantInformationByUser } from "@/services/GetRequest/getRequest";
+import Loading from "@/app/loading"; 
 
 const sign_in = () => {
   const [email, setEmail] = useState("");
@@ -15,10 +16,12 @@ const sign_in = () => {
   const [loginError, setLoginError] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const [emailError, setEmailError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
   const handleSignIn = () => {
+    setLoading(true);
     signInWithEmailAndPassword(email, password)
       .then((userCredential) => {if(userCredential){
         const user = userCredential.user;
@@ -31,12 +34,14 @@ const sign_in = () => {
           return;
         }
         sessionStorage.setItem("user", true);
-        setEmail("");
-        setPassword("");
         router.push("/restraunt");
         setLoginError("");
+        setEmail("");
+        setPassword("");
+        //setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         setLoginError("Invalid email or password");
         console.log(err);
       });
@@ -59,11 +64,15 @@ const sign_in = () => {
         setShowModal(false);
         router.push("sign-in/afterResetPassword");
       })
-      .catch((err) => {
+      .catch((err) => { 
         console.log(err);
         setEmailError("Failed to send password reset email"); // Display a generic error message
       });
   };
+
+  if (loading) {
+    return <Loading />; // Render the Loading component when loading
+  }
 
   return (
     <div

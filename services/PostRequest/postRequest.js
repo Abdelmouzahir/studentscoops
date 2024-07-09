@@ -19,6 +19,9 @@ import {
 } from "firebase/storage";
 import { deleteUser } from "firebase/auth";
 
+// students
+
+// to add student information in database
 export async function addStudentInformation(userId, userInformation, email) {
   const studentInformation = {
     studentId: userId,
@@ -32,6 +35,9 @@ export async function addStudentInformation(userId, userInformation, email) {
     console.error("Error adding document: ", e);
   }
 }
+//restaurants
+
+// to add restaurant information in database
 export async function addRestaurantInformation(
   user,
   name,
@@ -83,6 +89,7 @@ export async function addRestaurantInformation(
   );
 }
 
+// to add restaurant menu in database
 export async function addRestaurantMenu(user, name, price, description, image,userId) {
   const storageRef = ref(storage, `menu/${userId}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
@@ -126,7 +133,7 @@ export async function addRestaurantMenu(user, name, price, description, image,us
     }
   );
 }
-export let integer = 0;
+
 export default async function addStudentEmailStatus(prop) {
   let { email, active } = prop;
   let data = { studentEmail: email, active: active };
@@ -217,6 +224,19 @@ export async function updateStudent(id, prop) {
     console.error("Error updating document: ", error);
   }
 }
+// to update status of sait staff employee
+export async function updateSaitEmployeeStatus(id , active){
+  try{
+    const docRef = doc(db,"saitStaff",id);
+    await updateDoc(docRef,{
+      active:!active
+    });
+  }catch(error){
+    console.error("Error updating document: ", error);
+  
+  }
+}
+
 export async function existingStudentData(email) {
   try {
     const q = query(collection(db, "students"), where("email", "==", email));
@@ -294,6 +314,42 @@ export async function deleteRestaurantUser(currentUser, id, userId) {
       };
 
       await deleteFolder(folderRef);
+      alert("Your account has been deleted successfully!");
+
+    } catch (error) {
+      if (error.code === 'auth/requires-recent-login') {
+        alert("To delete your account, please log out first and then proceed with the account deletion.");
+      } else {
+        console.error('Error while deleting user:', error);
+      }
+    }
+  } else {
+    console.log("No current user found");
+  }
+}
+// to delete sait staff data from database and athentication
+export async function deleteSaitUser(currentUser, id) {
+  if (currentUser) {
+    try {
+      // Step 1: Re-authenticate user if necessary
+      try {
+        await deleteUser(currentUser);
+      } catch (error) {
+        if (error.code === 'auth/requires-recent-login') {
+          const credential = EmailAuthProvider.credential(
+            currentUser.email,
+            prompt("Please enter your password to re-authenticate.")
+          );
+          await reauthenticateWithCredential(currentUser, credential);
+          await deleteUser(currentUser);
+        } else {
+          throw error;
+        }
+      }
+
+      // Step 2: Delete user document from Firestore
+      await deleteDoc(doc(db, "saitStaff", id));
+
       alert("Your account has been deleted successfully!");
 
     } catch (error) {

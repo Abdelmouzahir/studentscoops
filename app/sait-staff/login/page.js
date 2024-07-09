@@ -1,71 +1,112 @@
 "use client";
-import { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
+import { auth, db } from "@/app/firebase/config";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
-import Modal from "@/Components/Modal";
+import { AiOutlineUser } from "react-icons/ai";
+import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
+import Loading from "@/app/loading";
 
-const sign_in = () => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
-  const [emailError, setEmailError] = useState('');
-  const router = useRouter();
+  const [emailError, setEmailError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  
-  const handleSignIn = () => {
-    signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        sessionStorage.setItem("user", true);
-        router.push("/sait-staff");
-        setEmail("");
-        setPassword("");
-        setLoginError("");
-      })
-      .catch((err) => {
-        setLoginError("Invalid email or password");
-        console.log(err);
-      });
+  const [saitStaffName, setSaitStaffName] = useState("");
+  const [saitStaffimg, setSaitStaffimg] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    // Fetch saitStaff name when component mounts
+    fetchSaitStaffName();
+  }, []);
+
+  //problem solved
+  const fetchSaitStaffName = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+        console.log('user ',uid)
+        const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
+        const querySnapshot = await getDocs(q);
+        const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
+        const employeeImg = querySnapshot.docs.map((doc) => doc.data().imageUrl);
+      
+
+        if (!employeeData.empty) {
+          const saitStaffData = employeeData[0];
+          const name = saitStaffData || "SAIT Staff"; // Use default name if 'name' is not available
+          const saitStaffimg = employeeImg[0];
+          const adminImg = saitStaffimg || <AiOutlineUser />;
+          setSaitStaffimg(adminImg);
+          setSaitStaffName(name);
+        } else {
+          console.log("No SAIT Staff data found for current user");
+          setSaitStaffName("SAIT Staff"); // Set default name
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching SAIT Staff name:", error);
+      setSaitStaffName("SAIT Staff"); // Handle error, set default name
+    }
+  };
+
+  const handleSignIn = async () => {
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(email, password);
+      router.push("/sait-staff"); // Redirect after successful sign-in
+      setEmail("");
+      setPassword("");
+      setLoginError("");
+    } catch (error) {
+      setLoading(false);
+      setLoginError("Invalid email or password");
+      console.error("Error signing in:", error);
+    }
   };
 
   const handleForgotPassword = (event) => {
     event.preventDefault();
 
-    // Check the email domain first
-    if (!email.endsWith('@sait.ca')) {
-      setEmailError('Please use a SAIT Staff email');
+    if (!email.endsWith("@sait.ca")) {
+      setEmailError("Please use a SAIT Staff email");
       return;
     } else {
-      setEmailError(''); // Clear any previous error
+      setEmailError("");
     }
 
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        // Email sent.
         setShowModal(false);
         router.push("/auth/sign-in/afterResetPassword");
       })
       .catch((err) => {
-        console.log(err);
-        setEmailError('Failed to send password reset email'); // Display a generic error message
+        console.error("Error sending password reset email:", err);
+        setEmailError("Failed to send password reset email");
       });
   };
+
+  if (loading) {
+    return <Loading />; // Render the Loading component when loading
+  }
 
   return (
     <div
       className="min-h-screen py-40"
-      style={{ 
+      style={{
         backgroundImage: "url(/assets/images/loginCover.jpg)",
-        backgroundSize: "cover", // Adjusts the size of the background image
-        backgroundPosition: "center", // Centers the background image
-        backgroundRepeat: "no-repeat", // Prevents the background image from repeating
-
-          }}
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
     >
       <Fragment>
         <div className="container mx-auto">
@@ -96,7 +137,12 @@ const sign_in = () => {
                 />
               </div>
               <div>
-                {loginError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{loginError}</div>}
+                {loginError && (
+                  <div className="text-red-500 text-sm mb-4 flex">
+                    <BiSolidCommentError className="mt-1 mr-2" />
+                    {loginError}
+                  </div>
+                )}
               </div>
               <div className="mt-5">
                 <p
@@ -116,7 +162,6 @@ const sign_in = () => {
                   Sign In
                 </button>
               </div>
-
             </div>
           </div>
         </div>
@@ -143,7 +188,12 @@ const sign_in = () => {
                     required
                     className="border border-gray-400 py-1 px-2 w-full rounded-md"
                   />
-                  {emailError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{emailError}</div>}
+                  {emailError && (
+                    <div className="text-red-500 text-sm mb-4 flex">
+                      <BiSolidCommentError className="mt-1 mr-2" />
+                      {emailError}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <button
@@ -162,4 +212,4 @@ const sign_in = () => {
   );
 };
 
-export default sign_in;
+export default SignIn;

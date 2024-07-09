@@ -11,11 +11,49 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
-export default function Passwordreset() {
+export default function Passwordreset({auth,email}) {
+  const user = auth.currentUser;
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const credential = EmailAuthProvider.credential(email,oldPassword);
+  const [showOldPassword, setShowOldPassword] = useState(false)
   const [showSection, setShowSection] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
+  const [passwordError, setPasswordError] = useState('')
+
+  const handlePasswordChange = () =>{
+    if(oldPassword === ""|| newPassword === "" || confirmPassword === ""){
+      alert("Please fill all fields");
+      return;
+    }
+    if (newPassword !== confirmPassword){
+      alert("Passwords do not match");
+      return;
+    }
+    if(oldPassword === newPassword){
+      alert("New password cannot be the same as old password");
+      return;
+    }
+    if(!newPassword.match(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    )){
+      alert("Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character");
+      return;
+    }
+    reauthenticateWithCredential(user, credential).then(()=>{
+      updatePassword(user,newPassword).then(()=>{
+        alert("Password updated successfully");
+      }).catch((error)=>{
+        alert("Error updating password: ",error);
+      })
+    }).catch((error)=>{
+      alert("Error reauthenticating user: ",error);
+    })
+  }
 
   return (
     // Changes to be made here 
@@ -23,7 +61,7 @@ export default function Passwordreset() {
       <div className="text-left space-y-2 px-1">
         <h1 className="text-3xl font-bold ">Change Your Password</h1>
       </div>
-      <Card className="w-[200%]">
+      <Card className="w-[200%]" >
         <CardContent className=" space-y-4 pt-5 ">
           <div className="w-full flex items-center justify-between space-x-4 ">
             <div className="space-y-2">
@@ -33,13 +71,28 @@ export default function Passwordreset() {
           </div>
           {showSection && (
             <div className="space-y-2">
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Input id="email" type="email" placeholder={email}required />
             </div>
           )}
           <div className="space-y-2">
+            <Label htmlFor="password">Old Password</Label>
+            <div className="relative">
+              <Input id="password" onChange={((e)=>{setOldPassword(e.target.value)})} type={showOldPassword ? "text" : "password"} required />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-1/2 right-3 -translate-y-1/2"
+                onClick={() => setShowOldPassword(!showOldPassword)}
+              >
+                <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                <span className="sr-only">{showOldPassword ? "Hide password" : "Show password"}</span>
+              </Button>
+            </div>
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="password">New Password</Label>
             <div className="relative">
-              <Input id="password" type={showPassword ? "text" : "password"} required />
+              <Input id="password" onChange={((e)=>{setNewPassword(e.target.value)})} type={showPassword ? "text" : "password"} required />
               <Button
                 variant="ghost"
                 size="icon"
@@ -54,7 +107,7 @@ export default function Passwordreset() {
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm New Password</Label>
             <div className="relative">
-              <Input id="confirmPassword" type={showPasswordConfirm ? "text" : "password"} required />
+              <Input id="confirmPassword" onChange={((e)=>{setConfirmPassword(e.target.value)})} type={showPasswordConfirm ? "text" : "password"} required />
               <Button
                 variant="ghost"
                 size="icon"
@@ -68,7 +121,7 @@ export default function Passwordreset() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" className="w-full bg-green-600">
+          <Button onClick={()=>handlePasswordChange()} type="submit" className="w-full bg-green-600">
             Reset Password
           </Button>
         </CardFooter>
