@@ -198,7 +198,7 @@ export default function UserProfile({ data, getUserData }) {
                 id="address"
                 value={address}
                 onChange={(e) => {
-                  address(e.target.value);
+                  setAddress(e.target.value);
                 }}
                 required
               />
