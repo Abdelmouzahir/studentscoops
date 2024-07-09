@@ -1,24 +1,21 @@
 'use client'
 import Header from "./main-component/layout/header/header";
 import Footer from "./main-component/layout/footer/footer";
-<<<<<<< HEAD
+
+
 import { Button } from "@/components/ui/button";
-=======
-import { Button } from "@/Components/ui/button";
->>>>>>> origin/master
+
 import Modal from "@/components/Modal";
 import {motion} from "framer-motion";
 import { Card, CardContent } from "/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import LearnMore from "@/components/LearnMore";
-<<<<<<< HEAD
-// import { CartProvider } from "./Restrauntitems/cart-context/page";
-=======
+
 import Reviews from "@/components/reviews";
 import ScrollTop from "@/components/ui/scrollTop";
 
->>>>>>> origin/master
+
 
 export default function Home() {
 
