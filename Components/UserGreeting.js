@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { AiOutlineUser } from "react-icons/ai";
-import { useUserAuth } from "@/services/utils";
-import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
 
 const UserGreeting = ({ setActiveTab, data }) => {
   const [userName, setUserName] = useState(data[0].name);

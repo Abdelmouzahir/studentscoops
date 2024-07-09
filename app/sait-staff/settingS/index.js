@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import Passwordreset from "./passwordreset/page"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { getSaitDataByUser } from "@/services/GetRequest/getRequest"
 import { useUserAuth } from "@/services/utils"
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
