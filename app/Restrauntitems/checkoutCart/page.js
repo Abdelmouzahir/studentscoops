@@ -1,19 +1,38 @@
 "use client"
-import { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import Link from 'next/link';
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Button } from "@/Components/ui/button";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/Components/ui/dropdown-menu";
 
+import { CartContext } from "../cart-context/page";
 
-const CartDropdown = ({ cart, removeFromCart, getTotal }) => {
+const CartDropdown = () => {
+ // initial cart data
+ const context = useContext(CartContext);
+ console.log(context); // Check the value of context
 
-  const handleRemoveItemClick = (index, e) => {
-    e.stopPropagation(); // Prevent the default action (closing dropdown)
-    removeFromCart(index); // Call removeFromCart handler
+ if (!context) {
+   throw new Error('CartContext is not defined');
+ }
+
+ const { cart, addToCart, removeFromCart, getTotal } = context;
+
+  // const { cart, addToCart, removeFromCart, getTotal } = useContext(CartContext);
+
+  const handleAddItemClick = (item, quantity, event) => {
+    event.stopPropagation(); // Prevent the default action (closing dropdown)
+    addToCart({ ...item, quantity: (item.quantity || 0) + quantity }); // Call addToCart handler with updated item object
   };
-   const handleDropdownClick = (event) => {
+
+  const handleRemoveItemClick = (item, quantity, event) => {
+    event.stopPropagation(); // Prevent the default action (closing dropdown)
+    removeFromCart(item.id, quantity); // Call removeFromCart handler with item.id and quantity
+  };
+
+  const handleDropdownClick = (event) => {
     event.stopPropagation(); // Stop event propagation to prevent closing dropdown on other clicks inside dropdown
   };
+
 
   return (
     <DropdownMenu>
@@ -28,7 +47,7 @@ const CartDropdown = ({ cart, removeFromCart, getTotal }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={12} onClick={handleDropdownClick}>
         <DropdownMenuLabel>Cart</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator width="100px" />
         {cart.map((item, index) => (
           <DropdownMenuItem key={index}>
             <div className="flex items-center justify-between">
@@ -36,14 +55,18 @@ const CartDropdown = ({ cart, removeFromCart, getTotal }) => {
                 <img src={item.image} width={40} height={40} alt="Product Image" className="rounded-md" />
                 <div>
                   <div className="font-medium">{item.name}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">${item.price.toFixed(2)}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">${item.price}</div>
                 </div>
               </div>
               <div className="text-sm font-medium">x{item.quantity}</div>
-              <Button variant="ghost" size="icon" onClick={(event) => handleRemoveItemClick(index, event)}>
-                <span className="sr-only">Remove</span>
-                <TrashIcon className="w-4 h-4" />
-              </Button>
+
+              <div className="flex items-center gap-1 ml-3">
+
+                <AddIcon onClick={(event) => handleAddItemClick(item, 1, event)} />
+
+                <DeleteIcon className="mt-3" size={30} onClick={(event) => handleRemoveItemClick(item, 1, event)} />
+
+              </div>
             </div>
           </DropdownMenuItem>
         ))}
@@ -62,42 +85,67 @@ const CartDropdown = ({ cart, removeFromCart, getTotal }) => {
     </DropdownMenu>
   );
 };
-  
-  export default CartDropdown;
-  function TrashIcon(props) {
-    return (
-      <svg
-        {...props}
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M3 6h18M5 6v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6M10 11v6M14 11v6" />
-      </svg>
-    );
-  }
-  function ShoppingCartIcon(props) {
-    return (
-      <svg
-        {...props}
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="8" cy="21" r="1" />
-        <circle cx="19" cy="21" r="1" />
-        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-      </svg>
-    )}
+
+export default CartDropdown;
+
+function ShoppingCartIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="8" cy="21" r="1" />
+      <circle cx="19" cy="21" r="1" />
+      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+    </svg>
+  )
+}
+
+
+function AddIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+
+
+function DeleteIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 5h10" />
+    </svg>
+  );
+}

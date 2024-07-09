@@ -1,9 +1,9 @@
 "use client"
 import React, { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { AlertDialog , AlertDialogContent,AlertDialogTrigger , AlertDialogHeader , AlertDialogTitle , AlertDialogDescription , AlertDialogFooter , AlertDialogCancel ,AlertDialogAction } from "@/components/ui/alert-dialog"
-import { Spinner } from "@/components/ui/spinner"
+import { Input } from "@/Components/ui/input"
+import { Button } from "@/Components/ui/button"
+import { AlertDialog , AlertDialogContent,AlertDialogTrigger , AlertDialogHeader , AlertDialogTitle , AlertDialogDescription , AlertDialogFooter , AlertDialogCancel ,AlertDialogAction } from "@/Components/ui/alert-dialog"
+import { Spinner } from "@/Components/ui/spinner"
 export default function Order() {
   const [orders, setOrders] = useState([
     {

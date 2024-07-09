@@ -1,20 +1,21 @@
 'use client'
 import Header from "./main-component/layout/header/header";
 import Footer from "./main-component/layout/footer/footer";
-import { Button } from "@/components/ui/button";
-import Modal from "@/components/Modal";
+import { Button } from "@/Components/ui/button";
+import Modal from "@/Components/Modal";
 import {motion} from "framer-motion";
 import { Card, CardContent } from "/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/Components/ui/avatar";
 import { useState } from "react";
-import LearnMore from "@/components/LearnMore";
-
+import LearnMore from "@/Components/LearnMore";
+import { CartProvider } from "./Restrauntitems/cart-context/page";
 
 export default function Home() {
 
 const [showModal, setShowModal] = useState(false);
 
   return (
+    <CartProvider >
     <main className="bg-white max-h-max ">
       <Header />
       <div>
@@ -182,6 +183,7 @@ const [showModal, setShowModal] = useState(false);
         </div>
       <Footer />
     </main>
+    </CartProvider>
   );
 }
 

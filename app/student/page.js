@@ -8,8 +8,8 @@ import { getStudentInformation } from '@/services/GetRequest/getRequest';
 import { useUserAuth } from '@/services/utils';
 
 import Link from "next/link";
-import { Card } from "../../components/ui/card";
-import { Button } from '../../components/ui/button';
+import { Card } from "../../Components/ui/card";
+import { Button } from '../../Components/ui/button';
 import RestrauntCard from '../main-component/layout/restrauntcard/RestrauntCard';
 import Header_stud from './header_stud/page';
 
