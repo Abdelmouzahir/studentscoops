@@ -1,43 +1,31 @@
 import { useEffect, useState } from "react";
-import { AiOutlineUser } from "react-icons/ai";
-import { useUserAuth } from "@/services/utils";
-import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
 
-const UserGreeting = ({setActiveTab}) => {
-  const { user } = useUserAuth();
-  const [userData, setUserData] = useState(null);
-  const [userName, setUserName] = useState("User");
-  const [email, setEmail] = useState("");
-  const [userImage, setUserImage] = useState("");
-
-  async function fetchSaitStaffUserInformation() {
-    const data = await getSaitDataByUser(user);
-    setUserData(data);
-    console.log(data);
-  }
+const UserGreeting = ({ setActiveTab, data }) => {
+  const [userName, setUserName] = useState(data[0].name);
+  const [email, setEmail] = useState(data[0].email);
+  const [userImage, setUserImage] = useState(data[0].imageUrl);
 
   useEffect(() => {
-    if (!user==false && user){
-      fetchSaitStaffUserInformation();
+    if(data){
+      setUserName(data[0].name);
+      setEmail(data[0].email);
+      setUserImage(data[0].imageUrl);
     }
-  }, [user]);
-
-  useEffect(() => {
-    if(userData){
-      setUserName(userData[0].name);
-      setEmail(userData[0].email);
-      setUserImage(userData[0].imageUrl);
-    }
-  }, [userData]);
-
-  useEffect(() => {console.log(userImage)}, [userName, email, userImage]);
+  }, [data]);
 
   return (
-    <div className="inline-flex items-center ml-5 rounded-full cursor-pointer" onClick={()=>{setActiveTab("setting")}}>
+    <div
+      className="inline-flex items-center ml-5 rounded-full cursor-pointer"
+      onClick={() => {
+        setActiveTab("setting");
+      }}
+    >
       <div className="bg-slate-200 relative h-12 w-12 border rounded-full overflow-hidden hover:bg-[#F29F3D]">
         <img
           className="w-full h-full rounded-full"
-          src={userImage ? userImage : "/assets/images/UserDefaultSaitStaff.png"}
+          src={
+            userImage ? userImage : "/assets/images/UserDefaultSaitStaff.png"
+          }
           alt="User Image"
         />
       </div>
