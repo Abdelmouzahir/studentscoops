@@ -3,9 +3,7 @@
  */
 "use client";
 import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import Passwordreset from "./passwordreset/page"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { getSaitDataByUser } from "@/services/GetRequest/getRequest"
@@ -14,6 +12,7 @@ import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { deleteSaitUser } from "@/services/PostRequest/postRequest";
 import { useRouter } from "next/navigation";
+import UserProfile from "./userProfile/page";
 
 
 export default function Settings() {
@@ -27,7 +26,7 @@ export default function Settings() {
     setSaitData(data);
   }
   useEffect(() => {
-    if(user){
+    if(user!==false && user){
       getUserData();
       console.log(auth.currentUser)
     }
@@ -52,6 +51,7 @@ export default function Settings() {
     <div className="flex min-h-screen mx-auto">
       <main className="flex-1  dark:bg-gray-800 p-6 md:p-10">
         {saitData ? (<div className="max-w-4xl mx-auto grid gap-8">
+            <UserProfile data={saitData}/>
             <Passwordreset auth={auth} email={saitData[0].email}/>
             <section className="w-full mx-0 py-12 md:py-16">
               <div className="space-y-6">
