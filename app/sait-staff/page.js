@@ -4,20 +4,11 @@ import RDashboard from "./RDashboard";
 import Dash from "./overviewDash";
 import Settings from "./settingS";
 import { LuLogOut } from "react-icons/lu";
-<<<<<<< HEAD
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/app/firebase/config';
-import UserGreeting from '@/components/UserGreeting';
+import UserGreeting from "@/components/UserGreeting";
 //import navbar
 import SaitStaffNav from "@/components/SaitStaffNav";
-import { CgProfile } from "react-icons/cg";
-import { useState, useEffect } from 'react';
-=======
-import UserGreeting from "@/Components/UserGreeting";
-//import navbar
-import SaitStaffNav from "@/Components/SaitStaffNav";
 import { useState, useEffect } from "react";
->>>>>>> ce6adb19aab3f1bc17ff43157f3fd8dcaa1badda
+
 import { useRouter } from "next/navigation";
 import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";

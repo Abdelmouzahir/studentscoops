@@ -1,14 +1,24 @@
 'use client'
 import Header from "./main-component/layout/header/header";
 import Footer from "./main-component/layout/footer/footer";
+<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
+=======
+import { Button } from "@/Components/ui/button";
+>>>>>>> origin/master
 import Modal from "@/components/Modal";
 import {motion} from "framer-motion";
 import { Card, CardContent } from "/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useState } from "react";
 import LearnMore from "@/components/LearnMore";
+<<<<<<< HEAD
 // import { CartProvider } from "./Restrauntitems/cart-context/page";
+=======
+import Reviews from "@/components/reviews";
+import ScrollTop from "@/components/ui/scrollTop";
+
+>>>>>>> origin/master
 
 export default function Home() {
 
@@ -24,7 +34,7 @@ const [showModal, setShowModal] = useState(false);
                 <div className="container px-4 md:px-6">
                     <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
                         <motion.img
-                        iwhileHover={{ scale: 1.1 }}
+                        whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
 
                             alt="Hero"
@@ -105,82 +115,10 @@ const [showModal, setShowModal] = useState(false);
 
             {/* Section 3: Testimonials section with student reviews */}
             <section className="w-full py-12 md:py-24 lg:py-32 bg-[#f8f9fa] dark:bg-[#2b2b2b]">
-                <div className="container px-4 md:px-6">
-                    <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                        <div className="space-y-2">
-                            <div className="inline-block rounded-lg bg-[#e6e6e6] px-3 py-1 text-sm dark:bg-[#3b3b3b]">
-                                Student Testimonials
-                            </div>
-                            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">What Our Users Say</h2>
-                            <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                                Hear from our satisfied students about how our app has helped them discover delicious and affordable
-                                meals near their campus.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-12">
-                        <Card>
-                            <CardContent className="p-6 text-left">
-                                <div className="flex items-center gap-4">
-                                    <Avatar className="h-12 w-12 border">
-                                        <img src="/placeholder.svg" alt="@username" />
-                                        <AvatarFallback>JS</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <h3 className="text-lg font-bold">Jessica Smith</h3>
-                                        <p className="text-gray-500 dark:text-gray-400">University of California, Berkeley</p>
-                                    </div>
-                                </div>
-                                <p className="mt-4 text-gray-500 dark:text-gray-400">
-                                    "This app has been a game-changer for me as a busy student. I love being able to discover new
-                                    restaurants with discounts and save money on delicious meals. It's made eating out so much more
-                                    affordable."
-                                </p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardContent className="p-6 text-left">
-                                <div className="flex items-center gap-4">
-                                    <Avatar className="h-12 w-12 border">
-                                        <img src="/placeholder.svg" alt="@username" />
-                                        <AvatarFallback>MR</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <h3 className="text-lg font-bold">Michael Rodriguez</h3>
-                                        <p className="text-gray-500 dark:text-gray-400">University of Texas, Austin</p>
-                                    </div>
-                                </div>
-                                <p className="mt-4 text-gray-500 dark:text-gray-400">
-                                    "As a student, I'm always looking for ways to save money, and this app has been a lifesaver. The
-                                    discounts and deals have helped me enjoy delicious meals without breaking the bank. I highly
-                                    recommend it to all my friends."
-                                </p>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                            <CardContent className="p-6 text-left">
-                                <div className="flex items-center gap-4">
-                                    <Avatar className="h-12 w-12 border">
-                                        <img src="/placeholder.svg" alt="@username" />
-                                        <AvatarFallback>EM</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <h3 className="text-lg font-bold">Emily Martinez</h3>
-                                        <p className="text-gray-500 dark:text-gray-400">University of Washington, Seattle</p>
-                                    </div>
-                                </div>
-                                <p className="mt-4 text-gray-500 dark:text-gray-400">
-                                    "I love how this app connects me with local restaurants that offer discounts for students. It's
-                                    helped me discover so many new and delicious places to eat, and the community aspect is really
-                                    special. I feel like I'm part of a network of students who are all looking to save money and enjoy
-                                    great food."
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+              <Reviews />
             </section>
         </div>
+        <ScrollTop />
       <Footer />
     </main>
     </>
