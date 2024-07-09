@@ -5,7 +5,7 @@ import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
-import Modal from "@/Components/Modal";
+import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import Loading from "@/app/loading"; 
 
@@ -20,6 +20,14 @@ const sign_in = () => {
   const [showModal, setShowModal] = useState(false);
   
   const handleSignIn = () => {
+    // Check the email domain first
+    if (!email.endsWith('@edu.sait.ca')) {
+      setEmailError('Please use a SAIT student email');
+      return;
+    } else {
+      setEmailError(''); // Clear any previous error
+    }
+
     setLoading(true);
     signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -106,6 +114,8 @@ const sign_in = () => {
               </div>
               <div>
                 {loginError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{loginError}</div>}
+                {emailError && <div className="text-red-500 text-sm mb-4 flex"><BiSolidCommentError className='mt-1 mr-2' />{emailError}</div>}
+
               </div>
               <div className="mt-5">
                 <p
