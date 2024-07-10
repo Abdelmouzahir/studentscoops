@@ -38,7 +38,7 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
     }
 
     try {
-      console.log("geneic password: ", genericPassword);
+      console.log("generic password: ", genericPassword);
       // Create user in Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -62,7 +62,6 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
 
       await addDoc(collection(db, "saitStaff"), newAdmin);
       // Update local state
-      
       setAdmins([...admin, newAdmin]);
       setIsAdding(false);
 
@@ -76,7 +75,7 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
     } catch (error) {
       console.error(error);
       if (
-        error == "FirebaseError: Firebase: Error (auth/email-already-in-use)."
+        error.message === "Firebase: Error (auth/email-already-in-use)."
       ) {
         const newAdmin = {
           name,
@@ -84,7 +83,7 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
           role,
           phoneNumber,
         };
-        //function to change active state from false to true
+        // Function to change active state from false to true
         await existingRestaurantData(email);
         Swal.fire({
           icon: "success",
@@ -94,7 +93,7 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
           timer: 1500,
         });
         // Update local state
-        admin.push(newAdmin);
+        setAdmins([...admin, newAdmin]);
         setIsAdding(false);
         return;
       }

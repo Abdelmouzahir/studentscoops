@@ -4,7 +4,7 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/firebase/config";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, setPersistence, browserSessionPersistence } from "firebase/auth";
 import { AiOutlineUser } from "react-icons/ai";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
@@ -55,7 +55,10 @@ const SignIn = () => {
 
   const handleSignIn = async () => {
     setLoading(true);
+    const auth = getAuth();
     try {
+      //I used this approach to stay with the current user
+      await setPersistence(auth, browserSessionPersistence);
       await signInWithEmailAndPassword(email, password);
       router.push("/sait-staff"); // Redirect after successful sign-in
       setEmail("");
