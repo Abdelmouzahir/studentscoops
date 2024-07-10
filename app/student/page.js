@@ -1,5 +1,4 @@
-'use client'
-
+"use client"
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/app/firebase/config';
@@ -10,96 +9,13 @@ import { useUserAuth } from '@/services/utils';
 import Link from "next/link";
 import { Card } from "../../components/ui/card";
 import { Button } from '../../components/ui/button';
-import RestrauntCard from '../main-component/layout/restrauntcard/RestrauntCard';
-import Header_stud from './header_stud/page';
-
-const restaurants = [
-  {
-    name: "Acme Bistro",
-    address: "123 Main St, Anytown USA",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    id: 1,
-  },
-  {
-    name: "Sushi Delight",
-    address: "456 Oak Rd, Somewhere City",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    id: 2,
-  },
-  {
-    name: "Gourmet Grill",
-    address: "789 Elm St, Somewhere Else",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    id: 4,
-  },
-  {
-    name: "Cafe Deluxe",
-    address: "321 Oak Blvd, Somewhere Else",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    id: 5,
-  },
-  {
-    name: "Spice Emporium",
-    address: "159 Maple Ave, Somewhere Else",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    id: 6,
-  },
-  {
-    name: "Pasta Palace",
-    address: "789 Elm St, Somewhere Else",
-    imageUrl: "/placeholder.svg?height=300&width=400",
-    id: 7,
-  },
-  {
-    id: 8,
-    name: "Seafood Sensation",
-    address: "678 Birch Rd, Seaside",
-    imageUrl: "/placeholder.svg",
-  },
-  {
-    id: 9,
-    name: "Fusion Flavors",
-    address: "012 Willow St, Cosmopolis",
-    imageUrl: "/placeholder.svg",
-  },
-  {
-    id: 10,
-    name: "Comfort Cuisine",
-    address: "345 Oak Ave, Homeville",
-    imageUrl: "/placeholder.svg",
-  },
-]
-
-const cuisines = [
-  {
-    id: 1,
-    name: "Italian",
-    icon: "Pizza",
-  },
-  {
-    id: 2,
-    name: "Japanese",
-    icon: "Sushi",
-  },
-  {
-    id: 3,
-    name: "American",
-    icon: "Burger",
-  },
-  {
-    id: 4,
-    name: "Mexican",
-    icon: "Taco",
-  },
-]
-
-export let object = null;
+import restaurantsData from './restaurantsData.json';  // Import the JSON data correctly
 
 const Home = () => {
   const { user } = useUserAuth();
   const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredData, setFilteredData] = useState(restaurants);
+  const [filteredData, setFilteredData] = useState(restaurantsData[0].restaurants);  // Initialize with data from JSON
   const router = useRouter();
 
   useEffect(() => {
@@ -137,50 +53,51 @@ const Home = () => {
     const term = e.target.value;
     setSearchTerm(term);
     if (term === '') {
-      setFilteredData(restaurants);
+      setFilteredData(restaurantsData[0].restaurants);  // Access restaurants array correctly
     } else {
-      const results = restaurants.filter(item =>
+      const results = restaurantsData[0].restaurants.filter(item =>
         item.name.toLowerCase().includes(term.toLowerCase())
       );
       setFilteredData(results);
     }
   };
 
-  const [showAllRestaurants, setShowAllRestaurants] = useState(false)
+  const [showAllRestaurants, setShowAllRestaurants] = useState(false);
   return (
     <>
       <main>
-        
         <section className="mb-8">
           <div className='flex items-center justify-between mb-6'>
-          <h2 className="text-4xl font-bold mb-4">Featured Restaurants</h2>
-              <div className="relative w-full max-w-md ">
-                  <input
-                    type="search"
-                    placeholder="Search for restaurants..."
-                    className="w-full rounded-full border-2 border-gray-300 px-4 py-3 pr-10 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-50"
-                    value={searchTerm}
-                    onChange={handleSearch}
-                  />
-                  <button
-                    type="button"
-                    className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-700 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
-                  >
-                    <SearchIcon className="h-6 w-6 text-primary" />
-                  </button>
-                </div>
+            <h2 className="text-4xl font-bold mb-4">Featured Restaurants</h2>
+            <div className="relative w-full max-w-md ">
+              <input
+                type="search"
+                placeholder="Search for restaurants..."
+                className="w-full rounded-full border-2 border-gray-300 px-4 py-3 pr-10 focus:border-gray-500 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-50"
+                value={searchTerm}
+                onChange={handleSearch}
+              />
+              <button
+                type="button"
+                className="absolute top-1/2 right-2 -translate-y-1/2 text-gray-700 hover:text-gray-900 dark:text-gray-50 dark:hover:text-gray-100"
+              >
+                <SearchIcon className="h-6 w-6 text-primary" />
+              </button>
+            </div>
           </div>
           <div className="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:p-6">
-            {(showAllRestaurants ? restaurants : restaurants.slice(0, 8)).map((restaurant) => (
-              <div
+            {(showAllRestaurants ? filteredData : filteredData.slice(0, 8)).map((restaurant) => (
+              <Link
                 key={restaurant.id}
+                href={{
+                  pathname: '/restaurant',
+                  query: { restaurantId: restaurant.id }, // Pass the restaurant ID
+                }}
+                as={`student/restaurant?restaurantId=${restaurant.id}`}
                 className="relative overflow-hidden rounded-lg group transition-transform hover:scale-105"
               >
-                <Link href="#" className="absolute inset-0 z-10" prefetch={false}>
-                  <span className="sr-only">View Restaurant</span>
-                </Link>
                 <img
-                  src={restaurant.imageUrl}
+                  src="/placeholder.svg"
                   alt="Restaurant Image"
                   width={400}
                   height={300}
@@ -190,17 +107,17 @@ const Home = () => {
                   <h3 className="text-lg font-semibold md:text-xl">{restaurant.name}</h3>
                   <p className="text-sm text-muted-foreground">{restaurant.address}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
           <div>
-          {restaurants.length > 8 && (
-            <div className="flex justify-center mt-4">
-              <Button variant="outline" onClick={() => setShowAllRestaurants(!showAllRestaurants)}>
-                {showAllRestaurants ? "View Less" : "View All"}
-              </Button>
-            </div>
-          )}
+            {filteredData.length > 8 && (
+              <div className="flex justify-center mt-4">
+                <Button variant="outline" onClick={() => setShowAllRestaurants(!showAllRestaurants)}>
+                  {showAllRestaurants ? "View Less" : "View All"}
+                </Button>
+              </div>
+            )}
           </div>
         </section>
           
@@ -282,10 +199,7 @@ function CookingPotIcon(props) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M2 12h20" />
-      <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8" />
-      <path d="m4 8 16-4" />
-      <path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8" />
+      <path d="M6 9V7a4 4 0 0 1 8 0v2M9 9v9M12 12v6m-6 0v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1M6 21h12M3 5h18a1 1 0 0 1 1 1v1H2V6a1 1 0 0 1 1-1z" />
     </svg>
   )
 }

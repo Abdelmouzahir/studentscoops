@@ -1,15 +1,14 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/5XLH6MHdPYl
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-'use client'
+"use client"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+ 
+// import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from 'next/navigation'
+import restaurantsData from '../restaurantsData.json'
 import React , { useState ,useEffect } from "react"
 import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
 export default function Component() {
-  const menuItems = [
+  var menuItems = [
     {id:"1",
       name: "Acme Burger",
       description: "A delicious burger with all the fixings.",
@@ -59,6 +58,48 @@ export default function Component() {
       image: "/placeholder.svg",
     },
   ]
+
+
+
+
+  const [menuItems, setMenuItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredItems, setFilteredItems] = useState([]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const restaurantId = parseInt(searchParams.get('restaurantId'), 10);
+  const [restaurantName, setRestaurantName] = useState("");
+
+  useEffect(() => {
+    // Find the selected restaurant's menu based on restaurantId
+    const selectedRestaurant = restaurantsData[0].restaurants.find(
+      (restaurant) => restaurant.id === restaurantId
+    );
+
+    if (selectedRestaurant) {
+      setMenuItems(selectedRestaurant.menu);
+      setFilteredItems(selectedRestaurant.menu);
+      setRestaurantName(selectedRestaurant.name);
+    } else {
+      router.push('/student');  // Redirect to home if no restaurant found
+    }
+  }, [restaurantId, router]);
+
+  useEffect(() => {
+    // Filter menu items based on the search term
+
+    setFilteredItems(
+      menuItems.filter(
+        (item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  item.description.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    );
+  }, [searchTerm, menuItems]);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  }
+
 
   const [cart, setCart] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState(null);
@@ -116,44 +157,37 @@ export default function Component() {
 
 
 
-  const [searchTerm, setSearchTerm] = useState("")
-  const [filteredItems, setFilteredItems] = useState(menuItems)
-  const handleSearch = (e) => {
-    const term = e.target.value.toLowerCase()
-    setSearchTerm(term)
-    setFilteredItems(
-      menuItems.filter(
-        (item) => item.name.toLowerCase().includes(term) || item.description.toLowerCase().includes(term),
-      ),
-    )
-}
+  
+  
 
   return (
     <div className="flex flex-col">
+
     <CartDropdown cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} getTotal={getTotal}  />
+
       <section>
-      <div className="relative">
-        <img src="/placeholder.svg" alt="Restaurant" className="w-full h-[300px] object-cover" />
-        <div className="absolute bottom-4 left-4">
-          <h1 className="text-2xl font-bold text-white">Crispy Classic Chicken</h1>
+        <div className="relative">
+          <img src="/placeholder.svg" alt="Restaurant" className="w-full h-[300px] object-cover" />
+          <div className="absolute bottom-4 left-4">
+            <h1 className="text-2xl font-bold text-white">{restaurantName}</h1>
+          </div>
+          <div className="absolute bottom-4 right-4">
+            <Input
+              type="search"
+              placeholder="Search in the menu"
+              className="pl-8 pr-4 py-2 rounded-full bg-white shadow-md w-80"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          </div>
         </div>
-        <div className="absolute bottom-4 right-4">
-          <Input
-            type="search"
-            placeholder="Search in Crispy Classic Chicken"
-            className="pl-8 pr-4 py-2 rounded-full bg-white shadow-md w-80"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-        </div>
-      </div>
       </section>
       <section className="container mx-auto px-4 md:px-6 py-8 md:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredItems.map((item) => (
-          <div key={item.name} className="bg-background rounded-md overflow-hidden shadow-sm">
+          <div key={item.item_id} className="bg-background rounded-md overflow-hidden shadow-sm">
             <img
-              src="/placeholder.svg"
+              src= "/placeholder.svg"  // Provide a default image if none available
               alt={item.name}
               width={400}
               height={300}
@@ -175,7 +209,6 @@ export default function Component() {
     </div>
   )
 }
-
 function PlusIcon(props) {
   return (
     <svg
@@ -196,6 +229,7 @@ function PlusIcon(props) {
   )
 }
 
+
 function ShoppingCartIcon(props) {
   return (
     <svg
@@ -214,8 +248,7 @@ function ShoppingCartIcon(props) {
       <circle cx="19" cy="21" r="1" />
       <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
     </svg>
-  )
-}
+  )}
 function SearchIcon(props) {
   return (
     <svg

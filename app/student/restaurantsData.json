@@ -1,0 +1,264 @@
+[
+  {
+    "restaurants": [
+      {
+        "id": 1,
+        "name": "The Gourmet Kitchen",
+        "address": "123 Food Street, Flavor Town, FT 12345",
+        "img_url": "https://example.com/images/the-gourmet-kitchen.jpg",
+        "menu": [
+          {
+            "item_id": 1,
+            "name": "Margherita Pizza",
+            "description": "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
+            "price": 12.99,
+            "img_url": "https://example.com/images/margherita-pizza.jpg"
+          },
+          {
+            "item_id": 2,
+            "name": "Spaghetti Carbonara",
+            "description": "Traditional pasta dish with eggs, cheese, pancetta, and pepper.",
+            "price": 15.99,
+            "img_url": "https://example.com/images/spaghetti-carbonara.jpg"
+          },
+          {
+            "item_id": 3,
+            "name": "Tiramisu",
+            "description": "Layered dessert with coffee-soaked ladyfingers, mascarpone cheese, and cocoa.",
+            "price": 8.99,
+            "img_url": "https://example.com/images/tiramisu.jpg"
+          },
+          {
+            "item_id": 4,
+            "name": "Caprese Salad",
+            "description": "Fresh mozzarella, tomatoes, basil, olive oil, and balsamic vinegar.",
+            "price": 11.99,
+            "img_url": "https://example.com/images/caprese-salad.jpg"
+          },
+          {
+            "item_id": 5,
+            "name": "Lasagna",
+            "description": "Layered pasta dish with meat sauce, béchamel, and cheese.",
+            "price": 14.99,
+            "img_url": "https://example.com/images/lasagna.jpg"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Sushi Palace",
+        "address": "456 Ocean Avenue, Seafood City, SC 67890",
+        "img_url": "https://example.com/images/sushi-palace.jpg",
+        "menu": [
+          {
+            "item_id": 1,
+            "name": "California Roll",
+            "description": "Roll with crab meat, avocado, cucumber, and sushi rice.",
+            "price": 9.99,
+            "img_url": "https://example.com/images/california-roll.jpg"
+          },
+          {
+            "item_id": 2,
+            "name": "Salmon Sashimi",
+            "description": "Freshly sliced raw salmon served with soy sauce and wasabi.",
+            "price": 12.99,
+            "img_url": "https://example.com/images/salmon-sashimi.jpg"
+          },
+          {
+            "item_id": 3,
+            "name": "Miso Soup",
+            "description": "Traditional Japanese soup with tofu, seaweed, and green onions.",
+            "price": 4.99,
+            "img_url": "https://example.com/images/miso-soup.jpg"
+          },
+          {
+            "item_id": 4,
+            "name": "Spicy Tuna Roll",
+            "description": "Roll with spicy tuna, cucumber, and avocado.",
+            "price": 11.99,
+            "img_url": "https://example.com/images/spicy-tuna-roll.jpg"
+          },
+          {
+            "item_id": 5,
+            "name": "Tempura Udon",
+            "description": "Thick wheat noodles in a savory broth with tempura shrimp and vegetables.",
+            "price": 13.99,
+            "img_url": "https://example.com/images/tempura-udon.jpg"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Vegan Delights",
+        "address": "789 Plant-Based Blvd, Veggie Town, VT 54321",
+        "img_url": "https://example.com/images/vegan-delights.jpg",
+        "menu": [
+          {
+            "item_id": 1,
+            "name": "Vegan Burger",
+            "description": "Plant-based burger patty with lettuce, tomato, and vegan mayo.",
+            "price": 10.99,
+            "img_url": "https://example.com/images/vegan-burger.jpg"
+          },
+          {
+            "item_id": 2,
+            "name": "Quinoa Salad",
+            "description": "Quinoa with mixed vegetables, avocado, and a lemon vinaigrette.",
+            "price": 9.99,
+            "img_url": "https://example.com/images/quinoa-salad.jpg"
+          },
+          {
+            "item_id": 3,
+            "name": "Vegan Mac and Cheese",
+            "description": "Creamy mac and cheese made with cashew cheese sauce.",
+            "price": 11.99,
+            "img_url": "https://example.com/images/vegan-mac-and-cheese.jpg"
+          },
+          {
+            "item_id": 4,
+            "name": "Stuffed Bell Peppers",
+            "description": "Bell peppers stuffed with rice, beans, and vegetables.",
+            "price": 12.99,
+            "img_url": "https://example.com/images/stuffed-bell-peppers.jpg"
+          },
+          {
+            "item_id": 5,
+            "name": "Chia Pudding",
+            "description": "Chia seeds soaked in almond milk with a fruit topping.",
+            "price": 6.99,
+            "img_url": "https://example.com/images/chia-pudding.jpg"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Burger Haven",
+        "address": "321 Grill Lane, Meatville, MV 98765",
+        "img_url": "https://example.com/images/burger-haven.jpg",
+        "menu": [
+          {
+            "item_id": 1,
+            "name": "Classic Cheeseburger",
+            "description": "Beef patty with cheddar cheese, lettuce, tomato, and pickles.",
+            "price": 11.49,
+            "img_url": "https://example.com/images/classic-cheeseburger.jpg"
+          },
+          {
+            "item_id": 2,
+            "name": "BBQ Bacon Burger",
+            "description": "Beef patty with BBQ sauce, bacon, cheddar cheese, and onions.",
+            "price": 13.49,
+            "img_url": "https://example.com/images/bbq-bacon-burger.jpg"
+          },
+          {
+            "item_id": 3,
+            "name": "Onion Rings",
+            "description": "Crispy onion rings served with a side of ranch sauce.",
+            "price": 5.99,
+            "img_url": "https://example.com/images/onion-rings.jpg"
+          },
+          {
+            "item_id": 4,
+            "name": "Fries",
+            "description": "Golden fries served with ketchup.",
+            "price": 3.99,
+            "img_url": "https://example.com/images/fries.jpg"
+          },
+          {
+            "item_id": 5,
+            "name": "Milkshake",
+            "description": "Thick milkshake with your choice of vanilla, chocolate, or strawberry flavor.",
+            "price": 4.99,
+            "img_url": "https://example.com/images/milkshake.jpg"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Taco Fiesta",
+        "address": "654 Salsa Street, Spicy Town, ST 24680",
+        "img_url": "https://example.com/images/taco-fiesta.jpg",
+        "menu": [
+          {
+            "item_id": 1,
+            "name": "Beef Tacos",
+            "description": "Soft tacos filled with seasoned beef, lettuce, cheese, and salsa.",
+            "price": 8.99,
+            "img_url": "https://example.com/images/beef-tacos.jpg"
+          },
+          {
+            "item_id": 2,
+            "name": "Chicken Quesadilla",
+            "description": "Grilled tortilla filled with chicken, cheese, and peppers.",
+            "price": 10.49,
+            "img_url": "https://example.com/images/chicken-quesadilla.jpg"
+          },
+          {
+            "item_id": 3,
+            "name": "Guacamole and Chips",
+            "description": "Fresh guacamole served with crispy tortilla chips.",
+            "price": 7.49,
+            "img_url": "https://example.com/images/guacamole-and-chips.jpg"
+          },
+          {
+            "item_id": 4,
+            "name": "Chicken Enchiladas",
+            "description": "Corn tortillas filled with chicken and topped with enchilada sauce.",
+            "price": 12.99,
+            "img_url": "https://example.com/images/chicken-enchiladas.jpg"
+          },
+          {
+            "item_id": 5,
+            "name": "Churros",
+            "description": "Fried dough pastry coated with cinnamon sugar.",
+            "price": 5.49,
+            "img_url": "https://example.com/images/churros.jpg"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Pasta Paradise",
+        "address": "987 Pasta Place, Italian City, IC 13579",
+        "img_url": "https://example.com/images/pasta-paradise.jpg",
+        "menu": [
+          {
+            "item_id": 1,
+            "name": "Fettuccine Alfredo",
+            "description": "Creamy Alfredo sauce served over fettuccine noodles.",
+            "price": 12.99,
+            "img_url": "https://example.com/images/fettuccine-alfredo.jpg"
+          },
+          {
+            "item_id": 2,
+            "name": "Lasagna Bolognese",
+            "description": "Classic lasagna with rich meat sauce and béchamel.",
+            "price": 14.49,
+            "img_url": "https://example.com/images/lasagna-bolognese.jpg"
+          },
+          {
+            "item_id": 3,
+            "name": "Caprese Pasta",
+            "description": "Pasta with cherry tomatoes, fresh mozzarella, and basil.",
+            "price": 11.99,
+            "img_url": "https://example.com/images/caprese-pasta.jpg"
+          },
+          {
+            "item_id": 4,
+            "name": "Spaghetti Bolognese",
+            "description": "Spaghetti with a traditional Bolognese meat sauce.",
+            "price": 13.49,
+            "img_url": "https://example.com/images/spaghetti-bolognese.jpg"
+          },
+          {
+            "item_id": 5,
+            "name": "Penne Arrabbiata",
+            "description": "Penne pasta in a spicy tomato sauce with garlic and chili flakes.",
+            "price": 10.49,
+            "img_url": "https://example.com/images/penne-arrabbiata.jpg"
+          }
+        ]
+      }
+    ]
+  }
+  ]
