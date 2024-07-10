@@ -4,9 +4,9 @@ import RDashboard from "./RDashboard";
 import Dash from "./overviewDash";
 import Settings from "./settingS";
 import { LuLogOut } from "react-icons/lu";
-import UserGreeting from "@/Components/UserGreeting";
+import UserGreeting from "@/components/UserGreeting";
 //import navbar
-import SaitStaffNav from "@/Components/SaitStaffNav";
+import SaitStaffNav from "@/components/SaitStaffNav";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
