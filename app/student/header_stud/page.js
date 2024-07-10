@@ -1,8 +1,9 @@
+"use client"
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-
-
+import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
+// import { useState, useEffect } from "react"
 // import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
   
 
@@ -11,68 +12,72 @@ import { Button } from "@/components/ui/button"
 
 
 export default function Header_stud({ handleSignOut }) {
+
+
+  // const [cart, setCart] = useState([]);
+  // const [recentlyAdded, setRecentlyAdded] = useState(null);
+  // const [cartCounter, setCartCounter] = useState(0);
+
+  // useEffect(() => {
+  //   if (recentlyAdded) {
+  //     const timeout = setTimeout(() => {
+  //       setRecentlyAdded(null);
+  //     }, 3000); // Adjust the timeout duration as needed (e.g., 3000 milliseconds)
+  //     return () => clearTimeout(timeout);
+  //   }
+  // }, [recentlyAdded]);
+
+  // const addToCart = (item) => {
+  //   const existingItem = cart.find((cartItem) => cartItem.id === item.id);
+  //   if (existingItem) {
+  //     // Item already exists in cart, increment quantity
+  //     const updatedCart = cart.map((cartItem) =>
+  //       cartItem.id === item.id
+  //         ? { ...cartItem, quantity: cartItem.quantity + 1 }
+  //         : cartItem
+  //     );setCart(updatedCart);
+  //     setCartCounter(cartCounter + 1);
+  //   } 
+      
+  //     else {
+  //     // Item doesn't exist in cart, add it with quantity 1
+  //     setCart([...cart, { ...item, quantity: 1 }]);
+  //   }
+  //   setRecentlyAdded(item);
+  //   setCartCounter(cartCounter + 1);
+  // };;
+
+  // const removeFromCart = (itemId, quantity = 1) => {
+  //   const existingItem = cart.find((item) => item.id === itemId);
+  //   if (existingItem) {
+  //     if (existingItem.quantity <= quantity) {
+  //       setCart(cart.filter((item) => item.id!== itemId));
+  //     } else {
+  //       setCart(
+  //         cart.map((item) =>
+  //           item.id === itemId? {...item, quantity: item.quantity - quantity } : item
+  //         )
+  //       );
+  //     }
+  //   }
+  //   setCartCounter(cartCounter - 1);
+  // };
+
+  // const getTotal = () => {
+  //   return cart.reduce((total, item) => total + item.price * (item.quantity || 1), 0);
+  // };
+
   return (
-    <header className="flex items-center justify-between h-16 px-4 md:px-6 bg-primary shadow-sm dark:bg-gray-950">
-      <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-10 flex items-center justify-between h-16 px-4 md:px-6 bg-primary shadow-sm dark:bg-gray-950">
+      <div className=" flex items-center gap-4">
         <Link href="/student" className="flex items-center gap-2 text-2xl font-bold text-white" prefetch={false}>
           <span >STUDENT SCOOPS</span>
         </Link>
       </div>
       <div className="flex items-center gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="rounded-full">
-              <ShoppingCartIcon className="w-5 h-5" />
-              <span className="sr-only">Cart</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" sideOffset={12}>
-            <DropdownMenuLabel>Cart</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img src="https://i.pinimg.com/564x/55/02/f2/5502f20d18006dec855f986e5344951c.jpg" width={40} height={40} alt="Product Image" className="rounded-md" />
-                  <div>
-                    <div className="font-medium">Bruschetta</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">$9.99</div>
-                  </div>
-                </div>
-                <div className="text-sm font-medium">x3</div>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img src="https://i.pinimg.com/564x/40/b0/d6/40b0d6f85533fd94da7c4febbd5ff4d7.jpg" width={40} height={40} alt="Product Image" className="rounded-md" />
-                  <div>
-                    <div className="font-medium">Calamari Fritti</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">$10.99</div>
-                  </div>
-                </div>
-                <div className="text-sm font-medium">x3</div>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <div className="flex items-center justify-between">
-                <div className="font-medium">Total</div>
-                <div className="text-sm font-medium">$56.94</div>
-              </div>
-            </DropdownMenuItem>
+      {/* <CartDropdown cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} getTotal={getTotal}  /> */}
+      <ShoppingCartIcon className="w-5 h-5" />
 
-
-  {/* <CartDropdown cart={cart} removeFromCart={removeFromCart} getTotal={getTotal} /> */} 
-{/* // Was trying to do this but was not able to sync it with the main cart */}
-
-
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-            <Link
-              href="/Payment" > <Button className="w-full bg-primary">Checkout</Button> </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full ">
@@ -83,6 +88,7 @@ export default function Header_stud({ handleSignOut }) {
           <DropdownMenuContent align="end" sideOffset={12}>
             <DropdownMenuLabel>Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            
             <DropdownMenuItem>
               <Link href="/main-component/layout/myprofile" className="flex items-center gap-2" prefetch={false}>
                 <ProfileIcon className="w-4 h-4" />
