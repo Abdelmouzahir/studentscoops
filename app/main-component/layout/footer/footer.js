@@ -57,10 +57,9 @@ const Footer = () => {
           <h1 className=' text-[22px] w-fit text-white font-semibold mb-[1.5rem]' >Quick Links</h1>
           <Link href="https://www.sait.ca/" legacyBehavior>
             <a target='_blank' rel="noopener noreferrer">
-          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >SAIT Website</p>
-          </a>
+              <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >SAIT Website</p>
+            </a>
           </Link>
-          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >How to</p>
           
         </div>
         {/* 4th part of footer*/}
