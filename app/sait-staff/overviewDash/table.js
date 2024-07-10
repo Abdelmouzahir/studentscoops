@@ -4,6 +4,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
+import DateComponent from "@/components/Date";
 
 const Table = ({
   admin,
@@ -31,6 +32,7 @@ const Table = ({
           return true;
         })
       : [];
+
 
   return (
     <div className="container mx-auto px-4 sm:px-8">
@@ -156,7 +158,9 @@ const Table = ({
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <p className="text-gray-900 whitespace-no-wrap">
-                    {user.accountCreated.toDate().toDateString()}
+                    {/* this how the date should be mentionned correctly*/ }
+                    <DateComponent dateObject={user.accountCreated} />
+                    {console.log("date: ",user.accountCreated)}
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
