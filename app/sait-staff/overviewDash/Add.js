@@ -65,8 +65,8 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
       });
 
       // Update local state
-      admin.push(newAdmin);
-      setAdmins(admin);
+      
+      setAdmins((prevadmin) => [...prevadmin, newAdmin]);
       setIsAdding(false);
 
       Swal.fire({
