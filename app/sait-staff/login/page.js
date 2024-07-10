@@ -27,24 +27,18 @@ const SignIn = () => {
     fetchSaitStaffName();
   }, []);
 
-  //problem solved
   const fetchSaitStaffName = async () => {
     try {
       const user = auth.currentUser;
       if (user) {
         const uid = user.uid;
-        console.log('user ',uid)
         const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
-        const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
-        const employeeImg = querySnapshot.docs.map((doc) => doc.data().imageUrl);
-      
 
-        if (!employeeData.empty) {
-          const saitStaffData = employeeData[0];
-          const name = saitStaffData || "SAIT Staff"; // Use default name if 'name' is not available
-          const saitStaffimg = employeeImg[0];
-          const adminImg = saitStaffimg || <AiOutlineUser />;
+        if (!querySnapshot.empty) {
+          const saitStaffData = querySnapshot.docs[0].data();
+          const { name, imageUrl } = saitStaffData;
+          const adminImg = imageUrl || <AiOutlineUser />;
           setSaitStaffimg(adminImg);
           setSaitStaffName(name);
         } else {
