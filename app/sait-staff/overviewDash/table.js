@@ -18,6 +18,8 @@ const Table = ({
   const [isActive, setIsActive] = useState(null);
   const [email, setEmail] = useState("");
   const [docId, setDocId] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
+  
   const filteredEmployees = 
     admin && admin.length > 0
       ? admin.filter(user => {
@@ -126,7 +128,8 @@ const Table = ({
               </tr>
             </thead>
             <tbody>
-              {(filteredEmployees.length > 0 || filteredEmployees !==null) ? (filteredEmployees.map((user) => (
+              {(filteredEmployees.length > 0 || filteredEmployees !==null) ? (filteredEmployees.map((user) => {
+                return(
                 <tr key={user.id}>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <div className="flex items-center">
@@ -155,8 +158,8 @@ const Table = ({
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">
-                    {user.accountCreated.toDate().toDateString()}
+                  <p className={user.accountCreated?"text-gray-900 whitespace-no-wrap":'text-gray-900 whitespace-no-wrap animate-pulse'}>
+                    {user.accountCreated? user.accountCreated.toDate().toDateString(): "Loading..."}
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -190,7 +193,7 @@ const Table = ({
                   </button>
                 </td>
               </tr>
-              ))):(<><tr>
+              )})):(<><tr>
                   <td
                     colSpan="5"
                     className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center"

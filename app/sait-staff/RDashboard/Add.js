@@ -1,18 +1,17 @@
-'use client'
-import React, { useState } from 'react';
-import { formatPhoneNumber } from "@/Constant/formated"
-import Swal from 'sweetalert2';
+"use client";
+import React, { useState } from "react";
+import { formatPhoneNumber } from "@/Constant/formated";
+import Swal from "sweetalert2";
 
-import { collection, addDoc } from "firebase/firestore"; 
-import { db, auth } from '@/app/firebase/config'
+import { auth } from "@/app/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { existingRestaurantData } from '@/services/PostRequest/postRequest';
+import { addRestaurant } from "@/services/RealTimeDatabase/postData/postData";
 
 const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
 
   const currentDate = new Date();
 
@@ -20,46 +19,48 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   const month = currentDate.getMonth(); // Remember, month is zero-indexed
   const year = currentDate.getFullYear();
 
-  const newDate = [day,month,year];
+  const newDate = [day, month, year];
   let firstWord = name.split(" ");
-  
+
   //generic password will be first name of student or restaurant + last three digits of mobile number + "!"
-// like student name :- Moiz Khan mobilenumber :- 1234567890, so the password will be Moiz890!
-// by this the password will bw different for every one and they can change it on forget password
-  const genericPassword = firstWord[0]+phoneNumber.slice(-3).concat('!'); 
+  // like student name :- Moiz Khan mobilenumber :- 1234567890, so the password will be Moiz890!
+  // by this the password will bw different for every one and they can change it on forget password
+  const genericPassword = firstWord[0] + phoneNumber.slice(-3).concat("!");
 
   const handleAdd = async (e) => {
     e.preventDefault();
 
     if (!name || !email || !phoneNumber || !address) {
       return Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'All fields are required.',
+        icon: "error",
+        title: "Error!",
+        text: "All fields are required.",
         showConfirmButton: true,
       });
     }
 
     try {
-      console.log('geneic password: ',genericPassword)
+      console.log("geneic password: ", genericPassword);
       // Create user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, email, genericPassword);
-      const user = userCredential.user;
-
-      // Add restaurant to Firestore
-      const newRestaurant = {
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        genericPassword
+      ).then((userCredential) => {return userCredential.user}).then(async(user)=>{
+        const newRestaurant = {
         name,
         email,
         phoneNumber,
         address,
-        uid: user.uid,
-        acountCreated: newDate, // link with user ID
-        active: true
+        uid:user.uid
       };
+      await addRestaurant({ restaurant: newRestaurant });
+      })
 
-      await addDoc(collection(db, "restaurants"), {
-        ...newRestaurant
-      });
+      // Add restaurant to Firestore
+      
+
+      //await addRestaurant({ restaurant: newRestaurant });
 
       // Update local state
       restaurants.push(newRestaurant);
@@ -68,39 +69,17 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
       getRestaurants();
 
       Swal.fire({
-        icon: 'success',
-        title: 'Added!',
+        icon: "success",
+        title: "Added!",
         text: `${name}'s data has been added.`,
         showConfirmButton: false,
         timer: 1500,
       });
     } catch (error) {
       console.error(error);
-      if (
-        error == "FirebaseError: Firebase: Error (auth/email-already-in-use)."
-      ) {
-        const newRestaurant = {
-          name,
-          email,
-          phoneNumber
-        };
-        //function to change active state from false to true
-        await existingRestaurantData(email);
-        Swal.fire({
-          icon: "success",
-          title: "Added!",
-          text: `We located your previous account, and you can resume using it.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        // Update local state
-        restaurants.push(newRestaurant);
-        setIsAdding(false);
-        return;
-      }
       Swal.fire({
-        icon: 'error',
-        title: 'Error!',
+        icon: "error",
+        title: "Error!",
         text: error.message,
         showConfirmButton: true,
       });
@@ -110,49 +89,71 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
       <form onSubmit={handleAdd} className="space-y-6">
-        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">Add Restaurant</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">
+          Add Restaurant
+        </h1>
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">Restaurant Name</label>
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Restaurant Name
+          </label>
           <input
             id="name"
             type="text"
             name="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Email
+          </label>
           <input
             id="email"
             type="email"
             name="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Phone Number
+          </label>
           <input
             id="phone"
             type="text"
             maxLength={14}
             name="phone"
             value={phoneNumber}
-            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
+            onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
         <div>
-          <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+          <label
+            htmlFor="address"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Address
+          </label>
           <input
             id="address"
             type="text"
             name="address"
             value={address}
-            onChange={e => setAddress(e.target.value)}
+            onChange={(e) => setAddress(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>

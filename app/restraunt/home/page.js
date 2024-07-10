@@ -1,15 +1,14 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { ref, onValue, off } from "firebase/database";
+import { database } from "@/app/firebase/config";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTable, useGlobalFilter } from "react-table";
 import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
 import { useUserAuth } from "@/services/utils";
 import { db } from "@/app/firebase/config";
 import { deleteDoc, doc } from "firebase/firestore";
-import {
-  getMenuInformation,
-  getRestaurantInformationByUser,
-} from "@/services/GetRequest/getRequest";
+import { getRestaurantMenu } from "@/services/RealTimeDatabase/getData/getData";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -41,27 +40,37 @@ import Link from "next/link";
 
 export default function SettingsRestaurant() {
   const { user } = useUserAuth();
-  const [menuData, setMenuData] = useState(null);
+  const [menuData, setMenuData] = useState([]);
   const route = useRouter();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [globalFilter, setGlobalFilter] = useState("");
+  const restaurantRef = ref(database, "restaurants/" + user + "/menu");
+
+  const getRestaurantMenuCallback = useCallback(getRestaurantMenu, [user]);
 
   useEffect(() => {
-    async function gettingRestaurantMenu() {
-      const data = await getMenuInformation(user);
-      if (data.length <= 0) {
-      }
-      setMenuData(data);
-    }
-    async function userIsActive() {
-      const data = await getRestaurantInformationByUser(user);
-      if (!data.length == 0) {
-        gettingRestaurantMenu();
-      }
-    }
-    if (user) {
-      userIsActive();
-    }
+    function gettingMenu(){
+    try {
+      const unsubscribe = onValue(restaurantRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const formattedData = Object.entries(data).map(([key, value]) => ({
+            id: key,
+            ...value,
+          }));
+          setMenuData(formattedData);
+        } else {
+          setMenuData([]);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }}
+
+    return gettingMenu();
+  }, [restaurantRef]);
+  useEffect(() => {
+    // restaurantMenu();
     if (user == false) {
       route.push("/");
     }
@@ -73,7 +82,9 @@ export default function SettingsRestaurant() {
 
   const handleProductDelete = async (productId) => {
     await deleteDoc(doc(db, "restaurant_menu", productId)).then(() => {
-      setMenuData(menuData.filter((product) => product.id !== productId));
+      setMenuData((prevMenuData) =>
+        prevMenuData.filter((product) => product.id !== productId)
+      );
     });
   };
 
@@ -92,20 +103,6 @@ export default function SettingsRestaurant() {
           />
         ),
       },
-
-      // {
-      //   Header: 'Image',
-      //   accessor: 'imageUrl',
-      //   Cell: ({ row: { original } }) => (
-      //     <img
-      //       alt={`Product image - ${original.name}`}
-      //       className="aspect-square rounded-md object-cover"
-      //       height="64"
-      //       src="/assets/images/food.png" // Correct path to the image
-      //       width="64"
-      //     />
-      //   ),
-      // },
       {
         Header: "Name",
         accessor: "name",
@@ -125,7 +122,7 @@ export default function SettingsRestaurant() {
         Header: "Date",
         accessor: "createdAt",
         Cell: ({ cell: { value } }) => {
-          const date = new Date(value.seconds * 1000); // Assuming the value is a Firestore timestamp
+          const date = new Date(value);
           const day = date.getDate().toString().padStart(2, "0");
           const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
           const year = date.getFullYear();
@@ -175,7 +172,7 @@ export default function SettingsRestaurant() {
     [menuData]
   );
 
-  const data = React.useMemo(() => menuData || [], [menuData]);
+  const data = React.useMemo(() => menuData, [menuData]);
 
   const {
     getTableProps,
@@ -192,7 +189,7 @@ export default function SettingsRestaurant() {
 
   return (
     <div>
-      {menuData === null ? (
+      {menuData.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-screen ">
           <h3 className="text-2xl font-bold tracking-tight text-primary">
             You have no products

@@ -61,8 +61,7 @@ const SignIn = () => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(email, password);
-      router.push("/sait-staff"); // Redirect after successful sign-in
+      await signInWithEmailAndPassword(email, password).then(()=>router.push("/sait-staff")); // Redirect after successful sign-in
       setEmail("");
       setPassword("");
       setLoginError("");
