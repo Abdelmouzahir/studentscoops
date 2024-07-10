@@ -32,7 +32,7 @@ const SignIn = () => {
       const user = auth.currentUser;
       if (user) {
         const uid = user.uid;
-        const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
+        const q = query(collection(db, "saitStaff", user.uid), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
         console.log("uid:",uid);
 

@@ -10,7 +10,7 @@ export default function DateComponent({ dateObject }) {
     const date = convertFirestoreTimestampToDate(dateObject);
     const formattedDate = isNaN(date) ? 'Invalid Date' : format(date, 'LLLL d, yyyy');
   
-    return <time dateTime={date.toISOString()}>{formattedDate}</time>;
+    return <time dateTime={date}>{formattedDate}</time>;
   }
 
 
