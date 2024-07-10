@@ -6,24 +6,24 @@
 "use client";
 
 import { useState, useEffect, useRef, use } from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/Components/ui/card";
+import { Label } from "@/Components/ui/label";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 import { formatPhoneNumber } from "@/Constant/formated";
 import { db } from "@/app/firebase/config";
 import { updateDoc, doc } from "firebase/firestore";
 import { CgArrowsExchange } from "react-icons/cg";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/app/firebase/config";
-import Swal from "sweetalert2";
 
 export default function UserProfile({ data, getUserData }) {
-  const [name, setName] = useState(data[0].name);
-  const [email, setEmail] = useState(data[0].email);
-  const [phoneNumber, setPhoneNumber] = useState(data[0].phoneNumber);
-  const [address, setAddress] = useState(data[0].address);
-  const [role, setRole] = useState(data[0].role);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [role, setRole] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const fileInpt = useRef(null);
 
   useEffect(() => {
@@ -33,8 +33,18 @@ export default function UserProfile({ data, getUserData }) {
       setPhoneNumber(data[0].phoneNumber);
       setAddress(data[0].address);
       setRole(data[0].role);
+      setImageUrl(data[0].imageUrl);
     }
   }, [data]);
+
+  useEffect(() => {
+    if(!data[0].imageUrl || data[0].imageUrl === null){
+      setImageUrl('/assets/images/UserDefaultSaitStaff.png');
+    }
+    else{
+      setImageUrl(data[0].imageUrl);
+    }
+  },[imageUrl]);
 
   const handleDivClick = () => {
     fileInpt.current.click();
@@ -70,13 +80,7 @@ export default function UserProfile({ data, getUserData }) {
           await updateDoc(docRef, {
             imageUrl: downloadURL,
           }).then(() => {
-            Swal.fire({
-              icon: "success",
-              title: "Added!",
-              text: `Profile picture 📸 was added Successfully.`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
+            alert("Image uploaded successfully");
             getUserData();
           });
         } catch (error) {
@@ -119,13 +123,7 @@ export default function UserProfile({ data, getUserData }) {
         phoneNumber: phoneNumber,
         address: address,
       }).then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Added!",
-          text: `Profile picture 📸 was Updated Successfully.`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        alert("Profile updated successfully");
         getUserData();
       });
     } catch (err) {
@@ -138,7 +136,7 @@ export default function UserProfile({ data, getUserData }) {
       <div className="mx-auto grid items-center justify-center w-[200%]">
         <div
           className="mx-auto rounded-full bg-cover bg-center w-96 h-96 cursor-pointer"
-          style={{ backgroundImage: `url(${data[0].imageUrl})` }}
+          style={{ backgroundImage: `url(${imageUrl})` }}
         >
           <input
             type="file"

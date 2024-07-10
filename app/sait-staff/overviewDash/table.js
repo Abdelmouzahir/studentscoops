@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { LuPencil, LuTrash } from "react-icons/lu";
 import { IoMdPersonAdd } from "react-icons/io";
-import Modal from "@/components/Modal";
+import Modal from "@/Components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
-import DateComponent from "@/components/Date";
 
 const Table = ({
   admin,
@@ -19,6 +18,8 @@ const Table = ({
   const [isActive, setIsActive] = useState(null);
   const [email, setEmail] = useState("");
   const [docId, setDocId] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
+  
   const filteredEmployees = 
     admin && admin.length > 0
       ? admin.filter(user => {
@@ -32,7 +33,6 @@ const Table = ({
           return true;
         })
       : [];
-
 
   return (
     <div className="container mx-auto px-4 sm:px-8">
@@ -128,7 +128,8 @@ const Table = ({
               </tr>
             </thead>
             <tbody>
-              {filteredEmployees.length > 0 ? (filteredEmployees.map((user) => (
+              {(filteredEmployees.length > 0 || filteredEmployees !==null) ? (filteredEmployees.map((user) => {
+                return(
                 <tr key={user.id}>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <div className="flex items-center">
@@ -157,10 +158,8 @@ const Table = ({
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">
-                    {/* this how the date should be mentionned correctly please look at Date.js for more details*/ }
-                    <DateComponent dateObject={user.accountCreated} />
-                    {/*console.log("date: ",user.accountCreated)*/}
+                  <p className={user.accountCreated?"text-gray-900 whitespace-no-wrap":'text-gray-900 whitespace-no-wrap animate-pulse'}>
+                    {user.accountCreated? user.accountCreated.toDate().toDateString(): "Loading..."}
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -194,7 +193,7 @@ const Table = ({
                   </button>
                 </td>
               </tr>
-              ))):(<><tr>
+              )})):(<><tr>
                   <td
                     colSpan="5"
                     className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center"

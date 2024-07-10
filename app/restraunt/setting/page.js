@@ -4,6 +4,7 @@ import { auth } from "@/app/firebase/config";
 import { useUserAuth } from "@/services/utils";
 import { useRouter } from "next/navigation";
 import { getRestaurantInformationByUser } from "@/services/GetRequest/getRequest";
+import { getRestaurantDataForOwner } from "@/services/RealTimeDatabase/getData/getData";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { updateRestaurantData, deleteRestaurantUser } from "@/services/PostRequest/postRequest";
 import {

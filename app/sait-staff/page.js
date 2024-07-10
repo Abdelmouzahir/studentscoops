@@ -4,8 +4,9 @@ import RDashboard from "./RDashboard";
 import Dash from "./overviewDash";
 import Settings from "./settingS";
 import { LuLogOut } from "react-icons/lu";
-import UserGreeting from "@/components/UserGreeting";
-import SaitStaffNav from "@/components/SaitStaffNav";
+import UserGreeting from "@/Components/UserGreeting";
+//import navbar
+import SaitStaffNav from "@/Components/SaitStaffNav";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
@@ -13,36 +14,41 @@ import { useUserAuth } from "@/services/utils";
 
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState("home"); // Set default active tab
   const [hideUserGreeting, setHideUserGreeting] = useState(false);
   const [userData, setUserData] = useState(null);
-  const { user } = useUserAuth(); // Assuming useUserAuth handles user authentication
+  const { user } = useUserAuth();
 
   const router = useRouter();
 
-  // Function to fetch SAIT staff user information
+  //getting user data
   async function fetchSaitStaffUserInformation() {
-    try {
-      const data = await getSaitDataByUser(user);
-      setUserData(data);
-    } catch (error) {
-      console.error("Error fetching SAIT staff user information:", error);
-      setUserData(null); // Handle error state if necessary
-    }
+    const data = await getSaitDataByUser(user);
+    setUserData(data);
+    console.log("default: ", data);
   }
 
   useEffect(() => {
-    if (user) {
+    if (!user == false && user) {
       fetchSaitStaffUserInformation();
+      console.log("current user data: ", user);
     }
-  }, [user]); // Fetch data when user state changes
+  }, [user]);
+  useEffect(() => {
+    console.log("user data changed");
+  }, [userData]);
+
+  // function to select the tab
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
+
+  function handeLogoutClick() {
+    // handle logout click
+    return router.push("/");
+  }
 
   useEffect(() => {
-    console.log("User data updated:", userData);
-  }, [userData]); // Log when userData changes
-
-  useEffect(() => {
-    // Handle tab visibility based on activeTab state
     if (activeTab === "setting") {
       setHideUserGreeting(true);
     } else {
@@ -50,29 +56,22 @@ export default function Page() {
     }
   }, [activeTab]);
 
-  const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
-  };
-
-  const handeLogoutClick = () => {
-    // Handle logout action
-    return router.push("/");
-  };
-
   return (
-    <div className="flex min-h-screen mx-auto" 
-     style={{
+    <div
+      className="flex min-h-screen mx-auto"
+      style={{
         backgroundImage: "linear-gradient(115deg, #F7F5EB, #F9F5F6)",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-      }}>
+      }}
+    >
       <SaitStaffNav
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
         onTabClick={handleTabClick}
       />
-      {userData ? (
+      {userData || userData == undefined ? (
         <div
           className={`flex-1 flex flex-col mx-auto transition-all duration-300 ease-in-out ${
             isCollapsed ? "ml-20" : "ml-64"
@@ -82,7 +81,9 @@ export default function Page() {
             <div className="grid grid-cols-3 w-full">
               <div
                 className={
-                  hideUserGreeting ? "hidden" : "inline-flex items-center ml-5 rounded-full"
+                  hideUserGreeting
+                    ? "hidden"
+                    : "inline-flex items-center ml-5 rounded-full"
                 }
               >
                 <UserGreeting setActiveTab={setActiveTab} data={userData} />
@@ -99,12 +100,15 @@ export default function Page() {
             </div>
           </div>
           <div className="flex-1 p-6">
-            {/* Render different components based on activeTab */}
+            {/* select the tab based on the click */}
             {activeTab === "student" && <SDashboard />}
             {activeTab === "restaurant" && <RDashboard />}
             {activeTab === "home" && <Dash />}
             {activeTab === "setting" && (
-              <Settings data={userData} getUserData={fetchSaitStaffUserInformation} />
+              <Settings
+                data={userData}
+                getUserData={fetchSaitStaffUserInformation}
+              />
             )}
           </div>
         </div>
