@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useUserAuth } from "@/services/utils";
 import { useRouter } from "next/navigation";
 import { addRestaurantMenu } from "@/services/PostRequest/postRequest";
+import { addMenu } from "@/services/RealTimeDatabase/postData/postData";
 import {
   Card,
   CardHeader,
@@ -36,7 +37,7 @@ const Page = () => {
       );
       return;
     }
-    await addRestaurantMenu(user, name, price, description, image[0],user).then(() => {
+    await addMenu(user, name, price, description, image[0],user).then(() => {
         router.push("/restraunt/home");
       }
     );

@@ -18,6 +18,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { deleteUser } from "firebase/auth";
+import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 // students
 
@@ -90,7 +91,14 @@ export async function addRestaurantInformation(
 }
 
 // to add restaurant menu in database
-export async function addRestaurantMenu(user, name, price, description, image,userId) {
+export async function addRestaurantMenu(
+  user,
+  name,
+  price,
+  description,
+  image,
+  userId
+) {
   const storageRef = ref(storage, `menu/${userId}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
   uploadTask.on(
@@ -225,15 +233,14 @@ export async function updateStudent(id, prop) {
   }
 }
 // to update status of sait staff employee
-export async function updateSaitEmployeeStatus(id , active){
-  try{
-    const docRef = doc(db,"saitStaff",id);
-    await updateDoc(docRef,{
-      active:!active
+export async function updateSaitEmployeeStatus(id, active) {
+  try {
+    const docRef = doc(db, "saitStaff", id);
+    await updateDoc(docRef, {
+      active: !active,
     });
-  }catch(error){
+  } catch (error) {
     console.error("Error updating document: ", error);
-  
   }
 }
 
@@ -274,7 +281,7 @@ export async function deleteRestaurantUser(currentUser, id, userId) {
       try {
         await deleteUser(currentUser);
       } catch (error) {
-        if (error.code === 'auth/requires-recent-login') {
+        if (error.code === "auth/requires-recent-login") {
           const credential = EmailAuthProvider.credential(
             currentUser.email,
             prompt("Please enter your password to re-authenticate.")
@@ -315,12 +322,13 @@ export async function deleteRestaurantUser(currentUser, id, userId) {
 
       await deleteFolder(folderRef);
       alert("Your account has been deleted successfully!");
-
     } catch (error) {
-      if (error.code === 'auth/requires-recent-login') {
-        alert("To delete your account, please log out first and then proceed with the account deletion.");
+      if (error.code === "auth/requires-recent-login") {
+        alert(
+          "To delete your account, please log out first and then proceed with the account deletion."
+        );
       } else {
-        console.error('Error while deleting user:', error);
+        console.error("Error while deleting user:", error);
       }
     }
   } else {
@@ -328,36 +336,25 @@ export async function deleteRestaurantUser(currentUser, id, userId) {
   }
 }
 // to delete sait staff data from database and athentication
-export async function deleteSaitUser(currentUser, id) {
+export async function deleteSaitUser(currentUser, docId) {
+  const id = docId;
   if (currentUser) {
     try {
       // Step 1: Re-authenticate user if necessary
-      try {
-        await deleteUser(currentUser);
-      } catch (error) {
-        if (error.code === 'auth/requires-recent-login') {
-          const credential = EmailAuthProvider.credential(
-            currentUser.email,
-            prompt("Please enter your password to re-authenticate.")
-          );
-          await reauthenticateWithCredential(currentUser, credential);
-          await deleteUser(currentUser);
-        } else {
-          throw error;
-        }
-      }
-
-      // Step 2: Delete user document from Firestore
-      await deleteDoc(doc(db, "saitStaff", id));
-
-      alert("Your account has been deleted successfully!");
-
+      await deleteUser(currentUser)
+        .then(async () => {
+          // Step 2: Delete user document from Firestore
+          await deleteDoc(doc(db, "saitStaff", id));
+        })
+        .then(() => {
+          alert("Your account has been deleted successfully!");
+        });
     } catch (error) {
-      if (error.code === 'auth/requires-recent-login') {
-        alert("To delete your account, please log out first and then proceed with the account deletion.");
-      } else {
-        console.error('Error while deleting user:', error);
-      }
+      if (error.code === "auth/requires-recent-login") {
+        alert(
+          "Please log out first and then proceed with the account deletion."
+        );
+      } 
     }
   } else {
     console.log("No current user found");

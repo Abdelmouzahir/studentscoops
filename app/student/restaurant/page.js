@@ -62,7 +62,7 @@ export default function Component() {
 
 
 
-  const [menuItems, setMenuItems] = useState([]);
+  const [menuItems1, setMenuItems1] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
   const router = useRouter();
@@ -77,7 +77,7 @@ export default function Component() {
     );
 
     if (selectedRestaurant) {
-      setMenuItems(selectedRestaurant.menu);
+      setMenuItems1(selectedRestaurant.menu);
       setFilteredItems(selectedRestaurant.menu);
       setRestaurantName(selectedRestaurant.name);
     } else {
@@ -94,7 +94,7 @@ export default function Component() {
                   item.description.toLowerCase().includes(searchTerm.toLowerCase())
       ),
     );
-  }, [searchTerm, menuItems]);
+  }, [searchTerm, menuItems1]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);

@@ -4,9 +4,9 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth, db } from "@/app/firebase/config";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { getAuth, sendPasswordResetEmail, setPersistence, browserSessionPersistence } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { AiOutlineUser } from "react-icons/ai";
-import Modal from "@/components/Modal";
+import Modal from "@/Components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import Loading from "@/app/loading";
 
@@ -27,19 +27,24 @@ const SignIn = () => {
     fetchSaitStaffName();
   }, []);
 
+  //problem solved
   const fetchSaitStaffName = async () => {
     try {
       const user = auth.currentUser;
       if (user) {
         const uid = user.uid;
-        const q = query(collection(db, "saitStaff", user.uid), where("uid", "==", uid));
+        console.log('user ',uid)
+        const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
-        console.log("uid:",uid);
+        const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
+        const employeeImg = querySnapshot.docs.map((doc) => doc.data().imageUrl);
+      
 
-        if (!querySnapshot.empty) {
-          const saitStaffData = querySnapshot.docs[0].data();
-          const { name, imageUrl } = saitStaffData;
-          const adminImg = imageUrl || <AiOutlineUser />;
+        if (!employeeData.empty) {
+          const saitStaffData = employeeData[0];
+          const name = saitStaffData || "SAIT Staff"; // Use default name if 'name' is not available
+          const saitStaffimg = employeeImg[0];
+          const adminImg = saitStaffimg || <AiOutlineUser />;
           setSaitStaffimg(adminImg);
           setSaitStaffName(name);
         } else {
@@ -55,12 +60,8 @@ const SignIn = () => {
 
   const handleSignIn = async () => {
     setLoading(true);
-    const auth = getAuth();
     try {
-      //I used this approach to stay with the current user
-      await setPersistence(auth, browserSessionPersistence);
-      await signInWithEmailAndPassword(email, password);
-      router.push("/sait-staff"); // Redirect after successful sign-in
+      await signInWithEmailAndPassword(email, password).then(()=>router.push("/sait-staff")); // Redirect after successful sign-in
       setEmail("");
       setPassword("");
       setLoginError("");
