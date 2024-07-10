@@ -60,13 +60,10 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
         active: true,
       };
 
-      await addDoc(collection(db, "saitStaff"), {
-        ...newAdmin,
-      });
-
+      await addDoc(collection(db, "saitStaff"), newAdmin);
       // Update local state
       
-      setAdmins((prevadmin) => [...prevadmin, newAdmin]);
+      setAdmins([...admin, newAdmin]);
       setIsAdding(false);
 
       Swal.fire({
