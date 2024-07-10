@@ -67,8 +67,8 @@ const Footer = () => {
           <h1 className=' text-[22px] w-fit text-white font-semibold mb-[1.5rem]' >Get In Touch </h1>
 
           <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >+0123456789</p>
-          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >example@eample.com</p>
-          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Student Scoops</p>
+          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Example@example.com</p>
+          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >📍 1301 16 Ave NW,<br></br> Calgary, AB T2M 0L4</p>
         </div>
       </div>
       <h1 className=' mt-[2rem] text-[14px] w-[80%] mx-auto text-white opacity-80'>COPYRIGHT BY STUDENT SCOOPS <span id="year">{year}</span></h1>
