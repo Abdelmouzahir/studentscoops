@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-
+import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
 
 // import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
   
@@ -12,67 +12,14 @@ import { Button } from "@/components/ui/button"
 
 export default function Header_stud({ handleSignOut }) {
   return (
-    <header className="flex items-center justify-between h-16 px-4 md:px-6 bg-primary shadow-sm dark:bg-gray-950">
-      <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-10 flex items-center justify-between h-16 px-4 md:px-6 bg-primary shadow-sm dark:bg-gray-950">
+      <div className=" flex items-center gap-4">
         <Link href="/student" className="flex items-center gap-2 text-2xl font-bold text-white" prefetch={false}>
           <span >STUDENT SCOOPS</span>
         </Link>
       </div>
       <div className="flex items-center gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="rounded-full">
-              <ShoppingCartIcon className="w-5 h-5" />
-              <span className="sr-only">Cart</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" sideOffset={12}>
-            <DropdownMenuLabel>Cart</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img src="https://i.pinimg.com/564x/55/02/f2/5502f20d18006dec855f986e5344951c.jpg" width={40} height={40} alt="Product Image" className="rounded-md" />
-                  <div>
-                    <div className="font-medium">Bruschetta</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">$9.99</div>
-                  </div>
-                </div>
-                <div className="text-sm font-medium">x3</div>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img src="https://i.pinimg.com/564x/40/b0/d6/40b0d6f85533fd94da7c4febbd5ff4d7.jpg" width={40} height={40} alt="Product Image" className="rounded-md" />
-                  <div>
-                    <div className="font-medium">Calamari Fritti</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">$10.99</div>
-                  </div>
-                </div>
-                <div className="text-sm font-medium">x3</div>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <div className="flex items-center justify-between">
-                <div className="font-medium">Total</div>
-                <div className="text-sm font-medium">$56.94</div>
-              </div>
-            </DropdownMenuItem>
-
-
-  {/* <CartDropdown cart={cart} removeFromCart={removeFromCart} getTotal={getTotal} /> */} 
-{/* // Was trying to do this but was not able to sync it with the main cart */}
-
-
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-            <Link
-              href="/Payment" > <Button className="w-full bg-primary">Checkout</Button> </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+       
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full ">

@@ -6,16 +6,17 @@
 "use client";
 
 import { useState, useEffect, useRef, use } from "react";
-import { Card, CardContent, CardFooter } from "@/Components/ui/card";
-import { Label } from "@/Components/ui/label";
-import { Input } from "@/Components/ui/input";
-import { Button } from "@/Components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { formatPhoneNumber } from "@/Constant/formated";
 import { db } from "@/app/firebase/config";
 import { updateDoc, doc } from "firebase/firestore";
 import { CgArrowsExchange } from "react-icons/cg";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/app/firebase/config";
+import Swal from "sweetalert2";
 
 export default function UserProfile({ data, getUserData }) {
   const [name, setName] = useState(data[0].name);
@@ -69,7 +70,13 @@ export default function UserProfile({ data, getUserData }) {
           await updateDoc(docRef, {
             imageUrl: downloadURL,
           }).then(() => {
-            alert("Image uploaded successfully");
+            Swal.fire({
+              icon: "success",
+              title: "Added!",
+              text: `Profile picture 📸 was added Successfully.`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
             getUserData();
           });
         } catch (error) {
@@ -112,7 +119,13 @@ export default function UserProfile({ data, getUserData }) {
         phoneNumber: phoneNumber,
         address: address,
       }).then(() => {
-        alert("Profile updated successfully");
+        Swal.fire({
+          icon: "success",
+          title: "Added!",
+          text: `Profile picture 📸 was Updated Successfully.`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         getUserData();
       });
     } catch (err) {

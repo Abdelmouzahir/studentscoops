@@ -2,16 +2,21 @@
  * v0 by Vercel.
  */
 "use client";
-import { Button } from "@/components/ui/button"
+
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import Passwordreset from "./passwordreset/page"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { getSaitDataByUser } from "@/services/GetRequest/getRequest"
+import { Button } from "@/components/ui/button"
 import { useUserAuth } from "@/services/utils"
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { deleteSaitUser } from "@/services/PostRequest/postRequest";
 import { useRouter } from "next/navigation";
 import UserProfile from "./userProfile/page";
+
 
 
 export default function Settings({data,getUserData}) {

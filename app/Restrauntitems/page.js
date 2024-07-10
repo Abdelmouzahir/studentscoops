@@ -106,16 +106,38 @@ export default function RestaurantItems() {
   }, [recentlyAdded]);
 
   const addToCart = (item) => {
-    setCart([...cart, item]);
+    const existingItem = cart.find((cartItem) => cartItem.id === item.id);
+    if (existingItem) {
+      // Item already exists in cart, increment quantity
+      const updatedCart = cart.map((cartItem) =>
+        cartItem.id === item.id
+          ? { ...cartItem, quantity: cartItem.quantity + 1 }
+          : cartItem
+      );setCart(updatedCart);
+      setCartCounter(cartCounter + 1);
+    } 
+      
+      else {
+      // Item doesn't exist in cart, add it with quantity 1
+      setCart([...cart, { ...item, quantity: 1 }]);
+    }
     setRecentlyAdded(item);
     setCartCounter(cartCounter + 1);
-  };
+  };;
 
-  const removeFromCart = (index) => {
-   
-    const updatedCart = [...cart];
-    updatedCart.splice(index, 1);
-    setCart(updatedCart);
+  const removeFromCart = (itemId, quantity = 1) => {
+    const existingItem = cart.find((item) => item.id === itemId);
+    if (existingItem) {
+      if (existingItem.quantity <= quantity) {
+        setCart(cart.filter((item) => item.id!== itemId));
+      } else {
+        setCart(
+          cart.map((item) =>
+            item.id === itemId? {...item, quantity: item.quantity - quantity } : item
+          )
+        );
+      }
+    }
     setCartCounter(cartCounter - 1);
   };
 
@@ -142,7 +164,7 @@ export default function RestaurantItems() {
                 <MapPinIcon className="w-5 h-5" />
                 <span className="text-gray-500">1.2 mi</span>
               </div>
-              <CartDropdown cart={cart} removeFromCart={removeFromCart} getTotal={getTotal} />
+              <CartDropdown cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} getTotal={getTotal}  />
             </div>
           </div>
           {menu.map((section, sectionIndex) => (
