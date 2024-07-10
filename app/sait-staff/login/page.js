@@ -34,6 +34,7 @@ const SignIn = () => {
         const uid = user.uid;
         const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
+        console.log("uid:",uid);
 
         if (!querySnapshot.empty) {
           const saitStaffData = querySnapshot.docs[0].data();

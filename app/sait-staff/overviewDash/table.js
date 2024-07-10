@@ -160,7 +160,7 @@ const Table = ({
                   <p className="text-gray-900 whitespace-no-wrap">
                     {/* this how the date should be mentionned correctly please look at Date.js for more details*/ }
                     <DateComponent dateObject={user.accountCreated} />
-                    {console.log("date: ",user.accountCreated)}
+                    {/*console.log("date: ",user.accountCreated)*/}
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
