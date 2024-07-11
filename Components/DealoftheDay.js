@@ -4,8 +4,8 @@ import React from "react";
 import { Zoom } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { ArrowLeftIcon,ArrowRightIcon } from '@heroicons/react/24/solid'
-import { Card } from "../components/ui/card";
-import { Button } from '../components/ui/button';
+import { Card } from "./ui/card";
+import { Button } from './ui/button';
 const DealoftheDay = () => {
 	//Array of Images
 	//D99319 = text color

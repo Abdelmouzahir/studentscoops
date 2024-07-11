@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { LuPencil, LuTrash } from "react-icons/lu";
 import { IoMdPersonAdd } from "react-icons/io";
-import Modal from "@/Components/Modal";
+import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
 

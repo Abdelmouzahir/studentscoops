@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Map from '../map/map'; // Adjust the import path based on your file structure
 import Link from 'next/link';
+import { ButtonIcon } from '@radix-ui/react-icons';
 export default function Component() {
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
   const [cartItems, setCartItems] = useState([
@@ -89,8 +90,9 @@ export default function Component() {
               <AvatarFallback>PC</AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-semibold">{restaurant.name}</p>
-              <p className="text-sm text-muted-foreground">{restaurant.address}</p>
+              <p className="font-semibold text-2xl">Payment</p>
+              <div className='flex justify-center items-center'>
+              <p className="text-sm text-muted-foreground">Add Payment Method <span className='ml-[20px]'> <ChevronDownIcon className={`w-6 h-6 text-muted-foreground transition-transform `} > Edit</ChevronDownIcon></span></p></div>
             </div>
           </div>
           <Button className="w-full mt-4">Continue to payment</Button>

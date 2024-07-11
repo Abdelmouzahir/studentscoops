@@ -79,7 +79,7 @@ const CartDropdown = ({ cart, addToCart, removeFromCart, getTotal }) => {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link href='/Payment'><Button className="w-full bg-primary">Checkout</Button></Link>
+          <Link href='/student/checkout'><Button className="w-full bg-primary">Checkout</Button></Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
