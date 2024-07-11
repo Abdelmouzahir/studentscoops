@@ -64,12 +64,12 @@ const data = [
   {
     name: `Nia Adebayo`,
     img: `/assets/images/students/Nia_Adebayo.jpg`,
-    review: `Students Scoops is a must-have! It's incredibly well-designed and provides comprehensive details about campus happenings. Staying organized and up-to-date has become effortless. The app is smooth and very reliable. Highly recommend it for students!`
+    review: `Students Scoops is fantastic! It's easy to use and helps me stay in the loop with all campus activities. The modern design and seamless navigation are impressive. Finding relevant information quickly is a breeze. Highly recommend it to all students!`
   },
   {
     name: `Rigo Louie`,
     img: `/assets/images/students/Rigo_Louie.jpg`,
-    review: `Using the Students Scoops app has been a great experience for me! It's so convenient for keeping up with campus activities and events. The app is fast and dependable, and I love the community reviews. Definitely a go-to resource for every student!`
+    review: `The Students Scoops web app is a game-changer! It's incredibly user-friendly and has made keeping track of campus events and activities so much easier. The design is sleek and the information is always up-to-date. Highly recommend it to all students!`
   },
   {
     name: `Mia Williams`,
