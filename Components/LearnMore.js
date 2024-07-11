@@ -1,6 +1,8 @@
 import React from "react";
 import {motion} from "framer-motion";
 
+
+//reference => youtube tutorial 
 export default function LearnMore({ setShow }) {
   return (
     <div className="flex flex-col lg:flex-row w-full h-full bg-white rounded-xl mx-auto shadow-xl overflow-hidden text-black">

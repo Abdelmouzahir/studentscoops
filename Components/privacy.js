@@ -2,6 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import { TermsOfUse } from "@/app/auth/companyPolicies";
 
+
+// same principe of learn more
+//youtube tutorial
 export default function Privacy({ setShow }) {
   return (
     <div className="flex flex-col w-full h-full bg-white rounded-xl mx-auto shadow-xl overflow-hidden text-black">
