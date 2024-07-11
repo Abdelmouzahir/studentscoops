@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa6'
 import Link from "next/link"
+import Modal from "@/components/Modal";
+import Privacy from '@/components/privacy';
 
 const Footer = () => {
 
   
     const [year, setYear] = useState(new Date().getFullYear());
+    const [showModal, setShowModal] = useState(false);
   
     useEffect(() => {
       setYear(new Date().getFullYear());
@@ -49,9 +52,17 @@ const Footer = () => {
             <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Enactus</p>
             </a>
             </Link>
-          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Privacy</p>
-          <p className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Policy</p>
+          <p onClick={() => setShowModal(true)}  className=' text-[15px] text-white w-fit hover:text-black cursor-pointer text-opacity-80 mb-[0.7rem] ' >Privacy And Policy</p>
         </div>
+                   <Modal
+                      isVisible={showModal}
+                      onClose={() => {
+                        setShowModal(false);
+                      }}
+                    >
+                      <Privacy setShow={setShowModal} />
+                    </Modal>
+
         {/* 3nd part of footer*/}
         <div>
           <h1 className=' text-[22px] w-fit text-white font-semibold mb-[1.5rem]' >Quick Links</h1>
