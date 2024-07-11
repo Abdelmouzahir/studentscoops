@@ -1,68 +1,43 @@
-// // cart-context.js
-// import { createContext, useState , useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
-// const CartContext = createContext();
+// Create a context for the cart
+const CartContext = createContext();
 
-// const CartProvider = ({ children }) => {
-//   const [cart, setCart] = useState([]); // initial cart data
-//   const [cartCounter, setCartCounter] = useState(0);
-//   const [recentlyAdded, setRecentlyAdded] = useState(null);
+// Custom hook to use the CartContext
+export const useCart = () => useContext(CartContext);
 
+export const CartProvider = ({ children }) => {
+  // State to hold the items in the cart
+  const [cartItems, setCartItems] = useState([]);
 
-//   useEffect(() => {
-//     if (recentlyAdded) {
-//       const timeout = setTimeout(() => {
-//         setRecentlyAdded(null);
-//       }, 3000); // Adjust the timeout duration as needed (e.g., 3000 milliseconds)
-//       return () => clearTimeout(timeout);
-//     }
-//   }, [recentlyAdded]);
+  // Function to add an item to the cart
+  const addToCart = (item) => {
+    setCartItems((prevItems) => {
+      // Check if the item already exists in the cart
+      const existingItem = prevItems.find((cartItem) => cartItem.item_id === item.item_id);
+      if (existingItem) {
+        // If the item exists, log a message and return the previous items
+        console.log("Item already exists in cart:", item);
+        return prevItems; // Item already exists, do not add again
+      } else {
+        // If the item does not exist, log a message and add the new item with quantity 1
+        console.log("Adding new item to cart:", item);
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
+  };
 
-//   const addToCart = (item) => {
-//     const existingItem = cart.find((cartItem) => cartItem.id === item.id);
-//     if (existingItem) {
-//       // Item already exists in cart, increment quantity
-//       const updatedCart = cart.map((cartItem) =>
-//         cartItem.id === item.id
-//           ? { ...cartItem, quantity: cartItem.quantity + 1 }
-//           : cartItem
-//       );setCart(updatedCart);
-//       setCartCounter(cartCounter + 1);
-//     } 
-      
-//       else {
-//       // Item doesn't exist in cart, add it with quantity 1
-//       setCart([...cart, { ...item, quantity: 1 }]);
-//     }
-//     setRecentlyAdded(item);
-//     setCartCounter(cartCounter + 1);
-//   };;
+  // Function to remove an item from the cart by item_id
+  const removeFromCart = (item_id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.item_id !== item_id));
+  };
 
-//   const removeFromCart = (itemId, quantity = 1) => {
-//     const existingItem = cart.find((item) => item.id === itemId);
-//     if (existingItem) {
-//       if (existingItem.quantity <= quantity) {
-//         setCart(cart.filter((item) => item.id!== itemId));
-//       } else {
-//         setCart(
-//           cart.map((item) =>
-//             item.id === itemId? {...item, quantity: item.quantity - quantity } : item
-//           )
-//         );
-//       }
-//     }
-//     setCartCounter(cartCounter - 1);
-//   };
+  // Calculate the number of items in the cart
+  const cartCounter = cartItems.length;
 
-//   const getTotal = () => {
-//     return cart.reduce((total, item) => total + item.price * (item.quantity || 1), 0);
-//   };
-
-//   return (
-//     <CartContext.Provider value={{ cart, addToCart, removeFromCart, getTotal }}>
-//       {children} 
-//     </CartContext.Provider>
-//   );
-// };
-
-// export { CartProvider, CartContext };
+  return (
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, cartCounter }}>
+      {children}
+    </CartContext.Provider>
+  );
+};
