@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button"
 import { useRouter, useSearchParams } from 'next/navigation'
 import restaurantsData from '../restaurantsData.json'
 import React , { useState ,useEffect } from "react"
+import { GiExitDoor } from "react-icons/gi";
 import CartDropdown from "@/app/Restrauntitems/checkoutCart/page"
+
 export default function Component() {
   var menuItems = [
     {id:"1",
@@ -100,6 +102,10 @@ export default function Component() {
     setSearchTerm(e.target.value);
   }
 
+  const handleBackToMenu = () => {
+    router.push("/student/restaurant");
+  }
+
 
   const [cart, setCart] = useState([]);
   const [recentlyAdded, setRecentlyAdded] = useState(null);
@@ -162,8 +168,12 @@ export default function Component() {
 
   return (
     <div className="flex flex-col">
-
-    <CartDropdown cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} getTotal={getTotal}  />
+         <div className="flex justify-between items-start w-full mt-4 mb-3">
+           <Button onClick={handleBackToMenu} className="">
+            Back  <GiExitDoor className="ml-3 h-5 w-5" />
+           </Button>
+            <CartDropdown cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} getTotal={getTotal} />
+         </div>
 
       <section>
         <div className="relative">

@@ -6,7 +6,12 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Map from '../map/map'; // Adjust the import path based on your file structure
 import Link from 'next/link';
 import { ButtonIcon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/navigation';
+
+
 export default function Component() {
+  const router = useRouter();
+
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
   const [cartItems, setCartItems] = useState([
     { name: 'Butter Chicken', price: 10.99, quantity: 1 },
@@ -19,6 +24,10 @@ export default function Component() {
   const handleEstimatedTimeChange = (time) => {
     setEstimatedTime(time);
   };
+
+  const handleBackToMenu = () => {
+    router.push("/student/restaurant");
+  }
 
   const restaurant = {
     name: 'Punjabi Chaap Corner',
@@ -96,6 +105,7 @@ export default function Component() {
             </div>
           </div>
           <Button className="w-full mt-4">Continue to payment</Button>
+          <Button onClick={handleBackToMenu} className="w-full mt-4">Back to Menu</Button>
         </Card>
         <Card className="p-6">
           <div
