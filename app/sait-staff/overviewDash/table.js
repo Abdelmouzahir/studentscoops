@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactDOMServer from 'react-dom/server';
 import { LuPencil, LuTrash } from "react-icons/lu";
+import { BsEnvelopeAtFill } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
 import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
@@ -47,7 +48,7 @@ const Table = ({
     await sendMail({
       to: 'jalil.mouzahir@gmail.com',
       name: 'Jalil',
-      subject: 'Test email',
+      subject: 'Registration email 📩',
       body: emailBody,
       
     });
@@ -76,8 +77,8 @@ const Table = ({
                 : "inline-flex items-center ml-2 justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
             }
           >
-            <IoMdPersonAdd className="mr-2 h-4 w-4" />
-            send
+            <BsEnvelopeAtFill className="mr-2 h-4 w-4" />
+            Send Registration Email 
           </button>
           <button
           onClick={() => {
