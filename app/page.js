@@ -8,9 +8,15 @@ import LearnMore from "@/components/LearnMore";
 import Reviews from "@/components/reviews";
 import ScrollTop from "@/components/ui/scrollTop";
 import SlideShow from "@/components/SlideShow"; // Import the new Carousel component
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
+    const router = useRouter();
+
+    function handleClickRegister() {
+        router.push("auth/register");
+    }
 
   return (
     <>
@@ -39,12 +45,12 @@ export default function Home() {
                       delicious meals at affordable prices and build a sense of community.
                     </p>
                   </div>
-                  <div className="flex flex-col gap-4 min-[400px]:flex-row">
+                  <div className="flex flex-col gap-6 min-[400px]:flex-row">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:bg-[#6c5ce7] dark:text-gray-50 dark:hover:bg-[#6c5ce7]/90 dark:focus-visible:ring-[#6c5ce7]"
-                      href="/auth/register"
+                      className="inline-flex mr-4 h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6c5ce7] disabled:pointer-events-none disabled:opacity-50 dark:bg-[#6c5ce7] dark:text-gray-50 dark:hover:bg-[#6c5ce7]/90 dark:focus-visible:ring-[#6c5ce7]"
+                      onClick={handleClickRegister}
                     >
                       Register
                     </motion.button>

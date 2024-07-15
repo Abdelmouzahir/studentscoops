@@ -7,11 +7,16 @@ import { getStudentInformation } from '@/services/GetRequest/getRequest';
 import { useUserAuth } from '@/services/utils';
 
 import Link from "next/link";
-import { Card } from "../../components/ui/card";
+// import { Card } from "../../components/ui/card";
 import { Button } from '../../components/ui/button';
 import restaurantsData from './restaurantsData.json';  // Import the JSON data correctly
+// import Slideshow from '@/components/SlideShow';
+import DealoftheDay from '@/components/DealoftheDay';
 
 const Home = () => {
+
+
+
   const { user } = useUserAuth();
   const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -110,46 +115,16 @@ const Home = () => {
           </div>
         </section>
           
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-white dark:bg-[#1e1e1e]">
+        <section className="w-50 py-8 md:py-24 lg:py-32 bg-white dark:bg-[#1e1e1e]">
           <div className="container px-4 md:px-6 ">
             <div className="flex flex-col items-center justify-center space-y-4 text-center shadow-lg ">
-              <div className="space-y-2 border-yellow-700 ">
-                <div className="inline-block rounded-lg bg-[#f8f9fa] px-3 py-1 text-sm dark:bg-[#2b2b2b]">
-                  Deal of the Day
-                </div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Today's Top Discounted Meal</h2>
-                <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  Check out the amazing deal of the day and don't miss your chance to enjoy a delicious meal at a
-                  discounted price.
-                </p>
-              </div>
-              <Card className="w-full max-w-3xl p-2 shadow-md">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <img
-                    src="https://i.pinimg.com/564x/9b/4f/87/9b4f877a9336c4a4cfc2291ffd8d557e.jpg"
-                    width="550"
-                    height="310"
-                    alt="Deal of the Day"
-                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
-                  />
-                  <div className="flex flex-col justify-center space-y-4 p-6">
-                    <div>
-                      <h3 className="text-2xl font-bold">Sushi Extravaganza</h3>
-                      <p className="text-gray-500 dark:text-gray-400">50% off all sushi rolls</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <p className="text-2xl font-bold">$15.99</p>
-                      <Button variant="outline" size="sm">
-                        Order Now
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+              
+              <DealoftheDay />
             </div>
           </div>
         </section>
       </main>
+     
     </>
   );
 };

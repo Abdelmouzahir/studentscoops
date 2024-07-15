@@ -6,8 +6,11 @@ import { Zoom } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { ArrowLeftIcon,ArrowRightIcon } from '@heroicons/react/24/solid'
 
+
+//youtube tutorial 
 const Slideshow = () => {
 	//Array of Images
+	//D99319 = text color
 	const images = [
 		"/assets/Image1.jpg",
 		"/assets/Image2.jpg",
@@ -47,5 +50,6 @@ const Slideshow = () => {
 		</div>
 	);
 };
+
 
 export default Slideshow;

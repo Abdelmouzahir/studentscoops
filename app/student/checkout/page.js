@@ -7,15 +7,25 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Map from '../map/map'; // Adjust the import path based on your file structure
 import Link from 'next/link';
 import { useCart } from '@/app/Restrauntitems/cart-context/page';
+import { ButtonIcon } from '@radix-ui/react-icons';
+import { useRouter } from 'next/navigation';
 
 // Main functional component
 export default function Component() {
   // State to manage the visibility of the cart summary
+
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
   // State to manage the estimated time for pickup
   const [estimatedTime, setEstimatedTime] = useState('');
   // Destructure cart-related methods from the cart context
   const { cartItems, addToCart, removeFromCart } = useCart();
+  const handleEstimatedTimeChange = (time) => {
+    setEstimatedTime(time);
+  };
+
+  const handleBackToMenu = () => {
+    router.push("/student/restaurant");
+  }
 
   // Sample data for the restaurant and addresses
   const restaurant = {
@@ -88,12 +98,14 @@ export default function Component() {
               <AvatarFallback>PC</AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-semibold">{restaurant.name}</p>
-              <p className="text-sm text-muted-foreground">{restaurant.address}</p>
+              <p className="font-semibold text-2xl">Payment</p>
+              <div className='flex justify-center items-center'>
+              <p className="text-sm text-muted-foreground">Add Payment Method <span className='ml-[20px]'> <ChevronDownIcon className={`w-6 h-6 text-muted-foreground transition-transform `} > Edit</ChevronDownIcon></span></p></div>
             </div>
           </div>
           {/* Button to proceed to the payment page */}
           <Button className="w-full mt-4">Continue to payment</Button>
+          <Button onClick={handleBackToMenu} className="w-full mt-4">Back to Menu</Button>
         </Card>
 
         {/* Card for displaying the cart summary */}

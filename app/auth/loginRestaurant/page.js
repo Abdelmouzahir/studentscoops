@@ -9,6 +9,7 @@ import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import { getRestaurantInformationByUser } from "@/services/GetRequest/getRequest";
 import Loading from "@/app/loading"; 
+import { getRestaurantDataForOwner } from "@/services/RealTimeDatabase/getData/getData";
 
 const sign_in = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ const sign_in = () => {
         return user.uid
       }})
       .then(async (uid) => {
-        const login = await getRestaurantInformationByUser(uid);
+        const login = await getRestaurantDataForOwner(uid);
         if (login.length <= 0) {
           setLoginError("You are not authorized to access this website.");
           return;

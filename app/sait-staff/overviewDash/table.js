@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import ReactDOMServer from 'react-dom/server';
 import { LuPencil, LuTrash } from "react-icons/lu";
+import { BsEnvelopeAtFill } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
 import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
-import DateComponent from "@/components/Date";
+import {  sendMail } from "@/lib/mail";
+import EmailTemplate from "@/components/emailTemplate";
+import SendRegModal from "./SendRegModal";
 
 const Table = ({
   admin,
@@ -19,6 +23,10 @@ const Table = ({
   const [isActive, setIsActive] = useState(null);
   const [email, setEmail] = useState("");
   const [docId, setDocId] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
+  const [emailName, setEmailName] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  
   const filteredEmployees = 
     admin && admin.length > 0
       ? admin.filter(user => {
@@ -32,8 +40,23 @@ const Table = ({
           return true;
         })
       : [];
-
-
+    
+   //send email
+   const send = async () => {
+    //convert the template to be readable for the user in the email
+    const emailBody = ReactDOMServer.renderToString(
+      <EmailTemplate name={emailName} url="http://localhost:3000/sait-staff/register" />
+  );
+    
+    await sendMail({
+      to: 'jalil.mouzahir@gmail.com',
+      name: 'Jalil',
+      subject: 'Registration email 📩',
+      body: emailBody,
+      
+    });
+   }
+   
   return (
     <div className="container mx-auto px-4 sm:px-8">
       <div className="py-8">
@@ -48,6 +71,19 @@ const Table = ({
           >
             <IoMdPersonAdd className="mr-2 h-4 w-4" />
             Add Admin
+          </button>
+          <button
+            onClick={() => {
+              setShowModal(true);
+            }}
+            className={
+              search
+                ? "hidden"
+                : "inline-flex items-center ml-2 justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+            }
+          >
+            <BsEnvelopeAtFill className="mr-2 h-4 w-4" />
+            Send Registration Email 
           </button>
           <button
           onClick={() => {
@@ -128,7 +164,8 @@ const Table = ({
               </tr>
             </thead>
             <tbody>
-              {filteredEmployees.length > 0 ? (filteredEmployees.map((user) => (
+              {(filteredEmployees.length > 0 || filteredEmployees !==null) ? (filteredEmployees.map((user) => {
+                return(
                 <tr key={user.id}>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                   <div className="flex items-center">
@@ -157,10 +194,8 @@ const Table = ({
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                  <p className="text-gray-900 whitespace-no-wrap">
-                    {/* this how the date should be mentionned correctly please look at Date.js for more details*/ }
-                    <DateComponent dateObject={user.accountCreated} />
-                    {/*console.log("date: ",user.accountCreated)*/}
+                  <p className={user.accountCreated?"text-gray-900 whitespace-no-wrap":'text-gray-900 whitespace-no-wrap animate-pulse'}>
+                    {user.accountCreated? user.accountCreated.toDate().toDateString(): "Loading..."}
                   </p>
                 </td>
                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -194,7 +229,7 @@ const Table = ({
                   </button>
                 </td>
               </tr>
-              ))):(<><tr>
+              )})):(<><tr>
                   <td
                     colSpan="5"
                     className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center"
@@ -238,6 +273,9 @@ const Table = ({
             </button>
           </div>
         </div>
+      </Modal>
+      <Modal isVisible={showModal} onClose={() => setIsVisisble(false)}>
+            <SendRegModal />
       </Modal>
     </div>
   );

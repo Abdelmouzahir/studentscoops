@@ -5,7 +5,10 @@ const nextConfig = {
   images: {
       domains: ['images.pexels.com', 'cdn.example.com', 'i.pinimg.com', 'splash.com', 'pintrest.com','firebasestorage.googleapis.com' , "upload.wikimedia.org"],
   },
+  
 };
+
+
 
 export default nextConfig;
 
