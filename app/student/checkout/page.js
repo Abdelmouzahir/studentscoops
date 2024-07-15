@@ -19,9 +19,6 @@ export default function Component() {
   const [estimatedTime, setEstimatedTime] = useState('');
   // Destructure cart-related methods from the cart context
   const { cartItems, addToCart, removeFromCart } = useCart();
-  const handleEstimatedTimeChange = (time) => {
-    setEstimatedTime(time);
-  };
 
   const handleBackToMenu = () => {
     router.push("/student/restaurant");

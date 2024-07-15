@@ -56,7 +56,6 @@ export default function RestaurantMenu() {
            <Button onClick={handleBackToMenu} className="">
             Back  <GiExitDoor className="ml-3 h-5 w-5" />
            </Button>
-            <CartDropdown cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} getTotal={getTotal} />
          </div>
       <section>
         <div className="relative">
