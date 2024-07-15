@@ -23,6 +23,7 @@ const Table = ({
   const [email, setEmail] = useState("");
   const [docId, setDocId] = useState("");
   const [createdAt, setCreatedAt] = useState("");
+  const [emailName, setEmailName] = useState("");
   
   const filteredEmployees = 
     admin && admin.length > 0
@@ -42,7 +43,7 @@ const Table = ({
    const send = async () => {
     //convert the template to be readable for the user in the email
     const emailBody = ReactDOMServer.renderToString(
-      <EmailTemplate name="jalil" url="http://localhost:3000" />
+      <EmailTemplate name={emailName} url="http://localhost:3000/sait-staff/register" />
   );
     
     await sendMail({
