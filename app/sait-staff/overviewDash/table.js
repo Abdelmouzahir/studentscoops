@@ -8,6 +8,7 @@ import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import {  sendMail } from "@/lib/mail";
 import EmailTemplate from "@/components/emailTemplate";
+import SendRegModal from "./SendRegModal";
 
 const Table = ({
   admin,
@@ -24,6 +25,7 @@ const Table = ({
   const [docId, setDocId] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [emailName, setEmailName] = useState("");
+  const [showModal, setShowModal] = useState(false);
   
   const filteredEmployees = 
     admin && admin.length > 0
@@ -71,7 +73,9 @@ const Table = ({
             Add Admin
           </button>
           <button
-            onClick={send}
+            onClick={() => {
+              setShowModal(true);
+            }}
             className={
               search
                 ? "hidden"
@@ -269,6 +273,9 @@ const Table = ({
             </button>
           </div>
         </div>
+      </Modal>
+      <Modal isVisible={showModal} onClose={() => setIsVisisble(false)}>
+            <SendRegModal />
       </Modal>
     </div>
   );
