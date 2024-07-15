@@ -1,4 +1,3 @@
-// pages/api/createUser.js
 import { auth } from '../../lib/firebaseAdmin'; // Adjust path if needed
 
 export default async function handler(req, res) {
