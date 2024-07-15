@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
+import { getAuth, signOut } from "firebase/auth";
 
 export default function Page() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -45,6 +46,7 @@ export default function Page() {
 
   function handeLogoutClick() {
     // handle logout click
+    signOut(getAuth());
     return router.push("/");
   }
 

@@ -22,8 +22,10 @@ export default function Dash() {
   const [isEditing, setIsEditing] = useState(false);
 
   async function fetchData() {
-    const data = await getSaitData();
-    setAdmin(data);
+    getSaitData((data) => {
+      console.log("data: ", data);
+      setAdmin(data);
+    });
   }
   async function fetchDataByUser() {
     const data = await getSaitDataByUser(user);
@@ -77,6 +79,7 @@ export default function Dash() {
                 admin={admin}
                 setAdmins={setAdmin}
                 setIsAdding={setIsAdding}
+                fetchDataByUser={fetchData}
               />
             </>
           ) : (

@@ -8,7 +8,7 @@ import { db, auth } from "@/app/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { existingRestaurantData } from "@/services/PostRequest/postRequest";
 
-const Add = ({ admin, setAdmins, setIsAdding }) => {
+const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -39,30 +39,41 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
 
     try {
       console.log("generic password: ", genericPassword);
+      console.log("email: ", email);
+      console.log("name: ", name);
+      
       // Create user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        genericPassword
-      );
-      const user = userCredential.user;
+      const displayName = name;
+      const password = genericPassword;
+      const path = '/api/createUser';
+      
+      const res = await fetch(`${path}`, {
+        method: "POST",
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email, password, displayName}),
+      })
+      const data = await res.json();
+      console.log("data: ", data);  
       const date = new Date();
 
-      // Add restaurant to Firestore
+      //Add restaurant to Firestore
       const newAdmin = {
         name,
         email,
         role,
         phoneNumber,
         address,
-        uid: user.uid,
+        uid: data.uid,
         accountCreated: date, // link with user ID
         active: true,
+        imageUrl: null
       };
 
       await addDoc(collection(db, "saitStaff"), newAdmin);
-      // Update local state
-      setAdmins([...admin, newAdmin]);
+      //Update local state
+      fetchDataByUser();
       setIsAdding(false);
 
       Swal.fire({
@@ -73,7 +84,7 @@ const Add = ({ admin, setAdmins, setIsAdding }) => {
         timer: 1500,
       });
     } catch (error) {
-      console.error(error);
+      console.error("error whoilling creating new user",error);
       if (
         error.message === "Firebase: Error (auth/email-already-in-use)."
       ) {

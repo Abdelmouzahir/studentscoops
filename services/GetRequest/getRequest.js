@@ -5,6 +5,7 @@ import {
   query,
   where,
   onSnapshot,
+  doc,
   orderBy,
 } from "firebase/firestore";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
@@ -82,18 +83,20 @@ export async function getMenuInformation(userId) {
   }
 }
 // get sait data for sait staff home page
-export async function getSaitData() {
-  try{
-    const q = query(collection(db, "saitStaff"));
-    const querySnapshot = await getDocs(q);
-    const saitItems = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
+export function getSaitData(onChange) {
+  try {
+    const saitCollection = collection(db, "saitStaff");
+    onSnapshot(saitCollection, (saitItems) => {
+      const saitStaff = saitItems.docs.map((doc) => {
+        console.log("getting sait staff ", doc.data());
+        return { id: doc.id,...doc.data() };
+      });
+      console.log("information: ", saitStaff);
+      onChange(saitStaff);
     });
-    return saitItems;
-  }
-  catch(error){
+  } catch (error) {
     console.error("Error getting sait information: ", error);
-    return [];
+    onChange([]);
   }
 }
 
