@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import ReactDOMServer from 'react-dom/server';
 import { LuPencil, LuTrash } from "react-icons/lu";
 import { IoMdPersonAdd } from "react-icons/io";
 import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import {  sendMail } from "@/lib/mail";
+import EmailTemplate from "@/components/emailTemplate";
 
 const Table = ({
   admin,
@@ -37,12 +39,16 @@ const Table = ({
     
    //send email
    const send = async () => {
+    //convert the template to be readable for the user in the email
+    const emailBody = ReactDOMServer.renderToString(
+      <EmailTemplate name="jalil" url="http://localhost:3000" />
+  );
     
     await sendMail({
       to: 'jalil.mouzahir@gmail.com',
       name: 'Jalil',
       subject: 'Test email',
-      body: 'salam ca va'
+      body: emailBody,
       
     });
    }
