@@ -9,7 +9,6 @@ import Passwordreset from "./passwordreset/page"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import Header_stud from "../header_stud/page"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 export default function Settings() {
 
@@ -21,9 +20,6 @@ export default function Settings() {
   }
   return (
     <div className="flex flex-col min-h-screen">
-
-      <Header_stud />
-
       <main className="flex-1 bg-gray-100 dark:bg-gray-800 p-6 md:p-10">
         <div className="max-w-4xl mx-auto grid gap-8">
           <Passwordreset />

@@ -1,64 +1,54 @@
-'use client'
+'use client' // Indicates that this component uses client-side features like hooks or context
+
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import Map from '../map/map'; // Adjust the import path based on your file structure
 import Link from 'next/link';
+import { useCart } from '@/app/Restrauntitems/cart-context/page';
 import { ButtonIcon } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
 
-
+// Main functional component
 export default function Component() {
-  const router = useRouter();
+  // State to manage the visibility of the cart summary
 
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([
-    { name: 'Butter Chicken', price: 10.99, quantity: 1 },
-    { name: 'Garlic Naan', price: 2.99, quantity: 2 },
-    { name: 'Mango Lassi', price: 3.49, quantity: 1 },
-  ]);
-
+  // State to manage the estimated time for pickup
   const [estimatedTime, setEstimatedTime] = useState('');
-
-  const handleEstimatedTimeChange = (time) => {
-    setEstimatedTime(time);
-  };
+  // Destructure cart-related methods from the cart context
+  const { cartItems, addToCart, removeFromCart } = useCart();
 
   const handleBackToMenu = () => {
     router.push("/student/restaurant");
   }
 
+  // Sample data for the restaurant and addresses
   const restaurant = {
     name: 'Punjabi Chaap Corner',
     address: '95 Cityscape Street Northeast, Calgary, Canada',
-    position: [51.1207771, -113.9703096], // Lat, Lng coordinates
+    position: [51.1207771, -113.9703096], // Latitude and Longitude coordinates
   };
 
   const restaurantAddress = '95 cityscape street NE, Calgary';
-  const studentAddress = 'SAIT , Calagary';
+  const studentAddress = 'SAIT, Calgary';
 
-  const handleQuantityChange = (index, change) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item, i) =>
-        i === index ? { ...item, quantity: Math.max(1, item.quantity + change) } : item
-      )
-    );
-  };
-
-  const handleRemoveItem = (index) => {
-    setCartItems((prevItems) => prevItems.filter((_, i) => i !== index));
+  // Function to handle changes in the estimated time for pickup
+  const handleEstimatedTimeChange = (time) => {
+    setEstimatedTime(time);
   };
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 w-full h-screen bg-gray-100">
-        
+      {/* Section for pickup details */}
       <div className="flex-1 space-y-6">
         <Card className="p-6">
           <CardHeader>
             <CardTitle>Pickup Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Map component to show the restaurant and student addresses */}
             <div className="w-full h-64 bg-gray-200 rounded-md">
               <Map
                 restaurantAddress={restaurantAddress}
@@ -66,20 +56,24 @@ export default function Component() {
                 onEstimatedTimeChange={handleEstimatedTimeChange}
               />
             </div>
+            {/* Display estimated time to reach */}
             <div className="flex flex-col space-y-2">
               <div className="flex justify-between items-center">
                 <p className="text-sm text-muted-foreground">Estimated Time to Reach:</p>
                 <p className="font-semibold">{estimatedTime ? `${estimatedTime}` : 'Calculating...'}</p>
               </div>
+              {/* Button to navigate to Google Maps */}
               <Link
-              href={`https://www.google.com/maps/search/?api=1&query=${(restaurantAddress)}`}
-              target="_blank"
-              className='w-full'>
-                    <Button className='w-full'>
-                        Navigate to Google Maps
-                    </Button>
+                href={`https://www.google.com/maps/search/?api=1&query=${(restaurantAddress)}`}
+                target="_blank"
+                className='w-full'
+              >
+                <Button className='w-full'>
+                  Navigate to Google Maps
+                </Button>
               </Link>
             </div>
+            {/* Display restaurant details */}
             <div className="flex items-center space-x-2">
               <HomeIcon className="w-6 h-6 text-muted-foreground" />
               <div>
@@ -91,7 +85,9 @@ export default function Component() {
         </Card>
       </div>
 
+      {/* Section for cart summary and payment details */}
       <div className="w-full md:w-96 space-y-6">
+        {/* Card displaying restaurant avatar and address */}
         <Card className="p-6">
           <div className="flex items-center space-x-2">
             <Avatar>
@@ -104,9 +100,12 @@ export default function Component() {
               <p className="text-sm text-muted-foreground">Add Payment Method <span className='ml-[20px]'> <ChevronDownIcon className={`w-6 h-6 text-muted-foreground transition-transform `} > Edit</ChevronDownIcon></span></p></div>
             </div>
           </div>
+          {/* Button to proceed to the payment page */}
           <Button className="w-full mt-4">Continue to payment</Button>
           <Button onClick={handleBackToMenu} className="w-full mt-4">Back to Menu</Button>
         </Card>
+
+        {/* Card for displaying the cart summary */}
         <Card className="p-6">
           <div
             className="flex justify-between items-center cursor-pointer"
@@ -117,48 +116,46 @@ export default function Component() {
               className={`w-6 h-6 text-muted-foreground transition-transform ${isCartSummaryOpen ? 'rotate-180' : ''}`}
             />
           </div>
+          {/* Conditional rendering of cart items based on `isCartSummaryOpen` */}
           {isCartSummaryOpen && (
             <div className="mt-4 space-y-4">
-              {cartItems.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 bg-muted p-4 rounded-md">
+              {cartItems.map((item) => (
+                <div key={item.item_id} className="flex items-center gap-4 bg-muted p-4 rounded-md">
                   <img src="/placeholder.svg" alt={item.name} width={64} height={64} className="rounded-md" />
                   <div className="flex-1">
                     <p className="font-semibold">{item.name}</p>
                     <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(index, -1)}>
-                        <MinusIcon className="w-4 h-4" />
-                      </Button>
-                      <p className="text-sm text-muted-foreground">{item.quantity}</p>
-                      <Button variant="ghost" size="icon" onClick={() => handleQuantityChange(index, 1)}>
-                        <PlusIcon className="w-4 h-4" />
-                      </Button>
+                      <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
                     </div>
                     <p className="text-sm text-muted-foreground">${(item.price * item.quantity).toFixed(2)}</p>
                   </div>
-                  <Button variant="ghost" size="icon" onClick={() => handleRemoveItem(index)}>
-                    <XIcon className="w-4 h-4" />
+                  {/* Button to remove item from cart */}
+                  <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.item_id)}>
+                    <TrashIcon className="w-4 h-4" />
                   </Button>
                 </div>
               ))}
             </div>
           )}
         </Card>
-        <Card className="p-6  rounded-lg shadow-lg">
+
+        {/* Card displaying the order total */}
+        <Card className="p-6 rounded-lg shadow-lg">
           <div className="space-y-4">
             <p className="font-semibold text-lg">Order Total</p>
             <div className='border-black-solid border-b-4'>
-            <div className="flex justify-between">
-              <p className="text-sm">Subtotal</p>
-              <p className="font-medium">
-                ${cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
-              </p>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-sm">Taxes</p>
-              <p className="font-medium">
-                ${(cartItems.reduce((total, item) => total + item.price * item.quantity, 0) * 0.05).toFixed(2)}
-              </p>
-            </div>
+              <div className="flex justify-between">
+                <p className="text-sm">Subtotal</p>
+                <p className="font-medium">
+                  ${cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}
+                </p>
+              </div>
+              <div className="flex justify-between">
+                <p className="text-sm">Taxes</p>
+                <p className="font-medium">
+                  ${(cartItems.reduce((total, item) => total + item.price * item.quantity, 0) * 0.05).toFixed(2)}
+                </p>
+              </div>
             </div>
             <div className="flex justify-between font-bold text-lg">
               <p>Total</p>
@@ -171,7 +168,8 @@ export default function Component() {
   );
 }
 
-function MinusIcon(props) {
+// Trash Icon component
+function TrashIcon(props) {
   return (
     <svg
       {...props}
@@ -185,51 +183,14 @@ function MinusIcon(props) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M5 12h14" />
+      <path d="M3 6h18" />
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
     </svg>
   );
 }
 
-function PlusIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
-  );
-}
-
-function XIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  );
-}
-
+// Home Icon component
 function HomeIcon(props) {
   return (
     <svg
@@ -250,6 +211,7 @@ function HomeIcon(props) {
   );
 }
 
+// Chevron Down Icon component
 function ChevronDownIcon(props) {
   return (
     <svg

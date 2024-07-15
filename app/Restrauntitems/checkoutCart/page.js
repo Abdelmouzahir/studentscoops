@@ -1,92 +1,98 @@
-"use client"
-import React, { useContext } from "react";
-import Link from 'next/link';
+import React, { useState } from "react";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
+import { useCart } from "@/app/Restrauntitems/cart-context/page";
 
-// import { CartContext } from "../cart-context/page";
+export default function CheckoutCart() {
+  const router = useRouter();
+  const { cartItems, removeFromCart, cartCounter } = useCart(); // Use the context
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-const CartDropdown = ({ cart, addToCart, removeFromCart, getTotal }) => {
- // initial cart data
-//  const context = useContext(CartContext);
-//  console.log(context); // Check the value of context
+  const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-//  if (!context) {
-//    throw new Error('CartContext is not defined');
-//  }
-
-//  const { cart, addToCart, removeFromCart, getTotal } = context;
-
-  // const { cart, addToCart, removeFromCart, getTotal } = useContext(CartContext);
-
-  const handleAddItemClick = (item, quantity, event) => {
-    event.stopPropagation(); // Prevent the default action (closing dropdown)
-    addToCart({ ...item, quantity: (item.quantity || 0) + quantity }); // Call addToCart handler with updated item object
+  const handleClick = () => {
+    router.push("/student/checkout");
+    setIsSheetOpen(false);
   };
-
-  const handleRemoveItemClick = (item, quantity, event) => {
-    event.stopPropagation(); // Prevent the default action (closing dropdown)
-    removeFromCart(item.id, quantity); // Call removeFromCart handler with item.id and quantity
-  };
-
-  const handleDropdownClick = (event) => {
-    event.stopPropagation(); // Stop event propagation to prevent closing dropdown on other clicks inside dropdown
-  };
-
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative rounded-full">
-          <ShoppingCartIcon className="w-5 h-5" />
-          <span className="sr-only">Cart</span>
-          <span className="absolute top-0 right-0 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
-            {cart.length}
-          </span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" sideOffset={12} onClick={handleDropdownClick}>
-        <DropdownMenuLabel>Cart</DropdownMenuLabel>
-        <DropdownMenuSeparator width="100px" />
-        {cart.map((item, index) => (
-          <DropdownMenuItem key={index}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img src={item.image} width={40} height={40} alt="Product Image" className="rounded-md" />
-                <div>
-                  <div className="font-medium">{item.name}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">${item.price}</div>
-                </div>
-              </div>
-              <div className="text-sm font-medium">x{item.quantity}</div>
-
-              <div className="flex items-center gap-1 ml-3">
-
-                <AddIcon onClick={(event) => handleAddItemClick(item, 1, event)} />
-
-                <DeleteIcon className="mt-3" size={30} onClick={(event) => handleRemoveItemClick(item, 1, event)} />
-
+    <div className="flex items-center justify-center h-screen ">
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <SheetTrigger asChild>
+          <Button size="icon" className="rounded-full bg-primary text-black" onClick={() => setIsSheetOpen(true)}>
+            <ShoppingCartIcon className="w-6 h-6" />
+            {cartCounter > 0 && <span className="ml-2 text-sm font-semibold">{cartCounter}</span>}
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-full max-w-md bg-white rounded-lg shadow-xl">
+          <SheetHeader className="px-6 py-4 border-b">
+            <div className="flex items-center space-x-4">
+              <Avatar className="w-12 h-12">
+                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarFallback>R</AvatarFallback>
+              </Avatar>
+              <div>
+                <SheetTitle className="text-lg font-semibold">Cheet Bar & Parontha Place</SheetTitle>
+                <SheetDescription className="text-sm text-muted-foreground">
+                  6004 Country Hills Boulevard Northeast
+                </SheetDescription>
               </div>
             </div>
-          </DropdownMenuItem>
-        ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <div className="flex items-center justify-between">
-            <div className="font-medium">Total</div>
-            <div className="text-sm font-medium">${getTotal().toFixed(2)}</div>
-          </div>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link href='/student/checkout'><Button className="w-full bg-primary">Checkout</Button></Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </SheetHeader>
+          {cartItems.length > 0 ? (
+            <div className="px-6 py-4 space-y-4">
+              {cartItems.map((item) => (
+                <div key={item.item_id} className="flex items-center justify-between rounded-lg bg-muted p-4">
+                  <div className="flex items-center space-x-4">
+                    <img src="/placeholder.svg" alt={item.name} className="w-12 h-12 rounded-full" />
+                    <div>
+                      <div className="font-semibold">{item.name}</div>
+                      <div className="text-muted-foreground">${item.price.toFixed(2)}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span>{item.quantity}</span>
+                    <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.item_id)}>
+                      <TrashIcon className="w-4 h-4 text-muted-foreground hover:text-destructive" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="px-6 py-4 space-y-4">
+              <p className="text-center text-muted-foreground">Your cart is empty</p>
+            </div>
+          )}
+          <SheetFooter className="px-6 py-4 border-t flex flex-col gap-4 ">
+            {cartItems.length > 0 ? (
+              <>
+                <div className="flex flex-col gap-2 w-full">
+                  <div className="flex justify-between items-center w-full">
+                    <div className="text-lg font-semibold">Subtotal</div>
+                    <div className="text-lg font-semibold">${subtotal.toFixed(2)}</div>
+                  </div>
+                  <Button
+                    onClick={handleClick}
+                    className="w-full bg-black text-white hover:bg-black/90 rounded-md py-2"
+                  >
+                    Go to Checkout
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <Button variant="outline" className="w-full rounded-md py-2">
+                Add items to cart
+              </Button>
+            )}
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
-};
-
-export default CartDropdown;
+}
 
 function ShoppingCartIcon(props) {
   return (
@@ -106,32 +112,10 @@ function ShoppingCartIcon(props) {
       <circle cx="19" cy="21" r="1" />
       <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
     </svg>
-  )
-}
-
-
-function AddIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 5v14M5 12h14" />
-    </svg>
   );
 }
 
-
-
-function DeleteIcon(props) {
+function TrashIcon(props) {
   return (
     <svg
       {...props}
@@ -145,7 +129,9 @@ function DeleteIcon(props) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M12 5h10" />
+      <path d="M3 6h18" />
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
     </svg>
   );
 }

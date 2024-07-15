@@ -76,7 +76,7 @@ export default function Header_stud({ handleSignOut }) {
       </div>
       <div className="flex items-center gap-4">
       {/* <CartDropdown cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} getTotal={getTotal}  /> */}
-      <ShoppingCartIcon className="w-5 h-5" />
+      <CartDropdown className='text-primary' />
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
