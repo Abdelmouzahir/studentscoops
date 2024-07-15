@@ -4,7 +4,7 @@ import { IoMdPersonAdd } from "react-icons/io";
 import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
-import { sendMail } from "@/lib/mail";
+import {  sendMail } from "@/lib/mail";
 
 const Table = ({
   admin,
@@ -42,7 +42,7 @@ const Table = ({
       to: 'jalil.mouzahir@gmail.com',
       name: 'Jalil',
       subject: 'Test email',
-      body: 'This is a test email'
+      body: 'salam ca va'
       
     });
    }
