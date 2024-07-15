@@ -7,6 +7,7 @@ import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { sendMail } from "@/lib/mail";
 import { AiFillDelete } from "react-icons/ai";
+import SendRegModal from "./SendRegModal";
 
 const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
   const [search, setSearch] = useState(false);
@@ -18,6 +19,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
   const [docId, setDocId] = useState("");
   const [createdAt, setCreatedAt] = useState("");
   const [users, setUsers] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (admin) {
@@ -75,7 +77,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
             }
           >
             <BsEnvelopeAtFill className="mr-2 h-4 w-4" />
-            Send Registration Email 
+            Send Registration Email
           </button>
           <button
             onClick={() => {
@@ -228,9 +230,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
                           Edit
                           <LuPencil className="ml-2 h-4 w-4" />
                         </button>
-                        <button
-                          className="inline-flex items-center mr-2 justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
-                        >
+                        <button className="inline-flex items-center mr-2 justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300">
                           Delete
                           <AiFillDelete className="ml-2 h-4 w-4" />
                         </button>
@@ -294,7 +294,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
         </div>
       </Modal>
       <Modal isVisible={showModal} onClose={() => setIsVisisble(false)}>
-            <SendRegModal />
+        <SendRegModal />
       </Modal>
     </div>
   );
