@@ -33,12 +33,13 @@ const SignIn = () => {
       const user = auth.currentUser;
       if (user) {
         const uid = user.uid;
-        console.log('user ',uid)
+        console.log("user ", uid);
         const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
         const querySnapshot = await getDocs(q);
         const employeeData = querySnapshot.docs.map((doc) => doc.data().name);
-        const employeeImg = querySnapshot.docs.map((doc) => doc.data().imageUrl);
-      
+        const employeeImg = querySnapshot.docs.map(
+          (doc) => doc.data().imageUrl
+        );
 
         if (!employeeData.empty) {
           const saitStaffData = employeeData[0];
@@ -61,7 +62,9 @@ const SignIn = () => {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(email, password).then(()=>router.push("/sait-staff")); // Redirect after successful sign-in
+      await signInWithEmailAndPassword(email, password).then(() =>
+        router.push("/sait-staff")
+      ); // Redirect after successful sign-in
       setEmail("");
       setPassword("");
       setLoginError("");
