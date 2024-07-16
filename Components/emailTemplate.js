@@ -41,7 +41,7 @@ const EmailTemplate = ({ name, url }) => {
                 </div>
             </div>
 
-            <div className="max-w-2xl mx-auto bg-white overflow-hidden">
+            <div className="max-w-2xl mt-2 mx-auto bg-white overflow-hidden">
                 <img
                     src="https://53ef744a55.imgdist.com/pub/bfra/t0m9adtm/csk/lz4/vvs/emailsent.jpg"
                     alt="Email Sent"
