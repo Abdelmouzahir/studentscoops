@@ -52,7 +52,7 @@ const Register = () => {
       setConfirmPassError("");
     }
   }, [confirmPassword, password]);
-  // same here for restaurant
+
   useEffect(() => {
     async function gettingStudentEmailWhereStatusistrue() {
       const data = await getStudentEmailWithStatus();
@@ -80,7 +80,11 @@ const Register = () => {
     setPassError("");
     setError("");
 
-    
+    // Check the email domain
+    if (!email.endsWith("@edu.sait.ca")) {
+      setEmailError("Please use a SAIT student email");
+      return;
+    }
 
     if (!databaseEmailwithStatus.length==0){
       if (!databaseEmailwithStatus.includes(email)){
@@ -116,7 +120,7 @@ const Register = () => {
       console.log("User registered successfully");
       sessionStorage.setItem("user", true);
       
-      router.push("/auth/loginRestaurant");
+      router.push("/auth/register/enter_information");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
