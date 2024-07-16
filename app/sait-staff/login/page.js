@@ -74,7 +74,6 @@ const SignIn = () => {
         alert("This account has been disabled. Please contact support.");
         return;
       }
-  
       setEmail("");
       setPassword("");
       setLoginError("");
