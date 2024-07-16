@@ -6,13 +6,14 @@ const UserGreeting = ({ setActiveTab, data }) => {
   const [userImage, setUserImage] = useState("");
 
   useEffect(() => {
-    if (data) {
-      if (data.length > 0) {
-        setUserName(data[0].name);
-        setEmail(data[0].email);
-        setUserImage(data[0].imageUrl);
-      }
+    if(data){
+       if(data.length > 0) {
+      setUserName(data[0].name);
+      setEmail(data[0].email);
+      setUserImage(data[0].imageUrl);
     }
+    }
+   
   }, [data]);
 
   return (

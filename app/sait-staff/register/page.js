@@ -53,7 +53,7 @@ const Register = () => {
       setConfirmPassError("");
     }
   }, [confirmPassword, password]);
-
+  //please connect adding sait admin to sait-staff db 
   useEffect(() => {
     async function gettingStudentEmailWhereStatusistrue() {
       const data = await getStudentEmailWithStatus();
