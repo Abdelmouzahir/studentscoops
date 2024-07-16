@@ -31,7 +31,7 @@ const EmailTemplate = ({ name, url }) => {
                     <div className="py-6"></div>
                     <div className="text-left mb-4">
                         <a
-                            onClick={url}
+                            href={url}
                             className="bg-yellow-600 mb-3 text-white font-medium py-3 px-10 rounded-lg inline-block text-lg"
                         >
                             Start Registration
