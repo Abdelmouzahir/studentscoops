@@ -376,3 +376,29 @@ export async function deleteSaitUser(currentUser, docId) {
     console.log("No current user found");
   }
 }
+
+//function to delete sait staff user from admin
+export async function deleteSaitUserFromAdmin(docId) {
+  try {
+    await deleteDoc(doc(db, "saitStaff", docId)).then(async () => {
+      //delete user folder from storage
+      const storage = getStorage();
+      const folderRef = ref(storage, `Saitstaff/${uid}`);
+
+      const deleteFolder = async (folderRef) => {
+        const res = await listAll(folderRef);
+        for (const itemRef of res.items) {
+          await deleteObject(itemRef);
+        }
+
+        for (const subfolderRef of res.prefixes) {
+          await deleteFolder(subfolderRef);
+        }
+      };
+
+      await deleteFolder(folderRef);
+    });
+  } catch (error) {
+    console.error("Error while deleting user:", error);
+  }
+}

@@ -45,6 +45,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
       // Create user in Firebase Authentication
       const displayName = name;
       const password = genericPassword;
+      const userEmail = email;
       const path = '/api/createUser';
       
       const res = await fetch(`${path}`, {
@@ -52,7 +53,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
         headers:{
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email, password, displayName}),
+        body: JSON.stringify({email: userEmail, password, displayName}),
       })
       const data = await res.json();
       console.log("data: ", data);  
@@ -70,6 +71,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
         active: true,
         imageUrl: null
       };
+      console.log("newAdmin: ", newAdmin);
 
       await addDoc(collection(db, "saitStaff"), newAdmin);
       //Update local state
