@@ -8,7 +8,13 @@ import { MdOutlineDoneOutline } from "react-icons/md";
 import { AiFillDelete } from "react-icons/ai";
 import SendRegModal from "./SendRegModal";
 
-const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
+const Table = ({
+  admin,
+  handleEdit,
+  setIsAdding,
+  handleChangeStatus,
+  handleDelete,
+}) => {
   const [search, setSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("name");
@@ -20,6 +26,8 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
   const [users, setUsers] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [uid, setUid] = useState("");
+  //modal for handle delete
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   useEffect(() => {
     if (admin) {
@@ -200,15 +208,13 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
                             setIsActive(user.active),
                               setEmail(user.email),
                               setDocId(user.id);
-                              setUid(user.uid);
+                            setUid(user.uid);
                           }}
                           className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded ${
                             user.active ? "bg-green-400" : "bg-red-400"
                           }`}
                         >
-                          <span
-                            aria-hidden
-                          ></span>
+                          <span aria-hidden></span>
                           <span className="p-3 cursor-pointer">
                             {user.active ? "Active" : "InActive"}
                           </span>
@@ -222,7 +228,14 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
                           Edit
                           <LuPencil className="ml-2 h-4 w-4" />
                         </button>
-                        <button className="inline-flex items-center mr-2 justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300">
+                        <button
+                          className="inline-flex items-center mr-2 justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+                          onClick={() => {
+                            setIsDeleteModal(true);
+                            setDocId(user.id);
+                            setUid(user.uid);
+                          }}
+                        >
                           Delete
                           <AiFillDelete className="ml-2 h-4 w-4" />
                         </button>
@@ -246,6 +259,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
           </table>
         </div>
       </div>
+      {/* modal for activate and deactivate */}
       <Modal isVisible={isVisible} onClose={() => setIsVisisble(false)}>
         <div>
           <h1 className="text-2xl font-extrabold mx-2">
@@ -265,7 +279,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
           <div className="flex justify-end mt-4">
             <button
               onClick={() => {
-                handleChangeStatus(docId, isActive,uid);
+                handleChangeStatus(docId, isActive, uid);
                 setIsVisisble(false);
               }}
               className={`cursor-pointer bg-danger p-2 rounded-xl font-bold text-md mr-3 ${
@@ -287,6 +301,38 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
       </Modal>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
         <SendRegModal onClose={() => setShowModal(false)} />
+      </Modal>
+      {/* Modal for delete */}
+      <Modal isVisible={isDeleteModal} onClose={() => setIsDeleteModal(false)}>
+        <div>
+          <h1 className="text-2xl font-extrabold mx-2">Delete User</h1>
+          <span className="text-xl">
+            <p className="p-2">
+              Are you sure you want to delete email{" "}
+              <p className="inline font-bold">{email}?</p> This will delete all
+              the data related to this user.
+            </p>
+          </span>
+          <div className="flex justify-end mt-4">
+            <button
+              className={
+                "cursor-pointer bg-danger p-2 rounded-xl font-bold text-md mr-3 bg-red-400 hover:bg-red-200"
+              }
+              onClick={() => {
+                handleDelete(uid, docId);
+                setIsDeleteModal(false);
+              }}
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => setIsVisisble(false)}
+              className="cursor-pointer bg-orange-400 hover:bg-orange-200 p-2 rounded-xl font-bold text-md ml-3"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

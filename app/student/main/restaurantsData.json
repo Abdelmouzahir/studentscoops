@@ -1,0 +1,350 @@
+[
+{
+  "restaurants": [
+    {
+      "id": 1,
+      "name": "The Gourmet Kitchen",
+      "address": "123 Food Street, Calgary, AB T2P 0L4",
+      "img_url": "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "Margherita Pizza",
+          "description": "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
+          "price": 12.99,
+          "img_url": "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Spaghetti Carbonara",
+          "description": "Traditional pasta dish with eggs, cheese, pancetta, and pepper.",
+          "price": 15.99,
+          "img_url": "https://img.freepik.com/free-photo/pasta-carbonara-plate_2829-20344.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "Tiramisu",
+          "description": "Layered dessert with coffee-soaked ladyfingers, mascarpone cheese, and cocoa.",
+          "price": 8.99,
+          "img_url": "https://img.freepik.com/free-photo/classic-tiramisu-dessert-serving-glass_23-2148786615.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Caprese Salad",
+          "description": "Fresh mozzarella, tomatoes, basil, olive oil, and balsamic vinegar.",
+          "price": 11.99,
+          "img_url": "https://img.freepik.com/free-photo/caprese-salad-with-tomato-basil-mozzarella-cheese-seasonings-plate_2829-14445.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Lasagna",
+          "description": "Layered pasta dish with meat sauce, béchamel, and cheese.",
+          "price": 14.99,
+          "img_url": "https://img.freepik.com/free-photo/lasagna-bolognese-italian-cuisine-dark_2829-17205.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Sushi Palace",
+      "address": "456 Ocean Avenue, Calgary, AB T2P 3S8",
+      "img_url": "https://img.freepik.com/free-photo/sushi-set-black-slate-stand-black-background-top-view_2829-18174.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "California Roll",
+          "description": "Roll with crab meat, avocado, cucumber, and sushi rice.",
+          "price": 9.99,
+          "img_url": "https://img.freepik.com/free-photo/california-roll-sushi-with-salmon-avocado-cucumber-sesame-plate-with-soy-sauce-wasabi-pickled-ginger-chopsticks_1150-24860.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Salmon Sashimi",
+          "description": "Freshly sliced raw salmon served with soy sauce and wasabi.",
+          "price": 12.99,
+          "img_url": "https://img.freepik.com/free-photo/salmon-sashimi-fresh-slice-salmon_1150-17227.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "Miso Soup",
+          "description": "Traditional Japanese soup with tofu, seaweed, and green onions.",
+          "price": 4.99,
+          "img_url": "https://img.freepik.com/free-photo/miso-soup-bowl_1150-40527.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Spicy Tuna Roll",
+          "description": "Roll with spicy tuna, cucumber, and avocado.",
+          "price": 11.99,
+          "img_url": "https://img.freepik.com/free-photo/spicy-tuna-roll-sushi-with-sesame-seeds-close-up_127657-10636.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Ebi Tempura",
+          "description": "Crispy battered and deep-fried shrimp served with dipping sauce.",
+          "price": 10.99,
+          "img_url": "https://img.freepik.com/free-photo/tempura-shrimps-with-vegetables-isolated-white_123827-21685.jpg"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Burger Heaven",
+      "address": "789 Grill Lane, Calgary, AB T2P 2V7",
+      "img_url": "https://img.freepik.com/free-photo/front-view-delicious-burgers-with-french-fries-dark-background_141793-5146.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "Classic Cheeseburger",
+          "description": "Juicy beef patty with cheddar cheese, lettuce, tomato, and pickles.",
+          "price": 10.99,
+          "img_url": "https://img.freepik.com/free-photo/front-view-delicious-burgers-with-french-fries-dark-background_141793-5146.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Bacon Avocado Burger",
+          "description": "Burger with crispy bacon, fresh avocado, and chipotle mayo.",
+          "price": 12.99,
+          "img_url": "https://img.freepik.com/free-photo/burger-cheese-bacon-dark-board_140725-89514.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "Veggie Burger",
+          "description": "Grilled veggie patty with lettuce, tomato, and vegan cheese.",
+          "price": 9.99,
+          "img_url": "https://img.freepik.com/free-photo/vegetarian-burger-dish_23-2149175390.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Sweet Potato Fries",
+          "description": "Crispy sweet potato fries served with a side of spicy ketchup.",
+          "price": 4.99,
+          "img_url": "https://img.freepik.com/free-photo/sweet-potato-french-fries_1339-106227.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Chocolate Milkshake",
+          "description": "Thick and creamy chocolate milkshake topped with whipped cream.",
+          "price": 5.99,
+          "img_url": "https://img.freepik.com/free-photo/chocolate-milkshake-glass_1339-106219.jpg"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Taco Fiesta",
+      "address": "321 Spice Road, Calgary, AB T2P 3M9",
+      "img_url": "https://img.freepik.com/free-photo/close-up-tacos-basket_23-2148801697.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "Carne Asada Tacos",
+          "description": "Grilled steak tacos with onions, cilantro, and lime.",
+          "price": 9.99,
+          "img_url": "https://img.freepik.com/free-photo/close-up-tacos-basket_23-2148801697.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Chicken Fajita Tacos",
+          "description": "Tacos with marinated chicken, bell peppers, and onions.",
+          "price": 8.99,
+          "img_url": "https://img.freepik.com/free-photo/chicken-fajitas_1339-106222.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "Fish Tacos",
+          "description": "Battered fish tacos with cabbage slaw and chipotle mayo.",
+          "price": 10.99,
+          "img_url": "https://img.freepik.com/free-photo/fish-tacos-top-view_141793-1865.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Guacamole",
+          "description": "Freshly made guacamole served with tortilla chips.",
+          "price": 6.99,
+          "img_url": "https://img.freepik.com/free-photo/guacamole-dip-tortilla-chips_1339-107425.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Churros",
+          "description": "Fried dough pastries rolled in cinnamon sugar.",
+          "price": 4.99,
+          "img_url": "https://img.freepik.com/free-photo/churros-with-chocolate-sauce_1339-130743.jpg"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Pasta Paradise",
+      "address": "654 Noodle Boulevard, Calgary, AB T2P 1H9",
+      "img_url": "https://img.freepik.com/free-photo/pasta-plate_144627-18317.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "Fettuccine Alfredo",
+          "description": "Creamy Alfredo sauce with fettuccine pasta and Parmesan cheese.",
+          "price": 13.99,
+          "img_url": "https://img.freepik.com/free-photo/fettuccine-alfredo-chicken-plate_1205-5254.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Penne Arrabbiata",
+          "description": "Penne pasta in a spicy tomato sauce with garlic and chili.",
+          "price": 11.99,
+          "img_url": "https://img.freepik.com/free-photo/penne-arrabbiata-served-white-plate_1150-21139.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "Seafood Linguine",
+          "description": "Linguine pasta with mixed seafood in a white wine sauce.",
+          "price": 18.99,
+          "img_url": "https://img.freepik.com/free-photo/linguine-seafood_1203-10847.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Garlic Bread",
+          "description": "Toasted bread with garlic butter and herbs.",
+          "price": 4.99,
+          "img_url": "https://img.freepik.com/free-photo/garlic-bread-dark-board_140725-11711.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Tiramisu",
+          "description": "Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone cheese.",
+          "price": 8.99,
+          "img_url": "https://img.freepik.com/free-photo/tiramisu_1232-2466.jpg"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Curry House",
+      "address": "987 Spice Lane, Calgary, AB T2P 3K2",
+      "img_url": "https://img.freepik.com/free-photo/indian-food-curry-butter-chicken-rice_1150-18004.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "Butter Chicken",
+          "description": "Tender chicken in a creamy tomato sauce with Indian spices.",
+          "price": 14.99,
+          "img_url": "https://img.freepik.com/free-photo/indian-food-butter-chicken_1150-42511.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Lamb Rogan Josh",
+          "description": "Slow-cooked lamb in a rich, aromatic curry sauce.",
+          "price": 16.99,
+          "img_url": "https://img.freepik.com/free-photo/lamb-rogan-josh-with-rice_1232-2464.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "Vegetable Biryani",
+          "description": "Spiced rice with mixed vegetables and saffron.",
+          "price": 12.99,
+          "img_url": "https://img.freepik.com/free-photo/indian-biryani-vegetables_1232-2773.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Naan Bread",
+          "description": "Traditional Indian flatbread served with butter.",
+          "price": 3.99,
+          "img_url": "https://img.freepik.com/free-photo/naan-indian-food-dark_123827-20329.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Mango Lassi",
+          "description": "Refreshing yogurt drink with mango pulp.",
+          "price": 4.99,
+          "img_url": "https://img.freepik.com/free-photo/mango-lassi-traditional-indian-drink-made-yogurt-mango_123827-19587.jpg"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Mediterranean Delight",
+      "address": "123 Olive Way, Calgary, AB T2P 0M8",
+      "img_url": "https://img.freepik.com/free-photo/greek-food-mezze-plate-hummus-olives-pita-cucumber-tomatoes-feta_123827-20349.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "Falafel Wrap",
+          "description": "Crispy falafel with lettuce, tomato, and tahini sauce in a pita wrap.",
+          "price": 9.99,
+          "img_url": "https://img.freepik.com/free-photo/falafel-wrap-hummus-lettuce-tomato-tahini_123827-20336.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Chicken Shawarma",
+          "description": "Marinated chicken slices with garlic sauce and pickles in a wrap.",
+          "price": 11.99,
+          "img_url": "https://img.freepik.com/free-photo/shawarma-wrap-fresh-vegetables_123827-20348.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "Hummus Platter",
+          "description": "Creamy hummus served with pita bread and vegetables.",
+          "price": 8.99,
+          "img_url": "https://img.freepik.com/free-photo/hummus-platter-pita-bread-vegetables_123827-20344.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Greek Salad",
+          "description": "Salad with tomatoes, cucumbers, olives, feta cheese, and oregano.",
+          "price": 10.99,
+          "img_url": "https://img.freepik.com/free-photo/greek-salad-wooden-table_123827-20345.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Baklava",
+          "description": "Sweet pastry made of layers of filo dough filled with chopped nuts and honey.",
+          "price": 5.99,
+          "img_url": "https://img.freepik.com/free-photo/baklava-served-white-plate_123827-20330.jpg"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "BBQ Barn",
+      "address": "321 Grill Lane, Calgary, AB T2P 3C4",
+      "img_url": "https://img.freepik.com/free-photo/barbecue-ribs_123827-20346.jpg",
+      "menu": [
+        {
+          "item_id": 1,
+          "name": "BBQ Ribs",
+          "description": "Slow-cooked ribs with a smoky BBQ sauce.",
+          "price": 18.99,
+          "img_url": "https://img.freepik.com/free-photo/barbecue-ribs_123827-20346.jpg"
+        },
+        {
+          "item_id": 2,
+          "name": "Pulled Pork Sandwich",
+          "description": "Tender pulled pork with coleslaw in a toasted bun.",
+          "price": 12.99,
+          "img_url": "https://img.freepik.com/free-photo/pulled-pork-sandwich_123827-20347.jpg"
+        },
+        {
+          "item_id": 3,
+          "name": "BBQ Chicken Wings",
+          "description": "Crispy chicken wings coated in BBQ sauce.",
+          "price": 9.99,
+          "img_url": "https://img.freepik.com/free-photo/bbq-chicken-wings_123827-20348.jpg"
+        },
+        {
+          "item_id": 4,
+          "name": "Cornbread",
+          "description": "Sweet and savory cornbread served with honey butter.",
+          "price": 4.99,
+          "img_url": "https://img.freepik.com/free-photo/cornbread_123827-20350.jpg"
+        },
+        {
+          "item_id": 5,
+          "name": "Apple Pie",
+          "description": "Classic apple pie with a flaky crust and cinnamon filling.",
+          "price": 6.99,
+          "img_url": "https://img.freepik.com/free-photo/apple-pie_123827-20351.jpg"
+        }
+      ]
+    }
+  ]
+}
+]

@@ -37,8 +37,8 @@ export default function Page() {
   //getting user data
   async function fetchSaitStaffUserInformation() {
     const data = await getSaitDataByUser(user);
-    if(data.length > 0){
-      if(data[0].active == false){
+    if(data.length > 0 ){
+      if(data[0].active == false || data[0].status == false){
         router.push("/");
       }
     };

@@ -6,7 +6,7 @@ const UserGreeting = ({ setActiveTab, data }) => {
   const [userImage, setUserImage] = useState('');
 
   useEffect(() => {
-    if(data){
+    if(data.length > 0) {
       setUserName(data[0].name);
       setEmail(data[0].email);
       setUserImage(data[0].imageUrl);
@@ -15,7 +15,7 @@ const UserGreeting = ({ setActiveTab, data }) => {
 
   return (
     <div
-      className="inline-flex items-center ml-5 rounded-full cursor-pointer"
+      className="inline-flex items-center ml-5 rounded-full cursor-pointer z-0 "
       onClick={() => {
         setActiveTab("setting");
       }}
