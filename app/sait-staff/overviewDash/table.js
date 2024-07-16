@@ -20,6 +20,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
   const [createdAt, setCreatedAt] = useState("");
   const [users, setUsers] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [uid, setUid] = useState("");
 
   useEffect(() => {
     if (admin) {
@@ -208,6 +209,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
                             setIsActive(user.active),
                               setEmail(user.email),
                               setDocId(user.id);
+                              setUid(user.uid);
                           }}
                           className={`relative inline-block px-3 py-1 font-semibold leading-tight rounded ${
                             user.active ? "bg-green-400" : "bg-red-400"
@@ -215,14 +217,13 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
                         >
                           <span
                             aria-hidden
-                            // className={` inset-0 ${user.active && 'bg-green-400'} opacity-50 rounded-full`}
                           ></span>
                           <span className="p-3 cursor-pointer">
                             {user.active ? "Active" : "InActive"}
                           </span>
                         </span>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm grid grid-cols-2">
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm grid grid-cols-2 gap-3 justify-stretch w-full">
                         <button
                           onClick={() => handleEdit(user)}
                           className="inline-flex items-center mr-2 justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
@@ -273,7 +274,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
           <div className="flex justify-end mt-4">
             <button
               onClick={() => {
-                handleChangeStatus(docId, isActive);
+                handleChangeStatus(docId, isActive,uid);
                 setIsVisisble(false);
               }}
               className={`cursor-pointer bg-danger p-2 rounded-xl font-bold text-md mr-3 ${
