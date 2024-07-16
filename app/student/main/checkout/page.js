@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 export default function Component() {
   // State to manage the visibility of the cart summary
   const { address, setAddress } = useAddress();
+  const router = useRouter();
 
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
   // State to manage the estimated time for pickup
@@ -22,7 +23,7 @@ export default function Component() {
   const { cartItems, removeFromCart, cartCounter, restaurantInfo } = useCart();
 
   const handleBackToMenu = () => {
-    router.push("/student/main/restaurant");
+    router.push("/student/main");
   }
 
   // Sample data for the restaurant and addresses
