@@ -116,7 +116,7 @@ const Register = () => {
       console.log("User registered successfully");
       sessionStorage.setItem("user", true);
       
-      router.push("/auth/register/enter_information");
+      router.push("/auth/loginRestaurant");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
