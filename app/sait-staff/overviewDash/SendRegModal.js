@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { sendMail } from "@/lib/mail";
 import EmailTemplate from "@/components/emailTemplate";
 import ReactDOMServer from "react-dom/server";
+import Swal from "sweetalert2";
+
 
 export default function SendRegModal({onClose}) {
     const [emailName, setEmailName] = useState("");
@@ -15,11 +17,11 @@ export default function SendRegModal({onClose}) {
     //send email
     const send = async (event) => {
         event.preventDefault(); // Prevent default form submission
+
         //convert the template to be readable for the user in the email
         const emailBody = ReactDOMServer.renderToString(
             <EmailTemplate name={emailName} url="http://localhost:3000/sait-staff/register" />
         );
-
         try {
             await sendMail({
                 to: emailReciever,
@@ -27,7 +29,13 @@ export default function SendRegModal({onClose}) {
                 subject: 'Registration email 📩',
                 body: emailBody,
             });
-            alert("Email sent successfully!");
+            return Swal.fire({
+              icon: "success",
+              title: "Email Sent!",
+              text: `Regisration email has been sent to ${emailName}`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
         } catch (error) {
             console.error("Error sending email:", error);
             alert("Failed to send email. Please try again.");
@@ -36,23 +44,25 @@ export default function SendRegModal({onClose}) {
 
     return (
         <div>
-            <p className="text-3xl mb-4 text-black">Send Registration Email 📧</p>
+            <p className="text-3xl mb-4 text-black">Send Registration Email 📧 </p>
             <div>
                 <form onSubmit={send} className="mb-3">
+                   <label  className="block mb-2 text-md font-semibold text-gray">Name : </label>
                     <div className="mb-4">
                         <input
                             type="text"
-                            placeholder="Name"
+                            placeholder="ex: Joe Doe"
                             value={emailName}
                             onChange={handleInputChange(setEmailName)}
                             required
                             className="border border-gray-400 py-1 px-2 w-full rounded-md"
                         />
                     </div>
+                    <label  className="block mb-2 text-md  font-semibold text-gray">Email : </label>
                     <div className="mb-1">
                         <input
                             type="email"
-                            placeholder="Email"
+                            placeholder="example@sait.ca"
                             value={emailReciever}
                             onChange={handleInputChange(setEmailReciever)}
                             required

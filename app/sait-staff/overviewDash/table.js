@@ -295,7 +295,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
         </div>
       </Modal>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-        <SendRegModal onClose={setShowModal} />
+        <SendRegModal onClose={() => setShowModal(false)} />
       </Modal>
     </div>
   );
