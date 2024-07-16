@@ -90,13 +90,13 @@ export default function Header_stud({ handleSignOut }) {
             <DropdownMenuSeparator />
             
             <DropdownMenuItem>
-              <Link href="/main-component/layout/myprofile" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/student/myprofile" className="flex items-center gap-2" prefetch={false}>
                 <ProfileIcon className="w-4 h-4" />
                 My Profile
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href="/Payment/PaymentOptions" className="flex items-center gap-2" prefetch={false}>
+              <Link href="/student/Payment/PaymentOptions" className="flex items-center gap-2" prefetch={false}>
                 <CreditCardIcon className="w-4 h-4" />
                 Payment
               </Link>

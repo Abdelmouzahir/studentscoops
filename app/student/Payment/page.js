@@ -7,9 +7,6 @@
 import React, {useState} from 'react'
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-
-import Header_stud from "../student/header_stud/page"
 
 export default function Payment() {
   const [paymentDone, setPaymentDone] = useState(false)
@@ -17,16 +14,10 @@ export default function Payment() {
     setPaymentDone(!paymentDone)
   }
   return (<>
-    <Header_stud />
+    
     <div className="flex flex-col min-h-screen">
       <main className="flex-1 py-12 md:py-20">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 ">
-
-
-
-
-
-
           <div className="mt-2 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
             <h2 className="text-4xl font-bold">Order Summary</h2>
             <div className="mt-6 divide-y divide-gray-200 dark:divide-gray-800">
