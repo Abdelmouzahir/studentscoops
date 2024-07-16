@@ -9,7 +9,10 @@ import UserGreeting from "@/components/UserGreeting";
 import SaitStaffNav from "@/components/SaitStaffNav";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSaitDataByUser } from "@/services/GetRequest/getRequest";
+import {
+  getSaitData,
+  getSaitDataByUser,
+} from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 import { getAuth, signOut } from "firebase/auth";
 
@@ -19,20 +22,37 @@ export default function Page() {
   const [hideUserGreeting, setHideUserGreeting] = useState(false);
   const [userData, setUserData] = useState(null);
   const { user } = useUserAuth();
+  const [admin, setAdmin] = useState(null);
 
   const router = useRouter();
+
+  async function fetchData() {
+    getSaitData(async (data) => {
+      console.log("data: ", data);
+      setAdmin(data);
+      fetchSaitStaffUserInformation();
+    });
+  }
 
   //getting user data
   async function fetchSaitStaffUserInformation() {
     const data = await getSaitDataByUser(user);
+    if(data.length > 0){
+      if(data[0].active == false){
+        router.push("/");
+      }
+    };
     setUserData(data);
     console.log("default: ", data);
   }
 
   useEffect(() => {
-    if (!user == false && user) {
+    if (user) {
+      fetchData();
       fetchSaitStaffUserInformation();
-      console.log("current user data: ", user);
+    }
+    if (user == false) {
+      router.push("/");
     }
   }, [user]);
   useEffect(() => {
@@ -105,7 +125,7 @@ export default function Page() {
             {/* select the tab based on the click */}
             {activeTab === "student" && <SDashboard />}
             {activeTab === "restaurant" && <RDashboard />}
-            {activeTab === "home" && <Dash />}
+            {activeTab === "home" && <Dash adminData={admin} fetchData={fetchData} fetchDataByUser={fetchSaitStaffUserInformation} data={userData}/>}
             {activeTab === "setting" && (
               <Settings
                 data={userData}

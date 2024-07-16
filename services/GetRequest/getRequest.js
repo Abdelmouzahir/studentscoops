@@ -99,7 +99,7 @@ export function getSaitData(onChange) {
     onChange([]);
   }
 }
-
+//get sait data for user profile
 export async function getSaitDataByUser(uid){
   try{
     const q = query(collection(db, "saitStaff"),where("uid","==",uid));
