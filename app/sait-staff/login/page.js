@@ -60,15 +60,39 @@ const SignIn = () => {
   };
 
   const handleSignIn = async () => {
-    setLoading(true);
+    let result;
     try {
-      await signInWithEmailAndPassword(email, password).then(() =>
-        router.push("/sait-staff")
-      ); // Redirect after successful sign-in
+      setLoading(true);
+      const userCredential = await signInWithEmailAndPassword(email, password);
+      result = userCredential;
+      console.log("userCredential: ", userCredential);
+      const user = userCredential.user;
+  
+      const idTokenResult = await user.getIdTokenResult();
+      if (idTokenResult.claims.disabled) {
+        setLoading(false);
+        alert("This account has been disabled. Please contact support.");
+        return;
+      }
+  
       setEmail("");
       setPassword("");
       setLoginError("");
+      router.push("/sait-staff"); // Redirect after successful sign-in and verification
     } catch (error) {
+      console.log("result: ", result);
+      if(!result){
+        const data = await getDocs(query(collection(db, "saitStaff"),where("email", "==", email)));
+        if(data){
+          const list = data.docs.map((doc) => doc.data());
+          if(list[0].active == false){
+            setLoading(false);
+            alert("This account has been disabled. Please contact support.");
+            setLoginError("This account has been disabled. Please contact support.");
+            return;
+          }
+        }
+      }
       setLoading(false);
       setLoginError("Invalid email or password");
       console.error("Error signing in:", error);
