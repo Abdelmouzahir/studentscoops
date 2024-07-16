@@ -10,10 +10,12 @@ import {
 } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 import { updateSaitEmployeeStatus } from "@/services/PostRequest/postRequest";
-import { getAuth } from "firebase/auth";
+import { getAuth} from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export default function Dash() {
   const auth = getAuth();
+  const router = useRouter();
   const [userData, setUserData] = useState(null);
   const [editEmployeData, setEditEmployeData] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -22,7 +24,7 @@ export default function Dash() {
   const [isEditing, setIsEditing] = useState(false);
 
   async function fetchData() {
-    getSaitData((data) => {
+    getSaitData(async (data) => {
       console.log("data: ", data);
       setAdmin(data);
     });
@@ -31,6 +33,12 @@ export default function Dash() {
     const data = await getSaitDataByUser(user);
     setUserData(data);
   }
+
+  useEffect(() => {
+    if (user == false) {
+      router.push("/");
+    }
+  }, [admin]);
 
   useEffect(() => {
     if (user) {
@@ -55,12 +63,43 @@ export default function Dash() {
     setAdmin(admin.filter((user) => user.id !== id));
   };
 
-  const handleChangeStatus = async (id, status) => {
+  const handleChangeStatus = async (id, status, uid) => {
+    if (user === uid) {
+      alert("You can't change your own status");
+      return;
+    }
+
     if (userData[0].role === "Admin" || userData[0].role === "Editor") {
-      await updateSaitEmployeeStatus(id, status).then(() => {
-        alert("Status for given user has been changed");
-        fetchData();
-      });
+      try {
+        const res = await fetch("/api/isDisableUser", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ condition: status, uid: uid }),
+        });
+
+        const data = await res.json();
+        console.log("data: ", data);
+
+        if (data.message === "User status has been updated") {
+          await updateSaitEmployeeStatus(id, status);
+          alert("Status for the given user has been changed");
+          fetchData();
+        } else if (
+          data.error ===
+          "There is no user record corresponding to the provided identifier."
+        ) {
+          alert(
+            "Error: No user record corresponding to the provided identifier."
+          );
+        } else {
+          alert("An unexpected error occurred.");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+        alert("An error occurred while changing the status.");
+      }
     } else {
       alert("You are not authorized to change the status");
     }
