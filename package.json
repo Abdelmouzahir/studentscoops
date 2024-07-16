@@ -37,7 +37,7 @@
     "is-number": "^7.0.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.379.0",
-    "next": "^14.2.3",
+    "next": "^14.2.5",
     "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18.3.1",
