@@ -111,7 +111,7 @@ export async function getSaitDataByUser(uid){
   }
   catch(error){
     console.error("Error getting sait information: ", error);
-    return [];
+    return {status:false};
   }
 }
 

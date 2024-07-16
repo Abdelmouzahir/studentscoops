@@ -8,8 +8,9 @@ import { useUserAuth } from "@/services/utils";
 import { updateSaitEmployeeStatus } from "@/services/PostRequest/postRequest";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { doc } from "firebase/firestore";
 
-export default function Dash({fetchData, fetchDataByUser, data , adminData}) {
+export default function Dash({ fetchData, fetchDataByUser, data, adminData }) {
   const auth = getAuth();
   const router = useRouter();
   const [userData, setUserData] = useState(null);
@@ -20,10 +21,10 @@ export default function Dash({fetchData, fetchDataByUser, data , adminData}) {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if(adminData){
+    if (adminData) {
       setAdmin(adminData);
     }
-    if(data){
+    if (data) {
       setUserData(data);
     }
   }, [adminData]);
@@ -50,11 +51,42 @@ export default function Dash({fetchData, fetchDataByUser, data , adminData}) {
     setIsEditing(true);
   };
 
-  const handleDelete = (id) => {
+
+  //handle to delte user form auth,storage and firestore
+  const handleDelete = async (uid, docId) => {
     // Handle delete logic
-    setAdmin(admin.filter((user) => user.id !== id));
+    if (uid && docId) {
+      const props = { uid, docId };
+      console.log("props: ", props);
+      if (user === uid) {
+        alert("You can't delete your own account");
+        return;
+      }
+      if (userData[0].role === "Admin" || userData[0].role === "Editor") {
+        try {
+          const res = await fetch("api/saitStaff/deleteUser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(props),
+          });
+
+          const data = await res.json();
+          console.log("data: ", data);
+          if (data.message === "User has been deleted") {
+            alert("User has been deleted");
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+          alert("An error occurred while deleting the user.");
+        }
+      }
+    }
   };
 
+
+  //to change the status of the user
   const handleChangeStatus = async (id, status, uid) => {
     if (user === uid) {
       alert("You can't change your own status");
