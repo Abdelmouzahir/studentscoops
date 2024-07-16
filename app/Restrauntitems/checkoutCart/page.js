@@ -7,18 +7,18 @@ import { useCart } from "@/app/Restrauntitems/cart-context/page";
 
 export default function CheckoutCart() {
   const router = useRouter();
-  const { cartItems, removeFromCart, cartCounter } = useCart(); // Use the context
+  const { cartItems, removeFromCart, cartCounter, restaurantInfo } = useCart();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const handleClick = () => {
-    router.push("/student/checkout");
+    router.push("/student/main/checkout");
     setIsSheetOpen(false);
   };
 
   return (
-    <div className="flex items-center justify-center h-screen ">
+    <div className="flex items-center justify-center h-screen">
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button size="icon" className="rounded-full bg-primary text-black" onClick={() => setIsSheetOpen(true)}>
@@ -30,23 +30,23 @@ export default function CheckoutCart() {
           <SheetHeader className="px-6 py-4 border-b">
             <div className="flex items-center space-x-4">
               <Avatar className="w-12 h-12">
-                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarImage src={restaurantInfo.img_url} />
                 <AvatarFallback>R</AvatarFallback>
               </Avatar>
               <div>
-                <SheetTitle className="text-lg font-semibold">Cheet Bar & Parontha Place</SheetTitle>
+                <SheetTitle className="text-lg font-semibold">{restaurantInfo.name}</SheetTitle>
                 <SheetDescription className="text-sm text-muted-foreground">
-                  6004 Country Hills Boulevard Northeast
+                  {restaurantInfo.address}
                 </SheetDescription>
               </div>
             </div>
           </SheetHeader>
           {cartItems.length > 0 ? (
-            <div className="px-6 py-4 space-y-4">
+            <div className="px-6 py-4 space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
               {cartItems.map((item) => (
                 <div key={item.item_id} className="flex items-center justify-between rounded-lg bg-muted p-4">
                   <div className="flex items-center space-x-4">
-                    <img src="/placeholder.svg" alt={item.name} className="w-12 h-12 rounded-full" />
+                    <img src={item.img_url} alt={item.name} className="w-12 h-12 rounded-full" />
                     <div>
                       <div className="font-semibold">{item.name}</div>
                       <div className="text-muted-foreground">${item.price.toFixed(2)}</div>

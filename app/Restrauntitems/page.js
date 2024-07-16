@@ -144,7 +144,7 @@ export default function RestaurantItems() {
   const getTotal = () => {
     return cart.reduce((total, item) => total + item.price * (item.quantity || 1), 0);
   };
-
+  
   return (
     <div>
       <div className="flex flex-col md:flex-row w-full h-full">
