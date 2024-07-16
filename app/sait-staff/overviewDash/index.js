@@ -29,6 +29,12 @@ export default function Dash({fetchData, fetchDataByUser, data , adminData}) {
   }, [adminData]);
 
   useEffect(() => {
+    if (user == false) {
+      router.push("/");
+    }
+  }, [admin]);
+
+  useEffect(() => {
     if (user) {
       fetchData();
       fetchDataByUser();

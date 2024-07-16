@@ -29,19 +29,19 @@ const EmailTemplate = ({ name, url }) => {
                         <p>Students Scoops Teams</p>
                     </div>
                     <div className="py-6"></div>
-                    <div className="text-left">
-                        <button
-                            onClick={url}
+                    <div className="text-left mb-4">
+                        <a
+                            href={url}
                             className="bg-yellow-600 mb-3 text-white font-medium py-3 px-10 rounded-lg inline-block text-lg"
                         >
                             Start Registration
-                        </button>
+                        </a>
                     </div>
                     <div className="py-10"></div>
                 </div>
             </div>
 
-            <div className="max-w-2xl mx-auto bg-white overflow-hidden">
+            <div className="max-w-2xl mt-2 mx-auto bg-white overflow-hidden">
                 <img
                     src="https://53ef744a55.imgdist.com/pub/bfra/t0m9adtm/csk/lz4/vvs/emailsent.jpg"
                     alt="Email Sent"
