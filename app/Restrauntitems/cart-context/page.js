@@ -9,9 +9,10 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   // State to hold the items in the cart
   const [cartItems, setCartItems] = useState([]);
+  const [restaurantInfo, setRestaurantInfo] = useState([]);
 
   // Function to add an item to the cart
-  const addToCart = (item) => {
+  const addToCart = (item,restaurant) => {
     setCartItems((prevItems) => {
       // Check if the item already exists in the cart
       const existingItem = prevItems.find((cartItem) => cartItem.item_id === item.item_id);
@@ -22,6 +23,7 @@ export const CartProvider = ({ children }) => {
       } else {
         // If the item does not exist, log a message and add the new item with quantity 1
         console.log("Adding new item to cart:", item);
+        setRestaurantInfo(restaurant)
         return [...prevItems, { ...item, quantity: 1 }];
       }
     });
@@ -36,7 +38,7 @@ export const CartProvider = ({ children }) => {
   const cartCounter = cartItems.length;
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, cartCounter }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, cartCounter, restaurantInfo }}>
       {children}
     </CartContext.Provider>
   );
