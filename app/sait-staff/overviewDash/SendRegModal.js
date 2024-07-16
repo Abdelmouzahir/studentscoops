@@ -20,12 +20,12 @@ export default function SendRegModal({onClose}) {
 
         //convert the template to be readable for the user in the email
         const emailBody = ReactDOMServer.renderToString(
-            <EmailTemplate name={emailName} url={"http://localhost:3000/sait-staff/register"} />
+            <EmailTemplate name={emailName} url={"http://localhost:3000/sait-staff/register"} type={"as an Admin 💻."} />
         );
         try {
             await sendMail({
                 to: emailReciever,
-                name: 'Jalil',
+                name: 'No-reply',
                 subject: 'Registration email 📩',
                 body: emailBody,
             });

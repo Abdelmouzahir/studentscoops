@@ -2,10 +2,14 @@
 import React, { useState } from "react";
 import { LuPencil } from "react-icons/lu";
 import { LuTrash } from "react-icons/lu";
+import { BsEnvelopeAtFill } from "react-icons/bs";
+import Modal from "@/components/Modal";
 import { IoStorefront } from "react-icons/io5";
 import { formatPhoneNumber } from "@/Constant/formated";
 import { MdOutlineDoneOutline } from "react-icons/md";
 import { FaFilter } from "react-icons/fa";
+import SendRegModal from "./SendRegModal";
+
 
 const Table = ({
   restaurants,
@@ -17,6 +21,7 @@ const Table = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("name");
+  const [showModal, setShowModal] = useState(false);
 
   const filteredRestaurants =
     restaurants && restaurants.length > 0
@@ -53,6 +58,19 @@ const Table = ({
           <IoStorefront className="mr-2 h-4 w-4" />
           Add Restaurant
         </button>
+        <button
+            onClick={() => {
+              setShowModal(true);
+            }}
+            className={
+              search
+                ? "hidden"
+                : "inline-flex items-center ml-2 justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
+            }
+          >
+            <BsEnvelopeAtFill className="mr-2 h-4 w-4" />
+            Send Registration Email
+          </button>
         <button
           onClick={() => {
             setSearch(!search);
@@ -159,6 +177,9 @@ const Table = ({
           </tbody>
         </table>
       </div>
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+        <SendRegModal onClose={() => setShowModal(false)} />
+      </Modal>
     </div>
   );
 };
