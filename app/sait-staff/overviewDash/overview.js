@@ -1,20 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Card from "./card";
-import { getAllStudentsInformation, getRestaurantInformation } from "@/services/GetRequest/getRequest";
+import {
+  getAllStudentsInformation,
+  getRestaurantInformation,
+} from "@/services/GetRequest/getRequest";
 
 import { FaUsers, FaChartLine } from "react-icons/fa";
 import { AiOutlineShop, AiOutlineTeam } from "react-icons/ai";
 import { useSpring, animated } from "react-spring";
 
-function NumberChange({n}){
-const {number} = useSpring({
-  from : {number :0},
-  number : n,
-  delay : 200,
-  config : {mass:1, tension:20, friction:10},
-})
-return <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>
+function NumberChange({ n }) {
+  const { number } = useSpring({
+    from: { number: 0 },
+    number: n,
+    delay: 200,
+    config: { mass: 1, tension: 20, friction: 10 },
+  });
+  return <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>;
 }
 const Overview = () => {
   const [totalNumberStudent, setTotalNumberStudent] = useState(0);
@@ -35,24 +38,24 @@ const Overview = () => {
       let studentactive = 0;
       let studentnotactive = 0;
       await getAllStudentsInformation().then((data) => {
-        setTotalNumberStudent(data.length)
+        setTotalNumberStudent(data.length);
         if (data) {
           data.forEach((studentdata) => {
             const date = studentdata.acountCreated[0];
             const month = studentdata.acountCreated[1];
             const year = studentdata.acountCreated[2];
             const studentDate = new Date(year, month, date);
-            console.log(studentDate >= dateBefore7Days)
+            console.log(studentDate >= dateBefore7Days);
             if (studentDate >= dateBefore7Days) {
-              studentCount++
+              studentCount++;
             }
-            if(studentdata.active){
-              studentactive++
+            if (studentdata.active) {
+              studentactive++;
             }
-            if(!studentdata.active){
-              studentnotactive++
+            if (!studentdata.active) {
+              studentnotactive++;
             }
-          })
+          });
         }
       });
       setStudentActive(studentactive);
@@ -64,57 +67,61 @@ const Overview = () => {
       let restaurantactive = 0;
       let restaurantnotactive = 0;
       await getRestaurantInformation().then((data) => {
-        setTotalNumberRestaurant(data.length)
+        setTotalNumberRestaurant(data.length);
         if (data) {
-            data.map((restaurantdata) => {
-              const date = restaurantdata.acountCreated[0];
-              const month = restaurantdata.acountCreated[1];
-              const year = restaurantdata.acountCreated[2];
-              const restaurantDate = new Date(year, month, date);
-              if (restaurantDate >= dateBefore7Days) {
-                setRestaurants(restaurants+1);
-                restaurantCount++
-              }
-              if(restaurantdata.active){
-                restaurantactive++
-              }
-              if(!restaurantdata.active){
-                restaurantnotactive++
-              }
-            })
+          data.map((restaurantdata) => {
+            const date = restaurantdata.acountCreated[0];
+            const month = restaurantdata.acountCreated[1];
+            const year = restaurantdata.acountCreated[2];
+            const restaurantDate = new Date(year, month, date);
+            if (restaurantDate >= dateBefore7Days) {
+              setRestaurants(restaurants + 1);
+              restaurantCount++;
+            }
+            if (restaurantdata.active) {
+              restaurantactive++;
+            }
+            if (!restaurantdata.active) {
+              restaurantnotactive++;
+            }
+          });
         }
       });
       setRestaurantActive(restaurantactive);
       setRestaurantNotActive(restaurantnotactive);
-      setRestaurants(restaurantCount)
+      setRestaurants(restaurantCount);
     }
     gettingStudentInformation();
-    gettingRestaurantInformation();    
+    gettingRestaurantInformation();
   }, []);
-  useEffect(()=>{
-    console.log(students)
-  },[students])
+  useEffect(() => {
+    console.log(students);
+  }, [students]);
   return (
     <div className="flex justify-between flex-wrap">
       <Card
         title="New Students"
         value={students}
         icon={<AiOutlineTeam className="w-10 h-10" />}
-        change={((students/totalNumberStudent)*100)}
-        changeType={(studentActive-studentNotActive)>=0?"increase":"decrease"}
+        change={(students / totalNumberStudent) * 100}
+        changeType={
+          studentActive - studentNotActive >= 0 ? "increase" : "decrease"
+        }
         text="in The last 7 days"
       />
       <Card
         title="New Restaurants"
         value={restaurants}
         icon={<AiOutlineShop className="w-10 h-10" />}
-        change={(restaurants/totalNumberRestaurant)*100}
-        changeType={(restaurantActive-restaurantNotActive)>=0?"increase":"decrease"}
+        change={(restaurants / totalNumberRestaurant) * 100}
+        changeType={
+          restaurantActive - restaurantNotActive >= 0 ? "increase" : "decrease"
+        }
         text="in The last 7 days"
       />
       <Card
         title="Transactions rate"
-        value={<NumberChange n = {256} />}
+        value={<NumberChange n={256} />}
         icon={<FaChartLine className="w-10 h-10" />}
         change="Overflow"
         changeType="increase"

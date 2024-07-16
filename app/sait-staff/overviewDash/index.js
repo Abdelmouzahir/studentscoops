@@ -4,16 +4,12 @@ import Table from "./table";
 import { useState, useEffect } from "react";
 import Add from "./Add";
 import Edit from "./Edit";
-import {
-  getSaitData,
-  getSaitDataByUser,
-} from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 import { updateSaitEmployeeStatus } from "@/services/PostRequest/postRequest";
-import { getAuth} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
-export default function Dash() {
+export default function Dash({fetchData, fetchDataByUser, data , adminData}) {
   const auth = getAuth();
   const router = useRouter();
   const [userData, setUserData] = useState(null);
@@ -23,35 +19,25 @@ export default function Dash() {
   const [admin, setAdmin] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  async function fetchData() {
-    getSaitData(async (data) => {
-      console.log("data: ", data);
-      setAdmin(data);
-    });
-  }
-  async function fetchDataByUser() {
-    const data = await getSaitDataByUser(user);
-    setUserData(data);
-  }
-
   useEffect(() => {
-    if (user == false) {
-      router.push("/");
+    if(adminData){
+      setAdmin(adminData);
     }
-  }, [admin]);
+    if(data){
+      setUserData(data);
+    }
+  }, [adminData]);
 
   useEffect(() => {
     if (user) {
       fetchData();
-      fetchDataByUser(user);
+      fetchDataByUser();
       console.log("user", auth.currentUser);
     }
-  }, [user]);
-
-  useEffect(() => {
-    if (admin) {
+    if (user == false) {
+      router.push("/");
     }
-  }, [admin]);
+  }, [user]);
 
   const handleEditRequest = (user) => {
     setEditEmployeData(user);
