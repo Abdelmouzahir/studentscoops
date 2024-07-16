@@ -21,7 +21,7 @@ export default function CheckoutCart() {
     <div className="flex items-center justify-center h-screen">
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
-          <Button size="icon" className="rounded-full bg-primary text-black" onClick={() => setIsSheetOpen(true)}>
+          <Button size="icon" className="rounded-full bg-white text-black" onClick={() => setIsSheetOpen(true)}>
             <ShoppingCartIcon className="w-6 h-6" />
             {cartCounter > 0 && <span className="ml-2 text-sm font-semibold">{cartCounter}</span>}
           </Button>
