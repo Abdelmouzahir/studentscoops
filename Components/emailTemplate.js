@@ -1,4 +1,4 @@
-const EmailTemplate = ({ name, url }) => {
+const EmailTemplate = ({ name, url, type }) => {
     return (
         <div className="bg-gray-100 m-0 p-0">
             <div className="max-w-2xl mx-auto bg-white rounded-t-xl overflow-hidden p-5">
@@ -24,7 +24,7 @@ const EmailTemplate = ({ name, url }) => {
                         Hi {name}
                     </h1>
                     <div className="mt-6 text-left text-gray-600 text-lg">
-                        <p>Please click start registration to be added as an Admin 💻.</p>
+                        <p>Please click start registration to be added {type}</p>
                         <p>Regards,</p>
                         <p>Students Scoops Teams</p>
                     </div>

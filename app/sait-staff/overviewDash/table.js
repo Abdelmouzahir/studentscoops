@@ -5,7 +5,6 @@ import { IoMdPersonAdd } from "react-icons/io";
 import Modal from "@/components/Modal";
 import { FaFilter } from "react-icons/fa";
 import { MdOutlineDoneOutline } from "react-icons/md";
-import { sendMail } from "@/lib/mail";
 import { AiFillDelete } from "react-icons/ai";
 import SendRegModal from "./SendRegModal";
 
@@ -42,15 +41,7 @@ const Table = ({ admin, handleEdit, setIsAdding, handleChangeStatus }) => {
         })
       : [];
 
-  //send email
-  const send = async () => {
-    await sendMail({
-      to: "jalil.mouzahir@gmail.com",
-      name: "Jalil",
-      subject: "Test email",
-      body: "This is a test email",
-    });
-  };
+
 
   return (
     <div className="container mx-auto px-4 sm:px-8">
