@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 
 const UserGreeting = ({ setActiveTab, data }) => {
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [userImage, setUserImage] = useState('');
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   useEffect(() => {
-    if(data.length > 0) {
-      setUserName(data[0].name);
-      setEmail(data[0].email);
-      setUserImage(data[0].imageUrl);
+    if (data) {
+      if (data.length > 0) {
+        setUserName(data[0].name);
+        setEmail(data[0].email);
+        setUserImage(data[0].imageUrl);
+      }
     }
   }, [data]);
 
