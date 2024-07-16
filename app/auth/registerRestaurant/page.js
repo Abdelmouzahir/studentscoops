@@ -52,7 +52,7 @@ const Register = () => {
       setConfirmPassError("");
     }
   }, [confirmPassword, password]);
-
+  // same here for restaurant
   useEffect(() => {
     async function gettingStudentEmailWhereStatusistrue() {
       const data = await getStudentEmailWithStatus();
@@ -80,11 +80,7 @@ const Register = () => {
     setPassError("");
     setError("");
 
-    // Check the email domain
-    if (!email.endsWith("@edu.sait.ca")) {
-      setEmailError("Please use a SAIT student email");
-      return;
-    }
+    
 
     if (!databaseEmailwithStatus.length==0){
       if (!databaseEmailwithStatus.includes(email)){
