@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { formatPhoneNumber } from "@/Constant/formated";
 import Swal from "sweetalert2";
 import { collection, addDoc } from "firebase/firestore";
-import { db, auth } from "@/app/firebase/config";
+import { db } from "@/app/firebase/config";
 import { existingStudentData } from "@/services/PostRequest/postRequest";
 
 const Add = ({ setStudents, setIsAdding }) => {

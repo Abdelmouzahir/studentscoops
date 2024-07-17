@@ -2,34 +2,25 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { deleteRestaurantData } from "@/services/PostRequest/postRequest";
+import { updateSaitRestaurantStatus, deleteRestaurantsFromAdmin } from "@/services/PostRequest/postRequest";
 import { getRestaurantForSaitStaff } from "@/services/RealTimeDatabase/getData/getData";
 
 import Table from "./Table";
 import Add from "./Add";
 import Edit from "./Edit";
 
-const Dashboard = ({ setIsAuthenticated }) => {
-  const [restaurants, setRestaurants] = useState();
+const Dashboard = ({ restaurantData, userData }) => {
+  const [restaurants, setRestaurants] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [search, setSearch] = useState(false);
 
-  const getRestaurants = async () => {
-    try {
-      const restaurants = await getRestaurantForSaitStaff();
-      console.log("Restaurants: ", restaurants);
-      setRestaurants(restaurants);
-    } catch (error) {
-      console.error("Error fetching restaurants: ", error);
-      setRestaurants([]);
-    }
-  };
-  console.log(restaurants);
-
   useEffect(() => {
-    getRestaurants();
-  }, []);
+    if (restaurantData) {
+      setRestaurants(restaurantData);
+    }
+  }, [restaurantData]);
 
   const handleEdit = (id) => {
     const [restaurant] = restaurants.filter(
@@ -40,37 +31,67 @@ const Dashboard = ({ setIsAuthenticated }) => {
     setIsEditing(true);
   };
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      icon: "warning",
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-    }).then(async (result) => {
-      if (result.value) {
-        const [restaurant] = restaurants.filter(
-          (restaurant) => restaurant.id === id
-        );
+  const handleDelete = async (uid, docId) => {
+    // Handle delete logic
+    console.log("uid: ", uid);
+    console.log("docId: ", docId);
+    if (uid && docId && userData) {
+     if (userData[0].role === "Admin" || userData[0].role === "Editor") {
+       try {
+         const res = await fetch("api/deleteUser", {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({uid:uid}),
+         });
 
-        // delete document
-        await deleteRestaurantData(id);
+         const data = await res.json();
+         console.log("data: ", data);
+         if (data.message === "User has been deleted") {
+           await deleteRestaurantsFromAdmin(docId,uid).then(()=>{
+             alert("User has been deleted");
+           })
+         }
+       } catch (error) {
+         console.error("An error occurred:", error);
+         alert("An error occurred while deleting the user.");
+       }
+     }
+   }
+ };
 
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: `${restaurant.name}'s data has been deleted.`,
-          showConfirmButton: false,
-          timer: 1500,
+  //to update the status of the user
+  const handleChangeStatus = async (id, status, uid) => {
+    if (userData[0].role === "Admin" || userData[0].role === "Editor") {
+      try {
+        const res = await fetch("/api/isDisableUser", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ condition: status, uid: uid }),
         });
-
-        const restaurantsCopy = restaurants.filter(
-          (restaurant) => restaurant.id !== id
-        );
-        setRestaurants(restaurantsCopy);
+  
+        console.log("Response status:", res.status);
+        console.log("Response headers:", res.headers);
+  
+        const data = await res.json();
+        console.log("data: ", data);
+  
+        if (data.message === "User status has been updated") {
+          await updateSaitRestaurantStatus(id, status);
+          alert("Status for the given user has been changed");
+        } else {
+          alert("An unexpected error occurred.");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+        alert("An error occurred while changing the status.");
       }
-    });
+    } else {
+      alert("You are not authorized to change the status");
+    }
   };
 
   return (
@@ -84,24 +105,20 @@ const Dashboard = ({ setIsAuthenticated }) => {
             setIsAdding={setIsAdding}
             search={search}
             setSearch={setSearch}
+            handleChangeStatus={handleChangeStatus}
           />
         </>
       )}
       {isAdding && (
         <Add
-          restaurants={restaurants}
           setRestaurants={setRestaurants}
           setIsAdding={setIsAdding}
-          getRestaurants={getRestaurants}
         />
       )}
       {isEditing && (
         <Edit
-          restaurants={restaurants}
           selectedRestaurant={selectedRestaurant}
-          setRestaurants={setRestaurants}
           setIsEditing={setIsEditing}
-          getRestaurants={getRestaurants}
         />
       )}
     </div>

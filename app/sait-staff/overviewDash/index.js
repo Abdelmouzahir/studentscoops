@@ -10,7 +10,7 @@ import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc } from "firebase/firestore";
 
-export default function Dash({ fetchData, fetchDataByUser, data, adminData, students }) {
+export default function Dash({ fetchData, fetchDataByUser, data, adminData, students, restaurants }) {
   const auth = getAuth();
   const router = useRouter();
   const [userData, setUserData] = useState(null);
@@ -134,7 +134,7 @@ export default function Dash({ fetchData, fetchDataByUser, data, adminData, stud
     <div className="min-h-screen flex flex-col items-center justify-start py-2">
       <main className="flex flex-col items-start w-full px-20 py-4 ">
         <div className="self-start ml-5">
-          <Overview studentData={students}/>
+          <Overview studentData={students} restaurantData={restaurants}/>
         </div>
         <div className="flex flex-col items-center w-full mt-8">
           {isAdding ? (

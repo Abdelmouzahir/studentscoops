@@ -13,6 +13,7 @@ import {
   getSaitData,
   getSaitDataByUser,
   getStudentData,
+  getRestaurantData
 } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 import { getAuth, signOut } from "firebase/auth";
@@ -25,6 +26,7 @@ export default function Page() {
   const { user } = useUserAuth();
   const [admin, setAdmin] = useState(null);
   const [students, setStudents] = useState(null);
+  const [restaurants, setRestaurants] = useState(null);
 
   const router = useRouter();
 
@@ -42,10 +44,14 @@ export default function Page() {
   //getting sait user data
   async function fetchSaitStaffUserInformation() {
     const data = await getSaitDataByUser(user);
+    console.log("status: ", data);
     if (data.length > 0) {
       if (data[0].active == false || data[0].status == false) {
         router.push("/");
       }
+    }
+    if(data.length == 0){
+      router.push("/");
     }
     setUserData(data);
     console.log("default: ", data);
@@ -54,18 +60,30 @@ export default function Page() {
   //<<<<<-------------------------------------------------fething related to Students----------------------------------------------------------->>>>>
 
   //fetch students data
-  async function fetchStuddentData() {
+  async function fetchStudentData() {
     getStudentData(async (data) => {
       console.log("data: ", data);
       setStudents(data);
     });
   }
 
+  //<<<<<-------------------------------------------------fething related to Restaurants----------------------------------------------------------->>>>>
+
+   //fetch restaurants data
+   async function fetchRestaurantData() {
+    getRestaurantData(async (data) => {
+      console.log("data: ", data);
+      setRestaurants(data);
+    });
+  }
+
+
   useEffect(() => {
     if (user) {
       fetchData();
       fetchSaitStaffUserInformation();
-      fetchStuddentData();
+      fetchStudentData();
+      fetchRestaurantData();
     }
     if (user == false) {
       router.push("/");
@@ -140,7 +158,7 @@ export default function Page() {
           <div className="flex-1 p-6">
             {/* select the tab based on the click */}
             {activeTab === "student" && <SDashboard studentData={students} userData={userData}/>}
-            {activeTab === "restaurant" && <RDashboard />}
+            {activeTab === "restaurant" && <RDashboard userData={userData} restaurantData={restaurants}/>}
             {activeTab === "home" && (
               <Dash
                 adminData={admin}
@@ -148,6 +166,7 @@ export default function Page() {
                 fetchDataByUser={fetchSaitStaffUserInformation}
                 data={userData}
                 students={students}
+                restaurants={restaurants}
               />
             )}
             {activeTab === "setting" && (
