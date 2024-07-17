@@ -183,6 +183,74 @@ export async function updateRestaurant(id, prop) {
 
 
 
+
+
+
+
+
+
+
+//<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
+
+// to add restaurant menu in database
+export async function addRestaurantMenu(
+  user,
+  name,
+  price,
+  description,
+  image,
+  userId
+) {
+  const storageRef = ref(storage, `menu/${userId}/${image.name}`);
+  const uploadTask = uploadBytesResumable(storageRef, image);
+  uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      const fileProgress =
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log(`Upload is ${fileProgress}% done`);
+      switch (snapshot.state) {
+        case "paused":
+          console.log("Upload is paused");
+          break;
+        case "running":
+          console.log("Upload is running");
+          break;
+      }
+    },
+    (error) => {
+      console.error("Upload failed", error);
+    },
+    async () => {
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+      try {
+        // Query to find the restaurant document with the matching userId
+        await addDoc(collection(db, "restaurant_menu"), {
+          uid: user,
+          name,
+          price,
+          description,
+          status: "Available",
+          imageUrl: downloadURL,
+          createdAt: new Date(),
+        });
+        console.log("Menu item successfully added!");
+      } catch (error) {
+        console.error("Error writing document: ", error);
+      }
+    }
+  );
+}
+
+
+
+
+
+
+
+
+
 // to add student information in database
 export async function addStudentInformation(userId, userInformation, email) {
   const studentInformation = {
@@ -251,57 +319,6 @@ export async function addRestaurantInformation(
   );
 }
 
-// to add restaurant menu in database
-export async function addRestaurantMenu(
-  user,
-  name,
-  price,
-  description,
-  image,
-  userId
-) {
-  const storageRef = ref(storage, `menu/${userId}/${image.name}`);
-  const uploadTask = uploadBytesResumable(storageRef, image);
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const fileProgress =
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(`Upload is ${fileProgress}% done`);
-      switch (snapshot.state) {
-        case "paused":
-          console.log("Upload is paused");
-          break;
-        case "running":
-          console.log("Upload is running");
-          break;
-      }
-    },
-    (error) => {
-      console.error("Upload failed", error);
-    },
-    async () => {
-      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-
-      try {
-        // Query to find the restaurant document with the matching userId
-        await addDoc(collection(db, "restaurant_menu"), {
-          userId: user,
-          name,
-          price,
-          description,
-          status: "Available",
-          imageUrl: downloadURL,
-          createdAt: new Date(),
-        });
-        console.log("Menu item successfully added!");
-        window.location.reload();
-      } catch (error) {
-        console.error("Error writing document: ", error);
-      }
-    }
-  );
-}
 
 export default async function addStudentEmailStatus(prop) {
   let { email, active } = prop;

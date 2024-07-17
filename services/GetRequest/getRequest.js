@@ -108,6 +108,24 @@ export function getRestaurantData(onChange) {
   }
 }
 
+//getting restaurant data for sait staff home page
+
+export function getRestaurantData(onChange) {
+  try {
+    const restaurantCollection = query(collection(db, "restaurants"));
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        console.log("getting restaurants:  ", doc.data());
+        return { id: doc.id,...doc.data() };
+      });
+      console.log("information: ", restaurantData);
+      onChange(restaurantData);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
 
 
 
@@ -123,11 +141,53 @@ export function getRestaurantData(onChange) {
 
 
 
+//<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
+
+
+// get restaurant data for user as restaurant
+
+export async function getRestaurantDataByOwner(uid){
+  try{
+    const q = query(collection(db, "restaurants"),where("uid","==",uid));
+    const querySnapshot = await getDocs(q);
+    const saitItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return saitItems;
+  }
+  catch(error){
+    console.error("Error getting sait information: ", error);
+    return {status:false};
+  }
+}
+
+// get restaurant menu data for restaurant
+
+export function getRestaurantMenuByOwner(onChange, user) {
+  try {
+    const restaurantCollection = query(collection(db, "restaurant_menu"),where("uid","==",user));
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        console.log("getting restaurants:  ", doc.data());
+        return { id: doc.id,...doc.data() };
+      });
+      console.log("information: ", restaurantData);
+      onChange(restaurantData);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
 
 
 
 
 
+
+
+
+//<<<-----------------------------------------------------------------Restaurant && Students------------------------------------------------------------------>>>>
 
 
 

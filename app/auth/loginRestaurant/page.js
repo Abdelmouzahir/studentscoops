@@ -7,7 +7,7 @@ import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
-import { getRestaurantInformationByUser } from "@/services/GetRequest/getRequest";
+import { getRestaurantDataByOwner } from "@/services/GetRequest/getRequest";
 import Loading from "@/app/loading"; 
 import { getRestaurantDataForOwner } from "@/services/RealTimeDatabase/getData/getData";
 
@@ -29,7 +29,9 @@ const sign_in = () => {
         return user.uid
       }})
       .then(async (uid) => {
-        const login = await getRestaurantDataForOwner(uid);
+        console.log("uid: ", uid);
+        const login = await getRestaurantDataByOwner(uid);
+        console.log("login: ", login);
         if (login.length <= 0) {
           setLoginError("You are not authorized to access this website.");
           return;

@@ -1,7 +1,7 @@
 "use client";
 import { ref, onValue, off } from "firebase/database";
 import { database } from "@/app/firebase/config";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useTable, useGlobalFilter } from "react-table";
 import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
@@ -9,6 +9,7 @@ import { useUserAuth } from "@/services/utils";
 import { db } from "@/app/firebase/config";
 import { deleteDoc, doc } from "firebase/firestore";
 import { getRestaurantMenu } from "@/services/RealTimeDatabase/getData/getData";
+import { getRestaurantMenuByOwner } from "@/services/GetRequest/getRequest";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -44,33 +45,23 @@ export default function SettingsRestaurant() {
   const route = useRouter();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [globalFilter, setGlobalFilter] = useState("");
-  const restaurantRef = ref(database, "restaurants/" + user + "/menu");
 
-  const getRestaurantMenuCallback = useCallback(getRestaurantMenu, [user]);
+  //get restaurant menu data
+  async function fetchRestaurantMenu() {
+    getRestaurantMenuByOwner((data) => {
+      console.log("Data: ", data);
+      console.log("user: ", user);
+      setMenuData(data);
+    }, user);
+  }
 
   useEffect(() => {
-    function gettingMenu(){
-    try {
-      const unsubscribe = onValue(restaurantRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          const formattedData = Object.entries(data).map(([key, value]) => ({
-            id: key,
-            ...value,
-          }));
-          setMenuData(formattedData);
-        } else {
-          setMenuData([]);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }}
+    if (user) {
+      fetchRestaurantMenu();
+    }
+  }, [user]);
 
-    return gettingMenu();
-  }, [restaurantRef]);
   useEffect(() => {
-    // restaurantMenu();
     if (user == false) {
       route.push("/");
     }
@@ -122,23 +113,11 @@ export default function SettingsRestaurant() {
         Header: "Date",
         accessor: "createdAt",
         Cell: ({ cell: { value } }) => {
-          const date = new Date(value);
-          const day = date.getDate().toString().padStart(2, "0");
-          const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-indexed
-          const year = date.getFullYear();
-          const hours = date.getHours();
-          const minutes = date.getMinutes().toString().padStart(2, "0");
-          const seconds = date.getSeconds().toString().padStart(2, "0");
-          const ampm = hours >= 12 ? "PM" : "AM";
-          const formattedHours = (hours % 12 || 12).toString().padStart(2, "0"); // Convert 0 to 12 for 12-hour format
-
-          return (
-            <div>
-              {`${day}-${month}-${year}`}
-              <br />
-              {`${formattedHours}:${minutes}:${seconds} ${ampm}`}
-            </div>
-          );
+          if (value && value.toDate) {
+            return `${value.toDate().toDateString()}`;
+          } else {
+            return "Loading...";
+          }
         },
         className: "hidden md:table-cell",
       },
