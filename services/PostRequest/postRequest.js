@@ -20,15 +20,9 @@ import {
 import { deleteUser } from "firebase/auth";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
-
-
-
-
-
 //<<<-----------------------------------------------------------------Sait-staff------------------------------------------------------------------>>>>
 
 //--------------------------------------------------------post admin data for sait staff home page---------------------------------------------------------
-
 
 // to update status of sait staff employee
 export async function updateSaitEmployeeStatus(id, active) {
@@ -42,9 +36,50 @@ export async function updateSaitEmployeeStatus(id, active) {
   }
 }
 
+// to delete sait staff data from database and athentication
+export async function deleteSaitUser(currentUser, docId) {
+  const id = docId;
+  const uid = currentUser.uid;
+  if (currentUser) {
+    try {
+      // Step 1: Re-authenticate user if necessary
+      await deleteUser(currentUser)
+        .then(async () => {
+          // Step 2: Delete user document from Firestore
+          await deleteDoc(doc(db, "saitStaff", id));
+        })
+        .then(async () => {
+          const storage = getStorage();
+          const folderRef = ref(storage, `Saitstaff/${uid}`);
+
+          const deleteFolder = async (folderRef) => {
+            const res = await listAll(folderRef);
+            for (const itemRef of res.items) {
+              await deleteObject(itemRef);
+            }
+
+            for (const subfolderRef of res.prefixes) {
+              await deleteFolder(subfolderRef);
+            }
+          };
+
+          await deleteFolder(folderRef);
+          alert("Your account has been deleted successfully!");
+        });
+    } catch (error) {
+      if (error.code === "auth/requires-recent-login") {
+        alert(
+          "Please log out first and then proceed with the account deletion."
+        );
+      }
+    }
+  } else {
+    console.log("No current user found");
+  }
+}
 
 //function to delete sait staff user from admin
-export async function deleteSaitUserFromAdmin(docId,uid) {
+export async function deleteSaitUserFromAdmin(docId, uid) {
   try {
     await deleteDoc(doc(db, "saitStaff", docId)).then(async () => {
       //delete user folder from storage
@@ -69,10 +104,7 @@ export async function deleteSaitUserFromAdmin(docId,uid) {
   }
 }
 
-
-
 //--------------------------------------------------------post students data for sait staff home page---------------------------------------------------------
-
 
 //To update the student data of sait staff
 export async function updateStudent(id, prop) {
@@ -97,7 +129,7 @@ export async function updateSaitStudentStatus(id, active) {
 }
 
 //function to delete sait staff student from admin
-export async function deleteStudentsFromAdmin(docId,uid) {
+export async function deleteStudentsFromAdmin(docId, uid) {
   try {
     await deleteDoc(doc(db, "students", docId)).then(async () => {
       //delete user folder from storage
@@ -122,14 +154,7 @@ export async function deleteStudentsFromAdmin(docId,uid) {
   }
 }
 
-
-
-
-
-
-
 //--------------------------------------------------------post restaurants data for sait staff home page---------------------------------------------------------
-
 
 // to update restaurant status by sait staff
 export async function updateSaitRestaurantStatus(id, active) {
@@ -144,7 +169,7 @@ export async function updateSaitRestaurantStatus(id, active) {
 }
 
 //function to delete restaurant user from admin
-export async function deleteRestaurantsFromAdmin(docId,uid) {
+export async function deleteRestaurantsFromAdmin(docId, uid) {
   try {
     await deleteDoc(doc(db, "restaurants", docId)).then(async () => {
       //delete user folder from storage
@@ -179,17 +204,6 @@ export async function updateRestaurant(id, prop) {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
 //<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
 
 // to add restaurant menu in database
@@ -199,9 +213,8 @@ export async function addRestaurantMenu(
   price,
   description,
   image,
-  userId
 ) {
-  const storageRef = ref(storage, `menu/${userId}/${image.name}`);
+  const storageRef = ref(storage, `menu/${user}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
   uploadTask.on(
     "state_changed",
@@ -243,13 +256,79 @@ export async function addRestaurantMenu(
   );
 }
 
+// to delete sait staff data from database and athentication
+export async function deleteRestaurantUserByOwner(currentUser, docId) {
+  const id = docId;
+  const uid = currentUser.uid;
+  if (currentUser) {
+    try {
+      // Step 1: Re-authenticate user if necessary
+      await deleteUser(currentUser)
+        .then(async () => {
+          // Step 2: Delete user document from Firestore
+          await deleteDoc(doc(db, "restaurants", id));
+          const q = query(
+            collection(db, "restaurant_menu"),
+            where("uid", "==", uid)
+          );
 
+          // Get the documents matching the query
+          const querySnapshot = await getDocs(q);
 
+          // Loop through each document and delete it
+          const deletePromises = querySnapshot.docs.map(async (document) => {
+            await deleteDoc(doc(db, "restaurant_menu", document.id));
+          });
 
+          // Wait for all deletions to complete
+          await Promise.all(deletePromises);
+        })
+        .then(async () => {
+          const storage = getStorage();
+          const folderRef = ref(storage, `restaurants/${uid}`);
 
+          const deleteFolder = async (folderRef) => {
+            const res = await listAll(folderRef);
+            for (const itemRef of res.items) {
+              await deleteObject(itemRef);
+            }
 
+            for (const subfolderRef of res.prefixes) {
+              await deleteFolder(subfolderRef);
+            }
+          };
 
+          await deleteFolder(folderRef);
+          alert("Your account has been deleted successfully!");
+        }).then(async () => {
+          const storage = getStorage();
+          const folderRef = ref(storage, `menu/${uid}`);
 
+          const deleteFolder = async (folderRef) => {
+            const res = await listAll(folderRef);
+            for (const itemRef of res.items) {
+              await deleteObject(itemRef);
+            }
+
+            for (const subfolderRef of res.prefixes) {
+              await deleteFolder(subfolderRef);
+            }
+          };
+
+          await deleteFolder(folderRef);
+          alert("Your account has been deleted successfully!");
+        });
+    } catch (error) {
+      if (error.code === "auth/requires-recent-login") {
+        alert(
+          "Please log out first and then proceed with the account deletion."
+        );
+      }
+    }
+  } else {
+    console.log("No current user found");
+  }
+}
 
 // to add student information in database
 export async function addStudentInformation(userId, userInformation, email) {
@@ -318,7 +397,6 @@ export async function addRestaurantInformation(
     }
   );
 }
-
 
 export default async function addStudentEmailStatus(prop) {
   let { email, active } = prop;
@@ -493,45 +571,3 @@ export async function deleteRestaurantUser(currentUser, id, userId) {
     console.log("No current user found");
   }
 }
-// to delete sait staff data from database and athentication
-export async function deleteSaitUser(currentUser, docId) {
-  const id = docId;
-  const uid = currentUser.uid;
-  if (currentUser) {
-    try {
-      // Step 1: Re-authenticate user if necessary
-      await deleteUser(currentUser)
-        .then(async () => {
-          // Step 2: Delete user document from Firestore
-          await deleteDoc(doc(db, "saitStaff", id));
-        })
-        .then(async () => {
-          const storage = getStorage();
-          const folderRef = ref(storage, `Saitstaff/${uid}`);
-
-          const deleteFolder = async (folderRef) => {
-            const res = await listAll(folderRef);
-            for (const itemRef of res.items) {
-              await deleteObject(itemRef);
-            }
-
-            for (const subfolderRef of res.prefixes) {
-              await deleteFolder(subfolderRef);
-            }
-          };
-
-          await deleteFolder(folderRef);
-          alert("Your account has been deleted successfully!");
-        });
-    } catch (error) {
-      if (error.code === "auth/requires-recent-login") {
-        alert(
-          "Please log out first and then proceed with the account deletion."
-        );
-      }
-    }
-  } else {
-    console.log("No current user found");
-  }
-}
-

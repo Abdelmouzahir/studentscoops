@@ -35,6 +35,10 @@ export default function Header({ handleSignOut }) {
     router.push("/restraunt/support")
   }
 
+  function handleProfile(){
+    router.push("/restraunt/profile");
+  }
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
@@ -93,10 +97,11 @@ export default function Header({ handleSignOut }) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleonclick_setting} >Settings</DropdownMenuItem>
-          <DropdownMenuItem onClick={handle_support}>Support</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={handleProfile}>Profile</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={handleonclick_setting} >Settings</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={handle_support}>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleSignOut}>Logout</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={handleSignOut}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

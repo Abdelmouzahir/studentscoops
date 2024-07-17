@@ -90,28 +90,12 @@ export function getRestaurantData(onChange) {
 
 //<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
 
-// get restaurant data for user as restaurant
+// get restaurant data for user as restaurant 
 
-export async function getRestaurantDataByOwner(uid) {
-  try {
-    const q = query(collection(db, "restaurants"), where("uid", "==", uid));
-    const querySnapshot = await getDocs(q);
-    const saitItems = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
-    });
-    return saitItems;
-  } catch (error) {
-    console.error("Error getting sait information: ", error);
-    return { status: false };
-  }
-}
-
-// get restaurant menu data for restaurant
-
-export function getRestaurantMenuByOwner(onChange, user) {
+export function getRestaurantDataByOwner(onChange, user) {
   try {
     const restaurantCollection = query(
-      collection(db, "restaurant_menu"),
+      collection(db, "restaurants"),
       where("uid", "==", user)
     );
     onSnapshot(restaurantCollection, (restaurants) => {
@@ -125,6 +109,44 @@ export function getRestaurantMenuByOwner(onChange, user) {
   } catch (error) {
     console.error("Error getting restaurant information: ", error);
     onChange([]);
+  }
+}
+
+// get restaurant menu data for restaurant
+
+export function getRestaurantMenuByOwner(onChange, user) {
+  try {
+    const restaurantCollection = query(
+      collection(db, "restaurant_menu"),
+      where("uid", "==", user)
+    );
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        console.log("getting restaurant menu:  ", doc.data());
+        return { id: doc.id, ...doc.data() };
+      });
+      console.log("information: ", restaurantData);
+      onChange(restaurantData);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
+
+//for login purpose only for restaurant
+export async function getRestaurantDataForLogin(user) {
+  try {
+    const q = query(collection(db, "restaurants"),where("uid", "==", user));
+    const querySnapshot = await getDocs(q);
+    const studentItems = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return studentItems;
+  } catch (error) {
+    console.error("Error while fetching all students information:", error);
+    return [];
   }
 }
 

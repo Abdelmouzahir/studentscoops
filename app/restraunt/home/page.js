@@ -1,6 +1,4 @@
 "use client";
-import { ref, onValue, off } from "firebase/database";
-import { database } from "@/app/firebase/config";
 import React, { useState, useEffect } from "react";
 import { useTable, useGlobalFilter } from "react-table";
 import Image from "next/image";
@@ -8,7 +6,6 @@ import { MoreHorizontal } from "lucide-react";
 import { useUserAuth } from "@/services/utils";
 import { db } from "@/app/firebase/config";
 import { deleteDoc, doc } from "firebase/firestore";
-import { getRestaurantMenu } from "@/services/RealTimeDatabase/getData/getData";
 import { getRestaurantMenuByOwner } from "@/services/GetRequest/getRequest";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";

@@ -25,12 +25,11 @@ import {
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdOutlineRemove } from "react-icons/md";
 
-export default function UserProfile({ data, getUserData }) {
+export default function UserProfile({ data }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
-  const [role, setRole] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const fileInpt = useRef(null);
   const [uploading, setUploading] = useState(false);
@@ -41,7 +40,6 @@ export default function UserProfile({ data, getUserData }) {
       setEmail(data[0].email);
       setPhoneNumber(data[0].phoneNumber);
       setAddress(data[0].address);
-      setRole(data[0].role);
       setImageUrl(data[0].imageUrl);
       setUploading(false);
     }
@@ -62,7 +60,7 @@ export default function UserProfile({ data, getUserData }) {
   async function uploadImage(image) {
     try {
       const storage = getStorage();
-      const folderRef = ref(storage, `Saitstaff/${data[0].uid}`);
+      const folderRef = ref(storage, `restaurants/${data[0].uid}`);
 
       const deleteFolder = async (folderRef) => {
         const res = await listAll(folderRef);
@@ -78,7 +76,7 @@ export default function UserProfile({ data, getUserData }) {
       await deleteFolder(folderRef).then(() => {
         const storageRef = ref(
           storage,
-          `Saitstaff/${data[0].uid}/${image.name}`
+          `restaurants/${data[0].uid}/${image.name}`
         );
         const uploadTask = uploadBytesResumable(storageRef, image);
         uploadTask.on(
@@ -104,12 +102,11 @@ export default function UserProfile({ data, getUserData }) {
 
             try {
               // Query to find the restaurant document with the matching userId
-              const docRef = doc(db, "saitStaff", data[0].id);
+              const docRef = doc(db, "restaurants", data[0].id);
               await updateDoc(docRef, {
                 imageUrl: downloadURL,
               }).then(() => {
                 alert("Image uploaded successfully");
-                getUserData();
               });
             } catch (error) {
               console.error("Error writing document: ", error);
@@ -127,7 +124,7 @@ export default function UserProfile({ data, getUserData }) {
   async function removeImage() {
     try {
       const storage = getStorage();
-      const folderRef = ref(storage, `Saitstaff/${data[0].uid}`);
+      const folderRef = ref(storage, `restaurants/${data[0].uid}`);
 
       const deleteFolder = async (folderRef) => {
         const res = await listAll(folderRef);
@@ -143,12 +140,11 @@ export default function UserProfile({ data, getUserData }) {
       await deleteFolder(folderRef).then(async () => {
         try {
           // Query to find the restaurant document with the matching userId
-          const docRef = doc(db, "saitStaff", data[0].id);
+          const docRef = doc(db, "restaurants", data[0].id);
           await updateDoc(docRef, {
             imageUrl: null,
           }).then(() => {
             alert("Image uploaded successfully");
-            getUserData();
           });
         } catch (error) {
           console.error("Error writing document: ", error);
@@ -195,14 +191,12 @@ export default function UserProfile({ data, getUserData }) {
   async function updateProfile(e) {
     e.preventDefault();
     try {
-      const docRef = doc(db, "saitStaff", data[0].id);
+      const docRef = doc(db, "restaurants", data[0].id);
       await updateDoc(docRef, {
         name: name,
         phoneNumber: phoneNumber,
         address: address,
       }).then(() => {
-        alert("Profile updated successfully");
-        getUserData();
       });
     } catch (err) {
       console.log(err);
@@ -293,17 +287,6 @@ export default function UserProfile({ data, getUserData }) {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
-            <div className="relative">
-              <Input
-                id="role"
-                value={role}
-                readOnly={true}
-                className="cursor-not-allowed"
-              />
-            </div>
-          </div>
-          <div className="space-y-2 col-span-full">
             <Label htmlFor="address">Address</Label>
             <div className="relative">
               <Input
