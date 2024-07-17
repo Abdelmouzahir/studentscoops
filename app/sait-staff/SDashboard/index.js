@@ -4,8 +4,9 @@ import Swal from "sweetalert2";
 import Table from "./Table";
 import Add from "./Add";
 import Edit from "./Edit";
+import { updateSaitStudentStatus, deleteStudentsFromAdmin } from "@/services/PostRequest/postRequest";
 
-const Dashboard = ({ studentData }) => {
+const Dashboard = ({ studentData, userData }) => {
   const [students, setStudents] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -24,10 +25,66 @@ const Dashboard = ({ studentData }) => {
     setIsEditing(true);
   };
 
-  const handleChangeStatus = async (docId, isActive, uid)=>{}
+  const handleChangeStatus = async (id, status, uid) => {
+    if (userData[0].role === "Admin" || userData[0].role === "Editor") {
+      try {
+        const res = await fetch("/api/isDisableUser", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ condition: status, uid: uid }),
+        });
+  
+        console.log("Response status:", res.status);
+        console.log("Response headers:", res.headers);
+  
+        const data = await res.json();
+        console.log("data: ", data);
+  
+        if (data.message === "User status has been updated") {
+          await updateSaitStudentStatus(id, status);
+          alert("Status for the given user has been changed");
+        } else {
+          alert("An unexpected error occurred.");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+        alert("An error occurred while changing the status.");
+      }
+    } else {
+      alert("You are not authorized to change the status");
+    }
+  };
 
-  const handleDelete = async(uid, docId) => {
+  const handleDelete = async (uid, docId) => {
+     // Handle delete logic
+     console.log("uid: ", uid);
+     console.log("docId: ", docId);
+     if (uid && docId && userData) {
+      if (userData[0].role === "Admin" || userData[0].role === "Editor") {
+        try {
+          const res = await fetch("api/deleteUser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({uid:uid}),
+          });
 
+          const data = await res.json();
+          console.log("data: ", data);
+          if (data.message === "User has been deleted") {
+            await deleteStudentsFromAdmin(docId,uid).then(()=>{
+              alert("User has been deleted");
+            })
+          }
+        } catch (error) {
+          console.error("An error occurred:", error);
+          alert("An error occurred while deleting the user.");
+        }
+      }
+    }
   };
 
   return (
@@ -50,10 +107,7 @@ const Dashboard = ({ studentData }) => {
                 </>
               )}
               {isAdding && (
-                <Add
-                  setStudents={setStudents}
-                  setIsAdding={setIsAdding}
-                />
+                <Add setStudents={setStudents} setIsAdding={setIsAdding} />
               )}
               {isEditing && (
                 <Edit

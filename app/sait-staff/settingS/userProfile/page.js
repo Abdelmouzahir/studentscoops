@@ -14,17 +14,26 @@ import { formatPhoneNumber } from "@/Constant/formated";
 import { db } from "@/app/firebase/config";
 import { updateDoc, doc } from "firebase/firestore";
 import { CgArrowsExchange } from "react-icons/cg";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from "@/app/firebase/config";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  getStorage,
+  listAll,
+  deleteObject,
+} from "firebase/storage";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { MdOutlineRemove } from "react-icons/md";
 
 export default function UserProfile({ data, getUserData }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
-  const [role, setRole] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [role, setRole] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const fileInpt = useRef(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -34,51 +43,109 @@ export default function UserProfile({ data, getUserData }) {
       setAddress(data[0].address);
       setRole(data[0].role);
       setImageUrl(data[0].imageUrl);
+      setUploading(false);
     }
   }, [data]);
 
   useEffect(() => {
-    if(!data[0].imageUrl || data[0].imageUrl === null){
-      setImageUrl('/assets/images/UserDefaultSaitStaff.png');
-    }
-    else{
+    if (!data[0].imageUrl || data[0].imageUrl === null) {
+      setImageUrl("/assets/images/UserDefaultSaitStaff.png");
+    } else {
       setImageUrl(data[0].imageUrl);
     }
-  },[imageUrl]);
+  }, [imageUrl]);
 
   const handleDivClick = () => {
     fileInpt.current.click();
   };
 
   async function uploadImage(image) {
-    const storageRef = ref(storage, `Saitstaff/${data[0].uid}/${image.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, image);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const fileProgress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${fileProgress}% done`);
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
+    try {
+      const storage = getStorage();
+      const folderRef = ref(storage, `Saitstaff/${data[0].uid}`);
+
+      const deleteFolder = async (folderRef) => {
+        const res = await listAll(folderRef);
+        for (const itemRef of res.items) {
+          await deleteObject(itemRef);
         }
-      },
+
+        for (const subfolderRef of res.prefixes) {
+          await deleteFolder(subfolderRef);
+        }
+      };
+
+      await deleteFolder(folderRef).then(() => {
+        const storageRef = ref(
+          storage,
+          `Saitstaff/${data[0].uid}/${image.name}`
+        );
+        const uploadTask = uploadBytesResumable(storageRef, image);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const fileProgress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(`Upload is ${fileProgress}% done`);
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+            }
+          },
+          (error) => {
+            console.error("Upload failed", error);
+          },
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+            try {
+              // Query to find the restaurant document with the matching userId
+              const docRef = doc(db, "saitStaff", data[0].id);
+              await updateDoc(docRef, {
+                imageUrl: downloadURL,
+              }).then(() => {
+                alert("Image uploaded successfully");
+                getUserData();
+              });
+            } catch (error) {
+              console.error("Error writing document: ", error);
+            }
+          }
+        );
+      });
+    } catch (err) {
       (error) => {
         console.error("Upload failed", error);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      };
+    }
+  }
 
+  async function removeImage() {
+    try {
+      const storage = getStorage();
+      const folderRef = ref(storage, `Saitstaff/${data[0].uid}`);
+
+      const deleteFolder = async (folderRef) => {
+        const res = await listAll(folderRef);
+        for (const itemRef of res.items) {
+          await deleteObject(itemRef);
+        }
+
+        for (const subfolderRef of res.prefixes) {
+          await deleteFolder(subfolderRef);
+        }
+      };
+
+      await deleteFolder(folderRef).then(async () => {
         try {
           // Query to find the restaurant document with the matching userId
           const docRef = doc(db, "saitStaff", data[0].id);
           await updateDoc(docRef, {
-            imageUrl: downloadURL,
+            imageUrl: null,
           }).then(() => {
             alert("Image uploaded successfully");
             getUserData();
@@ -86,8 +153,12 @@ export default function UserProfile({ data, getUserData }) {
         } catch (error) {
           console.error("Error writing document: ", error);
         }
-      }
-    );
+      });
+    } catch (err) {
+      (error) => {
+        console.error("Upload failed", error);
+      };
+    }
   }
 
   const validExtensions = [
@@ -107,10 +178,17 @@ export default function UserProfile({ data, getUserData }) {
   ];
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    if (validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext))) {
-      uploadImage(file);
+    if (file) {
+      if (
+        validExtensions.some((ext) => file.name.toLowerCase().endsWith(ext))
+      ) {
+        setUploading(true);
+        uploadImage(file);
+      } else {
+        console.log("Invalid file format");
+      }
     } else {
-      console.log("Invalid file format");
+      return;
     }
   };
 
@@ -135,20 +213,43 @@ export default function UserProfile({ data, getUserData }) {
     <div className="mx-full max-w-md">
       <div className="mx-auto grid items-center justify-center w-[200%]">
         <div
-          className="mx-auto rounded-full bg-cover bg-center w-96 h-96 cursor-pointer"
+          className="mx-auto rounded-full bg-cover bg-center w-96 h-96 cursor-pointer relative"
           style={{ backgroundImage: `url(${imageUrl})` }}
         >
-          <input
-            type="file"
-            ref={fileInpt}
-            onChange={(e) => handleFileChange(e)}
-            className="hidden"
-          />
-          <div
-            className="group rounded-full w-96 h-96 hover:bg-black/30 grid items-center justify-center text-center cursor-pointer"
-            onClick={handleDivClick}
-          >
-            <CgArrowsExchange className="hidden group-hover:block text-4xl z-10 text-white"></CgArrowsExchange>
+          <div className="h-full w-full">
+            <div className={uploading ? "animate-spin" : null}>
+              <input
+                type="file"
+                ref={fileInpt}
+                onChange={(e) => handleFileChange(e)}
+                className="hidden"
+              />
+              <div
+                className={
+                  uploading
+                    ? "group rounded-full w-96 h-96 hover:bg-black/30 bg-black/50 grid items-center justify-center text-center cursor-pointer"
+                    : "group rounded-full w-96 h-96 hover:bg-black/30 grid items-center justify-center text-center cursor-pointer"
+                }
+              >
+                {uploading ? (
+                  <AiOutlineLoading3Quarters className="group-hover:block text-8xl z-20 text-white" />
+                ) : (
+                  <div className="flex">
+                    <CgArrowsExchange
+                      onClick={handleDivClick}
+                      className="hidden group-hover:block text-8xl z-20 text-white"
+                    />
+                    <MdOutlineRemove
+                      onClick={() => {
+                        setUploading(true);
+                        removeImage();
+                      }}
+                      className="hidden group-hover:block text-8xl z-20 text-white"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <h1 className="text-3xl font-bold mx-auto my-10">{data[0].name}</h1>
