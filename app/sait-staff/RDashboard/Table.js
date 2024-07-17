@@ -249,7 +249,7 @@ const Table = ({
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="py-4 px-6 text-center text-gray-500">
+                <td colSpan={6} className="py-4 px-6 text-center text-black bg-white">
                   No restaurants found
                 </td>
               </tr>

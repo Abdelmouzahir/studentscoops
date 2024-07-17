@@ -247,8 +247,7 @@ const Table = ({
                 <>
                   <tr>
                     <td
-                      colSpan="5"
-                      className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center"
+                      colSpan={6} className="py-4 px-6 text-center text-black bg-white"
                     >
                       No data available
                     </td>
