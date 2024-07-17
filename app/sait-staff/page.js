@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import {
   getSaitData,
   getSaitDataByUser,
+  getStudentData,
 } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 import { getAuth, signOut } from "firebase/auth";
@@ -23,9 +24,13 @@ export default function Page() {
   const [userData, setUserData] = useState(null);
   const { user } = useUserAuth();
   const [admin, setAdmin] = useState(null);
+  const [students, setStudents] = useState(null);
 
   const router = useRouter();
 
+  //<<<<<-------------------------------------------------fething related to sait Admin----------------------------------------------------------->>>>>
+
+  //fetching sait admins data
   async function fetchData() {
     getSaitData(async (data) => {
       console.log("data: ", data);
@@ -34,30 +39,38 @@ export default function Page() {
     });
   }
 
-  //getting user data
+  //getting sait user data
   async function fetchSaitStaffUserInformation() {
     const data = await getSaitDataByUser(user);
-    if(data.length > 0 ){
-      if(data[0].active == false || data[0].status == false){
+    if (data.length > 0) {
+      if (data[0].active == false || data[0].status == false) {
         router.push("/");
       }
-    };
+    }
     setUserData(data);
     console.log("default: ", data);
+  }
+
+  //<<<<<-------------------------------------------------fething related to Students----------------------------------------------------------->>>>>
+
+  //fetch students data
+  async function fetchStuddentData() {
+    getStudentData(async (data) => {
+      console.log("data: ", data);
+      setStudents(data);
+    });
   }
 
   useEffect(() => {
     if (user) {
       fetchData();
       fetchSaitStaffUserInformation();
+      fetchStuddentData();
     }
     if (user == false) {
       router.push("/");
     }
   }, [user]);
-  useEffect(() => {
-    console.log("user data changed");
-  }, [userData]);
 
   // function to select the tab
   const handleTabClick = (tabName) => {
@@ -93,7 +106,10 @@ export default function Page() {
         setIsCollapsed={setIsCollapsed}
         onTabClick={handleTabClick}
       />
-      {userData || userData == undefined ? (
+      {userData ||
+      userData == undefined ||
+      students ||
+      students == undefined ? (
         <div
           className={`flex-1 flex flex-col mx-auto transition-all duration-300 ease-in-out ${
             isCollapsed ? "ml-20" : "ml-64"
@@ -123,9 +139,17 @@ export default function Page() {
           </div>
           <div className="flex-1 p-6">
             {/* select the tab based on the click */}
-            {activeTab === "student" && <SDashboard />}
+            {activeTab === "student" && <SDashboard studentData={students} />}
             {activeTab === "restaurant" && <RDashboard />}
-            {activeTab === "home" && <Dash adminData={admin} fetchData={fetchData} fetchDataByUser={fetchSaitStaffUserInformation} data={userData}/>}
+            {activeTab === "home" && (
+              <Dash
+                adminData={admin}
+                fetchData={fetchData}
+                fetchDataByUser={fetchSaitStaffUserInformation}
+                data={userData}
+                students={students}
+              />
+            )}
             {activeTab === "setting" && (
               <Settings
                 data={userData}

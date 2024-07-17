@@ -122,6 +122,7 @@ const Table = ({
               <th className="py-4 px-6">Last Name</th>
               <th className="py-4 px-6">Email</th>
               <th className="py-4 px-6">Phone Number</th>
+              <th className="py-4 px-6">createdAt</th>
               <th className="py-4 px-6">Actions</th>
             </tr>
           </thead>
@@ -139,6 +140,19 @@ const Table = ({
                   <td className="py-4 px-6 text-center">{student.email}</td>
                   <td className="py-4 px-6 text-center">
                     {formatPhoneNumber(student.phoneNumber)}
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <p
+                      className={
+                        student.accountCreated
+                          ? "text-gray-900 whitespace-no-wrap"
+                          : "text-gray-900 whitespace-no-wrap animate-pulse"
+                      }
+                    >
+                      {student.accountCreated
+                        ? student.accountCreated.toDate().toDateString()
+                        : "Loading..."}
+                    </p>
                   </td>
                   <td className="py-4 px-6 text-center">
                     <div className="flex justify-center space-x-2">
