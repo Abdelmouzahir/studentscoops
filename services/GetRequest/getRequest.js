@@ -10,27 +10,22 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
 
-
-
-
-
 //<<<-----------------------------------------------------------------Sait-staff------------------------------------------------------------------>>>>
 
 //--------------------------------------------------------Sait-staff for sait-staff home page---------------------------------------------------------
 
 //get sait data for user profile
-export async function getSaitDataByUser(uid){
-  try{
-    const q = query(collection(db, "saitStaff"),where("uid","==",uid));
+export async function getSaitDataByUser(uid) {
+  try {
+    const q = query(collection(db, "saitStaff"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
     const saitItems = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
     return saitItems;
-  }
-  catch(error){
+  } catch (error) {
     console.error("Error getting sait information: ", error);
-    return {status:false};
+    return { status: false };
   }
 }
 
@@ -41,7 +36,7 @@ export function getSaitData(onChange) {
     onSnapshot(saitCollection, (saitItems) => {
       const saitStaff = saitItems.docs.map((doc) => {
         console.log("getting sait staff ", doc.data());
-        return { id: doc.id,...doc.data() };
+        return { id: doc.id, ...doc.data() };
       });
       console.log("information: ", saitStaff);
       onChange(saitStaff);
@@ -52,13 +47,6 @@ export function getSaitData(onChange) {
   }
 }
 
-
-
-
-
-
-
-
 //----------------------------------------------------get students data for sait staff home page-----------------------------------------------------
 
 //get all students data
@@ -68,7 +56,7 @@ export function getStudentData(onChange) {
     onSnapshot(studentCollection, (students) => {
       const studentData = students.docs.map((doc) => {
         console.log("getting students:  ", doc.data());
-        return { id: doc.id,...doc.data() };
+        return { id: doc.id, ...doc.data() };
       });
       console.log("information: ", studentData);
       onChange(studentData);
@@ -78,14 +66,6 @@ export function getStudentData(onChange) {
     onChange([]);
   }
 }
-
-
-
-
-
-
-
-
 
 //----------------------------------------------------get restaurant data for sait staff home page-----------------------------------------------------
 
@@ -97,7 +77,7 @@ export function getRestaurantData(onChange) {
     onSnapshot(restaurantCollection, (restaurants) => {
       const restaurantData = restaurants.docs.map((doc) => {
         console.log("getting restaurants:  ", doc.data());
-        return { id: doc.id,...doc.data() };
+        return { id: doc.id, ...doc.data() };
       });
       console.log("information: ", restaurantData);
       onChange(restaurantData);
@@ -107,57 +87,22 @@ export function getRestaurantData(onChange) {
     onChange([]);
   }
 }
-
-//getting restaurant data for sait staff home page
-
-export function getRestaurantData(onChange) {
-  try {
-    const restaurantCollection = query(collection(db, "restaurants"));
-    onSnapshot(restaurantCollection, (restaurants) => {
-      const restaurantData = restaurants.docs.map((doc) => {
-        console.log("getting restaurants:  ", doc.data());
-        return { id: doc.id,...doc.data() };
-      });
-      console.log("information: ", restaurantData);
-      onChange(restaurantData);
-    });
-  } catch (error) {
-    console.error("Error getting restaurant information: ", error);
-    onChange([]);
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
 
-
 // get restaurant data for user as restaurant
 
-export async function getRestaurantDataByOwner(uid){
-  try{
-    const q = query(collection(db, "restaurants"),where("uid","==",uid));
+export async function getRestaurantDataByOwner(uid) {
+  try {
+    const q = query(collection(db, "restaurants"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
     const saitItems = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
     return saitItems;
-  }
-  catch(error){
+  } catch (error) {
     console.error("Error getting sait information: ", error);
-    return {status:false};
+    return { status: false };
   }
 }
 
@@ -165,11 +110,14 @@ export async function getRestaurantDataByOwner(uid){
 
 export function getRestaurantMenuByOwner(onChange, user) {
   try {
-    const restaurantCollection = query(collection(db, "restaurant_menu"),where("uid","==",user));
+    const restaurantCollection = query(
+      collection(db, "restaurant_menu"),
+      where("uid", "==", user)
+    );
     onSnapshot(restaurantCollection, (restaurants) => {
       const restaurantData = restaurants.docs.map((doc) => {
         console.log("getting restaurants:  ", doc.data());
-        return { id: doc.id,...doc.data() };
+        return { id: doc.id, ...doc.data() };
       });
       console.log("information: ", restaurantData);
       onChange(restaurantData);
@@ -180,23 +128,14 @@ export function getRestaurantMenuByOwner(onChange, user) {
   }
 }
 
-
-
-
-
-
-
-
 //<<<-----------------------------------------------------------------Restaurant && Students------------------------------------------------------------------>>>>
-
-
-
-
-
 
 export async function getStudentInformation(userId) {
   try {
-    const colRef = collection((db, "students",userId),where("active","==",true));
+    const colRef = collection(
+      (db, "students", userId),
+      where("active", "==", true)
+    );
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       snapshot.forEach((doc) => {});
     });
@@ -209,8 +148,7 @@ export async function getStudentInformation(userId) {
 
 export async function getAllStudentsInformation() {
   try {
-    
-    const q = query((collection(db, "students")),where("active",'==',true));
+    const q = query(collection(db, "students"), where("active", "==", true));
     const querySnapshot = await getDocs(q);
     const studentItems = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -225,7 +163,7 @@ export async function getAllStudentsInformation() {
 //get restaurant data for sait staff
 export async function getRestaurantInformation() {
   try {
-    const q = query(collection(db, "restaurants"), where("active",'==',true));
+    const q = query(collection(db, "restaurants"), where("active", "==", true));
     const querySnapshot = await getDocs(q);
     const userItems = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
@@ -239,7 +177,11 @@ export async function getRestaurantInformation() {
 // get restaurant data for user as restaurant
 export async function getRestaurantInformationByUser(user) {
   try {
-    const q = query(collection(db, "restaurants"), where("uid", "==", user),where('active',"==",true));
+    const q = query(
+      collection(db, "restaurants"),
+      where("uid", "==", user),
+      where("active", "==", true)
+    );
     const querySnapshot = await getDocs(q);
     const userItems = querySnapshot.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
@@ -255,11 +197,11 @@ export async function getMenuInformation(userId) {
     const q = query(
       collection(db, "restaurant_menu"),
       where("userId", "==", userId),
-      orderBy("createdAt",'desc') // Add this line
+      orderBy("createdAt", "desc") // Add this line
     );
     const querySnapshot = await getDocs(q);
     const userItems = querySnapshot.docs.map((doc) => {
-      return { id: doc.id,...doc.data() };
+      return { id: doc.id, ...doc.data() };
     });
     return userItems;
   } catch (error) {
