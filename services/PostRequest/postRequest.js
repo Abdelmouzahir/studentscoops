@@ -398,6 +398,7 @@ export async function addRestaurantInformation(
   );
 }
 
+
 export default async function addStudentEmailStatus(prop) {
   let { email, active } = prop;
   let data = { studentEmail: email, active: active };
