@@ -16,7 +16,7 @@ import { getDownloadURL, ref, listAll } from "firebase/storage";
 
 //<<<-----------------------------------------------------------------Sait-staff------------------------------------------------------------------>>>>
 
-//---------------------------------------------------------Sait-staff for sait-staff home page----------------------------------------------------------
+//--------------------------------------------------------Sait-staff for sait-staff home page---------------------------------------------------------
 
 //get sait data for user profile
 export async function getSaitDataByUser(uid){

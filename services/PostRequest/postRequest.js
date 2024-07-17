@@ -20,7 +20,31 @@ import {
 import { deleteUser } from "firebase/auth";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
-// students
+
+
+
+
+
+//<<<-----------------------------------------------------------------Sait-staff------------------------------------------------------------------>>>>
+
+//--------------------------------------------------------post students data for sait staff home page---------------------------------------------------------
+
+
+//To update the student data of sait staff
+export async function updateStudent(id, prop) {
+  try {
+    const docRef = doc(db, "students", id);
+    await updateDoc(docRef, prop);
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
+
+
+
+
+
+
 
 // to add student information in database
 export async function addStudentInformation(userId, userInformation, email) {
@@ -224,14 +248,6 @@ export async function updateRestaurantData(id, name, address) {
 //     const docRef = doc(db,rest)
 //   }
 // }
-export async function updateStudent(id, prop) {
-  try {
-    const docRef = doc(db, "students", id);
-    await updateDoc(docRef, prop);
-  } catch (error) {
-    console.error("Error updating document: ", error);
-  }
-}
 // to update status of sait staff employee
 export async function updateSaitEmployeeStatus(id, active) {
   try {

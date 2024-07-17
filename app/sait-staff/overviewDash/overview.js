@@ -37,19 +37,29 @@ const Overview = ({ studentData }) => {
     if (studentData) {
       if (studentData.length > 0) {
         setTotalNumberStudent(studentData.length);
-        studentData.map((student) => {
+  
+        // Temporary counters
+        let activeCount = 0;
+        let createdInLast7DaysCount = 0;
+        let notActiveCount = 0;
+  
+        studentData.forEach((student) => {
           if (student.active) {
-            setStudentActive(prevStudents => prevStudents + 1);
+            activeCount += 1;
           }
           if (student.accountCreated.toDate() >= dateBefore7Days) {
             console.log("student created in last 7 days: ", student);
-            setStudents(prevStudents => prevStudents + 1);
+            createdInLast7DaysCount += 1;
           }
-
-          if (student.active == false) {
-            setStudentNotActive(prevStudents => prevStudents + 1);
+          if (!student.active) {
+            notActiveCount += 1;
           }
         });
+  
+        // Update state with the calculated counts
+        setStudentActive(activeCount);
+        setStudents(createdInLast7DaysCount);
+        setStudentNotActive(notActiveCount);
       }
     }
   }, [studentData]);

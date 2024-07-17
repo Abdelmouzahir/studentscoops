@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LuPencil, LuTrash } from "react-icons/lu";
+import { LuPencil } from "react-icons/lu";
 import { BsEnvelopeAtFill } from "react-icons/bs";
 import { IoMdPersonAdd } from "react-icons/io";
 import Modal from "@/components/Modal";
@@ -22,7 +22,6 @@ const Table = ({
   const [isActive, setIsActive] = useState(null);
   const [email, setEmail] = useState("");
   const [docId, setDocId] = useState("");
-  const [createdAt, setCreatedAt] = useState("");
   const [users, setUsers] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [uid, setUid] = useState("");
@@ -167,7 +166,7 @@ const Table = ({
                           <div className="flex-shrink-0 w-10 h-10">
                             <img
                               className="w-full h-full rounded-full"
-                              src={user.imageUrl}
+                              src={user.imageUrl? user.imageUrl: "/assets/images/UserDefaultSaitStaff.png"}
                               alt=""
                             />
                           </div>
@@ -178,17 +177,17 @@ const Table = ({
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         <p className="text-gray-900 whitespace-no-wrap">
                           {user.email}
                         </p>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         <p className="text-gray-900 whitespace-no-wrap">
                           {user.role}
                         </p>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         <p
                           className={
                             user.accountCreated
@@ -201,7 +200,7 @@ const Table = ({
                             : "Loading..."}
                         </p>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
                         <span
                           onClick={() => {
                             setIsVisisble(true);
@@ -220,7 +219,7 @@ const Table = ({
                           </span>
                         </span>
                       </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm grid grid-cols-2 gap-3 justify-stretch w-full">
+                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm grid grid-cols-2 gap-3 justify-stretch w-full text-center">
                         <button
                           onClick={() => handleEdit(user)}
                           className="inline-flex items-center mr-2 justify-center rounded-md bg-green-900 px-4 py-2 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-green-800 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-green-900 dark:hover:bg-gray-200 dark:focus-visible:ring-gray-300"
@@ -234,6 +233,7 @@ const Table = ({
                             setIsDeleteModal(true);
                             setDocId(user.id);
                             setUid(user.uid);
+                            setEmail(user.email);
                           }}
                         >
                           Delete
