@@ -4,21 +4,14 @@ import { formatPhoneNumber } from "@/Constant/formated";
 import Swal from "sweetalert2";
 import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "@/app/firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { existingStudentData } from "@/services/PostRequest/postRequest";
 
-const Add = ({ students, setStudents, setIsAdding }) => {
+const Add = ({ setStudents, setIsAdding }) => {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const currentDate = new Date();
-
-  const day = currentDate.getDate();
-  const month = currentDate.getMonth(); // Remember, month is zero-indexed
-  const year = currentDate.getFullYear();
-
-  const newDate = [day, month, year];
+  const currentDate = new Date(); //current date of system
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -41,36 +34,43 @@ const Add = ({ students, setStudents, setIsAdding }) => {
       });
     }
     let firstName = name.split(" ");
+
+    //generic password will be first name of student or restaurant + last three digits of mobile number + "!"
+    // like student name :- Moiz Khan mobilenumber :- 1234567890, so the password will be Moiz890!
+    // by this the password will bw different for every one and they can change it on forget password
+
     let genericPassword = firstName[0] + phoneNumber.slice(-3).concat("!");
     console.log(genericPassword);
 
     // Add student to Firestore
-    
+
     try {
       // Create user in Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        genericPassword
-      );
-      const user = userCredential.user;
-      const newStudent = {
-      name,
-      lastName,
-      email,
-      phoneNumber,
-      uid: user.uid,
-      acountCreated: newDate,
-      active: true,
-    };
-
-
-      await addDoc(collection(db, "students"), {
-        ...newStudent,
+      const path = "/api/createUser";
+      const displayName = name + "-" + lastName;
+      const res = await fetch(`${path}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password: genericPassword, displayName }),
       });
+      const data = await res.json();
+      if (data) {
+        const newStudent = {
+          name,
+          lastName,
+          email,
+          phoneNumber,
+          uid: data.uid,
+          accountCreated: currentDate,
+          active: true,
+        };
 
-      // Update local state
-      setStudents((prevStudents) => [...prevStudents, newStudent]);
+        await addDoc(collection(db, "students"), {
+          ...newStudent,
+        });
+      }
       setIsAdding(false);
 
       Swal.fire({
@@ -90,9 +90,9 @@ const Add = ({ students, setStudents, setIsAdding }) => {
           name,
           lastName,
           email,
-          phoneNumber
+          phoneNumber,
         };
-        console.log('email: ',email)
+        console.log("email: ", email);
         //function to change active state from false to true
         await existingStudentData(email);
         Swal.fire({

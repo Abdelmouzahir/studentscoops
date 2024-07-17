@@ -10,6 +10,113 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, listAll } from "firebase/storage";
 
+
+
+
+
+//<<<-----------------------------------------------------------------Sait-staff------------------------------------------------------------------>>>>
+
+//---------------------------------------------------------Sait-staff for sait-staff home page----------------------------------------------------------
+
+//get sait data for user profile
+export async function getSaitDataByUser(uid){
+  try{
+    const q = query(collection(db, "saitStaff"),where("uid","==",uid));
+    const querySnapshot = await getDocs(q);
+    const saitItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return saitItems;
+  }
+  catch(error){
+    console.error("Error getting sait information: ", error);
+    return {status:false};
+  }
+}
+
+// get sait data for sait staff home page
+export function getSaitData(onChange) {
+  try {
+    const saitCollection = collection(db, "saitStaff");
+    onSnapshot(saitCollection, (saitItems) => {
+      const saitStaff = saitItems.docs.map((doc) => {
+        console.log("getting sait staff ", doc.data());
+        return { id: doc.id,...doc.data() };
+      });
+      console.log("information: ", saitStaff);
+      onChange(saitStaff);
+    });
+  } catch (error) {
+    console.error("Error getting sait information: ", error);
+    onChange([]);
+  }
+}
+
+
+
+
+
+
+
+
+//----------------------------------------------------get students data for sait staff home page-----------------------------------------------------
+
+//get all students data
+export function getStudentData(onChange) {
+  try {
+    const studentCollection = query(collection(db, "students"));
+    onSnapshot(studentCollection, (students) => {
+      const studentData = students.docs.map((doc) => {
+        console.log("getting students:  ", doc.data());
+        return { id: doc.id,...doc.data() };
+      });
+      console.log("information: ", studentData);
+      onChange(studentData);
+    });
+  } catch (error) {
+    console.error("Error getting student information: ", error);
+    onChange([]);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export async function getStudentInformation(userId) {
   try {
     const colRef = collection((db, "students",userId),where("active","==",true));
@@ -80,38 +187,6 @@ export async function getMenuInformation(userId) {
     return userItems;
   } catch (error) {
     return [];
-  }
-}
-// get sait data for sait staff home page
-export function getSaitData(onChange) {
-  try {
-    const saitCollection = collection(db, "saitStaff");
-    onSnapshot(saitCollection, (saitItems) => {
-      const saitStaff = saitItems.docs.map((doc) => {
-        console.log("getting sait staff ", doc.data());
-        return { id: doc.id,...doc.data() };
-      });
-      console.log("information: ", saitStaff);
-      onChange(saitStaff);
-    });
-  } catch (error) {
-    console.error("Error getting sait information: ", error);
-    onChange([]);
-  }
-}
-//get sait data for user profile
-export async function getSaitDataByUser(uid){
-  try{
-    const q = query(collection(db, "saitStaff"),where("uid","==",uid));
-    const querySnapshot = await getDocs(q);
-    const saitItems = querySnapshot.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
-    });
-    return saitItems;
-  }
-  catch(error){
-    console.error("Error getting sait information: ", error);
-    return {status:false};
   }
 }
 
