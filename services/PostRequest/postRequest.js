@@ -27,6 +27,50 @@ import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
 //<<<-----------------------------------------------------------------Sait-staff------------------------------------------------------------------>>>>
 
+//--------------------------------------------------------post admin data for sait staff home page---------------------------------------------------------
+
+
+// to update status of sait staff employee
+export async function updateSaitEmployeeStatus(id, active) {
+  try {
+    const docRef = doc(db, "saitStaff", id);
+    await updateDoc(docRef, {
+      active: !active,
+    });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
+
+
+//function to delete sait staff user from admin
+export async function deleteSaitUserFromAdmin(docId,uid) {
+  try {
+    await deleteDoc(doc(db, "saitStaff", docId)).then(async () => {
+      //delete user folder from storage
+      const storage = getStorage();
+      const folderRef = ref(storage, `Saitstaff/${uid}`);
+
+      const deleteFolder = async (folderRef) => {
+        const res = await listAll(folderRef);
+        for (const itemRef of res.items) {
+          await deleteObject(itemRef);
+        }
+
+        for (const subfolderRef of res.prefixes) {
+          await deleteFolder(subfolderRef);
+        }
+      };
+
+      await deleteFolder(folderRef);
+    });
+  } catch (error) {
+    console.error("Error while deleting user:", error);
+  }
+}
+
+
+
 //--------------------------------------------------------post students data for sait staff home page---------------------------------------------------------
 
 
@@ -37,6 +81,44 @@ export async function updateStudent(id, prop) {
     await updateDoc(docRef, prop);
   } catch (error) {
     console.error("Error updating document: ", error);
+  }
+}
+
+// to update student status by sait staff
+export async function updateSaitStudentStatus(id, active) {
+  try {
+    const docRef = doc(db, "students", id);
+    await updateDoc(docRef, {
+      active: !active,
+    });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
+
+//function to delete sait staff user from admin
+export async function deleteStudentsFromAdmin(docId,uid) {
+  try {
+    await deleteDoc(doc(db, "students", docId)).then(async () => {
+      //delete user folder from storage
+      const storage = getStorage();
+      const folderRef = ref(storage, `students/${uid}`);
+
+      const deleteFolder = async (folderRef) => {
+        const res = await listAll(folderRef);
+        for (const itemRef of res.items) {
+          await deleteObject(itemRef);
+        }
+
+        for (const subfolderRef of res.prefixes) {
+          await deleteFolder(subfolderRef);
+        }
+      };
+
+      await deleteFolder(folderRef);
+    });
+  } catch (error) {
+    console.error("Error while deleting user:", error);
   }
 }
 
@@ -248,17 +330,6 @@ export async function updateRestaurantData(id, name, address) {
 //     const docRef = doc(db,rest)
 //   }
 // }
-// to update status of sait staff employee
-export async function updateSaitEmployeeStatus(id, active) {
-  try {
-    const docRef = doc(db, "saitStaff", id);
-    await updateDoc(docRef, {
-      active: !active,
-    });
-  } catch (error) {
-    console.error("Error updating document: ", error);
-  }
-}
 
 export async function existingStudentData(email) {
   try {
@@ -393,28 +464,3 @@ export async function deleteSaitUser(currentUser, docId) {
   }
 }
 
-//function to delete sait staff user from admin
-export async function deleteSaitUserFromAdmin(docId) {
-  try {
-    await deleteDoc(doc(db, "saitStaff", docId)).then(async () => {
-      //delete user folder from storage
-      const storage = getStorage();
-      const folderRef = ref(storage, `Saitstaff/${uid}`);
-
-      const deleteFolder = async (folderRef) => {
-        const res = await listAll(folderRef);
-        for (const itemRef of res.items) {
-          await deleteObject(itemRef);
-        }
-
-        for (const subfolderRef of res.prefixes) {
-          await deleteFolder(subfolderRef);
-        }
-      };
-
-      await deleteFolder(folderRef);
-    });
-  } catch (error) {
-    console.error("Error while deleting user:", error);
-  }
-}

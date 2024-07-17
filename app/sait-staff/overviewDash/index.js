@@ -55,11 +55,12 @@ export default function Dash({ fetchData, fetchDataByUser, data, adminData, stud
   //handle to delte user form auth,storage and firestore
   const handleDelete = async (uid, docId) => {
     // Handle delete logic
-    if (uid && docId) {
+    if (uid && docId && userData) {
       if (user === uid) {
         alert("You can't delete your own account");
         return;
       }
+      console.log('role: ',userData[0].role);
       if (userData[0].role === "Admin" || userData[0].role === "Editor") {
         try {
           const res = await fetch("api/deleteUser", {
@@ -73,7 +74,7 @@ export default function Dash({ fetchData, fetchDataByUser, data, adminData, stud
           const data = await res.json();
           console.log("data: ", data);
           if (data.message === "User has been deleted") {
-            await deleteSaitUserFromAdmin(docId).then(()=>{
+            await deleteSaitUserFromAdmin(docId,uid).then(()=>{
               alert("User has been deleted");
             })
           }

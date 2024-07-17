@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { LuPencil } from "react-icons/lu";
 import { PiStudentBold } from "react-icons/pi";
@@ -25,6 +25,7 @@ const Table = ({
   const [email, setEmail] = useState("");
   const [docId, setDocId] = useState("");
   const [uid, setUid] = useState("");
+  const [filteredStudents, setFilteredStudents] = useState(null);
 
   function formatPhoneNumber(phoneNumberString) {
     const cleaned = ("" + phoneNumberString).replace(/\D/g, "");
@@ -35,20 +36,25 @@ const Table = ({
     return phoneNumberString;
   }
 
-  const filteredStudents =
-    students && students.length > 0
-      ? students.filter((student) => {
-          const term = searchTerm.toLowerCase();
-          if (searchCriteria === "name") {
-            return student.name.toLowerCase().includes(term);
-          } else if (searchCriteria === "email") {
-            return student.email.toLowerCase().includes(term);
-          } else if (searchCriteria === "phone") {
-            return student.phoneNumber.includes(term);
-          }
-          return false;
-        })
-      : [];
+  useEffect(() => {
+    if (students) {
+      setFilteredStudents(
+        students && students.length > 0
+          ? students.filter((student) => {
+              const term = searchTerm.toLowerCase();
+              if (searchCriteria === "name") {
+                return student.name.toLowerCase().includes(term);
+              } else if (searchCriteria === "email") {
+                return student.email.toLowerCase().includes(term);
+              } else if (searchCriteria === "phone") {
+                return student.phoneNumber.includes(term);
+              }
+              return false;
+            })
+          : []
+      );
+    }
+  }, [students]);
 
   return (
     <div className="container mx-auto mt-8 p-4 rounded-lg ">

@@ -139,7 +139,7 @@ export default function Page() {
           </div>
           <div className="flex-1 p-6">
             {/* select the tab based on the click */}
-            {activeTab === "student" && <SDashboard studentData={students} />}
+            {activeTab === "student" && <SDashboard studentData={students} userData={userData}/>}
             {activeTab === "restaurant" && <RDashboard />}
             {activeTab === "home" && (
               <Dash
