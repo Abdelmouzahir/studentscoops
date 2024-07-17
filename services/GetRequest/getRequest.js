@@ -87,9 +87,26 @@ export function getStudentData(onChange) {
 
 
 
+//----------------------------------------------------get restaurant data for sait staff home page-----------------------------------------------------
 
+//getting restaurant data for sait staff home page
 
-
+export function getRestaurantData(onChange) {
+  try {
+    const restaurantCollection = query(collection(db, "restaurants"));
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        console.log("getting restaurants:  ", doc.data());
+        return { id: doc.id,...doc.data() };
+      });
+      console.log("information: ", restaurantData);
+      onChange(restaurantData);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
 
 
 

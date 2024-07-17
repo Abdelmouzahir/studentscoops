@@ -19,7 +19,7 @@ function NumberChange({ n }) {
   });
   return <animated.div>{number.to((n) => n.toFixed(0))}</animated.div>;
 }
-const Overview = ({ studentData }) => {
+const Overview = ({ studentData, restaurantData }) => {
   const [totalNumberStudent, setTotalNumberStudent] = useState(0);
   const [studentActive, setStudentActive] = useState(0);
   const [studentNotActive, setStudentNotActive] = useState(0);
@@ -37,12 +37,12 @@ const Overview = ({ studentData }) => {
     if (studentData) {
       if (studentData.length > 0) {
         setTotalNumberStudent(studentData.length);
-  
+
         // Temporary counters
         let activeCount = 0;
         let createdInLast7DaysCount = 0;
         let notActiveCount = 0;
-  
+
         studentData.forEach((student) => {
           if (student.active) {
             activeCount += 1;
@@ -55,7 +55,7 @@ const Overview = ({ studentData }) => {
             notActiveCount += 1;
           }
         });
-  
+
         // Update state with the calculated counts
         setStudentActive(activeCount);
         setStudents(createdInLast7DaysCount);
@@ -63,6 +63,37 @@ const Overview = ({ studentData }) => {
       }
     }
   }, [studentData]);
+
+  useEffect(() => {
+    if (restaurantData) {
+      if (restaurantData.length > 0) {
+        setTotalNumberRestaurant(restaurantData.length);
+
+        // Temporary counters
+        let activeCount = 0;
+        let createdInLast7DaysCount = 0;
+        let notActiveCount = 0;
+
+        restaurantData.forEach((restarant) => {
+          if (restarant.active) {
+            activeCount += 1;
+          }
+          if (restarant.accountCreated.toDate() >= dateBefore7Days) {
+            console.log("student created in last 7 days: ", restarant);
+            createdInLast7DaysCount += 1;
+          }
+          if (!restarant.active) {
+            notActiveCount += 1;
+          }
+        });
+
+        // Update state with the calculated counts
+        setRestaurantActive(activeCount);
+        setRestaurants(createdInLast7DaysCount);
+        setRestaurantNotActive(notActiveCount);
+      }
+    }
+  }, [restaurantData]);
 
   return (
     <div className="flex justify-between flex-wrap">
@@ -76,7 +107,6 @@ const Overview = ({ studentData }) => {
         }
         text="in The last 7 days"
       />
-      {/*
       <Card
         title="New Restaurants"
         value={restaurants}
@@ -87,6 +117,7 @@ const Overview = ({ studentData }) => {
         }
         text="in The last 7 days"
       />
+
       <Card
         title="Transactions rate"
         value={<NumberChange n={256} />}
@@ -94,7 +125,7 @@ const Overview = ({ studentData }) => {
         change="Overflow"
         changeType="increase"
         text="Based on site Data"
-      /> */}
+      />
     </div>
   );
 };

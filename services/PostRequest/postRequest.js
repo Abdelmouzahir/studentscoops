@@ -96,7 +96,7 @@ export async function updateSaitStudentStatus(id, active) {
   }
 }
 
-//function to delete sait staff user from admin
+//function to delete sait staff student from admin
 export async function deleteStudentsFromAdmin(docId,uid) {
   try {
     await deleteDoc(doc(db, "students", docId)).then(async () => {
@@ -123,6 +123,61 @@ export async function deleteStudentsFromAdmin(docId,uid) {
 }
 
 
+
+
+
+
+
+//--------------------------------------------------------post restaurants data for sait staff home page---------------------------------------------------------
+
+
+// to update restaurant status by sait staff
+export async function updateSaitRestaurantStatus(id, active) {
+  try {
+    const docRef = doc(db, "restaurants", id);
+    await updateDoc(docRef, {
+      active: !active,
+    });
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
+
+//function to delete restaurant user from admin
+export async function deleteRestaurantsFromAdmin(docId,uid) {
+  try {
+    await deleteDoc(doc(db, "restaurants", docId)).then(async () => {
+      //delete user folder from storage
+      const storage = getStorage();
+      const folderRef = ref(storage, `restaurants/${uid}`);
+
+      const deleteFolder = async (folderRef) => {
+        const res = await listAll(folderRef);
+        for (const itemRef of res.items) {
+          await deleteObject(itemRef);
+        }
+
+        for (const subfolderRef of res.prefixes) {
+          await deleteFolder(subfolderRef);
+        }
+      };
+
+      await deleteFolder(folderRef);
+    });
+  } catch (error) {
+    console.error("Error while deleting user:", error);
+  }
+}
+
+//To update the restaurant data of sait staff
+export async function updateRestaurant(id, prop) {
+  try {
+    const docRef = doc(db, "restaurants", id);
+    await updateDoc(docRef, prop);
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+}
 
 
 

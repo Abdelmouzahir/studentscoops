@@ -3,23 +3,16 @@ import React, { useState } from "react";
 import { formatPhoneNumber } from "@/Constant/formated";
 import Swal from "sweetalert2";
 
-import { auth } from "@/app/firebase/config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { addRestaurant } from "@/services/RealTimeDatabase/postData/postData";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/app/firebase/config";
 
-const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
+const Add = ({ setRestaurants, setIsAdding }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
+  const currentDate = new Date(); //current date of system
 
-  const currentDate = new Date();
-
-  const day = currentDate.getDate();
-  const month = currentDate.getMonth(); // Remember, month is zero-indexed
-  const year = currentDate.getFullYear();
-
-  const newDate = [day, month, year];
   let firstWord = name.split(" ");
 
   //generic password will be first name of student or restaurant + last three digits of mobile number + "!"
@@ -42,31 +35,30 @@ const Add = ({ restaurants, setRestaurants, setIsAdding, getRestaurants }) => {
     try {
       console.log("geneic password: ", genericPassword);
       // Create user in Firebase Authentication
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        genericPassword
-      ).then((userCredential) => {return userCredential.user}).then(async(user)=>{
-        const newRestaurant = {
+      const path = "/api/createUser";
+      const displayName = name;
+      const res = await fetch(`${path}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password: genericPassword, displayName }),
+      });
+      const data = await res.json();
+      const newRestaurant = {
         name,
         email,
         phoneNumber,
+        uid: data.uid,
         address,
-        uid:user.uid
+        accountCreated: currentDate,
+        active: true,
+        imageUrl: null,
       };
-      await addRestaurant({ restaurant: newRestaurant });
-      })
-
-      // Add restaurant to Firestore
-      
-
-      //await addRestaurant({ restaurant: newRestaurant });
-
-      // Update local state
-      restaurants.push(newRestaurant);
-      setRestaurants(restaurants);
+      await addDoc(collection(db, "restaurants"), {
+        ...newRestaurant,
+      });
       setIsAdding(false);
-      getRestaurants();
 
       Swal.fire({
         icon: "success",

@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import { formatPhoneNumber} from "@/Constant/formated"
 import Swal from 'sweetalert2';
 
-import {  doc, setDoc } from "firebase/firestore";
-import { db } from '@/app/firebase/config'
+import { updateRestaurant } from '@/services/PostRequest/postRequest';
 
-const Edit = ({ restaurants, selectedRestaurant, setRestaurants, setIsEditing, getRestaurants }) => {
+const Edit = ({ selectedRestaurant, setIsEditing}) => {
   const id = selectedRestaurant.id;
 
   const [name, setName] = useState(selectedRestaurant.name);
   const [email, setEmail] = useState(selectedRestaurant.email);
-  const [mobileNumber, setMobileNumber] = useState(selectedRestaurant.mobileNumber);
+  const [phoneNumber, setPhoneNumber] = useState(selectedRestaurant.phoneNumber);
+  const [address, setAddress] = useState(selectedRestaurant.address);
   
 
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (!name ||  !email || !mobileNumber ) {
+    if (!name ||  !email || !phoneNumber || !address ) {
       return Swal.fire({
         icon: 'error',
         title: 'Error!',
@@ -25,26 +25,21 @@ const Edit = ({ restaurants, selectedRestaurant, setRestaurants, setIsEditing, g
       });
     }
 
-    const restaurant = {
-      id,
-      name,
-      email,
-      mobileNumber,
-    
+    const updateData = {
+      ...(name && { name }),
+      ...(email && { email }),
+      ...(phoneNumber && { phoneNumber }),
+      ...(address && { address })
     };
 
 
-    await setDoc(doc(db, "restaurants", id), {
-      ...restaurant
-    });
-    setRestaurants(restaurants);
+    await updateRestaurant(id, updateData);
     setIsEditing(false);
-    getRestaurants();
 
     Swal.fire({
       icon: 'success',
       title: 'Updated!',
-      text: `${restaurant.name}'s data has been updated.`,
+      text: `${name}'s data has been updated.`,
       showConfirmButton: false,
       timer: 1500,
     });
@@ -83,8 +78,19 @@ const Edit = ({ restaurants, selectedRestaurant, setRestaurants, setIsEditing, g
             id="phone"
             type="text"
             name="phone"
-            value={mobileNumber}
-            onChange={e => setMobileNumber(formatPhoneNumber(e.target.value))}
+            value={phoneNumber}
+            onChange={e => setPhoneNumber(formatPhoneNumber(e.target.value))}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          />
+        </div>
+        <div>
+          <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+          <input
+            id="address"
+            type="text"
+            name="address"
+            value={address}
+            onChange={e => setAddress(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           />
         </div>
