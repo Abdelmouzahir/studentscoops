@@ -329,7 +329,6 @@ export async function updateRestaurantData(id, name, address) {
 //   try{
 //     const docRef = doc(db,rest)
 //   }
-// }
 
 export async function existingStudentData(email) {
   try {
