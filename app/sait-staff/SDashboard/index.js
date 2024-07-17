@@ -24,7 +24,9 @@ const Dashboard = ({ studentData }) => {
     setIsEditing(true);
   };
 
-  const handleDelete = (id) => {
+  const handleChangeStatus = async (docId, isActive, uid)=>{}
+
+  const handleDelete = async(uid, docId) => {
 
   };
 
@@ -43,6 +45,7 @@ const Dashboard = ({ studentData }) => {
                     setIsAdding={setIsAdding}
                     search={search}
                     setSearch={setSearch}
+                    handleChangeStatus={handleChangeStatus}
                   />
                 </>
               )}
