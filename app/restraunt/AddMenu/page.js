@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useUserAuth } from "@/services/utils";
 import { useRouter } from "next/navigation";
 import { addRestaurantMenu } from "@/services/PostRequest/postRequest";
-import { addMenu } from "@/services/RealTimeDatabase/postData/postData";
 import {
   Card,
   CardHeader,

@@ -3,13 +3,11 @@ import { Fragment, useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
-import { getRestaurantDataByOwner } from "@/services/GetRequest/getRequest";
-import Loading from "@/app/loading"; 
-import { getRestaurantDataForOwner } from "@/services/RealTimeDatabase/getData/getData";
+import { getRestaurantDataForLogin } from "@/services/GetRequest/getRequest";
+import Loading from "@/app/loading";
 
 const sign_in = () => {
   const [email, setEmail] = useState("");
@@ -24,13 +22,17 @@ const sign_in = () => {
   const handleSignIn = () => {
     setLoading(true);
     signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {if(userCredential){
-        const user = userCredential.user;
-        return user.uid
-      }})
+      .then((userCredential) => {
+        if (userCredential) {
+          const user = userCredential.user;
+          console.log("user: ", user);
+          return user.uid;
+        }
+      })
       .then(async (uid) => {
         console.log("uid: ", uid);
-        const login = await getRestaurantDataByOwner(uid);
+        if(!uid){setLoginError("Please try again");setLoading(false); return;}
+        const login = await getRestaurantDataForLogin(uid);
         console.log("login: ", login);
         if (login.length <= 0) {
           setLoginError("You are not authorized to access this website.");
@@ -67,7 +69,7 @@ const sign_in = () => {
         setShowModal(false);
         router.push("sign-in/afterResetPassword");
       })
-      .catch((err) => { 
+      .catch((err) => {
         console.log(err);
         setEmailError("Failed to send password reset email"); // Display a generic error message
       });
