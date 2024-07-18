@@ -28,7 +28,7 @@ export default function Component() {
       style={{ backgroundImage: "url(/assets/heroPage.jpeg)" }}
     >
       <header className="absolute top-0 left-0 p-4">
-        <h2 className="text-2xl font-bold uppercase text-white">STUDENTSCOOPS</h2>
+        <h2 className="text-2xl font-bold uppercase text-primary">STUDENTSCOOPS</h2>
       </header>
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50">
         <h1 className="text-5xl font-bold text-white">

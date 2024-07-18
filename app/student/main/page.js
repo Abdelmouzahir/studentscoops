@@ -8,7 +8,7 @@ import { useUserAuth } from '@/services/utils';
 
 import Link from "next/link";
 // import { Card } from "../../components/ui/card";
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/components/ui/button';
 import restaurantsData from './restaurantsData.json';  // Import the JSON data correctly
 // import Slideshow from '@/components/SlideShow';
 import DealoftheDay from '@/components/DealoftheDay';

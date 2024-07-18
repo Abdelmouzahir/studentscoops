@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 
 import Link from "next/link"
 // import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger,DialogClose, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
@@ -22,6 +22,7 @@ export default function PaymentOptions() {
   const [cvv, setCVV] = useState('');
   const [cvvError, setCVVError] = useState('');
 
+  const [showAlert, setShowAlert] = useState(false)
   const toggleCardInfo = () => {
     setCardInfo(!cardInfo);
   };
@@ -44,31 +45,52 @@ export default function PaymentOptions() {
   };
 
   const handleExpirationDateChange = (e) => {
-    const value = e.target.value;
+    let value = e.target.value.replace(/\D/g,"") //Remove all non digit characters
+
+    if (value.length > 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4); // Insert the slash
+    }
+    setExpirationDate(value)
     // Example format: MM/YY
-    const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
-    if (regex.test(value)) {
-      setExpirationDate(value);
-    } else {
+    
+    if (value.length == 5) {
+      const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
+      if (regex.test(value)) {
+        setExpirationDate(value);
+      }
+      
+     else {
       setExpirationDate('');
     }
+  }
   };
 
   const handleCVVChange = (e) => {
     const value = e.target.value;
+    setCVV(value);
+
+    if (value.length <= 3) {
     // CVV should be 3 or 4 digits
     const regex = /^[0-9]{3,4}$/;
     if (regex.test(value)) {
       setCVV(value);
-      setCVVError('');
+      
     } else {
       setCVVError('CVV must be 3 or 4 digits');
     }
   };
-
+  }
+  const handleSearch = () => {
+  
+    setShowAlert(true)
+    setTimeout(() => {
+      setShowAlert(false)
+    }, 4000)
+ 
+}
   return (
     <>
-      <section className="w-full py-12 md:py-20">
+      <section className="w-full py-12 md:py-20 bg-grey-100">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
             <h2 className="text-2xl font-bold mb-6">Payment Options</h2>
@@ -95,12 +117,14 @@ export default function PaymentOptions() {
                   <Dialog defaultOpen>
                     <DialogTrigger asChild>
                       {/* Trigger element */}
+                      
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
                         <DialogTitle>Payment</DialogTitle>
                         <DialogDescription>Enter your payment details</DialogDescription>
                       </DialogHeader>
+                      
                       <div className="grid gap-4 py-4">
                         <div className="space-y-2">
                           <Label htmlFor="cardNumber">Card Number</Label>
@@ -153,13 +177,22 @@ export default function PaymentOptions() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" onClick={handleSearch}   
+                        
+                        className="w-full">
                           Save Details
+                          
                         </Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
+                  
                 )}
+                {showAlert && (
+        <div className="fixed p-3 w-30 right-4 p-2 bg-green-500 text-white rounded-md shadow-md" style={{ top: '80px' }}>
+          <p>Your Details are saved</p>
+        </div>
+      )}
               </div>
               <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800">
                 <div className="flex items-center gap-4">
@@ -179,24 +212,7 @@ export default function PaymentOptions() {
                   Pay with PayPal
                 </a>
               </div>
-              <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
-                    <DollarSignIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Pay on Pickup</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Pay with cash when you arrive at the store</p>
-                  </div>
-                </div>
-                <a
-                  href="#"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                  prefetch={false}
-                >
-                  Pay on Pickup
-                </a>
-              </div>
+              
             </div>
           </div>
         </div>
