@@ -90,7 +90,7 @@ export function getRestaurantData(onChange) {
 
 //<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
 
-// get restaurant data for user as restaurant 
+// get restaurant data for user as restaurant
 
 export function getRestaurantDataByOwner(onChange, user) {
   try {
@@ -114,19 +114,23 @@ export function getRestaurantDataByOwner(onChange, user) {
 
 // get restaurant menu data for restaurant
 
-export function getRestaurantMenuByOwner(onChange, user) {
+export async function getRestaurantMenuByOwner(onChange, user) {
+  const restaurantCollection = await getDocs(
+    query(collection(db, "restaurants"), where("uid", "==", user))
+  );
+  if (!restaurantCollection) {
+    console.log("No user data found");
+    return;
+  }
+  const id = restaurantCollection.docs[0].id;
   try {
-    const restaurantCollection = query(
-      collection(db, "restaurant_menu"),
-      where("uid", "==", user)
-    );
-    onSnapshot(restaurantCollection, (restaurants) => {
-      const restaurantData = restaurants.docs.map((doc) => {
-        console.log("getting restaurant menu:  ", doc.data());
+    const restaurantCollection = collection(db, "restaurants", id, "menu");
+    onSnapshot(restaurantCollection, (menuSnapshot) => {
+      const menuItems = menuSnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
       });
-      console.log("information: ", restaurantData);
-      onChange(restaurantData);
+      console.log("Menu items: ", menuItems);
+      onChange(menuItems);
     });
   } catch (error) {
     console.error("Error getting restaurant information: ", error);
@@ -137,7 +141,7 @@ export function getRestaurantMenuByOwner(onChange, user) {
 //for login purpose only for restaurant
 export async function getRestaurantDataForLogin(user) {
   try {
-    const q = query(collection(db, "restaurants"),where("uid", "==", user));
+    const q = query(collection(db, "restaurants"), where("uid", "==", user));
     const querySnapshot = await getDocs(q);
     const studentItems = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -150,7 +154,47 @@ export async function getRestaurantDataForLogin(user) {
   }
 }
 
-//<<<-----------------------------------------------------------------Restaurant && Students------------------------------------------------------------------>>>>
+//<<<-----------------------------------------------------------------Students------------------------------------------------------------------>>>>
+
+// get restaurant details for students
+export function getRestaurantDataByStudents(onChange) {
+  try {
+    const restaurantCollection = query(collection(db, "restaurants"));
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        console.log("getting restaurants:  ", doc.data());
+        return { id: doc.id, ...doc.data() };
+      });
+      console.log("information: ", restaurantData);
+      onChange(restaurantData);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
+
+//fetch restaurant menu for students
+export function getRestaurantMenuByStudents(onChange, id) {
+  console.log("id: ", id);
+  try {
+    // Reference to the menu collection within the restaurant document
+    const menuCollectionRef = collection(db, "restaurants", id, "menu");
+
+    // Set up a real-time listener on the menu collection
+    onSnapshot(menuCollectionRef, (snapshot) => {
+      const menuItems = snapshot.docs.map((doc) => {
+        console.log("getting restaurants: ", doc.data());
+        return { id: doc.id, ...doc.data() };
+      });
+      console.log("information: ", menuItems);
+      onChange(menuItems);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
 
 export async function getStudentInformation(userId) {
   try {

@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ref, getStorage, listAll, deleteObject } from "firebase/storage";
 import {
   Card,
   CardContent,
@@ -51,6 +52,9 @@ export default function SettingsRestaurant() {
       setMenuData(data);
     }, user);
   }
+  useEffect(() => {
+    console.log("menuData: ", menuData);
+  }, [menuData]);
 
   useEffect(() => {
     if (user) {
@@ -68,11 +72,20 @@ export default function SettingsRestaurant() {
     setSelectedProduct(product);
   };
 
-  const handleProductDelete = async (productId) => {
-    await deleteDoc(doc(db, "restaurant_menu", productId)).then(() => {
-      setMenuData((prevMenuData) =>
-        prevMenuData.filter((product) => product.id !== productId)
-      );
+  const handleProductDelete = async (productId, restaurantId, imageName) => {
+    await deleteDoc(
+      doc(db, "restaurants", restaurantId, "menu", productId)
+    ).then(async () => {
+      const storage = getStorage();
+      console.log("imageName: ", imageName);
+      const folderRef = ref(storage, `menu/${user}/${imageName}`);
+      console.log("folderRef: ", folderRef);
+
+      await deleteObject(folderRef).then(() => {
+        setMenuData((prevMenuData) =>
+          prevMenuData.filter((product) => product.id !== productId)
+        );
+      });
     });
   };
 
@@ -136,7 +149,13 @@ export default function SettingsRestaurant() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="text-red-600"
-                onClick={() => handleProductDelete(original.id)}
+                onClick={() =>
+                  handleProductDelete(
+                    original.id,
+                    original.restaurantId,
+                    original.imageName
+                  )
+                }
               >
                 Delete
               </DropdownMenuItem>

@@ -207,13 +207,7 @@ export async function updateRestaurant(id, prop) {
 //<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
 
 // to add restaurant menu in database
-export async function addRestaurantMenu(
-  user,
-  name,
-  price,
-  description,
-  image,
-) {
+export async function addRestaurantMenu(user, name, price, description, image) {
   const storageRef = ref(storage, `menu/${user}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
   uploadTask.on(
@@ -236,10 +230,17 @@ export async function addRestaurantMenu(
     },
     async () => {
       const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      const userData = await getDocs(
+        query(collection(db, "restaurants"), where("uid", "==", user))
+      );
+      if (userData.empty) {
+        console.log("user not found");
+        return;
+      }
+      const id = userData.docs[0].id;
 
       try {
-        // Query to find the restaurant document with the matching userId
-        await addDoc(collection(db, "restaurant_menu"), {
+        const menu = {
           uid: user,
           name,
           price,
@@ -247,7 +248,11 @@ export async function addRestaurantMenu(
           status: "Available",
           imageUrl: downloadURL,
           createdAt: new Date(),
-        });
+          restaurantId: id,
+          imageName: image.name,
+        };
+        // Query to find the restaurant document with the matching userId
+        await addDoc(collection(db, "restaurants", id, "menu"), menu);
         console.log("Menu item successfully added!");
       } catch (error) {
         console.error("Error writing document: ", error);
@@ -300,7 +305,8 @@ export async function deleteRestaurantUserByOwner(currentUser, docId) {
 
           await deleteFolder(folderRef);
           alert("Your account has been deleted successfully!");
-        }).then(async () => {
+        })
+        .then(async () => {
           const storage = getStorage();
           const folderRef = ref(storage, `menu/${uid}`);
 
@@ -397,7 +403,6 @@ export async function addRestaurantInformation(
     }
   );
 }
-
 
 export default async function addStudentEmailStatus(prop) {
   let { email, active } = prop;

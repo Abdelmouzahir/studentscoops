@@ -25,6 +25,10 @@ const Page = () => {
   const router = useRouter();
 
   const handleSubmit = async () => {
+    if(!image || image.length === 0) {
+      setImageerr("Please upload an image.");
+      return;
+    }
     setImageerr("");
     if (
       !image[0].name.endsWith(".jpg") &&
