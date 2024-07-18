@@ -55,7 +55,7 @@ export default function CheckoutCart() {
                   <div className="flex items-center space-x-2">
                     <span>{item.quantity}</span>
                     <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.item_id)}>
-                      <TrashIcon className="w-4 h-4 text-muted-foreground hover:text-destructive" />
+                      <TrashIcon className="w-4 h-4  text-primary text-muted-foreground hover:text-destructive" />
                     </Button>
                   </div>
                 </div>
@@ -76,7 +76,7 @@ export default function CheckoutCart() {
                   </div>
                   <Button
                     onClick={handleClick}
-                    className="w-full bg-black text-white hover:bg-black/90 rounded-md py-2"
+                    className="w-full bg-primary text-white hover:bg-black/90 rounded-md py-2"
                   >
                     Go to Checkout
                   </Button>

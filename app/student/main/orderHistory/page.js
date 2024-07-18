@@ -1,90 +1,173 @@
-"use client" // Indicates that this component uses client-side features like hooks or context
-
+"use client"
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { Dialog, DialogTrigger, DialogContent, DialogClose } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+
+const restaurants = [
+  {
+    id: 1,
+    name: "The Gourmet Kitchen",
+    address: "123 Food Street, Calgary, AB T2P 0L4",
+    img_url: "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg",
+    menu: [
+      {
+        item_id: 1,
+        name: "Margherita Pizza",
+        description: "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
+        price: 12.99,
+        img_url: "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg"
+      },
+      // Add other menu items here...
+    ]
+  },
+  // Add other restaurants here...
+];
 
 export default function Component() {
-  // Access the Next.js router to programmatically navigate
-  const router = useRouter();
+  const [openDialogId, setOpenDialogId] = useState(null);
 
-  // Sample data representing past orders
-  const orders = [
-    {
-      id: 1,
-      restaurant: "Cal City Pizza",
-      items: [
-        { name: "Pop Can (355 Ml)", description: "Coke", quantity: 1 },
-        { name: "Loaded Veggie Special Pizza", description: "Medium", quantity: 1 },
-      ],
-      total: 25.85,
-      date: new Date("2023-04-16T20:19:00"),
-      image: "/placeholder.svg?height=150&width=150",
-    },
-    {
-      id: 2,
-      restaurant: "Karahi Boys",
-      items: [
-        { name: "Moti Mehal Paneer Karahi", quantity: 1 },
-        { name: "Garlic Naan", description: "Buttered", quantity: 2 },
-      ],
-      total: 28.12,
-      date: new Date("2023-04-15T20:44:00"),
-      image: "/placeholder.svg?height=150&width=150",
-    },
-    {
-      id: 3,
-      restaurant: "Punjabi Sweet House & Restaurant",
-      items: [
-        { name: "Item 1", quantity: 1 },
-        { name: "Item 2", quantity: 1 },
-      ],
-      total: 22.19,
-      date: new Date("2023-04-15T13:55:00"),
-      image: "/placeholder.svg?height=150&width=150",
-    },
-  ];
-
-  // Function to handle the click event on the Reorder button
-  const handleClick = (orderId) => {
-    // Navigate to the checkout page with the orderId as a query parameter
-    router.push(`/student/checkout?orderId=${orderId}`);
-  };
+  const handleDialogOpen = (id) => setOpenDialogId(id);
+  const handleDialogClose = () => setOpenDialogId(null);
 
   return (
-    <div className="space-y-8 p-4">
-      {/* Main heading for the past orders page */}
-      <h1 className="text-5xl font-bold mb-4">Past Orders</h1>
-      {orders.map((order) => (
-        <div key={order.id} className="flex flex-col space-y-4 border-b pb-4">
-          <div className="flex">
-            {/* Order image */}
-            <img src="/placeholder.svg" alt={order.restaurant} className="w-48 h-48 object-cover" />
-            <div className="flex flex-col justify-between ml-4">
-              <div>
-                {/* Restaurant name and order details */}
-                <h3 className="text-4xl font-bold">{order.restaurant}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {order.items.length} items for ${order.total.toFixed(2)} · {order.date.toLocaleString()}
-                </p>
-              </div>
-              <div className="mt-2">
-                {/* List of items in the order */}
-                {order.items.map((item, index) => (
-                  <div key={index} className="flex items-center space-x-2 mb-4">
-                    <span className="bg-black rounded-md px-2 py-1 text-sm text-white">{item.quantity}</span>
-                    <span className="text-lg">{item.name}</span>
-                    {item.description && <span className="text-sm text-muted-foreground">{item.description}</span>}
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h1 className="text-2xl font-bold mb-6">Past Orders</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {restaurants.map((restaurant) => (
+          <Card key={restaurant.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div className="relative">
+              <img
+                src={restaurant.img_url}
+                alt={restaurant.name}
+                width={500}
+                height={300}
+                className="w-full h-48 object-cover"
+              />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-2 right-2 bg-white/80 hover:bg-white"
+                  >
+                    <MoveHorizontalIcon className="w-5 h-5 text-gray-700" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={() => handleDialogOpen(restaurant.id)}>
+                    <ListIcon className="w-4 h-4 mr-2" />
+                    View Order Details
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="p-4">
+              <h3 className="text-lg font-bold mb-2">{restaurant.name}</h3>
+              <div className="text-gray-500">{restaurant.address}</div>
+              <Dialog open={openDialogId === restaurant.id} onOpenChange={handleDialogClose}>
+                <DialogContent className="sm:max-w-md p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-lg font-bold">{restaurant.name}</h2>
+                    <DialogClose>
+                      
+                    </DialogClose>
                   </div>
-                ))}
-              </div>
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    {restaurant.menu.map((item) => (
+                      <div key={item.item_id} className="bg-gray-100 p-2 rounded-lg">
+                        <img
+                          src={item.img_url}
+                          alt={item.name}
+                          className="w-full h-16 object-cover rounded-lg mb-1"
+                        />
+                        <div className="text-sm font-medium">{item.name}</div>
+                        <div className="text-xs text-gray-500">Price: ${item.price.toFixed(2)}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <Separator className="my-2" />
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" size="sm">Reorder</Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
-            <div className="ml-auto flex flex-col space-y-2 items-center justify-center">
-              {/* Button to reorder the items */}
-              <Button onClick={() => handleClick(order.id)} className="bg-black text-white py-3 px-6 w-full">Reorder</Button>
-            </div>
-          </div>
-        </div>
-      ))}
+          </Card>
+        ))}
+      </div>
     </div>
+  );
+}
+
+function ListIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="8" x2="21" y1="6" y2="6" />
+      <line x1="8" x2="21" y1="12" y2="12" />
+      <line x1="8" x2="21" y1="18" y2="18" />
+      <line x1="3" x2="3.01" y1="6" y2="6" />
+      <line x1="3" x2="3.01" y1="12" y2="12" />
+      <line x1="3" x2="3.01" y1="18" y2="18" />
+    </svg>
+  );
+}
+
+function MoveHorizontalIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="18 8 22 12 18 16" />
+      <polyline points="6 8 2 12 6 16" />
+      <line x1="2" x2="22" y1="12" y2="12" />
+    </svg>
+  );
+}
+
+function XIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
   );
 }

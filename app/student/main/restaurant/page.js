@@ -50,7 +50,7 @@ export default function RestaurantMenu() {
   }
 
    const handleBackToMenu = () => {
-    router.push("/student/main/restaurant");
+    router.push("/student/main");
   }
 
   return (
