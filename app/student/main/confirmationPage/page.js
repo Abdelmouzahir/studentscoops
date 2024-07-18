@@ -1,47 +1,122 @@
-import { useState, useEffect } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+"use client"
 
-export default function OrderProcess() {
-  const [orderStatus, setOrderStatus] = useState("Placing Order");
-  const [showCancelButton, setShowCancelButton] = useState(true);
-  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { useCart } from "@/app/Restrauntitems/cart-context/page"
+
+function ShoppingCartIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="8" cy="21" r="1" />
+      <circle cx="19" cy="21" r="1" />
+      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+    </svg>
+  );
+}
+
+function CircleCheckIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+export default function Component() {
+  const [orderStatus, setOrderStatus] = useState("Placing Order")
+  const [showCancelButton, setShowCancelButton] = useState(true)
+  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false)
+  const [showCancelMessage, setShowCancelMessage] = useState(false)
+  const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false)
+
+  const { cartItems, removeFromCart, cartCounter, restaurantInfo } = useCart();
 
   useEffect(() => {
     const orderAnimation = () => {
       setTimeout(() => {
-        setOrderStatus("Confirming Order");
+        setOrderStatus("Confirming Order .... ")
         setTimeout(() => {
-          setShowOrderConfirmation(true);
-          setOrderStatus("Order Confirmed");
-          setShowCancelButton(false);
-        }, 3000); // Adjust timing as per your animation needs
-      }, 3000); // Adjust timing as per your animation needs
-    };
-    orderAnimation();
-  }, []);
+          setShowOrderConfirmation(true)
+          setOrderStatus("Order Confirmed")
+          setShowCancelButton(false)
+        }, 5000)
+      }, 3000)
+    }
+    orderAnimation()
+  }, [])
 
   const handleCancelOrder = () => {
-    // Implement cancel order logic here
-    setShowCancelButton(false);
-    setOrderStatus("Order Canceled");
-  };
+    setOrderStatus("Order Canceled")
+    setShowCancelButton(false)
+    setShowOrderConfirmation(false)
+    setShowCancelMessage(true)
+  }
+
+  // Calculate cart totals
+  const isArray = Array.isArray(cartItems);
+  const cartItemsTotal = isArray
+    ? cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+    : 0;
+  const tax = cartItemsTotal * 0.05;
+  const total = cartItemsTotal + tax;
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      {!showOrderConfirmation && (
+    <div className="flex max-h-screen flex-col">
+      {!showOrderConfirmation && !showCancelMessage && (
         <div className="container mx-auto flex flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-          <div className="relative h-64 w-64">
-            <div className="absolute inset-0 animate-spin rounded-full border-4 border-primary" />
-            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background">
+          <div className="relative h-64 w-64 border-solid border-4 rounded-full border-primary animate-pulse">
+            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-white shadow-lg">
               <ShoppingCartIcon className="h-16 w-16 text-primary" />
             </div>
           </div>
-          <p className="mt-4 text-muted-foreground">{orderStatus}</p>
+          <p className="mt-8 text-3xl font-bold text-gray-800">{orderStatus}</p>
           {showCancelButton && (
             <button
-              className="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground shadow-sm transition-colors hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring animate-fade-in"
+              className="mt-4 inline-flex h-12 items-center justify-center rounded-md bg-black px-6 py-3 text-base font-semibold text-white shadow-md transition-colors hover:bg-yellow-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
               onClick={handleCancelOrder}
             >
               Cancel Order
@@ -49,48 +124,104 @@ export default function OrderProcess() {
           )}
         </div>
       )}
-      {showOrderConfirmation && (
+      {showCancelMessage && (
+        <div className="container mx-auto flex flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+          <p className="text-2xl font-bold text-red-600">Order Canceled</p>
+          <div className="mt-4 text-lg text-gray-800 text-center">
+            <p>Your order has been canceled.</p>
+            <p>Would you like to go to the main page?</p>
+          </div>
+          <div className="mt-6 flex gap-6">
+            <Link
+              href="/student/main/confirmationPage"
+              className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 py-3 text-base font-semibold text-white shadow-md transition-colors hover:bg-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+              prefetch={false}
+            >
+              Re-order
+            </Link>
+            <Link
+              href="#"
+              className="inline-flex h-12 items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-semibold text-gray-700 shadow-md transition-colors hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
+              prefetch={false}
+            >
+              Go to Homepage
+            </Link>
+          </div>
+        </div>
+      )}
+      {showOrderConfirmation && !showCancelMessage && (
         <main className="container mx-auto flex flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-md text-center">
-            <div className="animate-fade-in">
-              <CircleCheckIcon className="mx-auto h-16 w-16 text-green-500" />
+            <div className="animate-bounce">
+              <CircleCheckIcon className="mx-auto h-20 w-20 text-green-500" />
             </div>
-            <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Order Confirmed</h1>
-            <p className="mt-4 text-muted-foreground">
+            <h1 className="mt-8 text-4xl font-bold tracking-tight text-gray-800">Order Confirmed</h1>
+            <p className="mt-6 text-lg text-gray-800">
               Thank you for your order! Your order is being processed and will be shipped soon.
             </p>
           </div>
-          <div className="mt-10 w-full max-w-md animate-slide-up">
-            <Card>
-              <CardHeader>
-                <CardTitle>Order Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* Your order summary content here */}
-              </CardContent>
+          <div className="mt-12 w-full max-w-md">
+            <Card className="p-8 shadow-lg rounded-lg bg-white">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={() => setIsCartSummaryOpen(!isCartSummaryOpen)}
+              >
+                <p className="font-semibold text-xl text-gray-800">Order Summary ({isArray ? cartItems.length : 0} items)</p>
+                <ChevronDownIcon
+                  className={`w-8 h-8 text-gray-600 transition-transform ${isCartSummaryOpen ? "rotate-180" : ""}`}
+                />
+              </div>
+              {isCartSummaryOpen && (
+                <div className="mt-6 space-y-6">
+                  {isArray && cartItems.map((item) => (
+                    <div key={item.item_id} className="flex items-center gap-6 bg-gray-100 p-6 rounded-lg">
+                      <img src={item.img_url} alt={item.name} width={80} height={80} className="rounded-md" />
+                      <div className="flex-1">
+                        <p className="font-semibold text-lg text-gray-800">{item.name}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-base text-gray-600">Quantity: {item.quantity}</p>
+                        </div>
+                      </div>
+                      <p className="text-xl font-bold text-gray-800">${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </Card>
-            <div className="mt-6 flex justify-center gap-4">
-              <Link
-                href="#"
-                className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 animate-fade-in"
-                prefetch={false}
-              >
-                Track Order
-              </Link>
-              <Link
-                href="#"
-                className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 animate-fade-in"
-                prefetch={false}
-              >
-                Go to Homepage
-              </Link>
+            <Card className="p-8 mt-6 rounded-lg shadow-lg bg-white">
+              <div className="space-y-6">
+                <p className="font-semibold text-2xl text-gray-800">Order Total</p>
+                <div className="border-t border-gray-300 pt-6">
+                  <div className="flex justify-between">
+                    <p className="text-base text-gray-600">Subtotal</p>
+                    <p className="font-semibold text-lg text-gray-800">
+                      ${cartItemsTotal.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-base text-gray-600">Taxes</p>
+                    <p className="font-semibold text-lg text-gray-800">
+                      ${tax.toFixed(2)}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-between font-bold text-2xl text-gray-800">
+                  <p>Total</p>
+                  <p>${total.toFixed(2)}</p>
+                </div>
+              </div>
+            </Card>
+            <div className="flex items-center gap-6 mt-8">
+              <Button className="bg-yellow-500 text-white hover:bg-black px-8 py-4 rounded-md shadow-md font-semibold">
+                Navigate to Restaurant
+              </Button>
+              <Button className="bg-white-600 text-black hover:bg-yellow-500 px-8 py-4 rounded-md shadow-md font-semibold">
+                Back to Home Page
+              </Button>
             </div>
           </div>
         </main>
       )}
-      <footer className="bg-muted p-6 text-sm text-muted-foreground">
-        <div className="container mx-auto">&copy; 2024 Acme Inc. All rights reserved.</div>
-      </footer>
     </div>
-  );
+  )
 }

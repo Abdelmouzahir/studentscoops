@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 
+
 // Main functional component
 export default function Component() {
   // State to manage the visibility of the cart summary
@@ -51,7 +52,7 @@ export default function Component() {
     year: "",
     cvc: "",
     email: "",
-    address: "",
+    address: address,
   })
   const handlePaymentMethodChange = (value) => {
     setPaymentMethod(value)
@@ -63,6 +64,10 @@ export default function Component() {
       [name]: value,
     }))
   }
+  const clickCheckout = () => {
+    router.push("/student/main/confirmationPage");
+  }
+
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 w-full h-screen bg-gray-100">
@@ -284,7 +289,7 @@ export default function Component() {
                     )}
                   </div>
                   <DialogFooter>
-                    <Button className="w-full bg-primary">Continue</Button>
+                    <Button onClick={clickCheckout} className="w-full bg-primary">Continue</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
