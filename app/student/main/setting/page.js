@@ -20,7 +20,7 @@ export default function Settings() {
   }
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-1 bg-gray-100 dark:bg-gray-800 p-6 md:p-10">
+      <main className="flex-1  dark:bg-gray-800 p-6 md:p-10">
         <div className="max-w-4xl mx-auto grid gap-8">
           <Passwordreset />
           <section>

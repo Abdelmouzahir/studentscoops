@@ -9,21 +9,42 @@ import React, { useState } from 'react'
 
 import Link from "next/link"
 // import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import Header_stud from "@/app/student/main/header_stud/page"
 export default function PaymentOptions() {
   const [cardInfo, setCardInfo] = useState(false);
+  const [paypalInfo, setPaypalInfo] = useState(false);
   const [cardNumber, setCardNumber] = useState('');
   const [cardNumberError, setCardNumberError] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [cvv, setCVV] = useState('');
   const [cvvError, setCVVError] = useState('');
+  const [paypalEmail, setPaypalEmail] = useState('');
+  const [paypalPassword, setPaypalPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false)
+
 
   const toggleCardInfo = () => {
     setCardInfo(!cardInfo);
+  };
+  const togglePaypalInfo = () => {
+    setPaypalInfo(!paypalInfo);
+  };
+
+  const handleSaveDetails = (e) => {
+    e.preventDefault();
+    handleSearch(); // Call your handleSearch function
+    setCardInfo(false); // Close the dialog
+    setPaypalInfo(false);
+    setShowAlert(true); // Show alert
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
   };
 
   const formatCardNumber = (value) => {
@@ -44,31 +65,52 @@ export default function PaymentOptions() {
   };
 
   const handleExpirationDateChange = (e) => {
-    const value = e.target.value;
+    let value = e.target.value.replace(/\D/g, "") //Remove all non digit characters
+
+    if (value.length > 2) {
+      value = value.slice(0, 2) + '/' + value.slice(2, 4); // Insert the slash
+    }
+    setExpirationDate(value)
     // Example format: MM/YY
-    const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
-    if (regex.test(value)) {
-      setExpirationDate(value);
-    } else {
-      setExpirationDate('');
+
+    if (value.length == 5) {
+      const regex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
+      if (regex.test(value)) {
+        setExpirationDate(value);
+      }
+
+      else {
+        setExpirationDate('');
+      }
     }
   };
 
   const handleCVVChange = (e) => {
     const value = e.target.value;
-    // CVV should be 3 or 4 digits
-    const regex = /^[0-9]{3,4}$/;
-    if (regex.test(value)) {
-      setCVV(value);
-      setCVVError('');
-    } else {
-      setCVVError('CVV must be 3 or 4 digits');
-    }
-  };
+    setCVV(value);
 
+    if (value.length <= 3) {
+      // CVV should be 3 or 4 digits
+      const regex = /^[0-9]{3,4}$/;
+      if (regex.test(value)) {
+        setCVV(value);
+
+      } else {
+        setCVVError('CVV must be 3 or 4 digits');
+      }
+    };
+  }
+  const handleSearch = () => {
+
+    setShowAlert(true)
+    setTimeout(() => {
+      setShowAlert(false)
+    }, 4000)
+
+  }
   return (
     <>
-      <section className="w-full py-12 md:py-20">
+      <section className="w-full py-12 md:py-20 bg-grey-100">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-lg bg-white p-8 shadow-lg dark:bg-gray-950">
             <h2 className="text-2xl font-bold mb-6">Payment Options</h2>
@@ -91,16 +133,20 @@ export default function PaymentOptions() {
                 >
                   Pay with Card
                 </a>
+
+
                 {cardInfo && (
                   <Dialog defaultOpen>
                     <DialogTrigger asChild>
                       {/* Trigger element */}
+
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
                         <DialogTitle>Payment</DialogTitle>
                         <DialogDescription>Enter your payment details</DialogDescription>
                       </DialogHeader>
+
                       <div className="grid gap-4 py-4">
                         <div className="space-y-2">
                           <Label htmlFor="cardNumber">Card Number</Label>
@@ -153,12 +199,21 @@ export default function PaymentOptions() {
                         </div>
                       </div>
                       <DialogFooter>
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" onClick={handleSaveDetails}
+
+                          className="w-full">
                           Save Details
+
                         </Button>
                       </DialogFooter>
                     </DialogContent>
                   </Dialog>
+
+                )}
+                {showAlert && (
+                  <div className="fixed p-3 w-30 right-4 p-2 bg-green-500 text-white rounded-md shadow-md" style={{ top: '80px' }}>
+                    <p>Your Details are saved</p>
+                  </div>
                 )}
               </div>
               <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800">
@@ -172,31 +227,86 @@ export default function PaymentOptions() {
                   </div>
                 </div>
                 <a
+                  onClick={togglePaypalInfo}
                   href="#"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                   prefetch={false}
                 >
                   Pay with PayPal
                 </a>
-              </div>
-              <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-800">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
-                    <DollarSignIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                  </div>
-                  <div>
-                    <p className="font-medium">Pay on Pickup</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Pay with cash when you arrive at the store</p>
-                  </div>
-                </div>
-                <a
-                  href="#"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                  prefetch={false}
+
+
+                {paypalInfo && (
+                  <Dialog defaultOpen>
+                    <DialogTrigger asChild>
+                      {/* Trigger element */}
+
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Payment</DialogTitle>
+                        <DialogDescription>Enter your payment details</DialogDescription>
+                      </DialogHeader>
+
+                      <form onSubmit={handleSaveDetails}>
+                        <div className="grid gap-4 py-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="paypalEmail">Email</Label>
+                            <Input
+                              id="paypalEmail"
+                              placeholder="you@example.com"
+                              type="email"
+                              value={paypalEmail}
+                              onChange={(e) => setPaypalEmail(e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="paypalPassword">Password</Label>
+                            <Input
+                              id="paypalPassword"
+                              placeholder="Password"
+                              type={showPassword ? 'text' : 'password'}
+                              value={paypalPassword}
+                              onChange={(e) => setPaypalPassword(e.target.value)}
+                              required
+                            />
+                            <span
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-8"
+                  style={{top:'220px'}}
+                  onClick={() => setShowPassword(!showPassword)}
+                  
                 >
-                  Pay on Pickup
-                </a>
+                  <EyeOffIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                  <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+                </span>
+                          </div>
+                        </div>
+                      </form>
+
+                      <DialogFooter>
+                        <Button type="submit" onClick={handleSearch}
+
+                          className="w-full">
+                          Save Details
+
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                )}
+                {showAlert && (
+                  <div className="fixed p-3 w-30 right-4 p-2 bg-green-500 text-white rounded-md shadow-md" style={{ top: '80px' }}>
+                    <p>Your Details are saved</p>
+                  </div>
+                )}
+
+
               </div>
+
             </div>
           </div>
         </div>
@@ -265,3 +375,27 @@ function WalletCardsIcon(props) {
     </svg>
   )
 }
+
+
+function EyeOffIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+      <line x1="2" x2="22" y1="2" y2="22" />
+    </svg>
+  )
+}
+

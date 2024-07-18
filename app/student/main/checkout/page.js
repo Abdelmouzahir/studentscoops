@@ -9,6 +9,12 @@ import Link from 'next/link';
 import { useCart } from '@/app/Restrauntitems/cart-context/page';
 import { useAddress } from '../../address-context/page';
 import { useRouter } from 'next/navigation';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
+
 
 // Main functional component
 export default function Component() {
@@ -21,6 +27,7 @@ export default function Component() {
   const [estimatedTime, setEstimatedTime] = useState('');
   // Destructure cart-related methods from the cart context
   const { cartItems, removeFromCart, cartCounter, restaurantInfo } = useCart();
+  const[ isPaymentOpen , setIsPaymentOpen ] = useState(false);
 
   const handleBackToMenu = () => {
     router.push("/student/main");
@@ -34,6 +41,33 @@ export default function Component() {
   const handleEstimatedTimeChange = (time) => {
     setEstimatedTime(time);
   };
+
+  // const and variable for the payment 
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState("card")
+  const [formData, setFormData] = useState({
+    name: "",
+    number: "",
+    month: "",
+    year: "",
+    cvc: "",
+    email: "",
+    address: address,
+  })
+  const handlePaymentMethodChange = (value) => {
+    setPaymentMethod(value)
+  }
+  const handleInputChange = (event) => {
+    const { name, value } = event.target
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }))
+  }
+  const clickCheckout = () => {
+    router.push("/student/main/confirmationPage");
+  }
+
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 w-full h-screen bg-gray-100">
@@ -64,16 +98,19 @@ export default function Component() {
                 target="_blank"
                 className='w-full'
               >
-                <Button className='w-full'>
+                <Button className='w-full bg-primary'>
                   Navigate to Google Maps
                 </Button>
               </Link>
             </div>
             {/* Display restaurant details */}
-            <div className="flex items-center space-x-2">
-              <HomeIcon className="w-6 h-6 text-muted-foreground" />
+            <div className="flex items-center  text-3xl border-2 shadow-xl rounded-lg space-x-3 p-2">
+            <Avatar className="border-2 shadow-md w-20 h-30">
+              <AvatarImage src={restaurantInfo.img_url} />
+              <AvatarFallback>PC</AvatarFallback>
+            </Avatar>
               <div>
-                <p className="font-semibold">{restaurantInfo.name}</p>
+                <p className="font-bold">{restaurantInfo.name}</p>
                 <p className="text-sm text-muted-foreground">{restaurantInfo.address}</p>
               </div>
             </div>
@@ -86,19 +123,175 @@ export default function Component() {
         {/* Card displaying restaurant avatar and address */}
         <Card className="p-6">
           <div className="flex items-center space-x-2">
-            <Avatar>
-              <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>PC</AvatarFallback>
-            </Avatar>
+          <CreditCardIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
             <div>
               <p className="font-semibold text-2xl">Payment</p>
               <div className='flex justify-center items-center'>
-              <p className="text-sm text-muted-foreground">Add Payment Method <span className='ml-[20px]'> <ChevronDownIcon className={`w-6 h-6 text-muted-foreground transition-transform `} > Edit</ChevronDownIcon></span></p></div>
+              <p className="text-sm text-muted-foreground">Add Payment Method</p></div>
             </div>
           </div>
           {/* Button to proceed to the payment page */}
-          <Button className="w-full mt-4">Continue to payment</Button>
-          <Button onClick={handleBackToMenu} className="w-full mt-4">Back to Menu</Button>
+          <Button className="w-full mt-4 bg-primary" onClick={() => setIsDialogOpen(true)}>Continue to payment</Button>
+          <div className="flex flex-col items-center justify-center bg-muted/40">
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Complete Your Order</DialogTitle>
+                    <DialogDescription>Choose your preferred payment method to finalize your order.</DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-6">
+                    <RadioGroup
+                      value={paymentMethod}
+                      onValueChange={handlePaymentMethodChange}
+                      className="grid grid-cols-3 gap-4"
+                    >
+                      <div>
+                        <RadioGroupItem value="card" id="card" className="peer sr-only" />
+                        <Label
+                          htmlFor="card"
+                          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                        >
+                          <CreditCardIcon className="mb-3 h-6 w-6" />
+                          Card
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem value="paypal" id="paypal" className="peer sr-only" />
+                        <Label
+                          htmlFor="paypal"
+                          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                        >
+                          <WalletCardsIcon className="mb-3 h-6 w-6" />
+                          PayPal
+                        </Label>
+                      </div>
+                      <div>
+                        <RadioGroupItem value="cash" id="cash" className="peer sr-only" />
+                        <Label
+                          htmlFor="cash"
+                          className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                        >
+                          <DollarSignIcon className="mb-3 h-6 w-6" />
+                          Cash
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                    {paymentMethod === "card" && (
+                      <>
+                        <div className="grid gap-2">
+                          <Label htmlFor="name">Name</Label>
+                          <Input
+                            id="name"
+                            name="name"
+                            placeholder="First Last"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="number">Card number</Label>
+                          <Input
+                            id="number"
+                            name="number"
+                            placeholder=""
+                            value={formData.number}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="grid gap-2">
+                            <Label htmlFor="month">Expires</Label>
+                            <Select
+                              value={formData.month}
+                              onValueChange={(value) =>
+                                setFormData((prevFormData) => ({
+                                  ...prevFormData,
+                                  month: value,
+                                }))
+                              }
+                            >
+                              <SelectTrigger id="month">
+                                <SelectValue placeholder="Month" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="1">January</SelectItem>
+                                <SelectItem value="2">February</SelectItem>
+                                <SelectItem value="3">March</SelectItem>
+                                <SelectItem value="4">April</SelectItem>
+                                <SelectItem value="5">May</SelectItem>
+                                <SelectItem value="6">June</SelectItem>
+                                <SelectItem value="7">July</SelectItem>
+                                <SelectItem value="8">August</SelectItem>
+                                <SelectItem value="9">September</SelectItem>
+                                <SelectItem value="10">October</SelectItem>
+                                <SelectItem value="11">November</SelectItem>
+                                <SelectItem value="12">December</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="grid gap-2">
+                            <Label htmlFor="year">Year</Label>
+                            <Select
+                              value={formData.year}
+                              onValueChange={(value) =>
+                                setFormData((prevFormData) => ({
+                                  ...prevFormData,
+                                  year: value,
+                                }))
+                              }
+                            >
+                              <SelectTrigger id="year">
+                                <SelectValue placeholder="Year" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="2024">2024</SelectItem>
+                                <SelectItem value="2025">2025</SelectItem>
+                                <SelectItem value="2026">2026</SelectItem>
+                                <SelectItem value="2027">2027</SelectItem>
+                                <SelectItem value="2028">2028</SelectItem>
+                                <SelectItem value="2029">2029</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="grid gap-2">
+                            <Label htmlFor="cvc">CVC</Label>
+                            <Input id="cvc" name="cvc" placeholder="CVC" value={formData.cvc} onChange={handleInputChange} />
+                          </div>
+                        </div>
+                      </>
+                    )}
+                    {paymentMethod === "paypal" && (
+                      <div className="grid gap-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          placeholder="Enter your email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                    )}
+                    {paymentMethod === "cash" && (
+                      <div className="grid gap-2">
+                        <Label htmlFor="address">Address</Label>
+                        <Input
+                          id="address"
+                          name="address"
+                          placeholder="Enter your address"
+                          value={formData.address}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <DialogFooter>
+                    <Button onClick={clickCheckout} className="w-full bg-primary">Continue</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          <Button onClick={handleBackToMenu} className="w-full mt-4 bg-primary">Back to Menu</Button>
         </Card>
 
         {/* Card for displaying the cart summary */}
@@ -109,7 +302,7 @@ export default function Component() {
           >
             <p className="font-semibold">Cart summary ({cartItems.length} items)</p>
             <ChevronDownIcon
-              className={`w-6 h-6 text-muted-foreground transition-transform ${isCartSummaryOpen ? 'rotate-180' : ''}`}
+              className={`w-6 h-6 text-muted-foreground transition-transform  text-primary ${isCartSummaryOpen ? 'rotate-180' : ''}`}
             />
           </div>
           {/* Conditional rendering of cart items based on `isCartSummaryOpen` */}
@@ -127,7 +320,7 @@ export default function Component() {
                   </div>
                   {/* Button to remove item from cart */}
                   <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.item_id)}>
-                    <TrashIcon className="w-4 h-4" />
+                    <TrashIcon className="w-4 h-4 text-primary" />
                   </Button>
                 </div>
               ))}
@@ -207,6 +400,29 @@ function HomeIcon(props) {
   );
 }
 
+
+function CreditCardIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <line x1="2" x2="22" y1="10" y2="10" />
+    </svg>
+  )
+}
+
+
+
 // Chevron Down Icon component
 function ChevronDownIcon(props) {
   return (
@@ -225,4 +441,88 @@ function ChevronDownIcon(props) {
       <path d="m6 9 6 6 6-6" />
     </svg>
   );
+}
+
+function CreditCardIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="20" height="14" x="2" y="5" rx="2" />
+      <line x1="2" x2="22" y1="10" y2="10" />
+    </svg>
+  )
+}
+
+
+function DollarSignIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="12" x2="12" y1="2" y2="22" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  )
+}
+
+
+function WalletCardsIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2" />
+      <path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21" />
+    </svg>
+  )
+}
+
+
+function XIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  )
 }
