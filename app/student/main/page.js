@@ -103,9 +103,12 @@ const Home = () => {
                     key={restaurant.id}
                     href={{
                       pathname: "/restaurant",
-                      query: { restaurantId: restaurant.id }, // Pass the restaurant ID
+                      query: {
+                        restaurantId: restaurant.id,
+                        uid: restaurant.uid,
+                      }, // Pass the restaurant ID
                     }}
-                    as={`/student/main/restaurant?restaurantId=${restaurant.id}`}
+                    as={`/student/main/restaurant?restaurantId=${restaurant.id}&&uid=${restaurant.uid}`}
                     className="relative border-2 shadow-xl overflow-hidden rounded-lg group transition-transform hover:scale-105"
                   >
                     <img

@@ -5,66 +5,45 @@ import { useRouter, useSearchParams } from "next/navigation";
 // import restaurantsData from '../restaurantsData.json'
 import React, { useState, useEffect } from "react";
 import { useCart } from "@/app/Restrauntitems/cart-context/page";
+import Image from "next/image";
 
 import { GiExitDoor } from "react-icons/gi";
-import { getRestaurantMenuByStudents } from "@/services/GetRequest/getRequest";
+import {
+  getRestaurantMenuByStudents,
+  getRestaurantDataByOwner,
+} from "@/services/GetRequest/getRequest";
 
 export default function RestaurantMenu() {
-  const [menuItems1, setMenuItems1] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const restaurantId = parseInt(searchParams.get("restaurantId"), 10);
+  const restaurantId = searchParams.get("restaurantId");
+  const restaurantUid = searchParams.get("uid");
   const [restaurantName, setRestaurantName] = useState("");
   const { addToCart } = useCart(); // Use the context
-  const [restaurantsData, setRestaurantsData] = useState(null);
+  const [restaurantImage, setRestaurantImage] = useState("");
 
   const [restaurant, setRestaurant] = useState([]);
 
   async function fetchRestaurantMenu() {
     getRestaurantMenuByStudents((data) => {
       console.log("Data: ", data);
-      setRestaurantsData(data);
+      setFilteredItems(data);
     }, restaurantId);
+  }
+  async function fetchRestaurantData() {
+    getRestaurantDataByOwner((data) => {
+      console.log("Data: ", data);
+      setRestaurantName(data[0].name);
+      setRestaurantImage(data[0].imgUrl);
+    }, restaurantUid);
   }
 
   useEffect(() => {
-    console.log("restaurantId: ", restaurantId);
-    if (restaurantId) {
-      fetchRestaurantMenu();
-    }
-  }, [restaurantId]);
-
-  useEffect(() => {
-    if (restaurantsData) {
-      if (restaurantsData.length > 0) {
-        const selectedRestaurant = restaurantsData[0].restaurants.find(
-          (restaurant) => restaurant.id === restaurantId
-        );
-
-        if (selectedRestaurant) {
-          setMenuItems1(selectedRestaurant.menu);
-          setFilteredItems(selectedRestaurant.menu);
-          setRestaurantName(selectedRestaurant.name);
-          setRestaurant(selectedRestaurant);
-        } else {
-          router.push("/student");
-        }
-      }
-    }
-    console.log("restaurant data", restaurantsData);
-  }, [restaurantsData, router]);
-
-  useEffect(() => {
-    setFilteredItems(
-      menuItems1.filter(
-        (item) =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [searchTerm, menuItems1]);
+    fetchRestaurantMenu();
+    fetchRestaurantData();
+  }, []);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -83,10 +62,16 @@ export default function RestaurantMenu() {
       </div>
       <section>
         <div className="relative">
-          <img
-            src={restaurant.img_url}
+          <Image
+            src={
+              restaurantImage
+                ? restaurantImage
+                : "/assets/images/UserDefaultSaitStaff.png"
+            }
             alt="Restaurant"
-            className="w-full h-[300px] object-cover border-2 shadow-xl"
+            width={1200}
+            height={400}
+            className="w-full h-[300px] object-cover p-2 border-2 shadow-xl"
           />
           <div className="absolute bottom-4 left-4">
             <h1 className="text-4xl font-bold  text-black">{restaurantName}</h1>
@@ -104,37 +89,45 @@ export default function RestaurantMenu() {
         </div>
       </section>
       <section className="container mx-auto px-4 md:px-6 py-8 md:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredItems.map((item) => (
-          <div
-            key={item.item_id}
-            className="bg-background  border-2 shadow-xl rounded-md overflow-hidden"
-          >
-            <img
-              src={item.img_url}
-              alt={item.name}
-              width={400}
-              height={300}
-              className="w-full h-[200px] object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-medium">{item.name}</h3>
-              <p className="text-muted-foreground text-sm mb-4">
-                {item.description}
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="font-medium">${item.price.toFixed(2)}</span>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="text-primary"
-                  onClick={() => addToCart(item, restaurant)}
-                >
-                  <PlusIcon className="w-5 h-5" />
-                </Button>
+        {filteredItems && filteredItems.length > 0 && filteredItems != null ? (
+          <>
+            {filteredItems.map((item) => (
+              <div
+                key={item.id}
+                className="bg-background  border-2 shadow-xl rounded-md overflow-hidden"
+              >
+                <Image
+                  src={item.imageUrl}
+                  alt={item.name}
+                  width={400}
+                  height={300}
+                  className="w-full h-[200px] object-cover bg-cover bg-center m-2"
+                />
+                <div className="p-4">
+                  <h3 className="text-lg font-medium">{item.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    {item.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">${item.price}</span>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="text-primary"
+                      onClick={() => addToCart(item, restaurant)}
+                    >
+                      <PlusIcon className="w-5 h-5" />
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
+          </>
+        ) : (
+          <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
+            Loading..
           </div>
-        ))}
+        )}
       </section>
     </div>
   );
