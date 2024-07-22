@@ -87,7 +87,6 @@ export default function RestaurantMenu() {
     fetchRestaurantMenu();
     fetchRestaurantData();
   }, []);
-
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };

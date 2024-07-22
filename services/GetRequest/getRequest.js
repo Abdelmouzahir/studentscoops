@@ -255,6 +255,7 @@ export function getCheckoutMenuByStudents(onChange, id, menuId) {
       const menuItems = snapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
       });
+
       onChange(menuItems);
     });
   } catch (error) {
