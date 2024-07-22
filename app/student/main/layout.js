@@ -25,12 +25,12 @@ const Layout = ({ children }) => {
   };
 
   // Effect to check if the user is authenticated
-  useEffect(() => {
-    if (user === false) {
-      console.log("User not authenticated"); // Log message if the user is not authenticated
-      router.push('/'); // Redirect to the home page if not authenticated
-    }
-  }, [user]); // Effect runs whenever the `user` value changes
+  // useEffect(() => {
+  //   if (user === false) {
+  //     console.log("User not authenticated"); // Log message if the user is not authenticated
+  //     router.push('/'); // Redirect to the home page if not authenticated
+  //   }
+  // }, [user]); // Effect runs whenever the `user` value changes
 
   return (
    

@@ -250,6 +250,9 @@ export async function addRestaurantMenu(user, name, price, description, image) {
           createdAt: new Date(),
           restaurantId: id,
           imageName: image.name,
+          studentDocId: null,
+          studentMenuDocId: null,
+          orderAt: null,
         };
         // Query to find the restaurant document with the matching userId
         await addDoc(collection(db, "restaurants", id, "menu"), menu);
@@ -261,7 +264,7 @@ export async function addRestaurantMenu(user, name, price, description, image) {
   );
 }
 
-// to delete sait staff data from database and athentication
+// to delete restaurant data from database and athentication
 export async function deleteRestaurantUserByOwner(currentUser, docId) {
   const id = docId;
   const uid = currentUser.uid;
@@ -333,6 +336,26 @@ export async function deleteRestaurantUserByOwner(currentUser, docId) {
     }
   } else {
     console.log("No current user found");
+  }
+}
+
+//<<<-----------------------------------------------------------------Student------------------------------------------------------------------>>>>
+// to add menu to students
+export async function addMenuToStudent(
+  menu,
+  studentDocId,
+) {
+  try {
+    const docRef = collection(db, "students", studentDocId, "menu");
+    await addDoc(docRef, menu);
+    // const studentMenuDocId = studentMenu.id;
+    // const restaurantMenuDocRef = doc(db,"restauarants",restaurantDocId,"menu",menuDocId);
+    // await updateDoc(restaurantMenuDocRef, {
+    //   studentDocId,
+    //   studentMenuDocId,
+    // });
+  } catch (e) {
+    console.error("Error adding document: ", e);
   }
 }
 
