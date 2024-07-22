@@ -115,6 +115,7 @@ export default function RestaurantMenu() {
         restaurantDocId: restaurant[0].id,
         menuDocId: item.id,
         restaurantUid: restaurant[0].uid,
+        quantity: item.quantity,
       };
       if (restaurantDocumentIds.length <= 1) {
         if (
@@ -196,6 +197,9 @@ export default function RestaurantMenu() {
                   <h3 className="text-lg font-medium">{item.name}</h3>
                   <p className="text-muted-foreground text-sm mb-4">
                     {item.description}
+                  </p>
+                  <p className="text-muted-foreground text-xl mb-4 font-bold">
+                    Quantity: {item.quantity}
                   </p>
                   <div className="flex items-center justify-between">
                     <span className="font-medium">${item.price}</span>

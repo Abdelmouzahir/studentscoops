@@ -50,6 +50,24 @@ export default function Component() {
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [studentData, setStudentData] = useState(null);
   const [restaurantInfo, setRestaurantInfo] = useState(null);
+  const [taxAmmount, setTaxAmmount] = useState(0);
+  const [totalAmmount, setTotalAmmount] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
+  const [formData, setFormData] = useState({ number: "" });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const formattedValue = formatCreditCardNumber(value);
+    setFormData({ ...formData, [name]: formattedValue });
+  };
+
+  const formatCreditCardNumber = (value) => {
+    // Remove all non-digit characters
+    const cleaned = value.replace(/\D/g, "");
+    // Add spaces after every 4 digits
+    const match = cleaned.match(/.{1,4}/g);
+    return match ? match.join(" ") : "";
+  };
 
   const handleBackToMenu = () => {
     router.push("/student/main");
@@ -90,15 +108,20 @@ export default function Component() {
   useEffect(() => {
     if (cartItems && cartItems != null && cartItems.length > 0) {
       fetchRestaurantData();
+      setTaxAmmount(
+        cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
+          0.05
+      );
+      setSubTotal(
+        cartItems.reduce((total, item) => total + parseFloat(item.price), 0)
+      );
+      setTotalAmmount(
+        cartItems.reduce((total, item) => total + parseFloat(item.price), 0) +
+          cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
+            0.05
+      );
     }
   }, [cartItems]);
-
-  // useEffect(() => {
-  //   console.log(studentAddress);
-  //   if(restaurantInfo){
-  //     console.log(restaurantInfo[0].address);
-  //   }
-  // }, [studentAddress, restaurantInfo]);
 
   useEffect(() => {
     if (user) {
@@ -122,25 +145,25 @@ export default function Component() {
   // const and variable for the payment
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
-  const [formData, setFormData] = useState({
-    name: "",
-    number: "",
-    month: "",
-    year: "",
-    cvc: "",
-    email: "",
-    address: address,
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   number: "",
+  //   month: "",
+  //   year: "",
+  //   cvc: "",
+  //   email: "",
+  //   address: address,
+  // });
   const handlePaymentMethodChange = (value) => {
     setPaymentMethod(value);
   };
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [name]: value,
+  //   }));
+  // };
   const clickCheckout = () => {
     router.push("/student/main/confirmationPage");
   };
@@ -153,7 +176,10 @@ export default function Component() {
           <CardHeader>
             <CardTitle>Pickup Details</CardTitle>
           </CardHeader>
-          {studentAddress && studentAddress.length > 0 && restaurantInfo && restaurantInfo.length > 0 ? (
+          {studentAddress &&
+          studentAddress.length > 0 &&
+          restaurantInfo &&
+          restaurantInfo.length > 0 ? (
             <CardContent className="space-y-4">
               {/* Map component to show the restaurant and student addresses */}
               <div className="w-full h-64 bg-gray-200 rounded-md">
@@ -175,7 +201,7 @@ export default function Component() {
                 </div>
                 {/* Button to navigate to Google Maps */}
                 <Link
-                  href={`https://www.google.com/maps/search/?api=1&query=${restaurantInfo.address}`}
+                  href={`https://www.google.com/maps/search/?api=1&query=${restaurantInfo[0].address}`}
                   target="_blank"
                   className="w-full"
                 >
@@ -187,7 +213,7 @@ export default function Component() {
               {/* Display restaurant details */}
               <div className="flex items-center  text-3xl border-2 shadow-xl rounded-lg space-x-3 p-2">
                 <Avatar className="border-2 shadow-md w-20 h-30">
-                  <AvatarImage src={restaurantInfo.img_url} />
+                  <AvatarImage src={restaurantInfo[0].imageUrl} />
                   <AvatarFallback>PC</AvatarFallback>
                 </Avatar>
                 <div>
@@ -308,13 +334,14 @@ export default function Component() {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="number">Card number</Label>
-                        <Input
+                        <label htmlFor="number">Card number</label>
+                        <input
                           id="number"
                           name="number"
-                          placeholder=""
+                          placeholder="1234 5678 9012 3456"
                           value={formData.number}
                           onChange={handleInputChange}
+                          maxLength={19}
                         />
                       </div>
                       <div className="grid grid-cols-3 gap-4">
@@ -380,6 +407,7 @@ export default function Component() {
                             placeholder="CVC"
                             value={formData.cvc}
                             onChange={handleInputChange}
+                            maxLength={3}
                           />
                         </div>
                       </div>
@@ -424,7 +452,7 @@ export default function Component() {
         </Card>
 
         {/* Card for displaying the cart summary */}
-        {cartItems && cartItems.length > 0 && cartItems != null ? (
+        {cartItems && cartItems != null ? (
           <>
             <Card className="p-6">
               <div
@@ -435,7 +463,7 @@ export default function Component() {
                   Cart summary ({cartItems.length} items)
                 </p>
                 <ChevronDownIcon
-                  className={`w-6 h-6 text-muted-foreground transition-transform  text-primary ${
+                  className={`w-6 h-6 text-muted-foreground transition-transform  text-primary cursor-pointer ${
                     isCartSummaryOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -449,7 +477,7 @@ export default function Component() {
                       className="flex items-center gap-4 bg-muted p-4 rounded-md"
                     >
                       <img
-                        src={item.img_url}
+                        src={item.imageUrl}
                         alt={item.name}
                         width={64}
                         height={64}
@@ -463,14 +491,14 @@ export default function Component() {
                           </p>
                         </div>
                         <p className="text-sm text-muted-foreground">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${item.price}
                         </p>
                       </div>
                       {/* Button to remove item from cart */}
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeFromCart(item.item_id)}
+                        onClick={() => removeFromCart(item)}
                       >
                         <TrashIcon className="w-4 h-4 text-primary" />
                       </Button>
@@ -487,40 +515,16 @@ export default function Component() {
                 <div className="border-black-solid border-b-4">
                   <div className="flex justify-between">
                     <p className="text-sm">Subtotal</p>
-                    <p className="font-medium">
-                      $
-                      {cartItems
-                        .reduce(
-                          (total, item) => total + item.price * item.quantity,
-                          0
-                        )
-                        .toFixed(2)}
-                    </p>
+                    <p className="font-medium">${subTotal}</p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-sm">Taxes</p>
-                    <p className="font-medium">
-                      $
-                      {(
-                        cartItems.reduce(
-                          (total, item) => total + item.price * item.quantity,
-                          0
-                        ) * 0.05
-                      ).toFixed(2)}
-                    </p>
+                    <p className="font-medium">${taxAmmount}</p>
                   </div>
                 </div>
                 <div className="flex justify-between font-bold text-lg">
                   <p>Total</p>
-                  <p>
-                    $
-                    {(
-                      cartItems.reduce(
-                        (total, item) => total + item.price * item.quantity,
-                        0
-                      ) * 1.05
-                    ).toFixed(2)}
-                  </p>
+                  <p>${totalAmmount}</p>
                 </div>
               </div>
             </Card>

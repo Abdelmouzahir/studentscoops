@@ -207,7 +207,7 @@ export async function updateRestaurant(id, prop) {
 //<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
 
 // to add restaurant menu in database
-export async function addRestaurantMenu(user, name, price, description, image) {
+export async function addRestaurantMenu(user, name, price, description, image, quantity) {
   const storageRef = ref(storage, `menu/${user}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
   uploadTask.on(
@@ -253,6 +253,7 @@ export async function addRestaurantMenu(user, name, price, description, image) {
           studentDocId: null,
           studentMenuDocId: null,
           orderAt: null,
+          quantity,
         };
         // Query to find the restaurant document with the matching userId
         await addDoc(collection(db, "restaurants", id, "menu"), menu);
