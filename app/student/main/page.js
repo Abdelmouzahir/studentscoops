@@ -1,9 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "@/app/firebase/config";
-import { signOut } from "firebase/auth";
-import { getStudentInformation } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 
 import Link from "next/link";
@@ -16,42 +13,20 @@ import { getRestaurantDataByStudents } from "@/services/GetRequest/getRequest";
 
 const Home = () => {
   const { user } = useUserAuth();
-  const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(null); // Initialize with data from JSON
   const router = useRouter();
 
   async function fetchRestaurantData() {
     getRestaurantDataByStudents((data) => {
-      console.log("Data: ", data);
       setFilteredData(data);
     });
   }
 
   useEffect(() => {
-    if (user) {
-      fetchRestaurantData();
-    }
-  }, [user]);
+    fetchRestaurantData();
+  }, []);
 
-  useEffect(() => {
-    if (user !== null) {
-      const information = getStudentInformation(user);
-      setStudents(information);
-      information.then((data) => {
-        setStudents(data);
-        console.log("Data: ", data);
-      });
-      console.log("User ID in page:", user); // Log the user ID
-      console.log("User Information: ", information);
-    }
-    if (user === false) {
-      console.log("User not authenticated");
-      router.push("/");
-    }
-  }, [user]);
-
-  console.log("students data", students);
 
   // handle the search function of the page
   const handleSearch = (e) => {

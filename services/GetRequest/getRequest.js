@@ -35,10 +35,8 @@ export function getSaitData(onChange) {
     const saitCollection = collection(db, "saitStaff");
     onSnapshot(saitCollection, (saitItems) => {
       const saitStaff = saitItems.docs.map((doc) => {
-        console.log("getting sait staff ", doc.data());
         return { id: doc.id, ...doc.data() };
       });
-      console.log("information: ", saitStaff);
       onChange(saitStaff);
     });
   } catch (error) {
@@ -55,10 +53,8 @@ export function getStudentData(onChange) {
     const studentCollection = query(collection(db, "students"));
     onSnapshot(studentCollection, (students) => {
       const studentData = students.docs.map((doc) => {
-        console.log("getting students:  ", doc.data());
         return { id: doc.id, ...doc.data() };
       });
-      console.log("information: ", studentData);
       onChange(studentData);
     });
   } catch (error) {
@@ -76,10 +72,8 @@ export function getRestaurantData(onChange) {
     const restaurantCollection = query(collection(db, "restaurants"));
     onSnapshot(restaurantCollection, (restaurants) => {
       const restaurantData = restaurants.docs.map((doc) => {
-        console.log("getting restaurants:  ", doc.data());
         return { id: doc.id, ...doc.data() };
       });
-      console.log("information: ", restaurantData);
       onChange(restaurantData);
     });
   } catch (error) {
@@ -100,10 +94,8 @@ export function getRestaurantDataByOwner(onChange, user) {
     );
     onSnapshot(restaurantCollection, (restaurants) => {
       const restaurantData = restaurants.docs.map((doc) => {
-        console.log("getting restaurants:  ", doc.data());
         return { id: doc.id, ...doc.data() };
       });
-      console.log("information: ", restaurantData);
       onChange(restaurantData);
     });
   } catch (error) {
@@ -129,7 +121,6 @@ export async function getRestaurantMenuByOwner(onChange, user) {
       const menuItems = menuSnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
       });
-      console.log("Menu items: ", menuItems);
       onChange(menuItems);
     });
   } catch (error) {
@@ -162,10 +153,24 @@ export function getRestaurantDataByStudents(onChange) {
     const restaurantCollection = query(collection(db, "restaurants"));
     onSnapshot(restaurantCollection, (restaurants) => {
       const restaurantData = restaurants.docs.map((doc) => {
-        console.log("getting restaurants:  ", doc.data());
         return { id: doc.id, ...doc.data() };
       });
-      console.log("information: ", restaurantData);
+      onChange(restaurantData);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
+
+// get restaurant details for students
+export function getRestaurantDataForCheckoutByStudents(onChange,id) {
+  try {
+    const restaurantCollection = query(collection(db, "restaurants"),where("uid", "==", id));
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
       onChange(restaurantData);
     });
   } catch (error) {
@@ -176,18 +181,80 @@ export function getRestaurantDataByStudents(onChange) {
 
 //fetch restaurant menu for students
 export function getRestaurantMenuByStudents(onChange, id) {
-  console.log("id: ", id);
   try {
     // Reference to the menu collection within the restaurant document
-    const menuCollectionRef = collection(db, "restaurants", id, "menu");
+    const menuCollectionRef = query(collection(db, "restaurants", id, "menu"));
 
     // Set up a real-time listener on the menu collection
     onSnapshot(menuCollectionRef, (snapshot) => {
       const menuItems = snapshot.docs.map((doc) => {
-        console.log("getting restaurants: ", doc.data());
         return { id: doc.id, ...doc.data() };
       });
-      console.log("information: ", menuItems);
+      onChange(menuItems);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
+
+//get student data for students as user
+export function getStudentDataByStudents(onChange, uid) {
+  try {
+    // Reference to the menu collection within the restaurant document
+    const menuCollectionRef = query(
+      collection(db, "students"),
+      where("uid", "==", uid)
+    );
+
+    // Set up a real-time listener on the menu collection
+    onSnapshot(menuCollectionRef, (snapshot) => {
+      const menuItems = snapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      onChange(menuItems);
+    });
+  } catch (error) {
+    console.error("Error getting student information: ", error);
+    onChange([]);
+  }
+}
+
+//get cart menu for students
+export function getStudentMenuByStudents(onChange, id) {
+  try {
+    // Reference to the menu collection within the restaurant document
+    const menuCollectionRef = query(
+      collection(db, "students", id, "menu"),
+      orderBy("addedAt", "desc")
+    );
+
+    // Set up a real-time listener on the menu collection
+    onSnapshot(menuCollectionRef, (snapshot) => {
+      const menuItems = snapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      onChange(menuItems);
+    });
+  } catch (error) {
+    console.error("Error getting menu information: ", error);
+    onChange([]);
+  }
+}
+//get menu from restaurant for students
+export function getCheckoutMenuByStudents(onChange, id, menuId) {
+  console.log("id: ", id);
+  try {
+    // Reference to the menu collection within the restaurant document
+    const menuCollectionRef = query(
+      collection(db, "restaurants", id, "menu", menuId)
+    );
+
+    // Set up a real-time listener on the menu collection
+    onSnapshot(menuCollectionRef, (snapshot) => {
+      const menuItems = snapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
       onChange(menuItems);
     });
   } catch (error) {

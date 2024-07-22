@@ -1,16 +1,57 @@
-import React, { useState } from "react";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter } from "@/components/ui/sheet";
+"use client";
+import React, { useState, useEffect } from "react";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/app/Restrauntitems/cart-context/page";
+import {
+  getStudentMenuByStudents,
+  getRestaurantDataForCheckoutByStudents,
+} from "@/services/GetRequest/getRequest";
 
-export default function CheckoutCart() {
+export default function CheckoutCart({ studentData }) {
+  const [subtotal, setSubtotal] = useState(0);
+  const [cartItems, setCartItems] = useState(null);
   const router = useRouter();
-  const { cartItems, removeFromCart, cartCounter, restaurantInfo } = useCart();
+  const [userData, setUserData] = useState(null);
+  const [cartCounter, setCartCount] = useState(0);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  function fetchCartItems() {
+    getStudentMenuByStudents((data) => {
+      setCartItems(data);
+    }, studentData[0].id);
+  }
+
+  function fetchRestaurantData() {
+    getRestaurantDataForCheckoutByStudents((data) => {
+      setUserData(data);
+    }, cartItems[0].restaurantUid);
+  }
+
+  useEffect(() => {
+    if (cartItems && cartItems.length > 0) {
+      fetchRestaurantData();
+      setCartCount(cartItems.length);
+      setSubtotal(
+        cartItems.reduce((acc, item) => acc + parseFloat(item.price), 0)
+      );
+    }
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (studentData && studentData.length > 0) {
+      fetchCartItems();
+    }
+  }, [studentData]);
 
   const handleClick = () => {
     router.push("/student/main/checkout");
@@ -21,40 +62,69 @@ export default function CheckoutCart() {
     <div className="flex items-center justify-center h-screen">
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
-          <Button size="icon" className="rounded-full bg-white text-black" onClick={() => setIsSheetOpen(true)}>
+          <Button
+            size="icon"
+            className="rounded-full bg-white text-black"
+            onClick={() => setIsSheetOpen(true)}
+          >
             <ShoppingCartIcon className="w-6 h-6" />
-            {cartCounter > 0 && <span className="ml-2 text-sm font-semibold">{cartCounter}</span>}
+            {cartCounter > 0 && (
+              <span className="ml-2 text-sm font-semibold">{cartCounter}</span>
+            )}
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-full max-w-md bg-white rounded-lg shadow-xl">
+        <SheetContent
+          side="right"
+          className="w-full max-w-md bg-white rounded-lg shadow-xl"
+        >
           <SheetHeader className="px-6 py-4 border-b">
-            <div className="flex items-center space-x-4">
-              <Avatar className="w-12 h-12">
-                <AvatarImage src={restaurantInfo.img_url} />
-                <AvatarFallback>R</AvatarFallback>
-              </Avatar>
-              <div>
-                <SheetTitle className="text-lg font-semibold">{restaurantInfo.name}</SheetTitle>
-                <SheetDescription className="text-sm text-muted-foreground">
-                  {restaurantInfo.address}
-                </SheetDescription>
+            {userData && userData != null && userData.length > 0 ? (
+              <div className="flex items-center space-x-4">
+                <Avatar className="w-12 h-12">
+                  <AvatarImage src={userData[0].imageUrl} />
+                  <AvatarFallback>R</AvatarFallback>
+                </Avatar>
+                <div>
+                  <SheetTitle className="text-lg font-semibold">
+                    {userData[0].name}
+                  </SheetTitle>
+                  <SheetDescription className="text-sm text-muted-foreground">
+                    {userData[0].address}
+                  </SheetDescription>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="px-6 py-4 space-y-4">
+                <p className="text-center text-muted-foreground">
+                  Your cart is empty
+                </p>
+              </div>
+            )}
           </SheetHeader>
-          {cartItems.length > 0 ? (
+          {cartItems && cartItems != null && cartItems.length > 0 ? (
             <div className="px-6 py-4 space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
               {cartItems.map((item) => (
-                <div key={item.item_id} className="flex items-center justify-between rounded-lg bg-muted p-4">
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between rounded-lg bg-muted p-4"
+                >
                   <div className="flex items-center space-x-4">
-                    <img src={item.img_url} alt={item.name} className="w-12 h-12 rounded-full" />
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="w-12 h-12 rounded-full"
+                    />
                     <div>
                       <div className="font-semibold">{item.name}</div>
-                      <div className="text-muted-foreground">${item.price.toFixed(2)}</div>
+                      <div className="text-muted-foreground">${item.price}</div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span>{item.quantity}</span>
-                    <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.item_id)}>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                    >
                       <TrashIcon className="w-4 h-4  text-primary text-muted-foreground hover:text-destructive" />
                     </Button>
                   </div>
@@ -63,16 +133,18 @@ export default function CheckoutCart() {
             </div>
           ) : (
             <div className="px-6 py-4 space-y-4">
-              <p className="text-center text-muted-foreground">Your cart is empty</p>
+              <p className="text-center text-muted-foreground">
+                Your cart is empty
+              </p>
             </div>
           )}
           <SheetFooter className="px-6 py-4 border-t flex flex-col gap-4 ">
-            {cartItems.length > 0 ? (
+            {cartItems && cartItems != null && cartItems.length > 0 ? (
               <>
                 <div className="flex flex-col gap-2 w-full">
                   <div className="flex justify-between items-center w-full">
                     <div className="text-lg font-semibold">Subtotal</div>
-                    <div className="text-lg font-semibold">${subtotal.toFixed(2)}</div>
+                    <div className="text-lg font-semibold">${subtotal}</div>
                   </div>
                   <Button
                     onClick={handleClick}
