@@ -122,7 +122,7 @@ export default function Component() {
       );
     }
   }, [cartItems]);
-
+  
   useEffect(() => {
     if (user) {
       fetchStudentData();
@@ -145,6 +145,7 @@ export default function Component() {
   // const and variable for the payment
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
+
   // const [formData, setFormData] = useState({
   //   name: "",
   //   number: "",
