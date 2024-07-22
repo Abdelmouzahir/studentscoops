@@ -47,7 +47,7 @@ const Overview = ({ studentData, restaurantData }) => {
           if (student.active) {
             activeCount += 1;
           }
-          if (student.accountCreated.toDate() >= dateBefore7Days) {
+          if (student.accountCreated && (student.accountCreated.toDate() >= dateBefore7Days)) {
             console.log("student created in last 7 days: ", student);
             createdInLast7DaysCount += 1;
           }

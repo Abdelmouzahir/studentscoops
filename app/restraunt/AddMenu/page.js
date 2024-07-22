@@ -23,9 +23,16 @@ const Page = () => {
   const [imageerr, setImageerr] = useState("");
   const [image, setImage] = useState([]);
   const router = useRouter();
+  const [quantity, setQuantity] = useState(1);
 
   const handleSubmit = async () => {
-    if(!image || image.length === 0) {
+    if (quantity < 1 || quantity > 50) {
+      return;
+    }
+    if (price < 0) {
+      return;
+    }
+    if (!image || image.length === 0) {
       setImageerr("Please upload an image.");
       return;
     }
@@ -40,10 +47,16 @@ const Page = () => {
       );
       return;
     }
-    await addRestaurantMenu(user, name, price, description, image[0]).then(() => {
-        router.push("/restraunt/home");
-      }
-    );
+    await addRestaurantMenu(
+      user,
+      name,
+      price,
+      description,
+      image[0],
+      quantity
+    ).then(() => {
+      router.push("/restraunt/home");
+    });
   };
 
   return (
@@ -80,6 +93,22 @@ const Page = () => {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="quantity">Quantity</Label>
+                <Input
+                  id="quantity"
+                  type="number"
+                  placeholder="Enter quantity"
+                  required
+                  value={quantity}
+                  max={50}
+                  min={1}
+                  onChange={(e) => setQuantity(e.target.value)}
+                />
+                <p className="talic text-red-400 text-sm">
+                  Quantity must be between 1 and 49, inclusive.
+                </p>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="description">Description</Label>
