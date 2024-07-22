@@ -243,7 +243,6 @@ export function getStudentMenuByStudents(onChange, id) {
 }
 //get menu from restaurant for students
 export function getCheckoutMenuByStudents(onChange, id, menuId) {
-  console.log("id: ", id);
   try {
     // Reference to the menu collection within the restaurant document
     const menuCollectionRef = query(

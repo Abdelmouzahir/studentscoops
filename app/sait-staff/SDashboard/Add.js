@@ -65,7 +65,8 @@ const Add = ({ setStudents, setIsAdding }) => {
           uid: data.uid,
           accountCreated: currentDate,
           active: true,
-          imageUrl:null,
+          imageUrl: null,
+          address: null,
         };
 
         await addDoc(collection(db, "students"), {
