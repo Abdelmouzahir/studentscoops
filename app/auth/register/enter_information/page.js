@@ -2,17 +2,17 @@
 import { useState, useEffect, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/services/utils";
-import {
-  addStudentInformation,
-} from "@/services/PostRequest/postRequest";
 import { formatPhoneNumber, formatPostalCode } from "@/Constant/formated";
 import Modal from "/components/Modal";
 import { TermsOfUse, PrivacyPolicy } from "../../companyPolicies";
-import { auth } from "@/app/firebase/config";
 
-const PersonalInfo = () => {
+const PersonalInfo = ({
+  setShowPersonalInfo,
+  setInformation,
+  email,
+  signUp,
+}) => {
   const { user } = useUserAuth();
-  const [email,setEmail] = useState("");
   const [fname, setfName] = useState("");
   const [lname, setlName] = useState("");
   const [address, setAddress] = useState("");
@@ -26,18 +26,6 @@ const PersonalInfo = () => {
   const [modalHeading, setModalHeading] = useState(null);
   const [modalMessage, setModalMessage] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user !== null) {
-      console.log("User ID in page:", user); // Log the user ID
-    }
-    if (user === false) {
-      console.log("User not authenticated");
-      // Redirect to login if not authenticated
-      router.push("/auth/sign-in");
-    }
-  }, [user, router]);
 
   const handlePostalCodeChange = (e) => {
     setPostalCode(formatPostalCode(e.target.value));
@@ -48,45 +36,32 @@ const PersonalInfo = () => {
   };
 
   const handleSubmit = () => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      setEmail(currentUser.email);
-    }
-    const userInformation = {
-      name: fname,
-      lastName: lname,
-      address: address,
-      unitNum: unitnum,
-      postalCode: postalCode,
-      phoneNumber: phoneNumber
-    };
-    setError("");
-    setpostalcoderr("");
-
     if (!fname || !lname || !address || !postalCode || !phoneNumber) {
       setError("All fields are required.");
       return;
     }
+    setInformation({
+      name: fname,
+      lastName: lname,
+      address: unitnum + "" + address + "" + postalCode,
+      phoneNumber: phoneNumber,
+      active: true,
+      accountCreated: new Date(),
+      email: email,
+      imageUrl: null,
+    });
+    setError("");
+    setpostalcoderr("");
 
     // Check if postal code is Canadian
     if (!postalCode.match(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/)) {
       setpostalcoderr("Postal code not Valid!");
       return;
     }
-
-    // Save the personal info to a database or state management solution
-    // For demonstration, we will just log the data
-    console.log("First Name:", fname);
-    console.log("Last Name:", lname);
-    console.log("Address:", address);
-    console.log("Unit Number:", unitnum);
-    console.log("Postal Code:", postalCode);
-    console.log("Phone Number:", phoneNumber);
-    if(email == ""){
+    if (email == "") {
       return;
     }
-    addStudentInformation(user, userInformation,email);
-    router.push("/student");
+    signUp();
   };
   const showTermsOfUse = () => {
     setModalHeading("Terms of Use");
@@ -100,18 +75,21 @@ const PersonalInfo = () => {
     setIsVisible(true);
   };
 
-  useEffect(()=>{console.log('heading',modalHeading);console.log('modal message',modalMessage)},[modalMessage,modalHeading])
+  useEffect(() => {
+    console.log("heading", modalHeading);
+    console.log("modal message", modalMessage);
+  }, [modalMessage, modalHeading]);
 
   return (
     <Fragment>
       <div
         className="min-h-screen py-40"
-        style={{ 
-        backgroundImage: "url(/assets/images/infoCover.jpg)",
-        backgroundSize: "cover", // Adjusts the size of the background image
-        backgroundPosition: "center", // Centers the background image
-        backgroundRepeat: "no-repeat", // Prevents the background image from repeating
-          }}
+        style={{
+          backgroundImage: "url(/assets/images/infoCover.jpg)",
+          backgroundSize: "cover", // Adjusts the size of the background image
+          backgroundPosition: "center", // Centers the background image
+          backgroundRepeat: "no-repeat", // Prevents the background image from repeating
+        }}
       >
         <div className="container mx-auto">
           <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden text-black">
@@ -250,7 +228,7 @@ const PersonalInfo = () => {
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md"
+                      className="w-full bg-yellow-500 py-3 hover:bg-yellow-500/70 text-center text-white mt-3 rounded-md"
                     >
                       Submit
                     </button>
@@ -262,6 +240,17 @@ const PersonalInfo = () => {
                       Submit
                     </button>
                   )}
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPersonalInfo(false);
+                    }}
+                    className="w-full bg-yellow-800 hover:bg-yellow-800/70 py-3 text-center text-white mt-3 rounded-md"
+                  >
+                    Back
+                  </button>
                 </div>
               </form>
             </div>
@@ -277,12 +266,18 @@ const PersonalInfo = () => {
         <div>
           <p className="text-xl my-2 font-bold">{modalHeading}</p>
           <div>
-            {(modalMessage==null || modalHeading==null) ? (<div>Loading</div>) : (<div className="overflow-y-auto max-h-[400px]">{modalMessage.map((item) => (
-              <div className="bg-slate-100 p-3">
-                <p className="font-semibold">{item.heading}</p>
-                <p>{item.description}</p>
+            {modalMessage == null || modalHeading == null ? (
+              <div>Loading</div>
+            ) : (
+              <div className="overflow-y-auto max-h-[400px]">
+                {modalMessage.map((item) => (
+                  <div className="bg-slate-100 p-3">
+                    <p className="font-semibold">{item.heading}</p>
+                    <p>{item.description}</p>
+                  </div>
+                ))}
               </div>
-            ))}</div>) }
+            )}
           </div>
         </div>
       </Modal>
