@@ -12,16 +12,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
+import { deleteFoodFromCart } from "@/services/PostRequest/postRequest";
 import {
   getStudentMenuByStudents,
   getRestaurantDataForCheckoutByStudents,
 } from "@/services/GetRequest/getRequest";
+import { toast, Bounce, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function CheckoutCart({ studentData }) {
   const [subtotal, setSubtotal] = useState(0);
-  const [cartItems, setCartItems] = useState(null);
+  const [cartItems, setCartItems] = useState(null); // for the items which are placed in student cart
   const router = useRouter();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null); // for the restaurant data
   const [cartCounter, setCartCount] = useState(0);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -39,7 +42,10 @@ export default function CheckoutCart({ studentData }) {
 
   useEffect(() => {
     if (cartItems && cartItems.length > 0) {
+      console.log("cartItems", cartItems);
+      console.log("studentData", studentData);
       fetchRestaurantData();
+      console.log("length", cartItems.length);
       setCartCount(cartItems.length);
       setSubtotal(
         cartItems.reduce((acc, item) => acc + parseFloat(item.price), 0)
@@ -58,8 +64,40 @@ export default function CheckoutCart({ studentData }) {
     setIsSheetOpen(false);
   };
 
+  async function handleRemoveItem(id) {
+    await deleteFoodFromCart(studentData[0].id, id).then(() => {
+      toast.success(`Item has been deleted`, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    });
+  }
+
   return (
     <div className="flex items-center justify-center h-screen">
+      <div className="w-full z-10">
+        <ToastContainer
+          position="top-left"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Bounce}
+        />
+      </div>
+
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button
@@ -124,6 +162,7 @@ export default function CheckoutCart({ studentData }) {
                     <Button
                       variant="ghost"
                       size="icon"
+                      onClick={() => handleRemoveItem(item.id)}
                     >
                       <TrashIcon className="w-4 h-4  text-primary text-muted-foreground hover:text-destructive" />
                     </Button>
