@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 // import restaurantsData from '../restaurantsData.json'
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+// import { ToastContainer, toast, Bounce } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 import { GiExitDoor } from "react-icons/gi";
 import {
@@ -60,13 +62,13 @@ export default function RestaurantMenu() {
   useEffect(() => {
     if (menuItems) {
       const uniqueRestaurantDocIds = new Set();
-  
+
       menuItems.forEach((item) => {
         if (!restaurantDocumentIds.includes(item.restaurantDocId)) {
           uniqueRestaurantDocIds.add(item.restaurantDocId);
         }
       });
-  
+
       setRestaurantDocumentIds([...uniqueRestaurantDocIds]);
     }
   }, [menuItems]);
@@ -128,10 +130,10 @@ export default function RestaurantMenu() {
             restaurant[0].id,
             item.id
           ).then(() => {
-            alert(`Added ${item.name} to cart`);
+            alert("Item added to cart");
           });
         } else {
-          alert("You can only order from one restaurant at a time");
+          alert("You can only add items from one restaurant at a time");
         }
       }
     }

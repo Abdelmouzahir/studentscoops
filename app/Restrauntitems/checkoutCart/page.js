@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
+import { deleteFoodFromCart } from "@/services/PostRequest/postRequest";
 import {
   getStudentMenuByStudents,
   getRestaurantDataForCheckoutByStudents,
@@ -19,9 +20,9 @@ import {
 
 export default function CheckoutCart({ studentData }) {
   const [subtotal, setSubtotal] = useState(0);
-  const [cartItems, setCartItems] = useState(null);
+  const [cartItems, setCartItems] = useState(null); // for the items which are placed in student cart
   const router = useRouter();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(null); // for the restaurant data
   const [cartCounter, setCartCount] = useState(0);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
@@ -39,7 +40,10 @@ export default function CheckoutCart({ studentData }) {
 
   useEffect(() => {
     if (cartItems && cartItems.length > 0) {
+      console.log("cartItems", cartItems);
+      console.log("studentData", studentData);
       fetchRestaurantData();
+      console.log("length", cartItems.length);
       setCartCount(cartItems.length);
       setSubtotal(
         cartItems.reduce((acc, item) => acc + parseFloat(item.price), 0)
@@ -57,6 +61,12 @@ export default function CheckoutCart({ studentData }) {
     router.push("/student/main/checkout");
     setIsSheetOpen(false);
   };
+
+  async function handleRemoveItem(id) {
+    await deleteFoodFromCart(studentData[0].id, id).then(() => {
+      alert("Item removed from cart");
+    });
+  }
 
   return (
     <div className="flex items-center justify-center h-screen">
@@ -124,6 +134,7 @@ export default function CheckoutCart({ studentData }) {
                     <Button
                       variant="ghost"
                       size="icon"
+                      onClick={() => handleRemoveItem(item.id)}
                     >
                       <TrashIcon className="w-4 h-4  text-primary text-muted-foreground hover:text-destructive" />
                     </Button>

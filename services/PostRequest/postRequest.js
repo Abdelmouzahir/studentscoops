@@ -207,7 +207,14 @@ export async function updateRestaurant(id, prop) {
 //<<<-----------------------------------------------------------------Restaurant------------------------------------------------------------------>>>>
 
 // to add restaurant menu in database
-export async function addRestaurantMenu(user, name, price, description, image, quantity) {
+export async function addRestaurantMenu(
+  user,
+  name,
+  price,
+  description,
+  image,
+  quantity
+) {
   const storageRef = ref(storage, `menu/${user}/${image.name}`);
   const uploadTask = uploadBytesResumable(storageRef, image);
   uploadTask.on(
@@ -342,10 +349,7 @@ export async function deleteRestaurantUserByOwner(currentUser, docId) {
 
 //<<<-----------------------------------------------------------------Student------------------------------------------------------------------>>>>
 // to add menu to students
-export async function addMenuToStudent(
-  menu,
-  studentDocId,
-) {
+export async function addMenuToStudent(menu, studentDocId) {
   try {
     const docRef = collection(db, "students", studentDocId, "menu");
     await addDoc(docRef, menu);
@@ -367,6 +371,15 @@ export async function addStudentInformation(userInformation) {
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
+  }
+}
+
+//to delete food from cart by student
+export async function deleteFoodFromCart(studentDocId, menuId) {
+  try {
+    await deleteDoc(doc(db, "students", studentDocId, "menu", menuId));
+  } catch (e) {
+    console.error("Error deleting document: ", e);
   }
 }
 //restaurants
