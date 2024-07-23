@@ -129,6 +129,25 @@ export async function getRestaurantMenuByOwner(onChange, user) {
   }
 }
 
+//get order menu data for restaurants
+export function getOrderMenuByOwner(onChange, user) {
+  try {
+    const restaurantCollection = query(
+      collection(db, "restaurants", user, "menu"),
+      where("status", "==", "Pending")
+    );
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      onChange(restaurantData);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
+
 //for login purpose only for restaurant
 export async function getRestaurantDataForLogin(user) {
   try {
