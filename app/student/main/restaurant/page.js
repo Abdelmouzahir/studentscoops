@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 // import restaurantsData from '../restaurantsData.json'
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast, Bounce } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
 import { GiExitDoor } from "react-icons/gi";
 import {
@@ -18,7 +19,6 @@ import { addMenuToStudent } from "@/services/PostRequest/postRequest";
 import { useUserAuth } from "@/services/utils";
 import Modal from "@/components/Modal";
 import Link from "next/link";
-import { toast, Bounce, ToastContainer } from "react-toastify";
 
 export default function RestaurantMenu() {
   const [menuItems, setMenuItems] = useState(null);
@@ -130,30 +130,10 @@ export default function RestaurantMenu() {
             restaurant[0].id,
             item.id
           ).then(() => {
-            toast.success(`${item.name} has been added`, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: true,
-              closeOnClick: false,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-              transition: Bounce,
-              });
+            alert("Item added to cart");
           });
         } else {
-          toast.error(`You can only addYou can only order from one restaurant at a time`, {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Bounce,
-            });
+          alert("You can only add items from one restaurant at a time");
         }
       }
     }
@@ -161,19 +141,6 @@ export default function RestaurantMenu() {
 
   return (
     <div className="flex flex-col">
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Bounce}
-        />
       <div className="flex justify-between items-start w-full mt-4 mb-3">
         <Button onClick={handleBackToMenu} className="">
           Back <GiExitDoor className="ml-3 h-5 w-5" />

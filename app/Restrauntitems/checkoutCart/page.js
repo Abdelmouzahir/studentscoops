@@ -17,8 +17,6 @@ import {
   getStudentMenuByStudents,
   getRestaurantDataForCheckoutByStudents,
 } from "@/services/GetRequest/getRequest";
-import { toast, Bounce, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function CheckoutCart({ studentData }) {
   const [subtotal, setSubtotal] = useState(0);
@@ -66,38 +64,12 @@ export default function CheckoutCart({ studentData }) {
 
   async function handleRemoveItem(id) {
     await deleteFoodFromCart(studentData[0].id, id).then(() => {
-      toast.success(`Item has been deleted`, {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        transition: Bounce,
-      });
+      alert("Item removed from cart");
     });
   }
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <div className="w-full z-10">
-        <ToastContainer
-          position="top-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Bounce}
-        />
-      </div>
-
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
           <Button
