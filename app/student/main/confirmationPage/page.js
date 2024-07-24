@@ -1,10 +1,15 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useCart } from "@/app/Restrauntitems/cart-context/page"
+import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  getStudentConfirmOrderData,
+  getStudentDataByStudents,
+} from "@/services/GetRequest/getRequest";
+import { useUserAuth } from "@/services/utils";
 
 function ShoppingCartIcon(props) {
   return (
@@ -67,39 +72,70 @@ function ChevronDownIcon(props) {
 }
 
 export default function Component() {
-  const [orderStatus, setOrderStatus] = useState("Placing Order")
-  const [showCancelButton, setShowCancelButton] = useState(true)
-  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false)
-  const [showCancelMessage, setShowCancelMessage] = useState(false)
-  const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false)
+  const { user } = useUserAuth();
+  const router = useRouter();
+  const [studentData, setStudentData] = useState(null);
+  const [orderData, setOrderData] = useState(null);
+  const [orderStatus, setOrderStatus] = useState("Placing Order");
+  const [showCancelButton, setShowCancelButton] = useState(true);
+  const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
+  const [showCancelMessage, setShowCancelMessage] = useState(false);
+  const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
 
-  const { cartItems, removeFromCart, cartCounter, restaurantInfo } = useCart();
+  const cartItems = orderData ? orderData : [];
+
+  //function to fetch student data
+  function fetchStudentData() {
+    getStudentDataByStudents((data) => {
+      setStudentData(data);
+    }, user);
+  }
+
+  function fetchOrderData() {
+    getStudentConfirmOrderData((data) => {
+      setOrderData(data);
+    }, studentData[0].id);
+  }
+
+  useEffect(() => {
+    if (user) {
+      fetchStudentData();
+    } else if (user == false) {
+      router.push("/");
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (studentData && (studentData !== null) & (studentData.length > 0)) {
+      fetchOrderData();
+    }
+  }, [studentData]);
 
   useEffect(() => {
     const orderAnimation = () => {
       setTimeout(() => {
-        setOrderStatus("Confirming Order .... ")
+        setOrderStatus("Confirming Order .... ");
         setTimeout(() => {
-          setShowOrderConfirmation(true)
-          setOrderStatus("Order Confirmed")
-          setShowCancelButton(false)
-        }, 5000)
-      }, 3000)
-    }
-    orderAnimation()
-  }, [])
+          setShowOrderConfirmation(true);
+          setOrderStatus("Order Confirmed");
+          setShowCancelButton(false);
+        }, 5000);
+      }, 3000);
+    };
+    orderAnimation();
+  }, []);
 
   const handleCancelOrder = () => {
-    setOrderStatus("Order Canceled")
-    setShowCancelButton(false)
-    setShowOrderConfirmation(false)
-    setShowCancelMessage(true)
-  }
+    setOrderStatus("Order Canceled");
+    setShowCancelButton(false);
+    setShowOrderConfirmation(false);
+    setShowCancelMessage(true);
+  };
 
   // Calculate cart totals
   const isArray = Array.isArray(cartItems);
   const cartItemsTotal = isArray
-    ? cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+    ? cartItems.reduce((total, item) => total + parseFloat(item.price), 0)
     : 0;
   const tax = cartItemsTotal * 0.05;
   const total = cartItemsTotal + tax;
@@ -155,9 +191,12 @@ export default function Component() {
             <div className="animate-bounce">
               <CircleCheckIcon className="mx-auto h-20 w-20 text-green-500" />
             </div>
-            <h1 className="mt-8 text-4xl font-bold tracking-tight text-gray-800">Order Confirmed</h1>
+            <h1 className="mt-8 text-4xl font-bold tracking-tight text-gray-800">
+              Order Confirmed
+            </h1>
             <p className="mt-6 text-lg text-gray-800">
-              Thank you for your order! Your order is being processed and will be shipped soon.
+              Thank you for your order! Your order is being processed and will
+              be shipped soon.
             </p>
           </div>
           <div className="mt-12 w-full max-w-md">
@@ -166,36 +205,58 @@ export default function Component() {
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => setIsCartSummaryOpen(!isCartSummaryOpen)}
               >
-                <p className="font-semibold text-xl text-gray-800">Order Summary ({isArray ? cartItems.length : 0} items)</p>
+                <p className="font-semibold text-xl text-gray-800">
+                  Order Summary ({isArray ? cartItems.length : 0} items)
+                </p>
                 <ChevronDownIcon
-                  className={`w-8 h-8 text-gray-600 transition-transform ${isCartSummaryOpen ? "rotate-180" : ""}`}
+                  className={`w-8 h-8 text-gray-600 transition-transform ${
+                    isCartSummaryOpen ? "rotate-180" : ""
+                  }`}
                 />
               </div>
               {isCartSummaryOpen && (
                 <div className="mt-6 space-y-6">
-                  {isArray && cartItems.map((item) => (
-                    <div key={item.item_id} className="flex items-center gap-6 bg-gray-100 p-6 rounded-lg">
-                      <img src={item.img_url} alt={item.name} width={80} height={80} className="rounded-md" />
-                      <div className="flex-1">
-                        <p className="font-semibold text-lg text-gray-800">{item.name}</p>
-                        <div className="flex items-center gap-2">
-                          <p className="text-base text-gray-600">Quantity: {item.quantity}</p>
+                  {isArray &&
+                    cartItems.map((item) => (
+                      <div
+                        key={item.item_id}
+                        className="flex items-center gap-6 bg-gray-100 p-6 rounded-lg"
+                      >
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          width={80}
+                          height={80}
+                          className="rounded-md"
+                        />
+                        <div className="flex-1">
+                          <p className="font-semibold text-lg text-gray-800">
+                            {item.name}
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-base text-gray-600">
+                              Quantity: {item.quantity}
+                            </p>
+                          </div>
                         </div>
+                        <p className="text-xl font-bold text-gray-800">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </p>
                       </div>
-                      <p className="text-xl font-bold text-gray-800">${(item.price * item.quantity).toFixed(2)}</p>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </Card>
             <Card className="p-8 mt-6 rounded-lg shadow-lg bg-white">
               <div className="space-y-6">
-                <p className="font-semibold text-2xl text-gray-800">Order Total</p>
+                <p className="font-semibold text-2xl text-gray-800">
+                  Order Total
+                </p>
                 <div className="border-t border-gray-300 pt-6">
                   <div className="flex justify-between">
                     <p className="text-base text-gray-600">Subtotal</p>
                     <p className="font-semibold text-lg text-gray-800">
-                      ${cartItemsTotal.toFixed(2)}
+                      ${cartItemsTotal}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -207,7 +268,7 @@ export default function Component() {
                 </div>
                 <div className="flex justify-between font-bold text-2xl text-gray-800">
                   <p>Total</p>
-                  <p>${total.toFixed(2)}</p>
+                  <p>${total}</p>
                 </div>
               </div>
             </Card>
@@ -223,5 +284,5 @@ export default function Component() {
         </main>
       )}
     </div>
-  )
+  );
 }

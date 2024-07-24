@@ -183,6 +183,23 @@ export function getRestaurantDataByStudents(onChange) {
   }
 }
 
+//get student confirm order data for students
+export function getStudentConfirmOrderData(onChange, id) {
+  try{
+    const studentCollection = query(collection(db, "students", id, "menu"), orderBy("addedAt", "desc"));
+    onSnapshot(studentCollection, (snapshot) => {
+      const menuItems = snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((item) => item.status == "Sold"); // Filter out sold items
+        console.log("menuItems",menuItems);
+      onChange(menuItems);
+    });
+  }catch(error){
+    console.error("Error getting student information: ", error);
+    onChange([]);
+  }
+};
+
 // get restaurant details for students
 export function getRestaurantDataForCheckoutByStudents(onChange,id) {
   try {
@@ -243,7 +260,7 @@ export function getStudentDataByStudents(onChange, uid) {
 //get cart menu for students
 export function getStudentMenuByStudents(onChange, id) {
   try {
-    // Reference to the menu collection within the restaurant document
+    // Reference to the menu collection within the student document
     const menuCollectionRef = query(
       collection(db, "students", id, "menu"),
       orderBy("addedAt", "desc")
@@ -251,9 +268,9 @@ export function getStudentMenuByStudents(onChange, id) {
 
     // Set up a real-time listener on the menu collection
     onSnapshot(menuCollectionRef, (snapshot) => {
-      const menuItems = snapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() };
-      });
+      const menuItems = snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((item) => item.status !== "Sold"); // Filter out sold items
       onChange(menuItems);
     });
   } catch (error) {
