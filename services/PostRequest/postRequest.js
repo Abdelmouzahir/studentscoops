@@ -415,7 +415,7 @@ export async function placeOrderByStudent(
       }
     );
 
-    // Delete customer from restaurant menu (who is buying)
+    // Delete customer from restaurant menu (which one is buying)
     await deleteDoc(
       doc(
         db,
@@ -427,6 +427,49 @@ export async function placeOrderByStudent(
         customerId
       )
     );
+
+    // Fetch all customers from restaurant menu
+    const customerSnapshot = await getDocs(
+      collection(
+        db,
+        "restaurants",
+        restaurantDocId,
+        "menu",
+        restaurantMenuDocRef,
+        "customers"
+      )
+    );
+
+    const customerData = customerSnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+
+    if (customerData && customerData.length > 0) {
+      for (const item of customerData) {
+        await updateDoc(
+          doc(db, "students", item.studentDocId, "menu", item.studentMenuDocId),
+          {
+            status: false,
+          }
+        );
+      }
+      // Delete the entire customers collection (if this is intended)
+      const customersCollectionRef = collection(
+        db,
+        "restaurants",
+        restaurantDocId,
+        "menu",
+        restaurantMenuDocRef,
+        "customers"
+      );
+
+      const customersSnapshot = await getDocs(customersCollectionRef);
+      const deletePromises = customersSnapshot.docs.map((doc) =>
+        deleteDoc(doc.ref)
+      );
+
+      await Promise.all(deletePromises);
+    }
 
     console.log("Order placed successfully.");
   } catch (e) {
