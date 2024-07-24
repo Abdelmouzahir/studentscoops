@@ -1,6 +1,6 @@
 "use client"; // Indicates that this component uses client-side features like hooks or context
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -39,6 +39,11 @@ import {
 
 // Main functional component
 export default function Component() {
+  //only for checking the availability of the items
+  const [notAvailable, setNotAvailable] = useState(false);
+  const [notAvailableError, setNotAvailableError] = useState("");
+  const [notAvailableCount, setNotAvailableCount] = useState(null);
+
   const { user } = useUserAuth();
   // State to manage the visibility of the cart summary
   const { address, setAddress } = useAddress();
@@ -108,6 +113,7 @@ export default function Component() {
 
   useEffect(() => {
     if (cartItems && cartItems != null && cartItems.length > 0) {
+      setNotAvailableCount(cartItems.filter((item) => item.status == false));
       fetchRestaurantData();
       setTaxAmmount(
         cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
@@ -123,6 +129,19 @@ export default function Component() {
       );
     }
   }, [cartItems]);
+
+  useEffect(() => {
+    if (notAvailableCount && notAvailableCount !== null) {
+      if (notAvailableCount.length > 0) {
+        setNotAvailable(true);
+        setNotAvailableError(
+          `The following items are not available: ${notAvailableCount
+            .map((item) => item.name)
+            .join(", ")}. Please remove them from your cart to proceed.`
+        );
+      }
+    }
+  }, [notAvailableCount]);
 
   useEffect(() => {
     if (user) {
@@ -149,11 +168,15 @@ export default function Component() {
   const handlePaymentMethodChange = (value) => {
     setPaymentMethod(value);
   };
+
   const clickCheckout = () => {
     //function to elavate the trasaction
 
     //after transaction is done
-    if (cartItems && cartItems != null && cartItems.length > 0) {
+    if (notAvailable) {
+      alert("Please remove the items which are not available");
+      return;
+    } else if (cartItems && cartItems != null && cartItems.length > 0) {
       cartItems.map(async (item) => {
         await placeOrderByStudent(
           item.restaurantDocId,
@@ -462,6 +485,9 @@ export default function Component() {
         {cartItems && cartItems != null ? (
           <>
             <Card className="p-6">
+              <div className={notAvailable ? "italic py-2" : "hidden"}>
+                {notAvailableError}
+              </div>
               <div
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => setIsCartSummaryOpen(!isCartSummaryOpen)}
@@ -479,37 +505,52 @@ export default function Component() {
               {isCartSummaryOpen && (
                 <div className="mt-4 space-y-4">
                   {cartItems.map((item) => (
-                    <div
-                      key={item.item_id}
-                      className="flex items-center gap-4 bg-muted p-4 rounded-md"
-                    >
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        width={64}
-                        height={64}
-                        className="rounded-md"
-                      />
-                      <div className="flex-1">
-                        <p className="font-semibold">{item.name}</p>
-                        <div className="flex items-center gap-2">
+                    <>
+                      <div
+                        className={
+                          item.status
+                            ? "hidden"
+                            : "flex justify-start items-end m-3 text-black text-xl font-bold z-20"
+                        }
+                      >
+                        <p>Sold</p>
+                      </div>
+                      <div
+                        key={item.id}
+                        className={
+                          item.status
+                            ? "flex items-center gap-4 bg-muted p-4 rounded-md"
+                            : "flex items-center gap-4 bg-muted p-4 rounded-md opacity-40 z-0"
+                        }
+                      >
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          width={64}
+                          height={64}
+                          className="rounded-md"
+                        />
+                        <div className="flex-1">
+                          <p className="font-semibold">{item.name}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm text-muted-foreground">
+                              Quantity: {item.quantity}
+                            </p>
+                          </div>
                           <p className="text-sm text-muted-foreground">
-                            Quantity: {item.quantity}
+                            ${item.price}
                           </p>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          ${item.price}
-                        </p>
+                        {/* Button to remove item from cart */}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleRemoveItem(item.id)}
+                        >
+                          <TrashIcon className="w-4 h-4 text-primary" />
+                        </Button>
                       </div>
-                      {/* Button to remove item from cart */}
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleRemoveItem(item.id)}
-                      >
-                        <TrashIcon className="w-4 h-4 text-primary" />
-                      </Button>
-                    </div>
+                    </>
                   ))}
                 </div>
               )}

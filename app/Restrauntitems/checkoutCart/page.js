@@ -121,10 +121,19 @@ export default function CheckoutCart({ studentData }) {
           </SheetHeader>
           {cartItems && cartItems != null && cartItems.length > 0 ? (
             <div className="px-6 py-4 space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
-              {cartItems.map((item) => (
+              {cartItems.map((item) => (<>
+                  <div
+                  className={
+                    item.status
+                      ? "hidden"
+                      : "flex justify-start items-end m-3 text-black text-xl font-bold z-20"
+                  }
+                >
+                  <p>Sold</p>
+                </div>
                 <div
                   key={item.id}
-                  className="flex items-center justify-between rounded-lg bg-muted p-4"
+                  className={item.status ? "flex items-center justify-between rounded-lg bg-muted p-4" : "flex items-center justify-between rounded-lg bg-muted p-4 opacity-40 z-0"}
                 >
                   <div className="flex items-center space-x-4">
                     <img
@@ -147,7 +156,7 @@ export default function CheckoutCart({ studentData }) {
                       <TrashIcon className="w-4 h-4  text-primary text-muted-foreground hover:text-destructive" />
                     </Button>
                   </div>
-                </div>
+                </div></>
               ))}
             </div>
           ) : (
