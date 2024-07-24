@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import zxcvbn from "zxcvbn";
 import "react-toastify/dist/ReactToastify.css";
+import { sendMail } from "@/lib/mail";
+import WelcomeEmail from "@/components/WelcomeEmail"
+import ReactDOMServer from 'react-dom/server';
 //icons
 import { FaCheckCircle } from "react-icons/fa";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -71,10 +74,36 @@ const RegisterForm = ({
     setSpecialCharMet(/[@$!%*?&]/.test(password));
   }, [password]);
 
+  const [username] = email.split('@');
+
+
+  //send email
+  const send = async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    //convert the template to be readable for the user in the email
+    const emailBody = ReactDOMServer.renderToString(
+        <WelcomeEmail name={username} link={"http://localhost:3000/auth/sign-in"} />
+    );
+    try {
+        await sendMail({
+            to: email,
+            name: 'No-reply',
+            subject: 'Welcome to StudentScoops 🎉',
+            body: emailBody,
+        });
+        return console.log('confirmation Sent to: ', username)
+    } catch (error) {
+        console.error("Error sending email:", error);
+        alert("Failed to send email. Please try again.");
+    }
+};
+
   const handleSignUp = async () => {
     setEmailError("");
     setPassError("");
     setError("");
+    
 
     // Check the email domain
     if (!email.endsWith("@edu.sait.ca")) {
@@ -121,6 +150,7 @@ const RegisterForm = ({
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      await send(e);
     } catch (e) {
       // Check if the user already exists in the database
       console.error("Error registering:", e.message);
