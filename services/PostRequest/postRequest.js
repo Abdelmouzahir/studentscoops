@@ -350,36 +350,89 @@ export async function deleteRestaurantUserByOwner(currentUser, docId) {
 
 //<<<-----------------------------------------------------------------Student------------------------------------------------------------------>>>>
 // to add menu to students
-export async function addMenuToStudent(menu, studentDocId) {
+export async function addMenuToStudent(
+  menu,
+  studentDocId,
+  restaurantDocId,
+  itemId
+) {
   try {
+    //add menu to student
     const docRef = collection(db, "students", studentDocId, "menu");
-    await addDoc(docRef, menu);
-    // const studentMenuDocId = studentMenu.id;
-    // const restaurantMenuDocRef = doc(db,"restauarants",restaurantDocId,"menu",menuDocId);
-    // await updateDoc(restaurantMenuDocRef, {
-    //   studentDocId,
-    //   studentMenuDocId,
-    // });
+    const docId = await addDoc(docRef, menu);
+
+    // student details to restaurant menu
+    const restaurantDocRef = collection(
+      db,
+      "restaurants",
+      restaurantDocId,
+      "menu",
+      itemId,
+      "customers"
+    );
+    const restaurantCustomerDocId = await addDoc(restaurantDocRef, {
+      studentDocId,
+      studentMenuDocId: docId.id,
+    });
+
+    // updating student checkout menu with restauarant customer id
+    await updateDoc(doc(db, "students", studentDocId, "menu", docId.id), {
+      customerId: restaurantCustomerDocId.id,
+    });
   } catch (e) {
     console.error("Error adding document: ", e);
   }
 }
 
-
 // to place the order by student
-export async function placeOrderByStudent(restaurantDocId,restaurantMenuDocRef,studentDocId,studentMenuDocId,studentUid){
-  try{
-    await updateDoc(doc(db,"restaurants",restaurantDocId,"menu",restaurantMenuDocRef),{
-      studentDocId,
-      studentMenuDocId,
-      orderAt: new Date(),
-      studentUid,
-      status: "Pending"
-    })
-  }catch(e){
+export async function placeOrderByStudent(
+  restaurantDocId,
+  restaurantMenuDocRef,
+  studentDocId,
+  studentMenuDocId,
+  studentUid,
+  customerId
+) {
+  try {
+    // Update restaurant menu
+    await updateDoc(
+      doc(db, "restaurants", restaurantDocId, "menu", restaurantMenuDocRef),
+      {
+        studentDocId,
+        studentMenuDocId,
+        orderAt: new Date(),
+        studentUid,
+        status: false,
+      }
+    );
+
+    // Update student side (who is buying)
+    await updateDoc(
+      doc(db, "students", studentDocId, "menu", studentMenuDocId),
+      {
+        status: "Sold",
+        orderAt: new Date(),
+      }
+    );
+
+    // Delete customer from restaurant menu (who is buying)
+    await deleteDoc(
+      doc(
+        db,
+        "restaurants",
+        restaurantDocId,
+        "menu",
+        restaurantMenuDocRef,
+        "customers",
+        customerId
+      )
+    );
+
+    console.log("Order placed successfully.");
+  } catch (e) {
     console.error("Error placing order: ", e);
   }
-};
+}
 
 // to add student information in database
 export async function addStudentInformation(userInformation) {
@@ -392,9 +445,29 @@ export async function addStudentInformation(userInformation) {
 }
 
 //to delete food from cart by student
-export async function deleteFoodFromCart(studentDocId, menuId) {
+export async function deleteFoodFromCart(
+  studentDocId,
+  menuId,
+  restarantDocId,
+  resMenuDocId,
+  customerId
+) {
   try {
+    //delete food from student menu
     await deleteDoc(doc(db, "students", studentDocId, "menu", menuId));
+
+    //delete food from restaurant menu customer
+    await deleteDoc(
+      doc(
+        db,
+        "restaurants",
+        restarantDocId,
+        "menu",
+        resMenuDocId,
+        "customers",
+        customerId
+      )
+    );
   } catch (e) {
     console.error("Error deleting document: ", e);
   }
