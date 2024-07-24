@@ -8,6 +8,7 @@ import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import { getRestaurantDataForLogin } from "@/services/GetRequest/getRequest";
 import Loading from "@/app/loading";
+import Link from "next/link";
 
 const sign_in = () => {
   const [email, setEmail] = useState("");
@@ -90,8 +91,8 @@ const sign_in = () => {
       }}
     >
       <Fragment>
-        <div className="container mx-auto">
-          <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">
+        <div className=" mx-auto absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50">
+          <div className="flex flex-col lg:flex-row w-10/12 lg:w-7/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">
             <div
               className="w-full lg:w-1/2 flex flex-col items-center justify-center p-12 bg-no-repeat bg-cover bg-center"
               style={{ backgroundImage: "url(/assets/images/restLogin.jpg)" }}
@@ -142,6 +143,17 @@ const sign_in = () => {
                 >
                   Sign In
                 </button>
+                <div className="mt-3">
+                <span className="flex text-black">
+                  <p>You Have an issue to Sign In?</p>
+                  <Link
+                    href="/auth/register"
+                    className="text-yellow-500 font-semibold ml-2"
+                  >
+                    Contact Us
+                  </Link>
+                </span>
+              </div>
               </div>
             </div>
           </div>
