@@ -10,6 +10,7 @@ import Modal from "@/components/Modal";
 import { BiSolidCommentError } from "react-icons/bi";
 import Loading from "@/app/loading";
 import Link from "next/link";
+import ContactUs from "@/components/ContactUs";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -195,12 +196,12 @@ const SignIn = () => {
                 <div className="mt-3">
                 <span className="flex text-black">
                   <p>You Have an issue to Sign In?</p>
-                  <Link
-                    href="/auth/register"
+                  <button
+                    onClick={() => {  setShowModal(true); }}
                     className="text-yellow-500 font-semibold ml-2"
                   >
                     Contact Us
-                  </Link>
+                  </button>
                 </span>
               </div>
               </div>
@@ -249,6 +250,9 @@ const SignIn = () => {
             </div>
           </div>
         </Modal>
+        <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+         <ContactUs setShow={() => setShowModal(false)} />
+       </Modal>
       </Fragment>
     </div>
   );
