@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Map from "../map/map"; // Adjust the import path based on your file structure
 import Link from "next/link";
-import { useCart } from "@/app/Restrauntitems/cart-context/page";
 import { useAddress } from "../../address-context/page";
 import { useRouter } from "next/navigation";
 import {
@@ -33,6 +32,10 @@ import {
   getRestaurantDataForCheckoutByStudents,
 } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
+import {
+  deleteFoodFromCart,
+  placeOrderByStudent,
+} from "@/services/PostRequest/postRequest";
 
 // Main functional component
 export default function Component() {
@@ -45,8 +48,6 @@ export default function Component() {
   // State to manage the estimated time for pickup
   const [estimatedTime, setEstimatedTime] = useState("");
   const [cartItems, setCartItems] = useState(null);
-  // Destructure cart-related methods from the cart context
-  const { removeFromCart, cartCounter } = useCart();
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [studentData, setStudentData] = useState(null);
   const [restaurantInfo, setRestaurantInfo] = useState(null);
@@ -122,7 +123,7 @@ export default function Component() {
       );
     }
   }, [cartItems]);
-  
+
   useEffect(() => {
     if (user) {
       fetchStudentData();
@@ -145,29 +146,33 @@ export default function Component() {
   // const and variable for the payment
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
-
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   number: "",
-  //   month: "",
-  //   year: "",
-  //   cvc: "",
-  //   email: "",
-  //   address: address,
-  // });
   const handlePaymentMethodChange = (value) => {
     setPaymentMethod(value);
   };
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     [name]: value,
-  //   }));
-  // };
   const clickCheckout = () => {
-    router.push("/student/main/confirmationPage");
+    //function to elavate the trasaction
+
+    //after transaction is done
+    if (cartItems && cartItems != null && cartItems.length > 0) {
+      cartItems.map(async (item) => {
+        await placeOrderByStudent(
+          item.restaurantDocId,
+          item.menuDocId,
+          studentData[0].id,
+          item.id,
+          studentData[0].uid
+        );
+      });
+      alert("Order placed successfully");
+      router.push("/student/main/confirmationPage");
+    }
   };
+
+  async function handleRemoveItem(id) {
+    await deleteFoodFromCart(studentData[0].id, id).then(() => {
+      alert("Item removed from cart");
+    });
+  }
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 w-full h-screen bg-gray-100">
@@ -499,7 +504,7 @@ export default function Component() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeFromCart(item)}
+                        onClick={() => handleRemoveItem(item.id)}
                       >
                         <TrashIcon className="w-4 h-4 text-primary" />
                       </Button>

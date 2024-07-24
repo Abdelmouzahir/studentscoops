@@ -261,6 +261,7 @@ export async function addRestaurantMenu(
           studentMenuDocId: null,
           orderAt: null,
           quantity,
+          studentUid: null,
         };
         // Query to find the restaurant document with the matching userId
         await addDoc(collection(db, "restaurants", id, "menu"), menu);
@@ -363,6 +364,22 @@ export async function addMenuToStudent(menu, studentDocId) {
     console.error("Error adding document: ", e);
   }
 }
+
+
+// to place the order by student
+export async function placeOrderByStudent(restaurantDocId,restaurantMenuDocRef,studentDocId,studentMenuDocId,studentUid){
+  try{
+    await updateDoc(doc(db,"restaurants",restaurantDocId,"menu",restaurantMenuDocRef),{
+      studentDocId,
+      studentMenuDocId,
+      orderAt: new Date(),
+      studentUid,
+      status: "Pending"
+    })
+  }catch(e){
+    console.error("Error placing order: ", e);
+  }
+};
 
 // to add student information in database
 export async function addStudentInformation(userInformation) {

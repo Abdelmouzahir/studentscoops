@@ -114,6 +114,7 @@ export async function getRestaurantMenuByOwner(onChange, user) {
     console.log("No user data found");
     return;
   }
+  console.log("restaurantCollection: ",restaurantCollection);
   const id = restaurantCollection.docs[0].id;
   try {
     const restaurantCollection = collection(db, "restaurants", id, "menu");
@@ -122,6 +123,25 @@ export async function getRestaurantMenuByOwner(onChange, user) {
         return { id: doc.id, ...doc.data() };
       });
       onChange(menuItems);
+    });
+  } catch (error) {
+    console.error("Error getting restaurant information: ", error);
+    onChange([]);
+  }
+}
+
+//get order menu data for restaurants
+export function getOrderMenuByOwner(onChange, user) {
+  try {
+    const restaurantCollection = query(
+      collection(db, "restaurants", user, "menu"),
+      where("status", "==", "Pending")
+    );
+    onSnapshot(restaurantCollection, (restaurants) => {
+      const restaurantData = restaurants.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      onChange(restaurantData);
     });
   } catch (error) {
     console.error("Error getting restaurant information: ", error);
