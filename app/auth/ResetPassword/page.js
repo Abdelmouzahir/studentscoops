@@ -141,8 +141,8 @@ const ResetPassword = () => {
       backgroundPosition: "center", // Centers the background image
       backgroundRepeat: "no-repeat", // Prevents the background image from repeating
     }}>
-      <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row w-10/12 lg:w-8/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">
+      <div className=" mx-auto  absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50">
+        <div className="flex flex-col lg:flex-row w-10/12 lg:w-7/12 bg-white rounded-xl mx-auto shadow-xl overflow-hidden">
           <div
             className="w-full lg:w-1/2 flex flex-col items-center justify-center p-12 bg-no-repeat bg-cover bg-center"
             style={{ backgroundImage: 'url(/assets/images/password.jpeg)' }}
