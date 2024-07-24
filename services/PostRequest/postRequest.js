@@ -416,6 +416,7 @@ export async function placeOrderByStudent(
     );
 
     // Delete customer from restaurant menu (which one is buying)
+
     await deleteDoc(
       doc(
         db,
