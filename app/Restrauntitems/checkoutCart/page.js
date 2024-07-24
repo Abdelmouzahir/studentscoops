@@ -64,8 +64,14 @@ export default function CheckoutCart({ studentData }) {
     setIsSheetOpen(false);
   };
 
-  async function handleRemoveItem(id) {
-    await deleteFoodFromCart(studentData[0].id, id).then(() => {
+  async function handleRemoveItem(item) {
+    await deleteFoodFromCart(
+      studentData[0].id,
+      item.id,
+      item.restaurantDocId,
+      item.menuDocId,
+      item.customerId
+    ).then(() => {
       alert("Item removed from cart");
     });
   }
@@ -136,7 +142,7 @@ export default function CheckoutCart({ studentData }) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => handleRemoveItem(item.id)}
+                      onClick={() => handleRemoveItem(item)}
                     >
                       <TrashIcon className="w-4 h-4  text-primary text-muted-foreground hover:text-destructive" />
                     </Button>

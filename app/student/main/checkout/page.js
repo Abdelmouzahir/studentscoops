@@ -160,7 +160,8 @@ export default function Component() {
           item.menuDocId,
           studentData[0].id,
           item.id,
-          studentData[0].uid
+          studentData[0].uid,
+          item.customerId
         );
       });
       alert("Order placed successfully");

@@ -131,13 +131,14 @@ export default function RestaurantMenu() {
         price: item.price,
         imageUrl: item.imageUrl,
         description: item.description,
-        status: "Pending",
+        status: true,
         addedAt: new Date(),
         orderAt: null,
         restaurantDocId: restaurant[0].id,
         menuDocId: item.id,
         restaurantUid: restaurant[0].uid,
         quantity: item.quantity,
+        customerId: null,
       };
       console.log("menu length: ", menuDocumentIds.length);
       console.log("restaurant length: ", restaurantDocumentIds.length);
@@ -211,7 +212,11 @@ export default function RestaurantMenu() {
             {filteredItems.map((item) => (
               <div
                 key={item.id}
-                className="bg-background  border-2 shadow-xl rounded-md overflow-hidden"
+                className={
+                  item.status
+                    ? "bg-background  border-2 shadow-xl rounded-md overflow-hidden"
+                    : "bg-background  border-2 shadow-xl rounded-md overflow-hidden opacity-40 z-0"
+                }
               >
                 <Image
                   src={item.imageUrl}
@@ -233,12 +238,23 @@ export default function RestaurantMenu() {
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="text-primary"
-                      onClick={() => addToCart(item)}
+                      className={item.status ? "text-primary cursor-pointer" : "text-primary cursor-default z-0"}
+                      onClick={() => {
+                        item.status ? addToCart(item) : null;
+                      }}
                     >
                       <PlusIcon className="w-5 h-5" />
                     </Button>
                   </div>
+                </div>
+                <div
+                  className={
+                    item.status
+                      ? "hidden"
+                      : "flex justify-start items-end m-3 text-black text-xl font-bold z-20"
+                  }
+                >
+                  <p>Sold</p>
                 </div>
               </div>
             ))}
