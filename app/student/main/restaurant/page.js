@@ -22,6 +22,7 @@ import Link from "next/link";
 
 export default function RestaurantMenu() {
   const [menuItems, setMenuItems] = useState(null);
+  const [menuDocumentIds, setMenuDocumentIds] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useUserAuth();
   const [studentData, setStudentData] = useState(null);
@@ -61,17 +62,36 @@ export default function RestaurantMenu() {
 
   useEffect(() => {
     if (menuItems) {
+      console.log("menuitemsvlength: ", menuItems.length);
+    }
+    if (menuItems && menuItems.length === 0) {
+      console.log("length 0 condition ");
+      setRestaurantDocumentIds([]);
+      setMenuDocumentIds([]);
+    } else if (menuItems && menuItems.length === 1) {
+      console.log("length 1 condition ");
+      const singleItem = menuItems[0];
+      setRestaurantDocumentIds([singleItem.restaurantDocId]);
+      setMenuDocumentIds([singleItem.menuDocId]);
+    } else if (menuItems) {
+      console.log("processing menu items: ", menuItems);
       const uniqueRestaurantDocIds = new Set();
+      const uniqueMenuDocIds = new Set();
 
       menuItems.forEach((item) => {
-        if (!restaurantDocumentIds.includes(item.restaurantDocId)) {
-          uniqueRestaurantDocIds.add(item.restaurantDocId);
-        }
+        uniqueRestaurantDocIds.add(item.restaurantDocId);
+        uniqueMenuDocIds.add(item.menuDocId);
       });
 
       setRestaurantDocumentIds([...uniqueRestaurantDocIds]);
+      setMenuDocumentIds([...uniqueMenuDocIds]);
     }
   }, [menuItems]);
+
+  useEffect(() => {
+    console.log("menuCollectionRef: ", menuDocumentIds);
+    console.log("restaurantCollectionRef: ", restaurantDocumentIds);
+  }, [menuDocumentIds]);
 
   useEffect(() => {
     if (user) {
@@ -119,10 +139,15 @@ export default function RestaurantMenu() {
         restaurantUid: restaurant[0].uid,
         quantity: item.quantity,
       };
-      if (restaurantDocumentIds.length <= 1) {
-        if (
-          restaurantDocumentIds.length === 0 ||
-          restaurantDocumentIds.includes(restaurant[0].id)
+      console.log("menu length: ", menuDocumentIds.length);
+      console.log("restaurant length: ", restaurantDocumentIds.length);
+      if (restaurantDocumentIds.length <= 1 && menuDocumentIds.length >= 0) {
+        if (menuDocumentIds.includes(item.id)) {
+          alert("Item already added to cart");
+        } else if (
+          (restaurantDocumentIds.length === 0 ||
+            restaurantDocumentIds.includes(restaurant[0].id)) &&
+          (menuDocumentIds.length === 0 || !menuDocumentIds.includes(item.id))
         ) {
           await addMenuToStudent(
             data,

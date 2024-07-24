@@ -114,6 +114,7 @@ export async function getRestaurantMenuByOwner(onChange, user) {
     console.log("No user data found");
     return;
   }
+  console.log("restaurantCollection: ",restaurantCollection);
   const id = restaurantCollection.docs[0].id;
   try {
     const restaurantCollection = collection(db, "restaurants", id, "menu");

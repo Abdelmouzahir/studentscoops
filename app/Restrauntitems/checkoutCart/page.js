@@ -39,15 +39,17 @@ export default function CheckoutCart({ studentData }) {
   }
 
   useEffect(() => {
-    if (cartItems && cartItems.length > 0) {
+    if (cartItems && cartItems !== null && cartItems.length > 0) {
       console.log("cartItems", cartItems);
       console.log("studentData", studentData);
       fetchRestaurantData();
       console.log("length", cartItems.length);
-      setCartCount(cartItems.length);
       setSubtotal(
         cartItems.reduce((acc, item) => acc + parseFloat(item.price), 0)
       );
+    }
+    if (cartItems) {
+      setCartCount(cartItems.length);
     }
   }, [cartItems]);
 
