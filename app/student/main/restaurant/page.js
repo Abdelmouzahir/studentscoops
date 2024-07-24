@@ -14,6 +14,7 @@ import {
   getRestaurantDataByOwner,
   getStudentDataByStudents,
   getStudentMenuByStudents,
+  getStudentConfirmOrderData,
 } from "@/services/GetRequest/getRequest";
 import { addMenuToStudent } from "@/services/PostRequest/postRequest";
 import { useUserAuth } from "@/services/utils";
@@ -33,6 +34,7 @@ export default function RestaurantMenu() {
   const restaurantId = searchParams.get("restaurantId");
   const restaurantUid = searchParams.get("uid");
   const [restaurantDocumentIds, setRestaurantDocumentIds] = useState([]);
+  const [orderData, setOrderData] = useState(null);
 
   const [restaurant, setRestaurant] = useState(null);
 
@@ -57,6 +59,12 @@ export default function RestaurantMenu() {
   function fetchStudentMenu() {
     getStudentMenuByStudents((data) => {
       setMenuItems(data);
+    }, studentData[0].id);
+  }
+
+  function fetchOrderData() {
+    getStudentConfirmOrderData((data) => {
+      setOrderData(data);
     }, studentData[0].id);
   }
 
@@ -102,6 +110,7 @@ export default function RestaurantMenu() {
   useEffect(() => {
     if (studentData && studentData.length > 0) {
       fetchStudentMenu();
+      fetchOrderData();
     }
   }, [studentData]);
 
@@ -139,12 +148,16 @@ export default function RestaurantMenu() {
         restaurantUid: restaurant[0].uid,
         quantity: item.quantity,
         customerId: null,
+        orderId: null,
       };
       console.log("menu length: ", menuDocumentIds.length);
       console.log("restaurant length: ", restaurantDocumentIds.length);
       if (restaurantDocumentIds.length <= 1 && menuDocumentIds.length >= 0) {
         if (menuDocumentIds.includes(item.id)) {
           alert("Item already added to cart");
+        }else if(orderData && orderData.length > 0){
+          alert("You have an active order. Please pick-up the order to add more items to cart");
+          return;
         } else if (
           (restaurantDocumentIds.length === 0 ||
             restaurantDocumentIds.includes(restaurant[0].id)) &&
@@ -154,7 +167,7 @@ export default function RestaurantMenu() {
             data,
             studentData[0].id,
             restaurant[0].id,
-            item.id
+            item.id,
           ).then(() => {
             alert("Item added to cart");
           });

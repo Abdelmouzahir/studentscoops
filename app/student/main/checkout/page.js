@@ -177,6 +177,9 @@ export default function Component() {
       alert("Please remove the items which are not available");
       return;
     } else if (cartItems && cartItems != null && cartItems.length > 0) {
+      //random order id
+      const orderId = Math.floor(1000 + Math.random() * 9000);
+
       cartItems.map(async (item) => {
         await placeOrderByStudent(
           item.restaurantDocId,
@@ -184,7 +187,10 @@ export default function Component() {
           studentData[0].id,
           item.id,
           studentData[0].uid,
-          item.customerId
+          item.customerId,
+          studentData[0].name,
+          studentData[0].lastName,
+          orderId,
         );
       });
       alert("Order placed successfully");

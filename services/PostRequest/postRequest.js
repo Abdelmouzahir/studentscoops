@@ -262,6 +262,8 @@ export async function addRestaurantMenu(
           orderAt: null,
           quantity,
           studentUid: null,
+          customerName: null,
+          orderId: null,
         };
         // Query to find the restaurant document with the matching userId
         await addDoc(collection(db, "restaurants", id, "menu"), menu);
@@ -354,7 +356,7 @@ export async function addMenuToStudent(
   menu,
   studentDocId,
   restaurantDocId,
-  itemId
+  itemId,
 ) {
   try {
     //add menu to student
@@ -391,7 +393,10 @@ export async function placeOrderByStudent(
   studentDocId,
   studentMenuDocId,
   studentUid,
-  customerId
+  customerId,
+  firstName,
+  lastName,
+  orderId
 ) {
   try {
     // Update restaurant menu
@@ -403,6 +408,8 @@ export async function placeOrderByStudent(
         orderAt: new Date(),
         studentUid,
         status: false,
+        customerName: `${firstName} ${lastName}`,
+        orderId: orderId,
       }
     );
 
@@ -412,6 +419,7 @@ export async function placeOrderByStudent(
       {
         status: "Sold",
         orderAt: new Date(),
+        orderId: orderId,
       }
     );
 

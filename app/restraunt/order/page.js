@@ -124,32 +124,21 @@ export default function Order() {
               <div className="md:w-1/3">
                 <h2 className="text-lg font-semibold flex flex-col gap-2">
                   <span className="flex items-center gap-2">
-                    <span className="font-bold">Order ID: {order.id}</span>
+                    <span className="font-bold">Order ID: #{order.orderId}</span>
                     <span className="text-sm font-normal text-muted-foreground">
-                      ({new Date(order.createdAt).toLocaleString()})
+                      ({order.orderAt.toDate().toDateString()})
                     </span>
                   </span>
                   <span>{order.customerName}</span>
                 </h2>
                 <ul className="mt-2 grid grid-cols-2 gap-2">
-                  {order && order !== null && order.length > 0 ? (
-                    <>
-                      {order.map((item, index) => (
-                        <li
-                          key={index}
-                          className="flex justify-between items-center bg-background rounded-md px-2 py-1"
-                        >
-                          <span className="text-sm">
-                            {item.quantity}x {item.name}
-                          </span>
-                        </li>
-                      ))}
-                    </>
-                  ) : (
-                    <div className="w-full h-full font-bold text-3xl animate-pulse justify-center flex items-center">
-                      <p>Loading...</p>
-                    </div>
-                  )}
+                  <li
+                    className="flex justify-between items-center bg-background rounded-md px-2 py-1"
+                  >
+                    <span className="text-sm">
+                      {order.quantity}x {order.name}
+                    </span>
+                  </li>
                 </ul>
               </div>
               <div className="mt-4 md:mt-0 md:w-1/3 md:text-center">

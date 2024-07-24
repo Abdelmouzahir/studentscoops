@@ -81,6 +81,8 @@ export default function Component() {
   const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
   const [showCancelMessage, setShowCancelMessage] = useState(false);
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+
 
   const cartItems = orderData ? orderData : [];
 
@@ -110,6 +112,18 @@ export default function Component() {
       fetchOrderData();
     }
   }, [studentData]);
+
+  useEffect(() => {
+    if (orderData && orderData.length > 0) {
+      const orderItems = new Set();
+      orderData.map((item) => {
+        orderItems.add(item.orderId);
+      });
+      setOrderId([...orderItems]);
+    }
+  }, [orderData]);
+
+  useEffect(() => {console.log(orderId)}, [orderId]);
 
   useEffect(() => {
     const orderAnimation = () => {
@@ -199,6 +213,9 @@ export default function Component() {
               be shipped soon.
             </p>
           </div>
+          <div className="py-4">{orderId && orderId.map((item)=>{
+            return <p className="font-bold text-2xl">Order Number: #{item}</p>
+          })}</div>
           <div className="mt-12 w-full max-w-md">
             <Card className="p-8 shadow-lg rounded-lg bg-white">
               <div
@@ -240,7 +257,7 @@ export default function Component() {
                           </div>
                         </div>
                         <p className="text-xl font-bold text-gray-800">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ${item.price}
                         </p>
                       </div>
                     ))}

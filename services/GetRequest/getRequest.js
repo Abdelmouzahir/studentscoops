@@ -135,7 +135,7 @@ export function getOrderMenuByOwner(onChange, user) {
   try {
     const restaurantCollection = query(
       collection(db, "restaurants", user, "menu"),
-      where("status", "==", "Pending")
+      where("status", "==", false)
     );
     onSnapshot(restaurantCollection, (restaurants) => {
       const restaurantData = restaurants.docs.map((doc) => {
