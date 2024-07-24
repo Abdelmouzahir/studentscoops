@@ -83,6 +83,7 @@ export default function Component() {
   const [isCartSummaryOpen, setIsCartSummaryOpen] = useState(false);
   const [orderId, setOrderId] = useState(null);
 
+
   const cartItems = orderData ? orderData : [];
 
   //function to fetch student data

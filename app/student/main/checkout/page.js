@@ -179,6 +179,7 @@ export default function Component() {
     } else if (cartItems && cartItems != null && cartItems.length > 0) {
       //random order id
       const orderId = Math.floor(1000 + Math.random() * 9000);
+
       cartItems.map(async (item) => {
         await placeOrderByStudent(
           item.restaurantDocId,
