@@ -5,6 +5,10 @@ import Swal from "sweetalert2";
 
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/app/firebase/config";
+import { sendMail } from "@/lib/mail";
+import PasswordEmail from "@/components/PasswordEmail";
+import ReactDOMServer from "react-dom/server";
+
 
 const Add = ({ setRestaurants, setIsAdding }) => {
   const [name, setName] = useState("");
@@ -19,6 +23,28 @@ const Add = ({ setRestaurants, setIsAdding }) => {
   // like student name :- Moiz Khan mobilenumber :- 1234567890, so the password will be Moiz890!
   // by this the password will bw different for every one and they can change it on forget password
   const genericPassword = firstWord[0] + phoneNumber.slice(-3).concat("!");
+
+  //send email
+ const send = async (event) => {
+  //event.preventDefault(); // Prevent default form submission
+
+  //convert the template to be readable for the user in the email
+  const emailBody = ReactDOMServer.renderToString(
+      <PasswordEmail name={name} email={email} password={genericPassword} />
+  );
+  try {
+      await sendMail({
+          to: email,
+          name: 'No-reply',
+          subject: 'Welcome to StudentScoops 🎉',
+          body: emailBody,
+      });
+      return console.log("email was sent ")
+  } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email. Please try again.");
+  }
+};
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -59,6 +85,7 @@ const Add = ({ setRestaurants, setIsAdding }) => {
         ...newRestaurant,
       });
       setIsAdding(false);
+      send();
 
       Swal.fire({
         icon: "success",

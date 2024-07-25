@@ -7,6 +7,9 @@ import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "@/app/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { existingRestaurantData } from "@/services/PostRequest/postRequest";
+import { sendMail } from "@/lib/mail";
+import PasswordEmail from "@/components/PasswordEmail";
+import ReactDOMServer from "react-dom/server";
 
 const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
   const [role, setRole] = useState("");
@@ -24,6 +27,29 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
   const handleRoleChange = (event) => {
     setRole(event.target.value);
   };
+
+ //send email
+ const send = async (event) => {
+  //event.preventDefault(); // Prevent default form submission
+
+  //convert the template to be readable for the user in the email
+  const emailBody = ReactDOMServer.renderToString(
+      <PasswordEmail name={name} email={email} password={genericPassword} />
+  );
+  try {
+      await sendMail({
+          to: email,
+          name: 'No-reply',
+          subject: 'Welcome to StudentScoops 🎉',
+          body: emailBody,
+      });
+      return console.log("email was sent ")
+  } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email. Please try again.");
+  }
+};
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -77,6 +103,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
       //Update local state
       fetchDataByUser();
       setIsAdding(false);
+      send();
 
       Swal.fire({
         icon: "success",
@@ -118,6 +145,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
       });
     }
   };
+
 
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">

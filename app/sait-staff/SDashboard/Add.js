@@ -5,6 +5,9 @@ import Swal from "sweetalert2";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/app/firebase/config";
 import { existingStudentData } from "@/services/PostRequest/postRequest";
+import { sendMail } from "@/lib/mail";
+import PasswordEmail from "@/components/PasswordEmail";
+import ReactDOMServer from "react-dom/server";
 
 const Add = ({ setStudents, setIsAdding }) => {
   const [name, setName] = useState("");
@@ -12,6 +15,37 @@ const Add = ({ setStudents, setIsAdding }) => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const currentDate = new Date(); //current date of system
+
+  let firstName = name.split(" ");
+   //generic password will be first name of student or restaurant + last three digits of mobile number + "!"
+    // like student name :- Moiz Khan mobilenumber :- 1234567890, so the password will be Moiz890!
+    // by this the password will bw different for every one and they can change it on forget password
+
+    const genericPassword = firstName[0] + phoneNumber.slice(-3).concat("!");
+    console.log(genericPassword);
+
+  //send email
+ const send = async (event) => {
+  //event.preventDefault(); // Prevent default form submission
+
+  //convert the template to be readable for the user in the email
+  const emailBody = ReactDOMServer.renderToString(
+      <PasswordEmail name={name} email={email} password={genericPassword} />
+  );
+  try {
+      await sendMail({
+          to: email,
+          name: 'No-reply',
+          subject: 'Welcome to StudentScoops 🎉',
+          body: emailBody,
+      });
+      return console.log("email was sent ")
+  } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email. Please try again.");
+  }
+};
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -33,14 +67,7 @@ const Add = ({ setStudents, setIsAdding }) => {
         showConfirmButton: true,
       });
     }
-    let firstName = name.split(" ");
-
-    //generic password will be first name of student or restaurant + last three digits of mobile number + "!"
-    // like student name :- Moiz Khan mobilenumber :- 1234567890, so the password will be Moiz890!
-    // by this the password will bw different for every one and they can change it on forget password
-
-    let genericPassword = firstName[0] + phoneNumber.slice(-3).concat("!");
-    console.log(genericPassword);
+   
 
     // Add student to Firestore
 
@@ -74,6 +101,7 @@ const Add = ({ setStudents, setIsAdding }) => {
         });
       }
       setIsAdding(false);
+      send();
 
       Swal.fire({
         icon: "success",

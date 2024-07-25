@@ -107,6 +107,7 @@ export function getRestaurantDataByOwner(onChange, user) {
 // get restaurant menu data for restaurant
 
 export async function getRestaurantMenuByOwner(onChange, user) {
+  console.log("user: ", user);
   const restaurantCollection = await getDocs(
     query(collection(db, "restaurants"), where("uid", "==", user))
   );
@@ -114,10 +115,13 @@ export async function getRestaurantMenuByOwner(onChange, user) {
     console.log("No user data found");
     return;
   }
-  console.log("restaurantCollection: ",restaurantCollection);
+  console.log("restaurantCollection: ", restaurantCollection);
   const id = restaurantCollection.docs[0].id;
   try {
-    const restaurantCollection = collection(db, "restaurants", id, "menu");
+    const restaurantCollection = query(
+      collection(db, "restaurants", id, "menu"),
+      orderBy("createdAt", "desc")
+    );
     onSnapshot(restaurantCollection, (menuSnapshot) => {
       const menuItems = menuSnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
@@ -185,25 +189,31 @@ export function getRestaurantDataByStudents(onChange) {
 
 //get student confirm order data for students
 export function getStudentConfirmOrderData(onChange, id) {
-  try{
-    const studentCollection = query(collection(db, "students", id, "menu"), orderBy("addedAt", "desc"));
+  try {
+    const studentCollection = query(
+      collection(db, "students", id, "menu"),
+      orderBy("addedAt", "desc")
+    );
     onSnapshot(studentCollection, (snapshot) => {
       const menuItems = snapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
         .filter((item) => item.status == "Sold"); // Filter out sold items
-        console.log("menuItems",menuItems);
+      console.log("menuItems", menuItems);
       onChange(menuItems);
     });
-  }catch(error){
+  } catch (error) {
     console.error("Error getting student information: ", error);
     onChange([]);
   }
-};
+}
 
 // get restaurant details for students
-export function getRestaurantDataForCheckoutByStudents(onChange,id) {
+export function getRestaurantDataForCheckoutByStudents(onChange, id) {
   try {
-    const restaurantCollection = query(collection(db, "restaurants"),where("uid", "==", id));
+    const restaurantCollection = query(
+      collection(db, "restaurants"),
+      where("uid", "==", id)
+    );
     onSnapshot(restaurantCollection, (restaurants) => {
       const restaurantData = restaurants.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
