@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import Header_stud from '../../../student/header_stud/page'
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import Header_stud from '../../../student/main/header_stud/page';
 export default function MyProfile(){
 return (
     <div className="flex flex-col min-h-screen">

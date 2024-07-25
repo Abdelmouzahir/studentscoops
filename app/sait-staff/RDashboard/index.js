@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { deleteRestaurantData } from "@/services/PostRequest/postRequest";
 import { updateSaitRestaurantStatus, deleteRestaurantsFromAdmin } from "@/services/PostRequest/postRequest";
-import { getRestaurantForSaitStaff } from "@/services/RealTimeDatabase/getData/getData";
 
 import Table from "./Table";
 import Add from "./Add";
