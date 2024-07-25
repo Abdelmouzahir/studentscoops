@@ -108,7 +108,7 @@ const RegisterForm = ({
     // Check the email domain
     if (!email.endsWith("@edu.sait.ca")) {
       setEmailError("Please use a SAIT student email");
-      return;
+      return false;
     }
 
     if (!databaseEmailwithStatus.length == 0) {
@@ -116,14 +116,14 @@ const RegisterForm = ({
         setEmailError(
           "Your email is either not a SAIT email or it is currently inactive."
         );
-        return;
+        return false;
       }
     }
     if (databaseEmailwithStatus.length == 0) {
       setEmailError(
         "Please refresh the page. If the issue persists, there may be a problem connecting to the database. For further assistance, please use the 'Contact Us' option."
       );
-      return;
+      return false;
     }
     if (
       !password.match(
@@ -133,13 +133,13 @@ const RegisterForm = ({
       setPassError(
         "Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters."
       );
-      return;
+      return false;
     }
 
     // Check if passwords match
     if (!isPasswordMatch) {
       setConfirmPassError("Passwords do not match");
-      return;
+      return false;
     }
 
     try {
@@ -150,6 +150,7 @@ const RegisterForm = ({
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      return true;
     } catch (e) {
       // Check if the user already exists in the database
       console.error("Error registering:", e.message);
@@ -158,12 +159,17 @@ const RegisterForm = ({
       } else {
         setError("Failed to create account. Please try again.");
       }
+      return false;
     }
   };
 
-  const handleClickNext = () => {
-    handleSignUp();
-    send();
+  const handleClickNext = async () => {
+    // wait for the registration to complete
+    const signUpSuccess = await handleSignUp();
+    //send email just if registration is successful
+    if (signUpSuccess) {
+      send();
+    }
   };
 
 
