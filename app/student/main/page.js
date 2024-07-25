@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/services/utils";
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 import Link from "next/link";
 // import { Card } from "../../components/ui/card";
@@ -43,10 +45,81 @@ const Home = () => {
   };
 
   const [showAllRestaurants, setShowAllRestaurants] = useState(false);
+
+  //styling
+
+  const introHeaderVariants = {
+    hide: {
+        opacity: 0,
+        x: 500,
+    },
+    show: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            duration: 2,
+        },
+    },
+};
+
+const introPictureVariants = {
+    hide: {
+        opacity: 0,
+        x: -500,
+    },
+    show: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            duration: 2,
+        },
+    },
+};
+
   return (
     <>
       <main>
-        <section className="mb-8">
+      <section className=" h-screen w-full flex items-center">
+            <div className="relative w-[50%] h-full">
+                <motion.div
+                    className="absolute inset-0 z-0"
+                    initial="hide"
+                    whileInView="show"
+                    exit="hide"
+                    variants={introPictureVariants}
+                >
+                    <div
+                        style={{
+                            backgroundImage: 'url("/assets/3d-illustration-cartoon-character-with-burgers-cheeseburgers.png")',
+                            backgroundSize: 'contain',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                        }}
+                        className="w-full h-full"
+                    ></div>
+                </motion.div>
+            </div>
+
+            <div className="relative w-[50%] flex items-center justify-center px-4 z-10">
+                <motion.div
+                    className="text-left text-black space-y-4 max-w-xl"
+                    initial="hide"
+                    whileInView="show"
+                    exit="hide"
+                    variants={introHeaderVariants}
+                >
+                    <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
+                        Discover the Flavors of Our Renowned Restaurant
+                    </h1>
+                    <p className="text-lg mt-2">
+                        Experience the finest cuisine and impeccable service in a stunning, modern setting. Our menu features a
+                        delightful selection of seasonal dishes, crafted with the freshest ingredients.
+                    </p>
+                </motion.div>
+            </div>
+        </section>
+
+        <section className="mt-8 mb-8 ">
           {filteredData && filteredData.length > 0 && filteredData != null ? (
             <>
               <div className="flex items-center justify-between mb-6">
@@ -129,13 +202,13 @@ const Home = () => {
           )}
         </section>
 
-        <section className="w-50 py-8 md:py-24 lg:py-32 bg-white dark:bg-[#1e1e1e]">
-          <div className="container px-4 md:px-6 ">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center shadow-lg ">
-              <DealoftheDay />
-            </div>
+        <section className=" dark:bg-[#1e1e1e] p-4 rounded-2xl ">
+          <div className="container mx-auto flex flex-col items-center justify-center w-full h-full text-center">
+            <DealoftheDay />
           </div>
         </section>
+
+
       </main>
     </>
   );
