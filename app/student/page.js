@@ -35,7 +35,7 @@ export default function Component() {
           Order <span className="text-primary">best discounted deals</span> near you
         </h1>
         <p className="text-xl font-medium text-white">Providing best deals for students</p>
-        <div className="flex items-center mt-8 space-x-2">
+        <div className="flex justify-center mt-8 w-full items-center  space-x-2">
           <div className="relative flex items-center w-full max-w-2xl bg-white border rounded-3xl shadow-md">
             <MapPinIcon className="absolute left-3 h-5 w-5 text-muted-foreground" />
             <input
@@ -46,13 +46,7 @@ export default function Component() {
               onChange={(e) => setAddress(e.target.value)}  // Update the address context
             />
           </div>
-          <Button
-            variant="default"
-            className="flex items-center px-4 py-2 text-lg font-semibold text-black bg-white rounded-md"
-          >
-            <HomeIcon className="mr-2 h-5 w-5 text-muted-foreground" />
-            Pick up
-          </Button>
+          
           <Button
             variant="default"
             className="px-4 py-2 text-lg font-semibold text-white bg-primary rounded-md"

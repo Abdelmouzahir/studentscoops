@@ -2,11 +2,12 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter, useSearchParams } from "next/navigation";
-// import restaurantsData from '../restaurantsData.json'
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-// import { ToastContainer, toast, Bounce } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { HiBuildingStorefront } from "react-icons/hi2";
+import { Badge } from "@/components/ui/badge"
+
 
 import { GiExitDoor } from "react-icons/gi";
 import {
@@ -123,7 +124,7 @@ export default function RestaurantMenu() {
   };
 
   const handleBackToMenu = () => {
-    router.push("/student");
+    router.push("/student/main");
   };
 
   const addToCart = async (item) => {
@@ -180,14 +181,15 @@ export default function RestaurantMenu() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between items-start w-full mt-4 mb-3">
-        <Button onClick={handleBackToMenu} className="">
-          Back <GiExitDoor className="ml-3 h-5 w-5" />
-        </Button>
+      <div className="flex justify-between items-start w-full  mb-3 ">
+        
+        <IoMdArrowRoundBack  className=" text-primary  text-3xl" onClick={handleBackToMenu}/>
+       
       </div>
       {restaurant && restaurant.length > 0 && restaurant != null ? (
-        <section
-          className="bg-cover w-full h-[300px] bg-center bg-no-repeat grid sm:grid-cols-2"
+        <section>
+        <div
+          className="bg-cover w-full h-[300px] bg-center bg-no-repeat rounded-3xl"
           style={{
             backgroundImage: `url(${
               restaurant[0].imageUrl
@@ -195,83 +197,93 @@ export default function RestaurantMenu() {
                 : "/assets/images/UserDefaultSaitStaff.png"
             })`,
           }}
-        >
-          <div className="bottom-4 left-4 sm:items-end flex sm:m-10 mt-10 justify-center w-full">
-            <h1 className="text-4xl font-bold  text-white bg-black/40 p-2 flex items-center">
-              {restaurant[0].name}
-            </h1>
+        ></div>
+        <div className="flex flex-col sm:flex-row mt-6 px-6">
+          <div className="flex flex-col sm:flex-row w-full items-center sm:items-start">
+            <div className="flex items-center justify-center mr-4">
+              <HiBuildingStorefront className="text-5xl text-gray-700" />
+            </div>
+            <div className="text-center sm:text-left">
+              <h1 className="text-4xl font-bold text-black">{restaurant[0].name}</h1>
+              <p className="ml-1 text-gray-600"><span className="text-gray-800">Address: </span>{restaurant[0].address}</p>
+            </div>
           </div>
-          <div className="bottom-4 right-4 flex items-end justify-start">
-            <div className="p-4 flex items-center m-8">
+          <div className="flex mt-4 sm:mt-0 sm:ml-auto items-center">
+            <div className="relative">
               <Input
                 type="search"
                 placeholder="Search in the menu"
-                className="pl-8 pr-4 py-2 rounded-full bg-white shadow-md w-80 mr-3"
+                className="pl-10 pr-4 py-2 rounded-full bg-white shadow-md w-80"
                 value={searchTerm}
                 onChange={handleSearch}
               />
-              {/* <SearchIcon className="ml-3 left-2.5 top-2.5 h-4 w-4 text-muted-foreground" /> */}
+              <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary" />
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+      
+        
       ) : (
         <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
           Loading..
         </div>
       )}
       <section className="container mx-auto px-4 md:px-6 py-8 md:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredItems && filteredItems.length > 0 && filteredItems != null ? (
-          <>
-            {filteredItems.map((item) => (
-              <div
-                key={item.id}
-                className={
-                  item.status
-                    ? "bg-background  border-2 shadow-xl rounded-md overflow-hidden"
-                    : "bg-background  border-2 shadow-xl rounded-md overflow-hidden opacity-40 z-0"
-                }
-              >
-                <Image
-                  src={item.imageUrl}
-                  alt={item.name}
-                  width={400}
-                  height={300}
-                  className="w-full h-[200px] object-cover bg-cover bg-center m-2"
-                />
-                <div className="p-4">
-                  <h3 className="text-lg font-medium">{item.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">
-                    {item.description}
-                  </p>
-                  <p className="text-muted-foreground text-xl mb-4 font-bold">
-                    Quantity: {item.quantity}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium">${item.price}</span>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className={item.status ? "text-primary cursor-pointer" : "text-primary cursor-default z-0"}
-                      onClick={() => {
-                        item.status ? addToCart(item) : null;
-                      }}
-                    >
-                      <PlusIcon className="w-5 h-5" />
-                    </Button>
-                  </div>
-                </div>
-                <div
-                  className={
-                    item.status
-                      ? "hidden"
-                      : "flex justify-start items-end m-3 text-black text-xl font-bold z-20"
-                  }
+      
+      {filteredItems && filteredItems.length > 0 && filteredItems != null ? (
+    <>
+      {filteredItems.map((item) => (
+        <div
+          key={item.id}
+          className={
+            item.status
+              ? "relative bg-background border-2 shadow-xl rounded-md overflow-hidden"
+              : "relative bg-background border-2 shadow-xl rounded-md overflow-hidden"
+          }
+        >
+          {!item.status && (
+            <Badge
+              variant="outline"
+              className="absolute  text-xl top-2 right-2 z-10 bg-primary"
+            >
+              Sold
+            </Badge>
+          )}
+          <div className={item.status ? "" : "opacity-40"}>
+            <Image
+              src={item.imageUrl}
+              alt={item.name}
+              width={400}
+              height={300}
+              className="w-full h-[200px] object-cover bg-cover bg-center"
+            />
+            <div className="p-4">
+              <h3 className="text-lg font-medium">{item.name}</h3>
+              <p className="text-muted-foreground text-sm mb-4">
+                {item.description}
+              </p>
+              <p className="text-muted-foreground text-xl mb-4 font-bold">
+                Quantity: {item.quantity}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="font-medium">${item.price}</span>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className={item.status ? "text-primary cursor-pointer" : "text-primary cursor-default"}
+                  onClick={() => {
+                    item.status ? addToCart(item) : null;
+                  }}
                 >
-                  <p>Sold</p>
-                </div>
+                  <PlusIcon className="w-5 h-5" />
+                </Button>
               </div>
-            ))}
-          </>
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
         ) : (
           <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
             Loading..
