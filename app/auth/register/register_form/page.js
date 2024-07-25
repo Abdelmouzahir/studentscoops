@@ -79,7 +79,7 @@ const RegisterForm = ({
 
   //send email
   const send = async (event) => {
-    event.preventDefault(); // Prevent default form submission
+    //event.preventDefault(); // Prevent default form submission
 
     //convert the template to be readable for the user in the email
     const emailBody = ReactDOMServer.renderToString(
@@ -150,7 +150,6 @@ const RegisterForm = ({
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      await send(e);
     } catch (e) {
       // Check if the user already exists in the database
       console.error("Error registering:", e.message);
@@ -161,6 +160,12 @@ const RegisterForm = ({
       }
     }
   };
+
+  const handleClickNext = () => {
+    handleSignUp();
+    send();
+  };
+
 
   const getPasswordStrengthBar = (score) => {
     const strength = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
@@ -299,7 +304,7 @@ const RegisterForm = ({
             )}
             <div className="mt-4">
               <button
-                onClick={handleSignUp}
+                onClick={handleClickNext}
                 className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md"
               >
                 Next
