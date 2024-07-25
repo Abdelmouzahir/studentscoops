@@ -9,7 +9,6 @@ import { HiBuildingStorefront } from "react-icons/hi2";
 import { Badge } from "@/components/ui/badge"
 
 
-import { GiExitDoor } from "react-icons/gi";
 import {
   getRestaurantMenuByStudents,
   getRestaurantDataByOwner,
