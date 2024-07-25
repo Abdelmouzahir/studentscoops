@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/services/utils";
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { IoRestaurantOutline } from "react-icons/io5";
 
 import Link from "next/link";
 // import { Card } from "../../components/ui/card";
@@ -79,7 +80,7 @@ const introPictureVariants = {
   return (
     <>
       <main>
-      <section className=" h-screen w-full flex items-center">
+      <section className=" h-screen w-full flex items-center ">
             <div className="relative w-[50%] h-full">
                 <motion.div
                     className="absolute inset-0 z-0"
@@ -92,7 +93,7 @@ const introPictureVariants = {
                         style={{
                             backgroundImage: 'url("/assets/3d-illustration-cartoon-character-with-burgers-cheeseburgers.png")',
                             backgroundSize: 'contain',
-                            backgroundPosition: 'center',
+                            backgroundPosition: 'bottom-center',
                             backgroundRepeat: 'no-repeat',
                         }}
                         className="w-full h-full"
@@ -102,7 +103,7 @@ const introPictureVariants = {
 
             <div className="relative w-[50%] flex items-center justify-center px-4 z-10">
                 <motion.div
-                    className="text-left text-black space-y-4 max-w-xl"
+                    className="text-left text-black space-y-4 max-w-xl "
                     initial="hide"
                     whileInView="show"
                     exit="hide"
@@ -171,14 +172,20 @@ const introPictureVariants = {
                       className="object-cover w-full h-60"
                     />
 
-                    <div className="p-4 bg-background">
-                      <h3 className="text-lg font-semibold md:text-xl">
+                  <div className="p-4 bg-background flex items-center">
+                    <div className="flex-grow">
+                      <h3 className="text-lg  text-primary font-semibold md:text-xl">
                         {restaurant.name}
                       </h3>
                       <p className="text-sm text-muted-foreground">
                         {restaurant.address}
                       </p>
                     </div>
+                    <div className="ml-2 self-center ">
+                      <IoRestaurantOutline  className="text-2xl text-primary"/>
+                    </div>
+                  </div>
+
                   </Link>
                 ))}
               </div>
