@@ -25,7 +25,7 @@ const WelcomeEmail = ({ name,  email , password }) => {
             Visit Our Home page and try to Login:
           </p>
           <ul className="list-disc list-inside text-gray-700 mb-4">
-            <li>Login <a href="http://localhost:3000/" className="text-blue-500 underline">Link</a></li>
+            <li>Home Page 🏫 <a href="http://localhost:3000/" className="text-blue-500 underline">Link</a></li>
             
           </ul>
           <p className="text-gray-700 mb-4">
