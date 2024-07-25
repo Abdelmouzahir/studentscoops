@@ -7,6 +7,9 @@ import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "@/app/firebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { existingRestaurantData } from "@/services/PostRequest/postRequest";
+import { sendMail } from "@/lib/mail";
+import PasswordEmail from "@/components/PasswordEmail";
+import ReactDOMServer from "react-dom/server";
 
 const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
   const [role, setRole] = useState("");
@@ -24,6 +27,29 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
   const handleRoleChange = (event) => {
     setRole(event.target.value);
   };
+
+ //send email
+ const send = async (event) => {
+  event.preventDefault(); // Prevent default form submission
+
+  //convert the template to be readable for the user in the email
+  const emailBody = ReactDOMServer.renderToString(
+      <PasswordEmail name={name} email={email} password={genericPassword} />
+  );
+  try {
+      await sendMail({
+          to: email,
+          name: 'No-reply',
+          subject: 'Registration email 📩',
+          body: emailBody,
+      });
+      return console.log("email was sent ")
+  } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email. Please try again.");
+  }
+};
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -118,10 +144,19 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
       });
     }
   };
+  // call the both function
+  const handleClickAdd = async () => {
+     // wait for the registration to complete
+     const signUpSuccess = await handleAdd();
+     //send email just if registration is successful
+     if (signUpSuccess) {
+       send();
+     }
+  }
 
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
-      <form onSubmit={handleAdd} className="space-y-6">
+      <form onSubmit={handleClickAdd} className="space-y-6">
         <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">
           Add Admin
         </h1>
@@ -210,6 +245,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
         </div>
         <div className="flex justify-end space-x-3">
           <button
+            onClick={handleClickAdd}
             type="submit"
             className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
