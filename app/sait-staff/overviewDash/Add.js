@@ -30,7 +30,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
 
  //send email
  const send = async (event) => {
-  event.preventDefault(); // Prevent default form submission
+  //event.preventDefault(); // Prevent default form submission
 
   //convert the template to be readable for the user in the email
   const emailBody = ReactDOMServer.renderToString(
@@ -40,7 +40,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
       await sendMail({
           to: email,
           name: 'No-reply',
-          subject: 'Registration email 📩',
+          subject: 'Welcome to StudentScoops 🎉',
           body: emailBody,
       });
       return console.log("email was sent ")
@@ -103,6 +103,7 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
       //Update local state
       fetchDataByUser();
       setIsAdding(false);
+      send();
 
       Swal.fire({
         icon: "success",
@@ -144,19 +145,11 @@ const Add = ({ admin, setAdmins, setIsAdding, fetchDataByUser }) => {
       });
     }
   };
-  // call the both function
-  const handleClickAdd = async () => {
-     // wait for the registration to complete
-     const signUpSuccess = await handleAdd();
-     //send email just if registration is successful
-     if (signUpSuccess) {
-       send();
-     }
-  }
+
 
   return (
     <div className="container mx-auto mt-8 p-6 bg-gray-100 rounded-lg shadow-lg max-w-lg">
-      <form onSubmit={handleClickAdd} className="space-y-6">
+      <form onSubmit={handleAdd} className="space-y-6">
         <h1 className="text-2xl font-bold mb-4 text-center text-gray-700">
           Add Admin
         </h1>
