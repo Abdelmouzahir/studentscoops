@@ -112,16 +112,6 @@ const Register = () => {
       return false;
     }
 
-    if (!databaseEmailwithStatus.length==0){
-      if (!databaseEmailwithStatus.includes(email)){
-        setEmailError('Your email is either not a SAIT email or it is currently inactive.')
-        return false;
-      }
-    }
-    if(databaseEmailwithStatus.length==0){
-      setEmailError("Please refresh the page. If the issue persists, there may be a problem connecting to the database. For further assistance, please use the 'Contact Us' option.")
-      return false;
-    }
     if (
       !password.match(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
