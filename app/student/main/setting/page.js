@@ -10,9 +10,17 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { useRouter } from "next/navigation"
+
 export default function Settings() {
 
   const [deleteAccount, setDeleteAccount] = useState(false)
+  const router = useRouter();
+
+
+  const handleBackToMenu = () => {
+    router.push("/student/main");
+  };
 
 
   const toggleDeleteAccount = () => {
@@ -22,6 +30,14 @@ export default function Settings() {
     <div className="flex flex-col min-h-screen">
       <main className="flex-1  dark:bg-gray-800 p-6 md:p-10">
         <div className="max-w-4xl mx-auto grid gap-8">
+            <div>
+               <Button
+                  onClick={handleBackToMenu}
+                  className="transition-transform hover:scale-105 py-5 px-7 bg-primary hover:bg-orange-600"
+                >
+                  Back
+                </Button>
+             </div>        
           <Passwordreset />
           <section>
             <h2 className="text-2xl font-bold mb-4">Notifications</h2>

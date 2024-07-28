@@ -14,6 +14,9 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button'
 import Header_stud from "@/app/student/main/header_stud/page"
+import { useRouter } from "next/navigation"
+
+
 export default function PaymentOptions() {
   const [cardInfo, setCardInfo] = useState(false);
   const [paypalInfo, setPaypalInfo] = useState(false);
@@ -26,6 +29,7 @@ export default function PaymentOptions() {
   const [paypalPassword, setPaypalPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false)
+  const router = useRouter();
 
 
   const toggleCardInfo = () => {
@@ -62,6 +66,10 @@ export default function PaymentOptions() {
     } else {
       setCardNumberError('Card number must be 16 digits');
     }
+  };
+
+  const handleBackToMenu = () => {
+    router.push("/student/main");
   };
 
   const handleExpirationDateChange = (e) => {
@@ -120,9 +128,15 @@ export default function PaymentOptions() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
                     <CreditCardIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
                   </div>
-                  <div>
-                    <p className="font-medium">Credit/Debit Card</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Visa, Mastercard, American Express</p>
+                  <div  className='mt-3'>
+                     <p className="font-medium">Credit/Debit Card</p>
+                      <div className="flex space-x-4 mt-2">
+                          <img src="/visa.svg" alt="Visa" className="h-6" />
+                          <img src="/mastercard.svg" alt="MasterCard" className="h-6" />
+                          <img src="/american-express.svg" alt="American Express" className="h-6" />
+                          <img src="/google-pay.svg" alt="google" className="h-7" />
+                          <img src="/apple-pay.svg" alt="google" className="h-7" />
+                      </div>
                   </div>
                 </div>
                 <a
@@ -221,15 +235,17 @@ export default function PaymentOptions() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800">
                     <WalletCardsIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
                   </div>
-                  <div>
+                  <div className='mt-3'>
                     <p className="font-medium">PayPal</p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Fast, secure, and easy checkout</p>
+                    <div className="flex space-x-4 mt-2">
+                          <img src="/paypal.svg" alt="Visa" className="h-6" />
+                      </div>
                   </div>
                 </div>
                 <a
                   onClick={togglePaypalInfo}
                   href="#"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+                  className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-5 ml-1 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                   prefetch={false}
                 >
                   Pay with PayPal
@@ -308,8 +324,15 @@ export default function PaymentOptions() {
               </div>
 
             </div>
+                <Button
+                  onClick={handleBackToMenu}
+                  className="transition-transform hover:scale-105 mt-3 py-5 px-7 bg-primary hover:bg-orange-600"
+                >
+                  Back
+                </Button>
           </div>
         </div>
+        
       </section>
     </>
   );

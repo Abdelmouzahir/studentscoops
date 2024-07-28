@@ -31,7 +31,7 @@ export default function Passwordreset() {
   };
 
   return (
-    <div className="mx-full max-w-md space-y-6 py-12">
+    <div className="mx-full max-w-md space-y-6">
     <div className="text-left space-y-2 px-1">
       <h1 className="text-3xl font-bold ">Reset Password</h1>
         <p className="text-gray-500 dark:text-gray-400">
