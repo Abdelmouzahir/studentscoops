@@ -93,7 +93,7 @@ const DealoftheDay = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{deal.price}</p>
-                      <Button variant="outline" size="sm" className="transition transform hover:scale-105 duration-300">
+                      <Button variant="outline" size="sm" className="transition transform hover:scale-105 duration-300 rounded-md  text-yellow-50 bg-black hover:bg-slate-200">
                         Order Now
                       </Button>
                     </div>

@@ -22,7 +22,6 @@ export default function Settings() {
     router.push("/student/main");
   };
 
-
   const toggleDeleteAccount = () => {
     setDeleteAccount(!deleteAccount)
   }
