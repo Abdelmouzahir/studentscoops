@@ -7,6 +7,8 @@ import Image from "next/image";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { Badge } from "@/components/ui/badge"
+import Swal from "sweetalert2";
+import { motion } from "framer-motion";
 
 
 import {
@@ -132,7 +134,7 @@ export default function RestaurantMenu() {
       return;
     }
     if (!item && !restaurant) {
-      alert("Please select an item to add to cart");
+      Swal.fire("Please select an item to add to cart");
       return;
     } else {
       const data = {
@@ -154,9 +156,9 @@ export default function RestaurantMenu() {
       console.log("restaurant length: ", restaurantDocumentIds.length);
       if (restaurantDocumentIds.length <= 1 && menuDocumentIds.length >= 0) {
         if (menuDocumentIds.includes(item.id)) {
-          alert("Item already added to cart");
+          Swal.fire("Item already added to cart");
         }else if(orderData && orderData.length > 0){
-          alert("You have an active order. Please pick-up the order to add more items to cart");
+          Swal.fire("You have an active order. Please pick-up the order to add more items to cart");
           return;
         } else if (
           (restaurantDocumentIds.length === 0 ||
@@ -169,10 +171,10 @@ export default function RestaurantMenu() {
             restaurant[0].id,
             item.id,
           ).then(() => {
-            alert("Item added to cart");
+            Swal.fire("Item added to cart ✅");
           });
         } else {
-          alert("You can only add items from one restaurant at a time");
+          Swal.fire("You can only add items from one restaurant at a time");
         }
       }
     }
@@ -181,9 +183,13 @@ export default function RestaurantMenu() {
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-start w-full  mb-3 ">
-        
-        <IoMdArrowRoundBack  className=" text-primary  text-3xl" onClick={handleBackToMenu}/>
-       
+        <motion.button
+        whileHover={{ scale: 1.6 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={handleBackToMenu}
+        >
+           <IoMdArrowRoundBack  className=" text-primary  text-4xl" />
+        </motion.button>
       </div>
       {restaurant && restaurant.length > 0 && restaurant != null ? (
         <section>

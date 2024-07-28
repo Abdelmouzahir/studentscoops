@@ -193,6 +193,7 @@ const introPictureVariants = {
                 {filteredData.length > 8 && (
                   <div className="flex justify-center mt-4">
                     <Button
+                      className=" bg-orange-300 hover:bg-orange-500"
                       variant="outline"
                       onClick={() => setShowAllRestaurants(!showAllRestaurants)}
                     >
@@ -214,8 +215,6 @@ const introPictureVariants = {
             <DealoftheDay />
           </div>
         </section>
-
-
       </main>
     </>
   );
