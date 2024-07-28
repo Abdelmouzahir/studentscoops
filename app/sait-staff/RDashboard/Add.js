@@ -51,7 +51,7 @@ const Add = ({ setRestaurants, setIsAdding }) => {
 
     if (!name || !email || !phoneNumber || !address) {
       return Swal.fire({
-        icon: "error",
+        icon: "error", 
         title: "Error!",
         text: "All fields are required.",
         showConfirmButton: true,
