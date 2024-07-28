@@ -35,7 +35,7 @@ const ResetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const oobCode = searchParams.get('oobCode');
-
+  
   useEffect(() => {
     console.log(oobCode);
     if (confirmPassword) {

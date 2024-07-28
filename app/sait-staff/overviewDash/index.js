@@ -8,6 +8,7 @@ import { useUserAuth } from "@/services/utils";
 import { updateSaitEmployeeStatus, deleteSaitUserFromAdmin } from "@/services/PostRequest/postRequest";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 import { doc } from "firebase/firestore";
 
 export default function Dash({ fetchData, fetchDataByUser, data, adminData, students, restaurants }) {
@@ -57,7 +58,7 @@ export default function Dash({ fetchData, fetchDataByUser, data, adminData, stud
     // Handle delete logic
     if (uid && docId && userData) {
       if (user === uid) {
-        alert("You can't delete your own account");
+        Swal.fire("You can't delete your own account");
         return;
       }
       console.log('role: ',userData[0].role);
@@ -75,12 +76,12 @@ export default function Dash({ fetchData, fetchDataByUser, data, adminData, stud
           console.log("data: ", data);
           if (data.message === "User has been deleted") {
             await deleteSaitUserFromAdmin(docId,uid).then(()=>{
-              alert("User has been deleted");
+              Swal.fire("User has been deleted ❌");
             })
           }
         } catch (error) {
           console.error("An error occurred:", error);
-          alert("An error occurred while deleting the user.");
+          Swal.fire("An error occurred while deleting the user.");
         }
       }
     }
@@ -90,7 +91,7 @@ export default function Dash({ fetchData, fetchDataByUser, data, adminData, stud
   //to change the status of the user
   const handleChangeStatus = async (id, status, uid) => {
     if (user === uid) {
-      alert("You can't change your own status");
+      Swal.fire("You can't change your own status");
       return;
     }
 
@@ -109,24 +110,24 @@ export default function Dash({ fetchData, fetchDataByUser, data, adminData, stud
 
         if (data.message === "User status has been updated") {
           await updateSaitEmployeeStatus(id, status);
-          alert("Status for the given user has been changed");
+          Swal.fire("Status for the given user has been changed ✅");
           fetchData();
         } else if (
           data.error ===
           "There is no user record corresponding to the provided identifier."
         ) {
-          alert(
+          Swal.fire(
             "Error: No user record corresponding to the provided identifier."
           );
         } else {
-          alert("An unexpected error occurred.");
+          Swal.fire("An unexpected error occurred.");
         }
       } catch (error) {
         console.error("An error occurred:", error);
-        alert("An error occurred while changing the status.");
+        Swal.fire("An error occurred while changing the status.");
       }
     } else {
-      alert("You are not authorized to change the status");
+      Swal.fire("You are not authorized to change the status");
     }
   };
 
