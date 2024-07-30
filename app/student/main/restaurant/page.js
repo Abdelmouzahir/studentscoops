@@ -211,39 +211,37 @@ export default function RestaurantMenu() {
                   : "/assets/images/UserDefaultSaitStaff.png"
               })`,
             }}
-          ></div>
-          <div className="flex flex-col sm:flex-row mt-6 px-6">
-            <div className="flex flex-col sm:flex-row w-full items-center sm:items-start">
-              <div className="flex items-center justify-center mr-4">
-                <HiBuildingStorefront className="text-5xl text-gray-700" />
+          >
+            <div className="flex flex-col sm:flex-row mt-6 px-6">
+              <div className="flex flex-col sm:flex-row w-full items-center sm:items-start">
+                <div className="flex items-center justify-center mr-4">
+                  <HiBuildingStorefront className="text-5xl text-gray-700" />
+                </div>
+                <div className="text-center sm:text-left">
+                  <h1 className="text-4xl font-bold text-black">
+                    {restaurant[0].name}
+                  </h1>
+                  <p className="ml-1 text-gray-600">
+                    <span className="text-gray-800">Address: </span>
+                    {restaurant[0].address}
+                  </p>
+                </div>
               </div>
-              <div className="text-center sm:text-left">
-                <h1 className="text-4xl font-bold text-black">
-                  {restaurant[0].name}
-                </h1>
-                <p className="ml-1 text-gray-600">
-                  <span className="text-gray-800">Address: </span>
-                  {restaurant[0].address}
-                </p>
-              </div>
-            </div>
-            <div className="flex mt-4 sm:mt-0 sm:ml-auto items-center">
-              <div className="relative">
-                <Input
-                  type="search"
-                  placeholder="Search in the menu"
-                  className="pl-10 pr-4 py-2 rounded-full bg-white shadow-md w-80"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
-                <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary" />
+              <div className="flex mt-4 sm:mt-0 sm:ml-auto items-center">
+                <div className="relative">
+                  <Input
+                    type="search"
+                    placeholder="Search in the menu"
+                    className="pl-10 pr-4 py-2 rounded-full bg-white shadow-md w-80"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                  />
+                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-primary" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      
-        
+        </section>
       ) : (
         <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
           Loading..
@@ -305,11 +303,8 @@ export default function RestaurantMenu() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </>
+            ))}
+          </>
         ) : (
           <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
             Loading..

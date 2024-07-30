@@ -191,10 +191,8 @@ const Home = () => {
                       </div>
                     </div>
                     <div className="ml-2 self-center ">
-                      <IoRestaurantOutline  className="text-2xl text-primary"/>
+                      <IoRestaurantOutline className="text-2xl text-primary" />
                     </div>
-                  </div>
-
                   </Link>
                 ))}
               </div>
