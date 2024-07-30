@@ -14,6 +14,7 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { Spinner } from "@/components/ui/spinner";
+import { addMenuToRestaurantHistory } from "@/services/PostRequest/postRequest";
 import {
   getOrderMenuByOwner,
   getRestaurantDataByOwner,
@@ -21,6 +22,8 @@ import {
 import { useUserAuth } from "@/services/utils";
 
 export default function Order() {
+  const [itemData, setItemData] = useState(null);
+  const [pickUp, setPickUp] = useState(false);
   const [orders, setOrders] = useState(null);
   const { user } = useUserAuth();
   const [restaurantData, setRestaurantData] = useState(null);
@@ -78,9 +81,15 @@ export default function Order() {
       setIsDialogOpen(false);
     }, 4000); // Simulate a 2-second loading time
   };
-  const handlePickupComplete = (orderId) => {
-    setOrders((prevOrders) =>
-      prevOrders.filter((order) => order.id !== orderId)
+  const handlePickupComplete = async () => {
+    console.log("handlePickupComplete");
+    console.log("itemData: ", itemData);
+    console.log("restaurantData: ", restaurantData[0].id);
+    await addMenuToRestaurantHistory(
+      itemData,
+      restaurantData[0].id,
+      itemData.studentDocId,
+      itemData.studentMenuDocId
     );
   };
   const handleCancelOrder = (orderId) => {
@@ -121,27 +130,42 @@ export default function Order() {
               key={order.id}
               className="bg-muted p-4 rounded-lg shadow-md flex flex-col md:flex-row md:items-center gap-4"
             >
-              <div className="md:w-1/3">
-                <h2 className="text-lg font-semibold flex flex-col gap-2">
-                  <span className="flex items-center gap-2">
-                    <span className="font-bold">Order ID: #{order.orderId}</span>
-                    <span className="text-sm font-normal text-muted-foreground">
-                      ({order.orderAt.toDate().toDateString()})
+              <div className="w-full flex justify-between">
+                <div className="md:w-1/3">
+                  <h2 className="text-lg font-semibold flex flex-col gap-2">
+                    <span className="flex items-center gap-2">
+                      <span className="font-bold">
+                        Order ID: #{order.orderId}
+                      </span>
+                      <span className="text-sm font-normal text-muted-foreground">
+                        ({order.orderAt.toDate().toDateString()})
+                      </span>
                     </span>
-                  </span>
-                  <span>{order.customerName}</span>
-                </h2>
-                <ul className="mt-2 grid grid-cols-2 gap-2">
-                  <li
-                    className="flex justify-between items-center bg-background rounded-md px-2 py-1"
+                    <span>{order.customerName}</span>
+                  </h2>
+                  <ul className="mt-2 grid grid-cols-2 gap-2">
+                    <li className="flex justify-between items-center bg-background rounded-md px-2 py-1">
+                      <span className="text-sm">
+                        {order.quantity}x {order.name}
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="flex items-center mr-10">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setPickUp(true);
+                      setItemData(order);
+                    }}
+                    className="shadow-md"
                   >
-                    <span className="text-sm">
-                      {order.quantity}x {order.name}
-                    </span>
-                  </li>
-                </ul>
+                    Pick-Up
+                  </Button>
+                </div>
               </div>
-              <div className="mt-4 md:mt-0 md:w-1/3 md:text-center">
+
+              {/* <div className="mt-4 md:mt-0 md:w-1/3 md:text-center">
                 <span>
                   {order.status === "Preparing" && (
                     <div className="flex items-center justify-center gap-2">
@@ -162,8 +186,8 @@ export default function Order() {
                     </div>
                   )}
                 </span>
-              </div>
-              <div className="mt-4 md:mt-0 md:w-1/3 md:text-right flex justify-end">
+              </div> */}
+              {/* <div className="mt-4 md:mt-0 md:w-1/3 md:text-right flex justify-end">
                 {order.status === "Preparing" ? (
                   <div className="flex gap-2">
                     <Button
@@ -225,28 +249,38 @@ export default function Order() {
                     Pickup Complete
                   </Button>
                 ) : null}
-              </div>
+              </div> */}
             </li>
           ))}
         </ul>
       )}
       <AlertDialog
-        open={showCancelConfirmation}
-        onOpenChange={handleCancelConfirmationClose}
+        open={pickUp}
+        onOpenChange={() => {
+          setPickUp(false);
+        }}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Cancel Order?</AlertDialogTitle>
+            <AlertDialogTitle>Confirm Pick-Up?</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to cancel this order? This action cannot be
-              undone.
+              <div>
+                <p>
+                  Are you sure you want to confirm the pick-up of this order?
+                </p>
+                <p className="pt-1 font-semibold">
+                  {" "}
+                  This will mark the order as complete on restaurant and
+                  customer side.
+                </p>
+              </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
-              onClick={handleConfirmCancelOrder}
+              onClick={handlePickupComplete}
               className="text-white"
             >
               Confirm
