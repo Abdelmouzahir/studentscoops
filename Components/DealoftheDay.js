@@ -46,7 +46,6 @@ const DealoftheDay = () => {
       price: "$8.99",
     }
   ];
-
   // Custom properties for zoom effect while slideshow
   const zoomInProperties = {
     scale: 1,

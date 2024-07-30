@@ -144,7 +144,7 @@ export default function RestaurantMenu() {
       return;
     }
     if (!item && !restaurant) {
-      alert("Please select an item to add to cart");
+      Swal.fire("Please select an item to add to cart");
       return;
     } else {
       const data = {
@@ -183,10 +183,10 @@ export default function RestaurantMenu() {
             restaurant[0].id,
             item.id
           ).then(() => {
-            alert("Item added to cart");
+            Swal.fire("Item added to cart ✅");
           });
         } else {
-          alert("You can only add items from one restaurant at a time");
+          Swal.fire("You can only add items from one restaurant at a time");
         }
       }
     }
@@ -240,7 +240,10 @@ export default function RestaurantMenu() {
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+      
+        
       ) : (
         <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
           Loading..
@@ -302,8 +305,11 @@ export default function RestaurantMenu() {
                   </div>
                 </div>
               </div>
-            ))}
-          </>
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
         ) : (
           <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
             Loading..

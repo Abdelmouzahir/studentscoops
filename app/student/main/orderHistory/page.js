@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
 
 const restaurants = [
   {
@@ -33,12 +34,26 @@ const restaurants = [
 
 export default function Component() {
   const [openDialogId, setOpenDialogId] = useState(null);
+  const router = useRouter();
 
   const handleDialogOpen = (id) => setOpenDialogId(id);
   const handleDialogClose = () => setOpenDialogId(null);
 
+  const handleBackToMenu = () => {
+    router.push("/student/main");
+  };
+
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+             <div className="mb-3">
+               <Button
+                  onClick={handleBackToMenu}
+                  className="transition-transform hover:scale-105 py-5 px-7 bg-primary hover:bg-orange-600"
+                >
+                  Back
+                </Button>
+             </div>     
       <h1 className="text-2xl font-bold mb-6">Past Orders</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {restaurants.map((restaurant) => (

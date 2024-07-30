@@ -30,6 +30,10 @@ export default function MyProfile() {
 
   const [showAlert, setShowAlert] = useState(false);
 
+  const handleBackToMenu = () => {
+    router.push("/student/main");
+  };
+
   //fetch student data
   function fetchStudentData() {
     getStudentDataByStudents((data) => {
@@ -143,9 +147,15 @@ export default function MyProfile() {
               <CardFooter>
                 <Button
                   onClick={handleUpdate}
-                  className="transition-transform hover:scale-105"
+                  className="transition-transform hover:scale-105 mr-3"
                 >
                   Save Changes
+                </Button>
+                <Button
+                  onClick={handleBackToMenu}
+                  className="transition-transform hover:scale-105 py-5 px-7 bg-primary hover:bg-orange-600"
+                >
+                  Back
                 </Button>
               </CardFooter>
             </>

@@ -6,6 +6,9 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import zxcvbn from "zxcvbn";
+import { sendMail } from "@/lib/mail";
+import WelcomeEmail from "@/components/WelcomeEmail"
+import ReactDOMServer from 'react-dom/server';
 
 //icons
 import { FaCheckCircle } from "react-icons/fa";
@@ -76,6 +79,28 @@ const Register = () => {
     setSpecialCharMet(/[@$!%*?&]/.test(password));
   }, [password]);
 
+  //send email
+  const send = async (event) => {
+    //event.preventDefault(); // Prevent default form submission
+
+    //convert the template to be readable for the user in the email
+    const emailBody = ReactDOMServer.renderToString(
+        <WelcomeEmail name="!" link={"http://localhost:3000/sait-staff/login"} />
+    );
+    try {
+        await sendMail({
+            to: email,
+            name: 'No-reply',
+            subject: 'Welcome to StudentScoops 🎉',
+            body: emailBody,
+        });
+        return console.log('confirmation Sent to: ', username)
+    } catch (error) {
+        console.error("Error sending email:", error);
+        alert("Failed to send email. Please try again.");
+    }
+};
+
   const handleSignUp = async () => {
     setEmailError("");
     setPassError("");
@@ -84,19 +109,9 @@ const Register = () => {
     // Check the email domain
     if (!email.endsWith("@sait.ca")) {
       setEmailError("Please use a SAIT Staff email");
-      return;
+      return false;
     }
 
-    if (!databaseEmailwithStatus.length==0){
-      if (!databaseEmailwithStatus.includes(email)){
-        setEmailError('Your email is either not a SAIT email or it is currently inactive.')
-        return;
-      }
-    }
-    if(databaseEmailwithStatus.length==0){
-      setEmailError("Please refresh the page. If the issue persists, there may be a problem connecting to the database. For further assistance, please use the 'Contact Us' option.")
-      return;
-    }
     if (
       !password.match(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
@@ -105,13 +120,13 @@ const Register = () => {
       setPassError(
         "Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters."
       );
-      return;
+      return false;
     }
 
     // Check if passwords match
     if (!isPasswordMatch) {
       setConfirmPassError("Passwords do not match");
-      return;
+      return false;
     }
 
     try {
@@ -125,6 +140,7 @@ const Register = () => {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      return true;
     } catch (e) {
       // Check if the user already exists in the database
       console.error("Error registering:", e.message);
@@ -133,8 +149,20 @@ const Register = () => {
       } else {
         setError("Failed to create account. Please try again.");
       }
+      return false;
     }
   };
+
+  const handleClickNext = async () => {
+    // wait for the registration to complete
+    const signUpSuccess = await handleSignUp();
+    //send email just if registration is successful
+    if (signUpSuccess) {
+      send();
+    }
+  };
+
+
 
   const getPasswordStrengthBar = (score) => {
     const strength = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
@@ -273,7 +301,7 @@ const Register = () => {
             )}
             <div className="mt-4">
               <button
-                onClick={handleSignUp}
+                onClick={handleClickNext}
                 className="w-full bg-yellow-500 py-3 text-center text-white mt-3 rounded-md"
               >
                 Sign Up

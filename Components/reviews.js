@@ -33,14 +33,14 @@ function Reviews() {
         <Slider {...settings}>
           {data.map((d) => (
             <div key={d.name} className="bg-white mb-4 text-black rounded-xl flex flex-col min-h-[490px]">
-              <div className='h-56 bg-primary flex justify-center items-center rounded-t-xl'>
+              <div className='h-56  bg-orange-300 flex justify-center items-center rounded-t-xl'>
                 <img src={d.img} alt="" className="h-44 w-44 rounded-full"/>
               </div>
 
               <div className="flex flex-col items-center justify-center flex-1 gap-4 p-4">
                 <p className="text-xl font-semibold text-center">{d.name}</p>
                 <p className="text-center">{d.review}</p>
-                <button className='bg-primary text-white text-lg px-6 py-1 rounded-xl'>Read More</button>
+                <button className='bg-orange-300 hover:bg-orange-500 text-white text-lg px-6 py-1 rounded-xl'>Read More</button>
               </div>
             </div>
           ))}

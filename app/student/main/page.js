@@ -190,6 +190,11 @@ const Home = () => {
                         <IoRestaurantOutline className="text-2xl text-primary" />
                       </div>
                     </div>
+                    <div className="ml-2 self-center ">
+                      <IoRestaurantOutline  className="text-2xl text-primary"/>
+                    </div>
+                  </div>
+
                   </Link>
                 ))}
               </div>
@@ -197,6 +202,7 @@ const Home = () => {
                 {filteredData.length > 8 && (
                   <div className="flex justify-center mt-4">
                     <Button
+                      className=" bg-orange-300 hover:bg-orange-500"
                       variant="outline"
                       onClick={() => setShowAllRestaurants(!showAllRestaurants)}
                     >
