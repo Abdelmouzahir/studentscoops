@@ -111,7 +111,7 @@ export default function SettingsRestaurant() {
       {
         Header: "Status",
         accessor: "status",
-        Cell: ({ cell: { value } }) => <Badge variant="outline">{value}</Badge>,
+        Cell: ({ cell: { value } }) => <Badge variant="outline">{value ? "Available":"Sold"}</Badge>,
       },
       {
         Header: "Price",

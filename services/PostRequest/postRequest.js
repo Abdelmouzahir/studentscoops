@@ -350,13 +350,27 @@ export async function deleteRestaurantUserByOwner(currentUser, docId) {
   }
 }
 
+//to add menu to restaurant history
+export async function addMenuToRestaurantHistory(menu, restaurantDocId,studentDocId,studentMenuDocId) {
+  try {
+    menu.pickupAt = new Date();
+    await addDoc(
+      collection(db, "restaurants", restaurantDocId, "history"),
+      menu
+    );
+    await deleteDoc(doc(collection(db, "restaurants", restaurantDocId, "menu", menu.id)));
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
 //<<<-----------------------------------------------------------------Student------------------------------------------------------------------>>>>
 // to add menu to students
 export async function addMenuToStudent(
   menu,
   studentDocId,
   restaurantDocId,
-  itemId,
+  itemId
 ) {
   try {
     //add menu to student

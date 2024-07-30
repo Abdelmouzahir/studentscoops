@@ -2,14 +2,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/services/utils";
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { IoRestaurantOutline } from "react-icons/io5";
 
 import Link from "next/link";
 // import { Card } from "../../components/ui/card";
 import { Button } from "@/Components/ui/button";
-import restaurantsData from "./restaurantsData.json"; // Import the JSON data correctly
+
 // import Slideshow from '@/components/SlideShow';
 import DealoftheDay from "@/components/DealoftheDay";
 import { getRestaurantDataByStudents } from "@/services/GetRequest/getRequest";
@@ -17,11 +17,13 @@ import { getRestaurantDataByStudents } from "@/services/GetRequest/getRequest";
 const Home = () => {
   const { user } = useUserAuth();
   const [searchTerm, setSearchTerm] = useState("");
+  const [restaurants, setRestaurants] = useState([]);
   const [filteredData, setFilteredData] = useState(null); // Initialize with data from JSON
   const router = useRouter();
 
   async function fetchRestaurantData() {
     getRestaurantDataByStudents((data) => {
+      setRestaurants(data);
       setFilteredData(data);
     });
   }
@@ -30,15 +32,15 @@ const Home = () => {
     fetchRestaurantData();
   }, []);
 
-
   // handle the search function of the page
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
     if (term === "") {
-      setFilteredData(restaurantsData[0].restaurants); // Access restaurants array correctly
+      console.log("restaura data", restaurants);
+      setFilteredData(restaurants); // Access restaurants array correctly
     } else {
-      const results = restaurantsData[0].restaurants.filter((item) =>
+      const results = restaurants.filter((item) =>
         item.name.toLowerCase().includes(term.toLowerCase())
       );
       setFilteredData(results);
@@ -51,73 +53,76 @@ const Home = () => {
 
   const introHeaderVariants = {
     hide: {
-        opacity: 0,
-        x: 500,
+      opacity: 0,
+      x: 500,
     },
     show: {
-        opacity: 1,
-        x: 0,
-        transition: {
-            duration: 2,
-        },
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 2,
+      },
     },
-};
+  };
 
-const introPictureVariants = {
+  const introPictureVariants = {
     hide: {
-        opacity: 0,
-        x: -500,
+      opacity: 0,
+      x: -500,
     },
     show: {
-        opacity: 1,
-        x: 0,
-        transition: {
-            duration: 2,
-        },
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 2,
+      },
     },
-};
+  };
 
   return (
     <>
       <main>
-      <section className=" h-screen w-full flex items-center ">
-            <div className="relative w-[50%] h-full">
-                <motion.div
-                    className="absolute inset-0 z-0"
-                    initial="hide"
-                    whileInView="show"
-                    exit="hide"
-                    variants={introPictureVariants}
-                >
-                    <div
-                        style={{
-                            backgroundImage: 'url("/assets/3d-illustration-cartoon-character-with-burgers-cheeseburgers.png")',
-                            backgroundSize: 'contain',
-                            backgroundPosition: 'bottom-center',
-                            backgroundRepeat: 'no-repeat',
-                        }}
-                        className="w-full h-full"
-                    ></div>
-                </motion.div>
-            </div>
+        <section className=" h-screen w-full flex items-center ">
+          <div className="relative w-[50%] h-full">
+            <motion.div
+              className="absolute inset-0 z-0"
+              initial="hide"
+              whileInView="show"
+              exit="hide"
+              variants={introPictureVariants}
+            >
+              <div
+                style={{
+                  backgroundImage:
+                    'url("/assets/3d-illustration-cartoon-character-with-burgers-cheeseburgers.png")',
+                  backgroundSize: "contain",
+                  backgroundPosition: "bottom-center",
+                  backgroundRepeat: "no-repeat",
+                }}
+                className="w-full h-full"
+              ></div>
+            </motion.div>
+          </div>
 
-            <div className="relative w-[50%] flex items-center justify-center px-4 z-10">
-                <motion.div
-                    className="text-left text-black space-y-4 max-w-xl "
-                    initial="hide"
-                    whileInView="show"
-                    exit="hide"
-                    variants={introHeaderVariants}
-                >
-                    <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
-                        Discover the Flavors of Our Renowned Restaurant
-                    </h1>
-                    <p className="text-lg mt-2">
-                        Experience the finest cuisine and impeccable service in a stunning, modern setting. Our menu features a
-                        delightful selection of seasonal dishes, crafted with the freshest ingredients.
-                    </p>
-                </motion.div>
-            </div>
+          <div className="relative w-[50%] flex items-center justify-center px-4 z-10">
+            <motion.div
+              className="text-left text-black space-y-4 max-w-xl "
+              initial="hide"
+              whileInView="show"
+              exit="hide"
+              variants={introHeaderVariants}
+            >
+              <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">
+                Discover the Flavors of Our Renowned Restaurant
+              </h1>
+              <p className="text-lg mt-2">
+                Experience the finest cuisine and impeccable service in a
+                stunning, modern setting. Our menu features a delightful
+                selection of seasonal dishes, crafted with the freshest
+                ingredients.
+              </p>
+            </motion.div>
+          </div>
         </section>
 
         <section className="mt-8 mb-8 ">
@@ -172,14 +177,18 @@ const introPictureVariants = {
                       className="object-cover w-full h-60"
                     />
 
-                  <div className="p-4 bg-background flex items-center">
-                    <div className="flex-grow">
-                      <h3 className="text-lg  text-primary font-semibold md:text-xl">
-                        {restaurant.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {restaurant.address}
-                      </p>
+                    <div className="p-4 bg-background flex items-center">
+                      <div className="flex-grow">
+                        <h3 className="text-lg  text-primary font-semibold md:text-xl">
+                          {restaurant.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {restaurant.address}
+                        </p>
+                      </div>
+                      <div className="ml-2 self-center ">
+                        <IoRestaurantOutline className="text-2xl text-primary" />
+                      </div>
                     </div>
                     <div className="ml-2 self-center ">
                       <IoRestaurantOutline  className="text-2xl text-primary"/>
