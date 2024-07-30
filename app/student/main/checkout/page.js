@@ -116,17 +116,17 @@ export default function Component() {
       setNotAvailableCount(cartItems.filter((item) => item.status == false));
       fetchRestaurantData();
       setTaxAmmount(
-        cartItems.reduce((total, item) => total + parseFloat(item.price).toFixed(2), 0) *
+        cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
           0.05
       );
       setSubTotal(
-        cartItems.reduce((total, item) => total + parseFloat(item.price).toFixed(2), 0)
+        cartItems.reduce((total, item) => total + parseFloat(item.price), 0)
       );
       setTotalAmmount(
-        cartItems.reduce((total, item) => total + parseFloat(item.price).toFixed(2), 0) +
-          cartItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2) *
+        cartItems.reduce((total, item) => total + parseFloat(item.price), 0) +
+          cartItems.reduce((total, item) => total + parseFloat(item.price), 0)*
             0.05
-      ).toFixed(2);
+      );
     }
   }, [cartItems]);
 

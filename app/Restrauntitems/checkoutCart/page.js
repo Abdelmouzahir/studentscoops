@@ -17,6 +17,10 @@ import {
   getStudentMenuByStudents,
   getRestaurantDataForCheckoutByStudents,
 } from "@/services/GetRequest/getRequest";
+import Swal from "sweetalert2";
+import Link from "next/link"
+
+
 
 export default function CheckoutCart({ studentData }) {
   const [subtotal, setSubtotal] = useState(0);
@@ -64,6 +68,11 @@ export default function CheckoutCart({ studentData }) {
     setIsSheetOpen(false);
   };
 
+  const handleCartIsEmpty = () => {
+    router.push("/student/main");
+    setIsSheetOpen(false);
+  };
+
   async function handleRemoveItem(item) {
     await deleteFoodFromCart(
       studentData[0].id,
@@ -72,7 +81,7 @@ export default function CheckoutCart({ studentData }) {
       item.menuDocId,
       item.customerId
     ).then(() => {
-      alert("Item removed from cart");
+      Swal.fire("Item removed from cart ❌");
     });
   }
 
@@ -183,7 +192,7 @@ export default function CheckoutCart({ studentData }) {
                 </div>
               </>
             ) : (
-              <Button variant="outline" className="w-full rounded-md py-2">
+              <Button variant="outline" onClick={handleCartIsEmpty} className="w-full rounded-md py-2">
                 Add items to cart
               </Button>
             )}
