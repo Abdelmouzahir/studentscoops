@@ -116,17 +116,17 @@ export default function Component() {
       setNotAvailableCount(cartItems.filter((item) => item.status == false));
       fetchRestaurantData();
       setTaxAmmount(
-        cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
+        cartItems.reduce((total, item) => total + parseFloat(item.price).toFixed(2), 0) *
           0.05
       );
       setSubTotal(
-        cartItems.reduce((total, item) => total + parseFloat(item.price), 0)
+        cartItems.reduce((total, item) => total + parseFloat(item.price).toFixed(2), 0)
       );
       setTotalAmmount(
-        cartItems.reduce((total, item) => total + parseFloat(item.price), 0) +
-          cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
+        cartItems.reduce((total, item) => total + parseFloat(item.price).toFixed(2), 0) +
+          cartItems.reduce((total, item) => total + parseFloat(item.price), 0).toFixed(2) *
             0.05
-      );
+      ).toFixed(2);
     }
   }, [cartItems]);
 
@@ -569,16 +569,16 @@ export default function Component() {
                 <div className="border-black-solid border-b-4">
                   <div className="flex justify-between">
                     <p className="text-sm">Subtotal</p>
-                    <p className="font-medium">${subTotal}</p>
+                    <p className="font-medium">${subTotal.toFixed(2)}</p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-sm">Taxes</p>
-                    <p className="font-medium">${taxAmmount}</p>
+                    <p className="font-medium">${taxAmmount.toFixed(2)}</p>
                   </div>
                 </div>
                 <div className="flex justify-between font-bold text-lg">
                   <p>Total</p>
-                  <p>${totalAmmount}</p>
+                  <p>${totalAmmount.toFixed(2)}</p>
                 </div>
               </div>
             </Card>
