@@ -169,7 +169,7 @@ export default function MyProfile() {
         </Card>
       </section>
       {showAlert && (
-        <div className="fixed p-3 w-30 top-15 right-4 p-2 bg-green-500 text-white rounded-md shadow-md">
+        <div className="fixed p-3 w-30 top-15 right-4  bg-green-500 text-white rounded-md shadow-md">
           <p>Your Details are saved</p>
         </div>
       )}
