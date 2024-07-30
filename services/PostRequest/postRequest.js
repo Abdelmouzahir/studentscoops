@@ -8,6 +8,8 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  getDoc,
+  setDoc,
 } from "firebase/firestore";
 import {
   ref,
@@ -351,16 +353,55 @@ export async function deleteRestaurantUserByOwner(currentUser, docId) {
 }
 
 //to add menu to restaurant history
-export async function addMenuToRestaurantHistory(menu, restaurantDocId,studentDocId,studentMenuDocId) {
+export async function addMenuToRestaurantHistory(
+  menu,
+  restaurantDocId,
+  studentDocId,
+  studentMenuDocId
+) {
   try {
     menu.pickupAt = new Date();
-    await addDoc(
-      collection(db, "restaurants", restaurantDocId, "history"),
+    await setDoc(
+      doc(db, "restaurants", restaurantDocId, "history", menu.id),
       menu
     );
-    await deleteDoc(doc(collection(db, "restaurants", restaurantDocId, "menu", menu.id)));
+    await deleteDoc(doc(db, "restaurants", restaurantDocId, "menu", menu.id));
+    console.log("studentDocId", studentDocId);
+    console.log("studentMenuDocId", studentMenuDocId);
+    await updateDoc(doc(db, "students", studentDocId, "menu", studentMenuDocId), {pickupAt: new Date()});
+    const studentMenu = await getDoc(
+      doc(db, "students", studentDocId, "menu", studentMenuDocId)
+    );
+    studentMenu.data().pickupAt = new Date();
+    console.log("studentMenu", studentMenu.data());
+    await addDoc(
+      collection(db, "students", studentDocId, "history"),
+      studentMenu.data()
+    );
+    await deleteDoc(
+      doc(db, "students", studentDocId, "menu", studentMenuDocId)
+    );
   } catch (e) {
     console.error("Error adding document: ", e);
+  }
+}
+
+//to delete order history by restaurant
+export async function deleteOrderHistoryByRestaurant(
+  restaurantDocId,
+  restaurantMenuDocRef,
+  uid,
+  imageName
+) {
+  try {
+    console.log("restaurantDocId", restaurantDocId);
+    console.log("restaurantMenuDocRef", restaurantMenuDocRef);
+    await deleteDoc(
+      doc(db, "restaurants", restaurantDocId, "history", restaurantMenuDocRef)
+    );
+    await deleteObject(ref(storage, `menu/${uid}/${imageName}`));
+  } catch (e) {
+    console.error("Error deleting document: ", e);
   }
 }
 

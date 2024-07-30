@@ -177,7 +177,7 @@ const Home = () => {
                       className="object-cover w-full h-60"
                     />
 
-                     <div className="p-4 bg-background flex items-center">
+                    <div className="p-4 bg-background flex items-center">
                       <div className="flex-grow">
                         <h3 className="text-lg  text-primary font-semibold md:text-xl">
                           {restaurant.name}
@@ -188,10 +188,13 @@ const Home = () => {
                       </div>
                       <div className="ml-2 self-center ">
                         <IoRestaurantOutline className="text-2xl text-primary" />
-                       </div>
-                     </div>
-                     </Link>
-                 ))}
+                      </div>
+                    </div>
+                    <div className="ml-2 self-center ">
+                      <IoRestaurantOutline className="text-2xl text-primary" />
+                    </div>
+                  </Link>
+                ))}
               </div>
               <div>
                 {filteredData.length > 8 && (

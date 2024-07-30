@@ -12,16 +12,16 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { addMenuToRestaurantHistory } from "@/services/PostRequest/postRequest";
+import { deleteOrderHistoryByRestaurant } from "@/services/PostRequest/postRequest";
 import {
-  getOrderMenuByOwner,
+  getRestaurantMenuHistoryByOwner,
   getRestaurantDataByOwner,
 } from "@/services/GetRequest/getRequest";
 import { useUserAuth } from "@/services/utils";
 
 export default function Order() {
   const [itemData, setItemData] = useState(null);
-  const [pickUp, setPickUp] = useState(false);
+  const [deleteOrder, setDeleteOrder] = useState(false);
   const [orders, setOrders] = useState(null);
   const { user } = useUserAuth();
   const [restaurantData, setRestaurantData] = useState(null);
@@ -36,7 +36,7 @@ export default function Order() {
   }
 
   function fetchOrders() {
-    getOrderMenuByOwner((data) => {
+    getRestaurantMenuHistoryByOwner((data) => {
       console.log("menu: ", data);
       setOrders(data);
     }, restaurantData[0].id);
@@ -62,21 +62,21 @@ export default function Order() {
     }
   }, [restaurantData]);
 
-  const handlePickupComplete = async () => {
+  const handleDeleteOrder = async () => {
     console.log("handlePickupComplete");
     console.log("itemData: ", itemData);
     console.log("restaurantData: ", restaurantData[0].id);
-    await addMenuToRestaurantHistory(
-      itemData,
+    await deleteOrderHistoryByRestaurant(
       restaurantData[0].id,
-      itemData.studentDocId,
-      itemData.studentMenuDocId
+      itemData.id,
+      restaurantData[0].uid,
+      itemData.imageName,
     );
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Incoming Orders</h1>
+      <h1 className="text-3xl font-bold mb-6">Order History</h1>
       <Input
         type="search"
         placeholder="Search by Order ID"
@@ -101,9 +101,11 @@ export default function Order() {
                         Order ID: #{order.orderId}
                       </span>
                       <span className="text-sm font-normal text-muted-foreground">
-                        ({order.orderAt.toDate().toDateString()})
+                        <span>(Order At: {order.orderAt.toDate().toDateString()})</span>
+                        
                       </span>
                     </span>
+                    <span className="text-sm font-normal">(Pick-Up At: {order.pickupAt.toDate().toDateString()})</span>
                     <span>{order.customerName}</span>
                   </h2>
                   <ul className="mt-2 grid grid-cols-2 gap-2">
@@ -118,12 +120,12 @@ export default function Order() {
                   <Button
                     variant="outline"
                     onClick={() => {
-                      setPickUp(true);
+                      setDeleteOrder(true);
                       setItemData(order);
                     }}
                     className="shadow-md"
                   >
-                    Pick-Up
+                    Delete
                   </Button>
                 </div>
               </div>
@@ -132,23 +134,22 @@ export default function Order() {
         </ul>
       )}
       <AlertDialog
-        open={pickUp}
+        open={deleteOrder}
         onOpenChange={() => {
-          setPickUp(false);
+          setDeleteOrder(false);
         }}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirm Pick-Up?</AlertDialogTitle>
+            <AlertDialogTitle>Delete Order History</AlertDialogTitle>
             <AlertDialogDescription>
               <div>
                 <p>
-                  Are you sure you want to confirm the pick-up of this order?
+                  Are you sure you want to delete the order from the history?
                 </p>
                 <p className="pt-1 font-semibold">
                   {" "}
-                  This will mark the order as complete on restaurant and
-                  customer side.
+                  This will delete the order history permanently.
                 </p>
               </div>
             </AlertDialogDescription>
@@ -157,7 +158,7 @@ export default function Order() {
             <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
-              onClick={handlePickupComplete}
+              onClick={handleDeleteOrder}
               className="text-white"
             >
               Confirm
