@@ -190,9 +190,7 @@ const Home = () => {
                         <IoRestaurantOutline className="text-2xl text-primary" />
                       </div>
                     </div>
-                    <div className="ml-2 self-center ">
-                      <IoRestaurantOutline className="text-2xl text-primary" />
-                    </div>
+
                   </Link>
                 ))}
               </div>
