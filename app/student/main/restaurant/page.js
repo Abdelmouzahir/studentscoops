@@ -7,6 +7,7 @@ import Image from "next/image";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { Badge } from "@/components/ui/badge";
+import Swal from "sweetalert2";
 
 import {
   getRestaurantMenuByStudents,
@@ -161,6 +162,9 @@ export default function RestaurantMenu() {
         quantity: item.quantity,
         customerId: null,
         orderId: null,
+        restaurantName: restaurant[0].name,
+        restaurantAddress: restaurant[0].address,
+        pickupAt: null,
       };
       console.log("menu length: ", menuDocumentIds.length);
       console.log("restaurant length: ", restaurantDocumentIds.length);

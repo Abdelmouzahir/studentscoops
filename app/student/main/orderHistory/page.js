@@ -1,5 +1,5 @@
-"use client"
-import { useState } from "react";
+"use client";
+import { useState, useEffect, use } from "react";
 import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
@@ -8,33 +8,90 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger, DialogContent, DialogClose } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
+import {
+  getStudentConfirmOrderData,
+  getStudentDataByStudents,
+  getStudentMenuHistory,
+} from "@/services/GetRequest/getRequest";
+import { useUserAuth } from "../../../../services/utils";
+import Image from "next/image";
+import { IoStorefront } from "react-icons/io5";
 
 const restaurants = [
   {
     id: 1,
     name: "The Gourmet Kitchen",
     address: "123 Food Street, Calgary, AB T2P 0L4",
-    img_url: "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg",
+    img_url:
+      "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg",
     menu: [
       {
         item_id: 1,
         name: "Margherita Pizza",
-        description: "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
+        description:
+          "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
         price: 12.99,
-        img_url: "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg"
+        img_url:
+          "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg",
       },
       // Add other menu items here...
-    ]
+    ],
   },
   // Add other restaurants here...
 ];
 
 export default function Component() {
-  const [openDialogId, setOpenDialogId] = useState(null);
+  const { user } = useUserAuth();
   const router = useRouter();
+  const [studentData, setStudentData] = useState(null);
+  const [orderData, setOrderData] = useState(null);
+  const [orderHistory, setOrderHistory] = useState(null);
+
+  //function to fetch student data
+  function fetchStudentData() {
+    getStudentDataByStudents((data) => {
+      setStudentData(data);
+    }, user);
+  }
+  useEffect(() => {
+    if (user) {
+      fetchStudentData();
+    } else if (user == false) {
+      router.push("/auth/sign-in");
+    }
+  }, [user]);
+
+  //function to fetch order data
+  function fetchOrderData() {
+    getStudentConfirmOrderData((data) => {
+      setOrderData(data);
+    }, studentData[0].id);
+  }
+
+  //function to fetch order history
+  function fetchOrderHistory() {
+    getStudentMenuHistory((data) => {
+      console.log("menu history: ", data);
+      setOrderHistory(data);
+    }, studentData[0].id);
+  }
+
+  useEffect(() => {
+    if (studentData && studentData.length > 0) {
+      fetchOrderData();
+      fetchOrderHistory();
+    }
+  }, [studentData]);
+
+  const [openDialogId, setOpenDialogId] = useState(null);
 
   const handleDialogOpen = (id) => setOpenDialogId(id);
   const handleDialogClose = () => setOpenDialogId(null);
@@ -43,81 +100,130 @@ export default function Component() {
     router.push("/student/main");
   };
 
-
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-             <div className="mb-3">
-               <Button
-                  onClick={handleBackToMenu}
-                  className="transition-transform hover:scale-105 py-5 px-7 bg-primary hover:bg-orange-600"
-                >
-                  Back
-                </Button>
-             </div>     
-      <h1 className="text-2xl font-bold mb-6">Past Orders</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {restaurants.map((restaurant) => (
-          <Card key={restaurant.id} className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <div className="relative">
-              <img
-                src={restaurant.img_url}
-                alt={restaurant.name}
-                width={500}
-                height={300}
-                className="w-full h-48 object-cover"
-              />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-2 right-2 bg-white/80 hover:bg-white"
-                  >
-                    <MoveHorizontalIcon className="w-5 h-5 text-gray-700" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onSelect={() => handleDialogOpen(restaurant.id)}>
-                    <ListIcon className="w-4 h-4 mr-2" />
-                    View Order Details
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <div className="p-4">
-              <h3 className="text-lg font-bold mb-2">{restaurant.name}</h3>
-              <div className="text-gray-500">{restaurant.address}</div>
-              <Dialog open={openDialogId === restaurant.id} onOpenChange={handleDialogClose}>
-                <DialogContent className="sm:max-w-md p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-lg font-bold">{restaurant.name}</h2>
-                    <DialogClose>
-                      
-                    </DialogClose>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 mb-4">
-                    {restaurant.menu.map((item) => (
-                      <div key={item.item_id} className="bg-gray-100 p-2 rounded-lg">
-                        <img
-                          src={item.img_url}
-                          alt={item.name}
-                          className="w-full h-16 object-cover rounded-lg mb-1"
-                        />
-                        <div className="text-sm font-medium">{item.name}</div>
-                        <div className="text-xs text-gray-500">Price: ${item.price.toFixed(2)}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <Separator className="my-2" />
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline" size="sm">Reorder</Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </Card>
-        ))}
+      <div className="mb-3">
+        <Button
+          onClick={handleBackToMenu}
+          className="transition-transform hover:scale-105 py-5 px-7 bg-primary hover:bg-orange-600"
+        >
+          Back
+        </Button>
       </div>
+      <h1 className="text-2xl font-bold mt-6">Orders Yet To Pick-Up</h1>
+      <section className="container mx-auto px-4 md:px-6 py-4 md:py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {orderData && orderData.length > 0 && orderData != null ? (
+          <>
+            {orderData.map((item) => (
+              <div
+                key={item.id}
+                className={
+                  item.status
+                    ? "relative bg-background border-2 shadow-xl rounded-md overflow-hidden"
+                    : "relative bg-background border-2 shadow-xl rounded-md overflow-hidden"
+                }
+              >
+                <div>
+                  <Image
+                    src={
+                      item.imageUrl
+                        ? item.imageUrl
+                        : "/assets/images/UserDefaultSaitStaff.png"
+                    }
+                    alt={item.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-[200px] object-cover bg-cover bg-center"
+                  />
+                  <div className="p-4">
+                    <p>Order Number: #{item.orderId}</p>
+                    <h3 className="text-lg font-medium">{item.name}</h3>
+                    <p className="text-muted-foreground text-sm">
+                      {item.description}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+                      <p className="text-muted-foreground text-xl font-bold">
+                        Quantity: {item.quantity}
+                      </p>
+                      <span className="font-medium mr-4">
+                        Price: ${item.price}
+                      </span>
+                    </div>
+                    <p className="text-lg font-medium mt-5 flex items-center">
+                      <IoStorefront className="mr-1" />
+                      {item.restaurantName}
+                    </p>
+                    <p>{item.restaurantAddress}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
+            You don't have any orders to pick up.
+          </div>
+        )}
+      </section>
+      <hr className="my-10 border-gray-500 border-2" />
+      <h1 className="text-2xl font-bold">Past Orders</h1>
+      <section className="container mx-auto px-4 md:px-6 py-4 md:py-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {orderHistory && orderHistory.length > 0 && orderHistory != null ? (
+          <>
+            {orderHistory.map((item) => (
+              <div
+                key={item.id}
+                className={
+                  item.status
+                    ? "relative bg-background border-2 shadow-xl rounded-md overflow-hidden"
+                    : "relative bg-background border-2 shadow-xl rounded-md overflow-hidden"
+                }
+              >
+                <div>
+                  <Image
+                    src={
+                      item.imageUrl
+                        ? item.imageUrl
+                        : "/assets/images/UserDefaultSaitStaff.png"
+                    }
+                    alt={item.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-[200px] object-cover bg-cover bg-center"
+                  />
+                  <div className="p-4">
+                    <p>Order Number: #{item.orderId}</p>
+                    <h3 className="text-lg font-medium">{item.name}</h3>
+                    <p className="text-muted-foreground text-sm">
+                      {item.description}
+                    </p>
+
+                    <div className="flex items-center justify-between">
+                      <p className="text-muted-foreground text-xl font-bold">
+                        Quantity: {item.quantity}
+                      </p>
+                      <span className="font-medium mr-4">
+                        Price: ${item.price}
+                      </span>
+                    </div>
+                    <p>Pick-Up At: {item.pickupAt.toDate().toDateString()}</p>
+                    <p className="text-lg font-medium mt-5 flex items-center">
+                      <IoStorefront className="mr-1" />
+                      {item.restaurantName}
+                    </p>
+                    <p>{item.restaurantAddress}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
+            You don't have any past orders.
+          </div>
+        )}
+      </section>
     </div>
   );
 }
