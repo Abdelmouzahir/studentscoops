@@ -116,8 +116,12 @@ export default function Component() {
       setNotAvailableCount(cartItems.filter((item) => item.status == false));
       fetchRestaurantData();
       setTaxAmmount(
-        cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
-          0.05
+        parseFloat(
+          (
+            cartItems.reduce((total, item) => total + parseFloat(item.price), 0) *
+            0.05
+          ).toFixed(2)
+        )
       );
       setSubTotal(
         cartItems.reduce((total, item) => total + parseFloat(item.price), 0)
