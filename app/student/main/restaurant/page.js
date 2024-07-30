@@ -1,3 +1,4 @@
+
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,6 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { Badge } from "@/components/ui/badge";
 import Swal from "sweetalert2";
-
 import {
   getRestaurantMenuByStudents,
   getRestaurantDataByOwner,
@@ -20,7 +20,7 @@ import { addMenuToStudent } from "@/services/PostRequest/postRequest";
 import { useUserAuth } from "@/services/utils";
 import Modal from "@/components/Modal";
 import Link from "next/link";
-
+ 
 export default function RestaurantMenu() {
   const [menuItems, setMenuItems] = useState(null);
   const [menuDocumentIds, setMenuDocumentIds] = useState([]);
@@ -38,38 +38,38 @@ export default function RestaurantMenu() {
   const [menu, setMenu] = useState(null);
 
   const [restaurant, setRestaurant] = useState(null);
-
+ 
   function fetchRestaurantMenu() {
     getRestaurantMenuByStudents((data) => {
       setMenu(data);
       setFilteredItems(data);
     }, restaurantId);
   }
-
+ 
   function fetchRestaurantData() {
     getRestaurantDataByOwner((data) => {
       setRestaurant(data);
     }, restaurantUid);
   }
-
+ 
   function fetchStudentData() {
     getStudentDataByStudents((data) => {
       setStudentData(data);
     }, user);
   }
-
+ 
   function fetchStudentMenu() {
     getStudentMenuByStudents((data) => {
       setMenuItems(data);
     }, studentData[0].id);
   }
-
+ 
   function fetchOrderData() {
     getStudentConfirmOrderData((data) => {
       setOrderData(data);
     }, studentData[0].id);
   }
-
+ 
   useEffect(() => {
     if (menuItems) {
       console.log("menuitemsvlength: ", menuItems.length);
@@ -87,35 +87,35 @@ export default function RestaurantMenu() {
       console.log("processing menu items: ", menuItems);
       const uniqueRestaurantDocIds = new Set();
       const uniqueMenuDocIds = new Set();
-
+ 
       menuItems.forEach((item) => {
         uniqueRestaurantDocIds.add(item.restaurantDocId);
         uniqueMenuDocIds.add(item.menuDocId);
       });
-
+ 
       setRestaurantDocumentIds([...uniqueRestaurantDocIds]);
       setMenuDocumentIds([...uniqueMenuDocIds]);
     }
   }, [menuItems]);
-
+ 
   useEffect(() => {
     console.log("menuCollectionRef: ", menuDocumentIds);
     console.log("restaurantCollectionRef: ", restaurantDocumentIds);
   }, [menuDocumentIds]);
-
+ 
   useEffect(() => {
     if (user) {
       fetchStudentData();
     }
   }, [user]);
-
+ 
   useEffect(() => {
     if (studentData && studentData.length > 0) {
       fetchStudentMenu();
       fetchOrderData();
     }
   }, [studentData]);
-
+ 
   useEffect(() => {
     fetchRestaurantMenu();
     fetchRestaurantData();
@@ -134,11 +134,11 @@ export default function RestaurantMenu() {
       setFilteredItems(results);
     }
   };
-
+ 
   const handleBackToMenu = () => {
     router.push("/student/main");
   };
-
+ 
   const addToCart = async (item) => {
     if (user == false && !studentData) {
       setIsModalOpen(true);
@@ -195,7 +195,7 @@ export default function RestaurantMenu() {
       }
     }
   };
-
+ 
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-start w-full  mb-3 ">
@@ -376,3 +376,5 @@ function PlusIcon(props) {
     </svg>
   );
 }
+ 
+ 

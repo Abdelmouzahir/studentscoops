@@ -6,7 +6,7 @@ import "react-slideshow-image/dist/styles.css";
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
 import { Card } from "./ui/card";
 import { Button } from './ui/button';
-
+ 
 const DealoftheDay = () => {
   // Array of Images
   const DataforDeals = [
@@ -47,6 +47,7 @@ const DealoftheDay = () => {
     }
   ];
   // Custom properties for zoom effect while slideshow
+
   const zoomInProperties = {
     scale: 1,
     duration: 5000,
@@ -63,7 +64,7 @@ const DealoftheDay = () => {
       </div>
     ),
   };
-
+ 
   return (
     <div className="w-full h-full bg-white rounded-2xl border-2 dark:bg-[#2b2b2b] p-6 shadow-lg">
       <Zoom {...zoomInProperties}>
@@ -108,5 +109,5 @@ const DealoftheDay = () => {
     </div>
   );
 };
-
+ 
 export default DealoftheDay;
