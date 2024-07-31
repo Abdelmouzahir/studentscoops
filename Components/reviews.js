@@ -54,7 +54,7 @@ const data = [
   {
     name: `John Morgan`,
     img: `/assets/images/students/John_Morgan.jpg`,
-    review: `The Students Scoops web app is a game-changer! It's incredibly user-friendly and has made keeping track of campus events and activities so much easier. The design is sleek and the information is always up-to-date. Highly recommend it to all students!`
+    review: `Students Scoops is fantastic! It's easy to use and helps me stay in the loop with all campus activities. The modern design and seamless navigation are impressive. Finding relevant information quickly is a breeze. Highly recommend it to all students!`
   },
   {
     name: `Ellie Anderson`,
@@ -69,7 +69,7 @@ const data = [
   {
     name: `Rigo Louie`,
     img: `/assets/images/students/Rigo_Louie.jpg`,
-    review: `The Students Scoops web app is a game-changer! It's incredibly user-friendly and has made keeping track of campus events and activities so much easier. The design is sleek and the information is always up-to-date. Highly recommend it to all students!`
+    review: `Students Scoops is fantastic! It's easy to use and helps me stay in the loop with all campus activities. The modern design and seamless navigation are impressive. Finding relevant information quickly is a breeze. Highly recommend it to all students!`
   },
   {
     name: `Mia Williams`,
