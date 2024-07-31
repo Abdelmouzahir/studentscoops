@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/services/utils";
-import { useRef } from "react";
+
 import { motion, useScroll, useTransform } from "framer-motion";
 import { IoRestaurantOutline } from "react-icons/io5";
 
