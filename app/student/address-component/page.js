@@ -26,7 +26,7 @@ export default function Component() {
     <>
       <div className="flex items-center space-x-2">
         <MapPinIcon className="w-5 h-5 text-black" />
-        <span className="text-black">{address}</span>
+        <span className="text-black" onClick={handleClick}>{address.slice(0,15)}...</span>
         <span className="text-black">•</span>
         <span className="text-black cursor-pointer" onClick={handleClick}>
           Now

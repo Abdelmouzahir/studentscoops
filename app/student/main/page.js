@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "@/services/utils";
-
 import { motion, useScroll, useTransform } from "framer-motion";
 import { IoRestaurantOutline } from "react-icons/io5";
+
 
 import Link from "next/link";
 // import { Card } from "../../components/ui/card";
@@ -15,11 +15,27 @@ import DealoftheDay from "@/components/DealoftheDay";
 import { getRestaurantDataByStudents } from "@/services/GetRequest/getRequest";
 
 const Home = () => {
+  const small = useRef(false);
   const { user } = useUserAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [restaurants, setRestaurants] = useState([]);
   const [filteredData, setFilteredData] = useState(null); // Initialize with data from JSON
   const router = useRouter();
+
+  //to get the viewport category
+  function getViewportCategory() {
+    const width = window.innerWidth;
+    console.log("width", width);
+
+    if (width <= 600) {
+      return small.current = true;
+    } else {
+      return small.current = false;
+    }
+  }
+  useEffect(() => {
+    getViewportCategory();
+  }, []);
 
   async function fetchRestaurantData() {
     getRestaurantDataByStudents((data) => {
@@ -54,7 +70,7 @@ const Home = () => {
   const introHeaderVariants = {
     hide: {
       opacity: 0,
-      x: 500,
+      x: small ? 100 : 500,
     },
     show: {
       opacity: 1,
@@ -68,7 +84,7 @@ const Home = () => {
   const introPictureVariants = {
     hide: {
       opacity: 0,
-      x: -500,
+      x: small ? -100 : -500,
     },
     show: {
       opacity: 1,
@@ -104,7 +120,7 @@ const Home = () => {
             </motion.div>
           </div>
 
-          <div className="relative w-[50%] flex items-center justify-center px-4 z-10">
+          <div className="relative w-[50%] flex items-center justify-center px-4 z-10 mr-4">
             <motion.div
               className="text-left text-black space-y-4 max-w-xl "
               initial="hide"
@@ -190,7 +206,6 @@ const Home = () => {
                         <IoRestaurantOutline className="text-2xl text-primary" />
                       </div>
                     </div>
-
                   </Link>
                 ))}
               </div>

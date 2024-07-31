@@ -63,9 +63,11 @@ export default function Order() {
   }, [restaurantData]);
 
   const handleDeleteOrder = async () => {
+
     console.log("handlePickupComplete");
     console.log("itemData: ", itemData);
     console.log("restaurantData: ", restaurantData[0].id);
+
     await deleteOrderHistoryByRestaurant(
       restaurantData[0].id,
       itemData.id,

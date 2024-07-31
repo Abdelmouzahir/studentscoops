@@ -1,13 +1,20 @@
 "use client";
 import { useState, useEffect, use } from "react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 import { Card } from "@/components/ui/card";
+
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+  getStudentConfirmOrderData,
+  getStudentDataByStudents,
+  getStudentMenuHistory,
+} from "@/services/GetRequest/getRequest";
+import { useUserAuth } from "../../../../services/utils";
+import Image from "next/image";
+import { IoStorefront } from "react-icons/io5";
+import { removeItemFromStudentMenu, deleteHistoryProductFromStudent } from "@/services/PostRequest/postRequest";
 import { Button } from "@/components/ui/button";
+
 import {
   Dialog,
   DialogTrigger,
@@ -24,6 +31,7 @@ import {
 import { useUserAuth } from "../../../../services/utils";
 import Image from "next/image";
 import { IoStorefront } from "react-icons/io5";
+
 
 const restaurants = [
   {
@@ -91,10 +99,26 @@ export default function Component() {
     }
   }, [studentData]);
 
+
   const [openDialogId, setOpenDialogId] = useState(null);
 
-  const handleDialogOpen = (id) => setOpenDialogId(id);
-  const handleDialogClose = () => setOpenDialogId(null);
+
+  async function handleRemovePickUpOrder(item) {
+    await removeItemFromStudentMenu(
+      item.restaurantDocId,
+      item.menuDocId,
+      studentData[0].id,
+      item.id
+    ).then(() => {
+      Swal.fire("Item remove from pick-up order cart ✅");
+    });
+  }
+
+  async function handleRemoveOrderHistoryItem(item) {
+    await deleteHistoryProductFromStudent(studentData[0].id, item.id).then(()=>{
+      Swal.fire("Item removed from order history ✅");
+    })
+  }
 
   const handleBackToMenu = () => {
     router.push("/student/main");
@@ -155,13 +179,24 @@ export default function Component() {
                       {item.restaurantName}
                     </p>
                     <p>{item.restaurantAddress}</p>
+
+                  </div>
+                  <div className="flex justify-end pb-3 pr-3">
+                    <Button onClick={() => handleRemovePickUpOrder(item)}>
+                      Remove
+                    </Button>
+
                   </div>
                 </div>
               </div>
             ))}
           </>
         ) : (
+
+          <div className="flex w-full text-center justify-center items-center font-bold text-lg">
+
           <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
+
             You don't have any orders to pick up.
           </div>
         )}
@@ -213,13 +248,26 @@ export default function Component() {
                       {item.restaurantName}
                     </p>
                     <p>{item.restaurantAddress}</p>
+
+                    <div className="flex justify-end p-3">
+                      <Button
+                        onClick={() => handleRemoveOrderHistoryItem(item)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+
                   </div>
                 </div>
               </div>
             ))}
           </>
         ) : (
-          <div className="flex h-full w-full text-center justify-center items-center text-3xl animate-pulse">
+
+          <div className="flex w-full text-center justify-center items-center font-bold text-lg">
+
+          <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
+
             You don't have any past orders.
           </div>
         )}

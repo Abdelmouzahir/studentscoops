@@ -34,7 +34,7 @@ export default function Header_stud({ handleSignOut }) {
   useEffect(() => {
   },[studentData]);
   return (
-    <header className="sticky top-0 z-10 flex items-center justify-between h-16 px-4 md:px-6 bg-white shadow-sm dark:bg-gray-950">
+    <header className="sticky top-0 z-10 flex items-center justify-between h-16 px-4 md:px-6 bg-white shadow-sm dark:bg-gray-950 m-3">
       <div className=" flex items-center gap-4">
         <Link
           href="/student"

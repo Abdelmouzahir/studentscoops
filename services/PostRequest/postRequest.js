@@ -368,7 +368,12 @@ export async function addMenuToRestaurantHistory(
     await deleteDoc(doc(db, "restaurants", restaurantDocId, "menu", menu.id));
     console.log("studentDocId", studentDocId);
     console.log("studentMenuDocId", studentMenuDocId);
-    await updateDoc(doc(db, "students", studentDocId, "menu", studentMenuDocId), {pickupAt: new Date()});
+
+    await updateDoc(
+      doc(db, "students", studentDocId, "menu", studentMenuDocId),
+      { pickupAt: new Date() }
+    );
+
     const studentMenu = await getDoc(
       doc(db, "students", studentDocId, "menu", studentMenuDocId)
     );
@@ -394,8 +399,7 @@ export async function deleteOrderHistoryByRestaurant(
   imageName
 ) {
   try {
-    console.log("restaurantDocId", restaurantDocId);
-    console.log("restaurantMenuDocRef", restaurantMenuDocRef);
+
     await deleteDoc(
       doc(db, "restaurants", restaurantDocId, "history", restaurantMenuDocRef)
     );
@@ -538,6 +542,40 @@ export async function placeOrderByStudent(
     console.log("Order placed successfully.");
   } catch (e) {
     console.error("Error placing order: ", e);
+  }
+}
+
+// to remove item from student menu and set status to available in restaurant menu
+export async function removeItemFromStudentMenu(
+  restaurantDocId,
+  restaurantMenuDocRef,
+  studentDocId,
+  studentMenuDocId,
+) {
+  try {
+    // Remove item from student menu
+    await deleteDoc(
+      doc(db, "students", studentDocId, "menu", studentMenuDocId)
+    );
+
+    // Remove customer from restaurant menu
+    await updateDoc(
+      doc(db, "restaurants", restaurantDocId, "menu", restaurantMenuDocRef),
+      {
+        status: "Available",
+      }
+    );
+  } catch (e) {
+    console.error("Error removing item: ", e);
+  }
+}
+
+//to delete the history products from student
+export async function deleteHistoryProductFromStudent(studentDocId,studentHistoryMenuDocId){
+  try{
+    await deleteDoc(doc(db,"students",studentDocId,"history",studentHistoryMenuDocId));
+  }catch(error){
+    console.error("Error deleting document: ", error);
   }
 }
 
