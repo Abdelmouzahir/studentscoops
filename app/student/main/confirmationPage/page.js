@@ -99,6 +99,11 @@ export default function Component() {
     }, studentData[0].id);
   }
 
+  function handleBackToMenu() {
+    router.push("/student/main")
+  }
+
+
   useEffect(() => {
     if (user) {
       fetchStudentData();
@@ -290,10 +295,10 @@ export default function Component() {
               </div>
             </Card>
             <div className="flex items-center gap-6 mt-8">
-              <Button className="bg-yellow-500 text-white hover:bg-black px-8 py-4 rounded-md shadow-md font-semibold">
+              <Button onClick={handleBackToMenu} className="bg-yellow-500 text-white hover:bg-black px-8 py-4 rounded-md shadow-md font-semibold">
                 Navigate to Restaurant
               </Button>
-              <Button className="bg-white-600 text-black hover:bg-yellow-500 px-8 py-4 rounded-md shadow-md font-semibold">
+              <Button onClick={handleBackToMenu} className="bg-white-600 text-black hover:bg-yellow-500 px-8 py-4 rounded-md shadow-md font-semibold">
                 Back to Home Page
               </Button>
             </div>

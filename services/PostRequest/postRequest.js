@@ -368,10 +368,12 @@ export async function addMenuToRestaurantHistory(
     await deleteDoc(doc(db, "restaurants", restaurantDocId, "menu", menu.id));
     console.log("studentDocId", studentDocId);
     console.log("studentMenuDocId", studentMenuDocId);
+
     await updateDoc(
       doc(db, "students", studentDocId, "menu", studentMenuDocId),
       { pickupAt: new Date() }
     );
+
     const studentMenu = await getDoc(
       doc(db, "students", studentDocId, "menu", studentMenuDocId)
     );
@@ -397,6 +399,7 @@ export async function deleteOrderHistoryByRestaurant(
   imageName
 ) {
   try {
+
     await deleteDoc(
       doc(db, "restaurants", restaurantDocId, "history", restaurantMenuDocRef)
     );
