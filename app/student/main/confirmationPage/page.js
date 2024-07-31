@@ -151,6 +151,10 @@ export default function Component() {
     setShowCancelMessage(true);
   };
 
+  const handlePush = () => {
+    router.push("/student/main")
+  }
+
   // Calculate cart totals
   const isArray = Array.isArray(cartItems);
   const cartItemsTotal = isArray
@@ -295,10 +299,16 @@ export default function Component() {
               </div>
             </Card>
             <div className="flex items-center gap-6 mt-8">
-              <Button onClick={handleBackToMenu} className="bg-yellow-500 text-white hover:bg-black px-8 py-4 rounded-md shadow-md font-semibold">
+            <Link
+                  href={`https://www.google.com/maps/search/?api=1&query=`}
+                  target="_blank"
+                  className="w-full"
+                >
+              <Button className="bg-yellow-500 text-white hover:bg-black px-8 py-4 rounded-md shadow-md font-semibold">
                 Navigate to Restaurant
               </Button>
-              <Button onClick={handleBackToMenu} className="bg-white-600 text-black hover:bg-yellow-500 px-8 py-4 rounded-md shadow-md font-semibold">
+            </Link>
+              <Button onClick={handlePush} className="bg-white-600 text-black hover:bg-yellow-500 px-8 py-4 rounded-md shadow-md font-semibold">
                 Back to Home Page
               </Button>
             </div>
