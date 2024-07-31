@@ -99,6 +99,11 @@ export default function Component() {
     }, studentData[0].id);
   }
 
+  function handleBackToMenu() {
+    router.push("/student/main")
+  }
+
+
   useEffect(() => {
     if (user) {
       fetchStudentData();
