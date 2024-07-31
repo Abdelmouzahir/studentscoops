@@ -242,7 +242,7 @@ export default function Component() {
                         Price: ${item.price}
                       </span>
                     </div>
-                    <p>Pick-Up At: {item.pickupAt.toDate().toDateString()}</p>
+                    <p>Pick-Up At: {item.pickupAt ? new Date(item.pickupAt).toLocaleString() : "N/A"}</p>
                     <p className="text-lg font-medium mt-5 flex items-center">
                       <IoStorefront className="mr-1" />
                       {item.restaurantName}

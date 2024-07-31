@@ -186,7 +186,11 @@ export default function RestaurantMenu() {
             restaurant[0].id,
             item.id
           ).then(() => {
-            Swal.fire("Item added to cart ✅");
+          setShowAlert(true)
+          setTimeout(() => {
+            setShowAlert(false)
+          }, 3000)
+            
           });
         } else {
           Swal.fire("You can only add items from one restaurant at a time");
@@ -194,8 +198,11 @@ export default function RestaurantMenu() {
       }
     }
   };
+
+  const [showAlert, setShowAlert] = useState(false)
  
   return (
+    <Layout>
     <div className="flex flex-col">
       <div className="flex justify-between items-start w-full  mb-3 ">
         <IoMdArrowRoundBack
@@ -246,7 +253,7 @@ export default function RestaurantMenu() {
           </div>
         </section>
       ) : (
-        <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
+        <div className=" container mx-auto px-4 md:px-6 py-8 md:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-pulse">
           Loading..
         </div>
       )}
@@ -309,8 +316,8 @@ export default function RestaurantMenu() {
             ))}
           </>
         ) : (
-          <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
-            Loading..
+          <div className="flex h-full w-full  justify-center items-center text-3xl animate-pulse">
+            No Deals available
           </div>
         )}
       </section>
@@ -334,7 +341,17 @@ export default function RestaurantMenu() {
           </div>
         </div>
       </Modal>
+      {showAlert && (
+        <div className="fixed bottom-4  text-xl right-4 p-2 bg-yellow-500 text-white rounded-md shadow-md animate-bounce">
+          <p>ITEM ADDED TO CART</p>
+        </div>
+      )}
     </div>
+    </Layout>
+    
+
+
+    
   );
 }
 function SearchIcon(props) {

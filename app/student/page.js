@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { useAddress } from "./address-context/page" // Adjust the import path to where AddressContext is located
+import Layout from "./transtion/Layout"
 
 export default function Component() {
   const { address, setAddress } = useAddress();  // Use the context
@@ -23,6 +24,7 @@ export default function Component() {
   }
 
   return (
+    <Layout>
     <div
       className="relative w-full h-screen bg-cover bg-center"
       style={{ backgroundImage: "url(/assets/heroPage.jpeg)" }}
@@ -62,6 +64,7 @@ export default function Component() {
         </div>
       )}
     </div>
+    </Layout>
   )
 }
 

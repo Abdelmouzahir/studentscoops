@@ -36,6 +36,7 @@ import {
   deleteFoodFromCart,
   placeOrderByStudent,
 } from "@/services/PostRequest/postRequest";
+import { HiBuildingStorefront } from "react-icons/hi2";
 
 // Main functional component
 export default function Component() {
@@ -101,6 +102,7 @@ export default function Component() {
   function fetchRestaurantData() {
     getRestaurantDataForCheckoutByStudents((data) => {
       setRestaurantInfo(data);
+      console.log(data)
     }, cartItems[0].restaurantUid);
   }
 
@@ -197,7 +199,7 @@ export default function Component() {
           orderId,
         );
       });
-      alert("Order placed successfully");
+     
       router.push("/student/main/confirmationPage");
     }
   };
@@ -224,7 +226,7 @@ export default function Component() {
               {/* Map component to show the restaurant and student addresses */}
               <div className="w-full h-64 bg-gray-200 rounded-md">
                 <Map
-                  restaurantAddress={restaurantInfo[0].address}
+                  restaurantAddress={`${restaurantInfo[0].address}, calgary`}
                   studentAddress={studentAddress}
                   onEstimatedTimeChange={handleEstimatedTimeChange}
                 />
@@ -250,19 +252,23 @@ export default function Component() {
                   </Button>
                 </Link>
               </div>
-              {/* Display restaurant details */}
-              <div className="flex items-center  text-3xl border-2 shadow-xl rounded-lg space-x-3 p-2">
+                      <div className="flex items-center text-3xl border-2 shadow-xl rounded-lg space-x-3 p-2">
+              <div className="flex items-center space-x-3 flex-1">
                 <Avatar className="border-2 shadow-md w-20 h-30">
                   <AvatarImage src={restaurantInfo[0].imageUrl} />
                   <AvatarFallback>PC</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-bold">{restaurantInfo.name}</p>
+                  <p className="font-bold">{restaurantInfo[0].name}</p>
                   <p className="text-sm text-muted-foreground">
-                    {restaurantInfo.address}
+                    {restaurantInfo[0].address}
                   </p>
                 </div>
               </div>
+              <div className="flex items-center mr-10 text-bold text-4xl">
+                <HiBuildingStorefront />
+              </div>
+            </div>
             </CardContent>
           ) : (
             <div className="w-full h-full grid items-center gap-4">
