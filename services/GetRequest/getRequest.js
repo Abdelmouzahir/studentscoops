@@ -185,6 +185,25 @@ export function getRestaurantMenuHistoryByOwner(onChange, restaurantDocId) {
   }
 }
 
+// // get restaurant data for user as restaurant
+export async function getRestaurantInformationByUser(user) {
+  try {
+    const q = query(
+      collection(db, "restaurants"),
+      where("uid", "==", user),
+      where("active", "==", true)
+    );
+    const querySnapshot = await getDocs(q);
+    const userItems = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    return userItems;
+  } catch (error) {
+    console.error("Error getting user information: ", error);
+    return false;
+  }
+}
+
 //<<<-----------------------------------------------------------------Students------------------------------------------------------------------>>>>
 
 // get restaurant details for students
@@ -384,24 +403,7 @@ export function getStudentMenuHistory(onChange,studentDocId){
 //     return [];
 //   }
 // }
-// // get restaurant data for user as restaurant
-// export async function getRestaurantInformationByUser(user) {
-//   try {
-//     const q = query(
-//       collection(db, "restaurants"),
-//       where("uid", "==", user),
-//       where("active", "==", true)
-//     );
-//     const querySnapshot = await getDocs(q);
-//     const userItems = querySnapshot.docs.map((doc) => {
-//       return { id: doc.id, ...doc.data() };
-//     });
-//     return userItems;
-//   } catch (error) {
-//     console.error("Error getting user information: ", error);
-//     return false;
-//   }
-// }
+
 // export async function getMenuInformation(userId) {
 //   try {
 //     const q = query(
