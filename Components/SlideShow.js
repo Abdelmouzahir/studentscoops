@@ -18,17 +18,17 @@ const Slideshow = () => {
   //These are custom properties for zoom effect while slide-show
   const zoomInProperties = {
     scale: 1,
-    duration: 5000,
+    duration: 3000,
     transitionDuration: 300,
     infinite: true,
     prevArrow: (
-      <div className="ml-10 top-40 md:top-72">
-        <ArrowLeftIcon className="h-8 w-8 text-orange-400 cursor-pointer" />
+      <div className=" ml-2 absolute top-1/2 -translate-y-1/2 left-4 md:left-10 rounded-full bg-orange-400 hover:bg-orange-500">
+        <ArrowLeftIcon className="h-8 w-8 text-white cursor-pointer" />
       </div>
     ),
     nextArrow: (
-      <div className="mr-10 top-40 md:top-72">
-        <ArrowRightIcon className="h-8 w-8  text-orange-400 cursor-pointer" />
+      <div className="mr-2 absolute top-1/2 -translate-y-1/2 right-4 md:right-10 rounded-full bg-orange-400 hover:bg-orange-500">
+        <ArrowRightIcon className="h-8 w-8 text-white cursor-pointer" />
       </div>
     ),
   };

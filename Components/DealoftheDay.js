@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-// These are Third-party packages for smooth slideshow
 import { Zoom } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
@@ -8,7 +7,6 @@ import { Card } from "./ui/card";
 import { Button } from './ui/button';
  
 const DealoftheDay = () => {
-  // Array of Images
   const DataforDeals = [
     {
       id: "1",
@@ -46,56 +44,56 @@ const DealoftheDay = () => {
       price: "$8.99",
     }
   ];
-  // Custom properties for zoom effect while slideshow
-
+ 
   const zoomInProperties = {
-    scale: 1,
+    scale: 1.2,
     duration: 5000,
-    transitionDuration: 300,
+    transitionDuration: 500,
     infinite: true,
     prevArrow: (
       <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
-        <ArrowLeftIcon className="h-8 w-8 text-orange-400 cursor-pointer" />
+        <ArrowLeftIcon className="h-10 w-10 text-orange-400 cursor-pointer hover:text-orange-600 transition duration-300" />
       </div>
     ),
     nextArrow: (
       <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
-        <ArrowRightIcon className="h-8 w-8 text-orange-400 cursor-pointer" />
+        <ArrowRightIcon className="h-10 w-10 text-orange-400 cursor-pointer hover:text-orange-600 transition duration-300" />
       </div>
     ),
   };
  
   return (
-    <div className="w-full h-full bg-white rounded-2xl border-2 dark:bg-[#2b2b2b] p-6 shadow-lg">
+    <div className="w-full h-full bg-white dark:bg-[#2b2b2b] rounded-2xl border-2 p-6 shadow-lg">
       <Zoom {...zoomInProperties}>
         {DataforDeals.map((deal) => (
           <div key={deal.id} className="space-y-6 mb-8">
-            <div className="inline-block rounded-lg bg-[#f8f9fa] px-3 py-1 text-sm dark:bg-[#2b2b2b]">
+            <div className="inline-block rounded-lg bg-orange-100 dark:bg-orange-800 px-3 py-1 text-sm text-orange-600 dark:text-orange-200">
               Deal of the Day
             </div>
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Today's Top Discounted Meal</h2>
-            <p className="max-w-3xl mx-auto text-gray-500 md:text-lg lg:text-base dark:text-gray-400">
-              Check out the amazing deal of the day and don't miss your chance to enjoy a delicious meal at a
-              discounted price.
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-gray-800 dark:text-gray-100">
+              Today's Top Discounted Meal
+            </h2>
+            <p className="max-w-3xl mx-auto text-gray-500 dark:text-gray-400 md:text-lg lg:text-base">
+              Check out the amazing deal of the day and don't miss your chance to enjoy a delicious meal at a discounted price.
             </p>
             <div className="relative mb-10">
-              <Card className="w-full max-w-3xl mx-auto p-4 shadow-md">
+              <Card className="w-full max-w-3xl mx-auto p-4 shadow-md bg-white dark:bg-gray-800 transition transform hover:scale-105 duration-300">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <img
                     src={deal.image}
                     width="550"
                     height="310"
                     alt={deal.name}
-                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover"
+                    className="mx-auto aspect-video overflow-hidden rounded-xl object-cover transition transform hover:scale-110 duration-300"
                   />
                   <div className="flex flex-col justify-center space-y-4 p-6">
                     <div>
-                      <h3 className="text-2xl font-bold">{deal.name}</h3>
+                      <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">{deal.name}</h3>
                       <p className="text-gray-500 dark:text-gray-400">{deal.deal}</p>
                     </div>
                     <div className="flex items-center justify-between">
-                      <p className="text-2xl font-bold">{deal.price}</p>
-                      <Button variant="outline" size="sm">
+                      <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{deal.price}</p>
+                      <Button variant="outline" size="sm" className="transition transform hover:scale-105 duration-300 rounded-md  text-yellow-50 bg-black hover:bg-slate-200">
                         Order Now
                       </Button>
                     </div>
