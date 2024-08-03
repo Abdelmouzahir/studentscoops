@@ -1,52 +1,20 @@
 "use client";
-import { useState, useEffect, use } from "react";
-import { Card } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import { useUserAuth } from "../../../../services/utils";
+import Image from "next/image";
+import { IoStorefront } from "react-icons/io5";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+  removeItemFromStudentMenu,
+  deleteHistoryProductFromStudent,
+} from "@/services/PostRequest/postRequest";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import {
   getStudentConfirmOrderData,
   getStudentDataByStudents,
   getStudentMenuHistory,
 } from "@/services/GetRequest/getRequest";
-import { useUserAuth } from "../../../../services/utils";
-import Image from "next/image";
-import { IoStorefront } from "react-icons/io5";
-
-const restaurants = [
-  {
-    id: 1,
-    name: "The Gourmet Kitchen",
-    address: "123 Food Street, Calgary, AB T2P 0L4",
-    img_url:
-      "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg",
-    menu: [
-      {
-        item_id: 1,
-        name: "Margherita Pizza",
-        description:
-          "Classic pizza with fresh tomatoes, mozzarella cheese, and basil.",
-        price: 12.99,
-        img_url:
-          "https://img.freepik.com/free-photo/front-view-delicious-pizza-composition_23-2148787326.jpg",
-      },
-      // Add other menu items here...
-    ],
-  },
-  // Add other restaurants here...
-];
 
 export default function Component() {
   const { user } = useUserAuth();
@@ -93,8 +61,24 @@ export default function Component() {
 
   const [openDialogId, setOpenDialogId] = useState(null);
 
-  const handleDialogOpen = (id) => setOpenDialogId(id);
-  const handleDialogClose = () => setOpenDialogId(null);
+  async function handleRemovePickUpOrder(item) {
+    await removeItemFromStudentMenu(
+      item.restaurantDocId,
+      item.menuDocId,
+      studentData[0].id,
+      item.id
+    ).then(() => {
+      Swal.fire("Item remove from pick-up order cart ✅");
+    });
+  }
+
+  async function handleRemoveOrderHistoryItem(item) {
+    await deleteHistoryProductFromStudent(studentData[0].id, item.id).then(
+      () => {
+        Swal.fire("Item removed from order history ✅");
+      }
+    );
+  }
 
   const handleBackToMenu = () => {
     router.push("/student/main");
@@ -156,14 +140,21 @@ export default function Component() {
                     </p>
                     <p>{item.restaurantAddress}</p>
                   </div>
+                  <div className="flex justify-end pb-3 pr-3">
+                    <Button onClick={() => handleRemovePickUpOrder(item)}>
+                      Remove
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
           </>
         ) : (
-          <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
-            You don't have any orders to pick up.
-          </div>
+          <>
+            <div className="flex w-full text-center justify-center items-center font-bold text-lg">
+              You don't have any orders to pick up.
+            </div>
+          </>
         )}
       </section>
       <hr className="my-10 border-gray-500 border-2" />
@@ -207,19 +198,32 @@ export default function Component() {
                         Price: ${item.price}
                       </span>
                     </div>
-                    <p>Pick-Up At: {item.pickupAt ? new Date(item.pickupAt).toLocaleString() : "N/A"}</p>
+                    <p>
+                      Pick-Up At:{" "}
+                      {item.pickupAt
+                        ? new Date(item.pickupAt).toLocaleString()
+                        : "N/A"}
+                    </p>
                     <p className="text-lg font-medium mt-5 flex items-center">
                       <IoStorefront className="mr-1" />
                       {item.restaurantName}
                     </p>
                     <p>{item.restaurantAddress}</p>
+
+                    <div className="flex justify-end p-3">
+                      <Button
+                        onClick={() => handleRemoveOrderHistoryItem(item)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </>
         ) : (
-          <div className="flex h-full w-full text-center justify-center items-center text-3xl animate-pulse">
+          <div className="flex h-screen w-full text-center justify-center items-center text-3xl animate-pulse">
             You don't have any past orders.
           </div>
         )}

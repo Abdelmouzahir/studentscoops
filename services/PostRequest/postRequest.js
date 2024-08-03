@@ -399,7 +399,6 @@ export async function deleteOrderHistoryByRestaurant(
   imageName
 ) {
   try {
-
     await deleteDoc(
       doc(db, "restaurants", restaurantDocId, "history", restaurantMenuDocRef)
     );
@@ -544,13 +543,51 @@ export async function placeOrderByStudent(
     console.error("Error placing order: ", e);
   }
 }
+//to delete the student data from database
+async function deleteCollection(db, collectionPath) {
+  const colRef = collection(db, collectionPath);
+  const querySnapshot = await getDocs(colRef);
+
+  // Delete each document in the subcollection
+  const deletePromises = querySnapshot.docs.map((doc) => deleteDoc(doc.ref));
+  await Promise.all(deletePromises);
+}
+//to delete student data from database and athentication
+export async function deleteStudentUserByOwner(currentUser, docId) {
+  if (currentUser) {
+    try {
+      // Step 1: Re-authenticate user if necessary
+      await deleteUser(currentUser).then(async () => {
+        const studentDocRef = doc(db, "students", docId);
+
+        // Delete subcollections first
+        await deleteCollection(db, `students/${docId}/menu`);
+        await deleteCollection(db, `students/${docId}/history`);
+
+        // Delete the main document
+        await deleteDoc(studentDocRef);
+      });
+      // Step 2: Delete user document from Firestore
+    } catch (error) {
+      if (error.code === "auth/requires-recent-login") {
+        alert(
+          "Please log out first and then proceed with the account deletion."
+        );
+      } else {
+        console.error("Error while deleting user:", error);
+      }
+    }
+  } else {
+    console.log("No current user found");
+  }
+}
 
 // to remove item from student menu and set status to available in restaurant menu
 export async function removeItemFromStudentMenu(
   restaurantDocId,
   restaurantMenuDocRef,
   studentDocId,
-  studentMenuDocId,
+  studentMenuDocId
 ) {
   try {
     // Remove item from student menu
@@ -571,10 +608,15 @@ export async function removeItemFromStudentMenu(
 }
 
 //to delete the history products from student
-export async function deleteHistoryProductFromStudent(studentDocId,studentHistoryMenuDocId){
-  try{
-    await deleteDoc(doc(db,"students",studentDocId,"history",studentHistoryMenuDocId));
-  }catch(error){
+export async function deleteHistoryProductFromStudent(
+  studentDocId,
+  studentHistoryMenuDocId
+) {
+  try {
+    await deleteDoc(
+      doc(db, "students", studentDocId, "history", studentHistoryMenuDocId)
+    );
+  } catch (error) {
     console.error("Error deleting document: ", error);
   }
 }

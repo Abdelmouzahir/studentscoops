@@ -19,6 +19,9 @@ import { addMenuToStudent } from "@/services/PostRequest/postRequest";
 import { useUserAuth } from "@/services/utils";
 import Modal from "@/components/Modal";
 import Link from "next/link";
+import Layout from "../../transtion/Layout";
+import { motion } from "framer-motion";
+
  
 export default function RestaurantMenu() {
   const [menuItems, setMenuItems] = useState(null);
@@ -204,11 +207,14 @@ export default function RestaurantMenu() {
   return (
     <Layout>
     <div className="flex flex-col">
-      <div className="flex justify-between items-start w-full  mb-3 ">
-        <IoMdArrowRoundBack
-          className=" text-primary  text-3xl"
-          onClick={handleBackToMenu}
-        />
+    <div className="flex justify-between items-start w-full  mb-3 ">
+        <motion.button
+        whileHover={{ scale: 1.6 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={handleBackToMenu}
+        >
+           <IoMdArrowRoundBack  className=" text-primary  text-4xl" />
+        </motion.button>
       </div>
       {restaurant && restaurant.length > 0 && restaurant != null ? (
         <section>
@@ -221,7 +227,7 @@ export default function RestaurantMenu() {
                   : "/assets/images/UserDefaultSaitStaff.png"
               })`,
             }}
-          >
+          ></div>
             <div className="flex flex-col sm:flex-row mt-6 px-6">
               <div className="flex flex-col sm:flex-row w-full items-center sm:items-start">
                 <div className="flex items-center justify-center mr-4">
@@ -250,7 +256,6 @@ export default function RestaurantMenu() {
                 </div>
               </div>
             </div>
-          </div>
         </section>
       ) : (
         <div className=" container mx-auto px-4 md:px-6 py-8 md:py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 animate-pulse">
