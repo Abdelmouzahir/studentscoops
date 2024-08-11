@@ -36,4 +36,4 @@ yarn-error.log*
 next-env.d.ts
 
 # firebase security key
-config/studentscoops-20914-firebase-adminsdk-i85jn-ff7c269140.json
+/config/studentscoops-20914-firebase-adminsdk-i85jn-ff7c269140.json
