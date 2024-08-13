@@ -36,4 +36,4 @@ You can check out https://studentscoops.vercel.app - your feedback and contribut
 ## Deploy on Vercel
 
 You can visit the website
-Demo :- https://studentscoops-atsmxh2nz-hunardeep-singhs-projects.vercel.app/
+Demo :- [https://studentscoops-atsmxh2nz-hunardeep-singhs-projects.vercel.app/](https://studentscoops.vercel.app)
