@@ -3,13 +3,13 @@
  * @see https://v0.dev/t/SnDrbEvPfnn
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-"use client";
 
+"use client";
 import { useState, useEffect, useRef } from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/Components/ui/card";
+import { Label } from "@/Components/ui/label";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 import { formatPhoneNumber } from "@/Constant/formated";
 import { db } from "@/app/firebase/config";
 import { updateDoc, doc } from "firebase/firestore";
@@ -25,7 +25,7 @@ import {
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { MdOutlineRemove } from "react-icons/md";
 
-export default function UserProfile({ data }) {
+export default function UserProfile(data) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -35,7 +35,7 @@ export default function UserProfile({ data }) {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (data) {
+    if (data && data?.[0]) {
       setName(data[0].name);
       setEmail(data[0].email);
       setPhoneNumber(data[0].phoneNumber);
@@ -196,15 +196,15 @@ export default function UserProfile({ data }) {
         name: name,
         phoneNumber: phoneNumber,
         address: address,
-      }).then(() => {
-      });
+      }).then(() => {});
     } catch (err) {
       console.log(err);
     }
   }
   return (
     // Changes to be made here
-    <div className="mx-full max-w-md">
+    <>
+    {data && data[0] ? (<div className="mx-full max-w-md">
       <div className="mx-auto grid items-center justify-center w-[200%]">
         <div
           className="mx-auto rounded-full bg-cover bg-center w-96 h-96 cursor-pointer relative"
@@ -312,7 +312,9 @@ export default function UserProfile({ data }) {
           </Button>
         </CardFooter>
       </Card>
-    </div>
+    </div>) : (<div className="w-full h-full flex justify-center items-center text-3xl font-bold animate-pulse"> <p>Loading...</p>
+    </div>)}</>
+    
   );
 }
 

@@ -3,7 +3,7 @@
  */
 "use client";
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import {
   Card,
   CardHeader,
@@ -11,11 +11,11 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
+} from "@/Components/ui/card";
 import Passwordreset from "./passwordreset/page";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/Components/ui/checkbox";
+import { Label } from "@/Components/ui/label";
+import { Input } from "@/Components/ui/input";
 import {
   Dialog,
   DialogTrigger,
@@ -24,7 +24,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog";
+} from "@/Components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { useUserAuth } from "../../../../services/utils";
 import { getStudentDataByStudents } from "../../../../services/GetRequest/getRequest";
@@ -221,7 +221,7 @@ export default function Settings() {
                       Email Support
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      Send us a message and we'll get back to you.
+                      Send us a message and we&apos;ll get back to you.
                     </p>
                   </div>
                   <div className="ml-auto">

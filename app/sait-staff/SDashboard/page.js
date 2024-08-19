@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
 import Table from "./Table";
 import Add from "./Add";
 import Edit from "./Edit";
@@ -9,7 +8,7 @@ import {
   deleteStudentsFromAdmin,
 } from "@/services/PostRequest/postRequest";
 
-const Dashboard = ({ studentData, userData }) => {
+const Dashboard = (studentData, userData) => {
   const [students, setStudents] = useState(null);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [isAdding, setIsAdding] = useState(false);

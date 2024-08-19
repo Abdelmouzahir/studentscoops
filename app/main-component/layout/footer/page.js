@@ -1,8 +1,9 @@
+"use client";
 import React, {useState, useEffect} from 'react';
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa6';
 import Link from "next/link";
-import Modal from '@/components/Modal'
-import Privacy from '@/components/privacy';
+import Modal from '@/Components/Modal'
+import Privacy from '@/Components/privacy';
 
 const Footer = () => {
 

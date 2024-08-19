@@ -1,22 +1,22 @@
-"use client"
-import React, { useState } from 'react';
-import Header from "./main-component/layout/header/header";
-import Footer from "./main-component/layout/footer/footer";
+"use client";
+import React, { useState } from "react";
+import Header from "./main-component/layout/header/page";
+import Footer from "./main-component/layout/footer/page";
 import { motion } from "framer-motion";
-import Modal from "@/components/Modal";
-import LearnMore from "@/components/LearnMore";
-import Reviews from "@/components/reviews";
-import ScrollTop from "@/components/ui/scrollTop";
-import SlideShow from "@/components/SlideShow"; // Import the new Carousel component
+import Modal from "@/Components/Modal";
+import LearnMore from "@/Components/LearnMore";
+import Reviews from "@/Components/reviews";
+import ScrollTop from "@/Components/ui/scrollTop";
+import Slideshow from "./main-component/layout/homePageSlides/page";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
-    const router = useRouter();
+  const router = useRouter();
 
-    function handleClickRegister() {
-        router.push("auth/register");
-    }
+  function handleClickRegister() {
+    router.push("auth/register");
+  }
 
   return (
     <>
@@ -38,11 +38,13 @@ export default function Home() {
                 <div className="flex flex-col justify-center space-y-4">
                   <div className="space-y-2">
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                      Scooping Better <span className="text-primary">Deals</span> for Students
+                      Scooping Better{" "}
+                      <span className="text-primary">Deals</span> for Students
                     </h1>
                     <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                      Our student-focused food app connects you with local eateries offering exclusive discounts. Enjoy
-                      delicious meals at affordable prices and build a sense of community.
+                      Our student-focused food app connects you with local
+                      eateries offering exclusive discounts. Enjoy delicious
+                      meals at affordable prices and build a sense of community.
                     </p>
                   </div>
                   <div className="flex flex-col gap-6 min-[400px]:flex-row">
@@ -77,11 +79,11 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="w-full h-screen py-12 md:py-24 lg:py-32  items-center justify-center">
-            <SlideShow />
+          <section className="w-full py-12 md:py-24 lg:py-32  items-center justify-center">
+            <Slideshow />
           </section>
 
-          <section className="w-full py-12 md:py-24 lg:py-32  mt-6 bg-[#f8f9fa] dark:bg-[#2b2b2b]">
+          <section className="w-full py-12 md:py-24 lg:py-32  mt-6 bg-[#f8f9fa] dark:bg-[#2b2b2b] max-w-screen-2xl mx-auto">
             <Reviews />
           </section>
         </div>

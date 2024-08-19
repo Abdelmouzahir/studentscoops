@@ -3,8 +3,8 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import {
   getStudentConfirmOrderData,
   getStudentDataByStudents,
@@ -223,7 +223,7 @@ export default function Component() {
             </p>
           </div>
           <div className="py-4">{orderId && orderId.map((item)=>{
-            return <p className="font-bold text-2xl">Order Number: #{item}</p>
+            return <p key={item} className="font-bold text-2xl">Order Number: #{item}</p>
           })}</div>
           <div className="mt-12 w-full max-w-md">
             <Card className="p-8 shadow-lg rounded-lg bg-white">
