@@ -89,6 +89,7 @@ export default function Page() {
       router.push("/");
     }
   }, [user]);
+  useEffect(() => {console.log("sait page admin: ",admin)}, [admin]);
 
   // function to select the tab
   const handleTabClick = (tabName) => {
