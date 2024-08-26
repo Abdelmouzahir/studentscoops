@@ -2,7 +2,7 @@
 import * as React from "react"
 import * as SheetPrimitive from "@radix-ui/react-dialog"
 import { cva } from "class-variance-authority";
-import { X } from "lucide-react"
+import { IoCloseSharp } from "react-icons/io5";
 
 import { cn } from "@/lib/utils"
 
@@ -16,8 +16,9 @@ const SheetPortal = SheetPrimitive.Portal
 
 const SheetOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
+  style={{ backgroundColor: "rgba(0, 0, 0, 0.45)" }}
     className={cn(
-      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-20 bg-black/45  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -48,12 +49,12 @@ const SheetContent = React.forwardRef(({ side = "right", className, children, ..
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
-      {children}
       <SheetPrimitive.Close
-        className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800">
-        <X className="h-4 w-4" />
+        className="absolute left-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800" style={{height:"40px",width:"40px",backgroundColor:"white",zIndex:40,display:"flex",justifyContent:"center",alignItems:"center"}}>
+        <IoCloseSharp className="h-10 w-10" />
         <span className="sr-only">Close</span>
       </SheetPrimitive.Close>
+      {children}
     </SheetPrimitive.Content>
   </SheetPortal>
 ))
