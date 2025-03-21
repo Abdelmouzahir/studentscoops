@@ -1,39 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# StudentScoops 🍽️
 
-## Getting Started
+StudentScoops is a web platform created to connect SAIT students with nearby restaurants, allowing them to browse and order meals exclusive to them. The platform is designed to be mobile-friendly, ensuring users can easily search for and access meals via their devices on the go.
 
-First, install npm dependences
+## 🔗 Live Demo
 
-npm install
+👉 [Visit the live website](https://studentscoops.vercel.app/)
 
-Second, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 🔐 **Role-Based Authentication**: Three distinct user roles — **Admin**, **Student**, and **Restaurant** — each with custom access and functionality.
+- 📱 **Mobile-Friendly Design**: Fully responsive layout optimized for both mobile and desktop views.
+- 🧾 **Student Meal Access**: SAIT students can browse and order meals that are exclusive to their student status.
+- 📍 **Google Maps Integration**: Restaurant locations integrated using Google Maps API.
+- 🗂️ **Storage Management**: Efficient storage handling for restaurant meals and user uploads.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 👥 User Roles & Demo Access
 
-## Learn More
+| Role       | Email                             | Password       |
+|------------|-----------------------------------|----------------|
+| Admin      | admin@gmail.com                   | admin123       |
+| Student    | george.white@edu.sait.ca          | george000!     |
+| Restaurant | chatbar@gmail.com                 | chatBar956!    |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tech Stack
 
-You can check out https://studentscoops.vercel.app - your feedback and contributions are welcome!
+- **Frontend**: [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/)
+- **Backend/Database**: [Firebase](https://firebase.google.com/)
+- **Authentication**: Firebase Auth
+- **APIs**: Google Maps API
+- **Storage**: Firebase Storage
 
-## Deploy on Vercel
+---
 
-You can visit the website
-Demo :- [https://studentscoops-atsmxh2nz-hunardeep-singhs-projects.vercel.app/](https://studentscoops.vercel.app)
+## 👨‍💻 My Role
+
+As part of a six-member development team, I was responsible for:
+
+- Setting up and managing **Firebase Authentication** for multiple user roles.
+- Configuring and structuring **Firebase Firestore Database** to support real-time data.
+- Implementing secure data connections between the frontend and backend.
+- Ensuring smooth integration of all authentication logic across pages.
+
+---
+
+## 📸 Screenshots
+
+*Coming soon*
+
+---
+
+## 📚 Skills Applied
+
+`HTML5` · `CSS3` · `JavaScript` · `Tailwind CSS` · `Next.js` · `Firebase` · `User Authentication` · `Google Maps API` · `Storage Management`
+
+---
+
+## 📩 Contact
+
+For questions or suggestions, feel free to reach out to me via [email](mailto:dhillonhunar@gmail.com).
